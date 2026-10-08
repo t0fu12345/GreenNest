@@ -56,15 +56,13 @@ greennest/
 │   └── package.json
 └── backend/                    # Node.js, Express, Mongoose (Kiến trúc Modular)
     ├── src/
-    │   ├── cores/              # Chứa các thành phần cốt lõi
-    │   │   ├── middlewares/    # Auth (JWT), Validation, ErrorHandler
-    │   │   └── config/         # Cấu hình kết nối DB, biến môi trường (Env)
-    │   ├── modules/            # Phân tách rõ ràng từng chức năng (Features)
-    │   │   ├── auth/           # Login, Register (Route, Controller, Service...)
+    │   ├── middlewares/        # Auth (JWT), Validation
+    │   ├── modules/            # Phân tách rõ ràng từng chức năng
+    │   │   ├── auth/           # Login, Register
     │   │   ├── user/           # Quản lý User & My Garden
     │   │   ├── plant/          # CRUD Cây trồng
     │   │   ├── gardener/       # CRUD Chuyên gia
     │   │   └── collection/     # CRUD Bộ sưu tập
-    │   └── server.js           # Entry point của ứng dụng
+    │   └── server.js
     └── package.json
 ```
