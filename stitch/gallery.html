@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Specimen Gallery Archive — The Living Canopy</title>
+  <meta name="description" content="Khám phá toàn bộ kho lưu trữ bản mẫu thực vật học số, phân loại chi tiết họ cây, điều kiện sinh trưởng và tiêu chuẩn chăm sóc.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #07100b;
+      --bg-surface: #0e1e16;
+      --bg-surface-elevated: #162c21;
+      --emerald-accent: #22c55e;
+      --emerald-glow: rgba(34, 197, 94, 0.35);
+      --amber-accent: #eab308;
+      --sage-muted: #8ca395;
+      --text-primary: #f0fdf4;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-accent: rgba(34, 197, 94, 0.3);
+      --glass-pill: rgba(14, 30, 22, 0.85);
+      --shadow-ambient: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      --shadow-glow: 0 0 30px -5px rgba(34, 197, 94, 0.4);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Floating Pill Header */
+    .header-floating-wrap {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+      pointer-events: none;
+    }
+
+    .navbar-pill {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      background: var(--glass-pill);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      border-radius: 9999px;
+      padding: 10px 14px 10px 24px;
+      max-width: 1100px;
+      width: 100%;
+      transition: var(--transition-smooth);
+    }
+
+    .navbar-pill:hover {
+      border-color: rgba(34, 197, 94, 0.4);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), var(--shadow-glow);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .brand-icon-svg {
+      width: 30px;
+      height: 30px;
+      fill: var(--emerald-accent);
+      filter: drop-shadow(0 0 8px var(--emerald-glow));
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .brand-sub {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+      position: relative;
+      padding: 4px 0;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: #ffffff;
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--emerald-accent);
+      border-radius: 2px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-garden-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      padding: 8px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .badge-counter {
+      background: var(--emerald-accent);
+      color: #05140d;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 1px 7px;
+      border-radius: 999px;
+    }
+
+    .btn-back-home {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      padding: 9px 20px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-back-home:hover {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Page Header */
+    .gallery-hero-header {
+      padding: 150px 24px 50px;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .gallery-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 16px;
+      background: rgba(14, 30, 22, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      border-radius: 9999px;
+      margin-bottom: 20px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #86efac;
+    }
+
+    .kicker-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--emerald-accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--emerald-accent);
+    }
+
+    .gallery-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.12;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .gallery-subtitle {
+      color: #cbd5e1;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      max-width: 680px;
+      margin: 0 auto 36px;
+      font-weight: 300;
+    }
+
+    /* Central Search Bar */
+    .gallery-search-wrap {
+      max-width: 680px;
+      margin: 0 auto 32px;
+      position: relative;
+    }
+
+    .gallery-search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 30, 22, 0.85);
+      backdrop-filter: blur(25px);
+      border: 1.5px solid rgba(34, 197, 94, 0.35);
+      border-radius: 9999px;
+      padding: 8px 12px 8px 24px;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6);
+      transition: var(--transition-smooth);
+    }
+
+    .gallery-search-box:focus-within {
+      border-color: var(--emerald-accent);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(34, 197, 94, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 1rem;
+      font-family: var(--font-sans);
+    }
+
+    .search-input::placeholder {
+      color: #8ca395;
+    }
+
+    /* Category Filter Bar */
+    .filter-section-wrap {
+      max-width: 1300px;
+      margin: 0 auto 36px;
+      padding: 0 24px;
+    }
+
+    .category-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      scrollbar-width: none;
+    }
+
+    .category-filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition-smooth);
+    }
+
+    .cat-btn:hover, .cat-btn.active {
+      background: var(--emerald-accent);
+      color: #05140d;
+      font-weight: 600;
+      border-color: var(--emerald-accent);
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+    }
+
+    /* Tag Facets */
+    .facets-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .facet-pill {
+      background: rgba(14, 30, 22, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .facet-pill:hover, .facet-pill.active {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: var(--emerald-accent);
+      color: #86efac;
+    }
+
+    /* Status row */
+    .gallery-status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.88rem;
+      color: var(--sage-muted);
+    }
+
+    .gallery-status-bar strong {
+      color: #ffffff;
+    }
+
+    /* Grid of Cards */
+    .specimen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 32px;
+      max-width: 1300px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+    }
+
+    .specimen-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition-smooth);
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .specimen-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-accent);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), var(--shadow-glow);
+    }
+
+    .card-thumb-wrap {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+      background: #020905;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .specimen-card:hover .card-img {
+      transform: scale(1.08);
+    }
+
+    .card-img-fade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--bg-surface) 0%, rgba(14, 30, 22, 0.2) 60%, rgba(0,0,0,0.4) 100%);
+    }
+
+    .card-badge-top {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 3;
+    }
+
+    .badge-pill-micro {
+      background: rgba(7, 16, 11, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #86efac;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .btn-bookmark-action {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(7, 16, 11, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-bookmark-action:hover, .btn-bookmark-action.saved {
+      background: var(--emerald-accent);
+      color: #05140d;
+      border-color: var(--emerald-accent);
+      transform: scale(1.1);
+    }
+
+    .card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-folio-num {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: var(--sage-muted);
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .card-botanical-name {
+      font-style: italic;
+      color: #86efac;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      color: #94a3b8;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .care-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 12px 0;
+      margin-bottom: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .care-metric-label {
+      font-size: 0.68rem;
+      color: var(--sage-muted);
+      text-transform: uppercase;
+    }
+
+    .care-metric-val {
+      font-size: 0.82rem;
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+
+    .btn-inspect-specimen {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition-smooth);
+      width: 100%;
+    }
+
+    .btn-inspect-specimen:hover {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: var(--emerald-accent);
+      color: #86efac;
+    }
+
+    /* Modal Backdrop */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 8, 5, 0.88);
+      backdrop-filter: blur(16px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .specimen-modal-window {
+      background: #0a1b12;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 28px;
+      max-width: 800px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+      position: relative;
+    }
+
+    .close-modal-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: 0.2s;
+    }
+
+    .close-modal-btn:hover {
+      background: rgba(239, 68, 68, 0.4);
+    }
+
+    /* Footer */
+    .site-footer {
+      background: #040d08;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 60px 24px 30px;
+    }
+
+    .footer-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1.6fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .footer-text {
+      color: #94a3b8;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #64748b;
+      font-size: 0.84rem;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .specimen-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation -->
+  <header class="header-floating-wrap">
+    <nav class="navbar-pill">
+      <a href="index.html" class="brand-logo" title="Về Trang Chủ">
+        <svg class="brand-icon-svg" viewBox="0 0 32 32" fill="none">
+          <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fill-opacity="0.3"/>
+          <path d="M16 8C14 11 11 14 11 17C11 19.8 13.2 22 16 22C18.8 22 21 19.8 21 17C21 14 18 11 16 8Z" fill="currentColor"/>
+          <circle cx="16" cy="17" r="2.5" fill="#ffffff"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-title">The Living Canopy</span>
+          <span class="brand-sub">Gallery Archive</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">← Trang Chủ</a></li>
+        <li><a href="gallery.html" class="active">Thư Viện Gallery</a></li>
+        <li><a href="about.html">About Us ↗</a></li>
+        <li><a href="user.html">Khu Vườn Của Tôi 🌿</a></li>
+        <li><a href="#footer">Liên Hệ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="user.html" class="btn-garden-badge" id="gardenBadgeBtn">
+          <span>🌿 Vườn Của Tôi</span>
+          <span class="badge-counter" id="savedCount">3</span>
+        </a>
+        <a href="login.html" class="btn-back-home" id="navAuthBtn" style="background: rgba(34, 197, 94, 0.15); border: 1px solid var(--border-glass);">Đăng Nhập</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Gallery Hero Header -->
+  <header class="gallery-hero-header">
+    <div class="gallery-kicker">
+      <span class="kicker-dot"></span>
+      <span>EXHIBITION NO. 01 // DEDICATED ARCHIVE</span>
+    </div>
+
+    <h1 class="gallery-title">The Specimen Gallery.</h1>
+    <p class="gallery-subtitle">
+      Khám phá kho lưu trữ hoàn chỉnh các loài thực vật quý hiếm, tra cứu điều kiện sinh trưởng, độ râm mát và khả năng thanh lọc không khí cho ngôi nhà hiện đại.
+    </p>
+
+    <!-- Search Input -->
+    <div class="gallery-search-wrap">
+      <div class="gallery-search-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color: var(--emerald-accent); margin-right: 12px;">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="gallerySearchInput" class="search-input" placeholder="Tìm theo tên loài, chi khoa học, hoặc hashtag (#Araceae, #PetSafe)...">
+        <span style="font-size: 0.75rem; background: rgba(255,255,255,0.08); padding: 4px 8px; border-radius: 6px; color: #94a3b8;">⌘K</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter & Tags Section -->
+  <section class="filter-section-wrap">
+    <!-- Category Filter Bar: 3 Climatic Biomes (Option 1) -->
+    <div class="category-filter-bar">
+      <button class="cat-btn active" data-biome="all" onclick="selectBiomeFilter('all', 'Tất Cả Đới Khí Hậu', this)">Tất Cả Đới Khí Hậu</button>
+      <button class="cat-btn" data-biome="tropical" onclick="selectBiomeFilter('tropical', '🌴 Đới Nóng (Rừng Mưa Nhiệt Đới & Xích Đạo)', this)">🌴 Đới Nóng (Nhiệt Đới & Xích Đạo)</button>
+      <button class="cat-btn" data-biome="subtropical" onclick="selectBiomeFilter('subtropical', '🌲 Đới Ôn Hòa & Cận Nhiệt Cao Nguyên', this)">🌲 Đới Ôn Hòa & Cận Nhiệt</button>
+      <button class="cat-btn" data-biome="arid" onclick="selectBiomeFilter('arid', '🏜️ Đới Khô Hạn & Bán Hoang Mạc', this)">🏜️ Đới Khô Hạn & Bán Hoang Mạc</button>
+    </div>
+
+    <!-- Facet Tags -->
+    <div class="facets-cloud">
+      <span style="font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; color: var(--sage-muted); margin-right: 6px;">INDEX TAGS:</span>
+      <button class="facet-pill" onclick="selectTagFilter('#Araceae', this)">#Araceae</button>
+      <button class="facet-pill" onclick="selectTagFilter('#TrailingFoliage', this)">#TrailingFoliage</button>
+      <button class="facet-pill" onclick="selectTagFilter('#PetSafe', this)">#PetSafe</button>
+      <button class="facet-pill" onclick="selectTagFilter('#VelvetLeaf', this)">#VelvetLeaf</button>
+      <button class="facet-pill" onclick="selectTagFilter('#RareCultivar', this)">#RareCultivar</button>
+      <button class="facet-pill" onclick="selectTagFilter('#DeepShadeThriving', this)">#DeepShadeThriving</button>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="gallery-status-bar">
+      <div id="galleryStatusText">Đang lọc: <strong>Tất Cả Đới Khí Hậu</strong></div>
+      <div style="font-size: 0.8rem; color: #fbbf24;">⚡ No Data Yet (Chưa Hoàn Thành Sản Phẩm)</div>
+    </div>
+  </section>
+
+  <!-- Complete Grid: No Data Yet Container -->
+  <main class="specimen-grid" id="galleryGrid" style="display: block;">
+    <div id="noDataContainer" style="text-align: center; padding: 75px 24px; background: rgba(14, 30, 22, 0.75); backdrop-filter: blur(25px); border: 1.5px dashed rgba(245, 158, 11, 0.45); border-radius: 28px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); max-width: 820px; margin: 0 auto;">
+      <div style="font-size: 3.5rem; margin-bottom: 16px;">🌱</div>
+      <h2 style="font-family: var(--font-serif); font-size: 2.2rem; color: #fff; margin-bottom: 12px;" id="noDataHeader">No Data Yet</h2>
+      <p style="color: #94a3b8; font-size: 1.05rem; line-height: 1.7; max-width: 600px; margin: 0 auto 26px;" id="noDataDescription">
+        Hệ thống dữ liệu cây trồng theo 3 đại đới khí hậu đang trong quá trình chuẩn hóa thực vật học và chưa hoàn thành sản phẩm. Cơ sở dữ liệu sẽ hiển thị đầy đủ ngay sau khi tích hợp Backend & API!
+      </p>
+      <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); padding: 8px 22px; border-radius: 9999px; color: #fbbf24; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">
+        <span>⚡ Product Status: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Backdrop -->
+  <div class="modal-backdrop" id="specimenModal">
+    <div class="specimen-modal-window">
+      <button class="close-modal-btn" id="closeModalBtn">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Luxury Minimal Footer -->
+  <footer class="site-footer" id="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <h4 class="footer-title">The Living Canopy</h4>
+          <p class="footer-text">
+            Kho lưu trữ và phân loại bản mẫu thực vật học số dành cho ngôi nhà đương đại.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">About Us</h4>
+          <p class="footer-text">
+            Dự án nghiên cứu và lưu trữ số hóa các loài thực vật nhiệt đới dành cho không gian sống hiện đại.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">More Info</h4>
+          <p class="footer-text">
+            Mô hình thử nghiệm giao diện GreenNest. Quay lại <a href="index.html" style="color: #86efac; text-decoration: underline;">Trang Chủ Overview →</a>
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Bản Tin Thực Vật</h4>
+          <p class="footer-text" style="margin-bottom: 12px;">Nhận các bài viết phân loại học mới nhất.</p>
+          <button class="cat-btn active" onclick="alert('Đã đăng ký nhận bản tin!');">Đăng Ký Bản Tin</button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 The Living Canopy & GreenNest Consortium. Bảo lưu mọi quyền.</div>
+        <button class="cat-btn" style="padding: 6px 14px; font-size: 0.75rem;" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Lên đầu trang ↑</button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const noDataContainer = document.getElementById("noDataContainer");
+    const noDataHeader = document.getElementById("noDataHeader");
+    const noDataDescription = document.getElementById("noDataDescription");
+    const galleryStatusText = document.getElementById("galleryStatusText");
+    const searchInput = document.getElementById("gallerySearchInput");
+
+    window.selectBiomeFilter = function(biomeKey, biomeTitle, btn) {
+      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+      document.querySelectorAll(".facet-pill").forEach(p => p.classList.remove("active"));
+
+      galleryStatusText.innerHTML = `Đang lọc: <strong>${biomeTitle}</strong>`;
+
+      noDataHeader.textContent = `No Data Yet (${biomeTitle})`;
+      noDataDescription.innerHTML = `Chúng tôi đang trong giai đoạn biên tập cơ sở dữ liệu cho <strong>${biomeTitle}</strong>. Dữ liệu các loài cây thuộc đới này chưa hoàn thành và sẽ được cập nhật sau khi kết nối Backend MongoDB.`;
+      noDataContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    window.selectTagFilter = function(tagName, btn) {
+      document.querySelectorAll(".facet-pill").forEach(p => p.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      galleryStatusText.innerHTML = `Đang lọc theo tag: <strong>${tagName}</strong>`;
+      noDataHeader.textContent = `No Data Yet (${tagName})`;
+      noDataDescription.innerHTML = `Chưa có dữ liệu bản mẫu được gán với hashtag <strong>${tagName}</strong> vì sản phẩm đang trong giai đoạn phát triển prototype.`;
+      noDataContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        const q = e.target.value.trim();
+        if (q.length > 0) {
+          galleryStatusText.innerHTML = `Đang tìm kiếm: <strong>"${q}"</strong>`;
+          noDataHeader.textContent = `No Data Yet ("${q}")`;
+          noDataDescription.innerHTML = `Hệ thống tìm kiếm tra cứu chưa có dữ liệu cho từ khóa <strong>"${q}"</strong> do cơ sở dữ liệu sản phẩm chưa được hoàn thành.`;
+        } else {
+          galleryStatusText.innerHTML = `Đang lọc: <strong>Tất Cả Đới Khí Hậu</strong>`;
+          noDataHeader.textContent = `No Data Yet`;
+          noDataDescription.textContent = `Hệ thống dữ liệu cây trồng theo 3 đại đới khí hậu đang trong quá trình chuẩn hóa thực vật học và chưa hoàn thành sản phẩm. Cơ sở dữ liệu sẽ hiển thị đầy đủ ngay sau khi tích hợp Backend & API!`;
+        }
+      });
+    }
+
+    // Keyboard shortcut CMD+K / Ctrl+K
+    // Check logged-in user session
+    const storedUser = localStorage.getItem('livingCanopyUser');
+    const navAuthBtn = document.getElementById('navAuthBtn');
+    if (storedUser && navAuthBtn) {
+      try {
+        const u = JSON.parse(storedUser);
+        navAuthBtn.innerHTML = `👤 ${u.name || 'Hồ Sơ'}`;
+        navAuthBtn.href = 'user.html';
+        navAuthBtn.style.background = 'rgba(34, 197, 94, 0.2)';
+        navAuthBtn.style.borderColor = 'var(--emerald-accent)';
+      } catch (err) {}
+    }
+  </script>
+</body>
+</html>
