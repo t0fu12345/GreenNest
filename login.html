@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — The Living Canopy & GreenNest</title>
+  <meta name="description" content="Sign in to The Living Canopy botanical management system with Google or Email.">
+
+  <!-- Google Fonts: Cinzel, Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #050d08;
+      --emerald-accent: #22c55e;
+      --emerald-light: #86efac;
+      --emerald-glow: rgba(34, 197, 94, 0.45);
+      --amber-accent: #f59e0b;
+      --glass-bg: rgba(11, 24, 17, 0.82);
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-focus: rgba(34, 197, 94, 0.6);
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+      padding: 30px 20px;
+    }
+
+    /* Cinematic Nature Fade Background */
+    .nature-bg-layer {
+      position: fixed;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1920&q=85');
+      background-size: cover;
+      background-position: center;
+      z-index: -3;
+      transform: scale(1.04);
+      filter: brightness(0.65) saturate(1.2);
+      animation: gentle-zoom 20s infinite alternate ease-in-out;
+    }
+
+    @keyframes gentle-zoom {
+      0% { transform: scale(1.02); }
+      100% { transform: scale(1.08); }
+    }
+
+    .nature-fade-overlay {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 40%, rgba(7, 18, 12, 0.6) 0%, rgba(5, 13, 8, 0.92) 80%),
+        linear-gradient(180deg, rgba(5, 13, 8, 0.7) 0%, rgba(5, 13, 8, 0.95) 100%);
+      z-index: -2;
+    }
+
+    .ambient-glow-circle {
+      position: fixed;
+      width: 550px;
+      height: 550px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.18) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      pointer-events: none;
+      filter: blur(40px);
+    }
+
+    /* Top Corner Navigation */
+    .top-nav-bar {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      z-index: 10;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #ffffff;
+    }
+
+    .brand-svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--emerald-accent);
+      filter: drop-shadow(0 0 10px var(--emerald-glow));
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .btn-return-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(14, 30, 22, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-return-home:hover {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: rgba(34, 197, 94, 0.4);
+      color: #ffffff;
+      transform: translateX(-3px);
+    }
+
+    /* Authentication Glass Card */
+    .auth-container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border-glass);
+      border-radius: 32px;
+      padding: 44px 38px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.75), 0 0 40px -10px rgba(34, 197, 94, 0.25);
+      position: relative;
+      margin-top: 40px;
+      margin-bottom: 30px;
+      transition: var(--transition);
+    }
+
+    .auth-container:hover {
+      border-color: rgba(34, 197, 94, 0.35);
+      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.8), 0 0 50px -5px rgba(34, 197, 94, 0.35);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .auth-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      padding: 5px 16px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #86efac;
+      margin-bottom: 16px;
+    }
+
+    .auth-pill-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--emerald-accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--emerald-accent);
+    }
+
+    .auth-title {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .auth-subtitle {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    /* Social Google / Gmail Button */
+    .btn-google-auth {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      padding: 13px 20px;
+      border-radius: 16px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 24px;
+      text-decoration: none;
+    }
+
+    .btn-google-auth:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .google-icon-svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Divider */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 26px;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .auth-divider span {
+      padding: 0 14px;
+    }
+
+    /* Form Fields */
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .form-label a {
+      color: var(--emerald-accent);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.8rem;
+      transition: var(--transition);
+    }
+
+    .form-label a:hover {
+      text-decoration: underline;
+      color: #86efac;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-field {
+      width: 100%;
+      background: rgba(5, 13, 8, 0.65);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 13px 42px 13px 16px;
+      color: #ffffff;
+      font-size: 0.94rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .input-field:focus {
+      border-color: var(--emerald-accent);
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.35);
+      background: rgba(8, 20, 13, 0.85);
+    }
+
+    .input-field::placeholder {
+      color: #64748b;
+    }
+
+    .input-icon-btn {
+      position: absolute;
+      right: 14px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .input-icon-btn:hover {
+      color: #ffffff;
+    }
+
+    /* Checkbox & Remember */
+    .form-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: -4px;
+    }
+
+    .checkbox-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-wrap input[type="checkbox"] {
+      accent-color: var(--emerald-accent);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    /* Submit Button */
+    .btn-auth-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+      color: #041008;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+    }
+
+    .btn-auth-submit:hover {
+      background: linear-gradient(135deg, #86efac 0%, #22c55e 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.6);
+    }
+
+    /* Notification / Toast */
+    .login-status-toast {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid var(--emerald-accent);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #86efac;
+      font-size: 0.88rem;
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    .login-status-toast.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer Switch to Register */
+    .auth-footer {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 20px;
+    }
+
+    .auth-footer a {
+      color: var(--emerald-accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .auth-footer a:hover {
+      color: #86efac;
+      text-decoration: underline;
+    }
+
+    /* Bottom Copyright */
+    .auth-page-credits {
+      color: #64748b;
+      font-size: 0.8rem;
+      text-align: center;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Nature Layers with Cinematic Vignette Fade -->
+  <div class="nature-bg-layer"></div>
+  <div class="nature-fade-overlay"></div>
+  <div class="ambient-glow-circle"></div>
+
+  <!-- Top Navigation -->
+  <header class="top-nav-bar">
+    <a href="index.html" class="brand-link" title="The Living Canopy">
+      <svg class="brand-svg" viewBox="0 0 32 32" fill="none">
+        <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fill-opacity="0.3"/>
+        <path d="M16 8C14 11 11 14 11 17C11 19.8 13.2 22 16 22C18.8 22 21 19.8 21 17C21 14 18 11 16 8Z" fill="currentColor"/>
+        <circle cx="16" cy="17" r="2.5" fill="#ffffff"/>
+      </svg>
+      <span class="brand-name">The Living Canopy</span>
+    </a>
+
+    <a href="index.html" class="btn-return-home">
+      <span>← Back to Overview</span>
+    </a>
+  </header>
+
+  <!-- Login Glassmorphic Card -->
+  <main class="auth-container">
+    <div class="auth-header">
+      <div class="auth-pill-badge">
+        <span class="auth-pill-dot"></span>
+        <span>DIGITAL BOTANICAL ECOSYSTEM</span>
+      </div>
+      <h1 class="auth-title">Welcome Back</h1>
+      <p class="auth-subtitle">Sign in to manage your private sanctuary and climate-tailored plant care journals.</p>
+    </div>
+
+    <!-- Continue with Google / Gmail -->
+    <button type="button" class="btn-google-auth" id="btnGoogleLogin" onclick="handleSocialLogin('Google')">
+      <svg class="google-icon-svg" viewBox="0 0 24 24">
+        <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
+        <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+        <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9c-.1-.7-.3-1.5-.3-2.4l.3-3z"/>
+        <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 16.9C3.7 20.6 7.5 23.5 12 23.5z"/>
+      </svg>
+      <span>Continue with Google / Gmail</span>
+    </button>
+
+    <div class="auth-divider">
+      <span>Or continue with email</span>
+    </div>
+
+    <!-- Email & Password Form -->
+    <form class="auth-form" id="loginForm" onsubmit="handleEmailLogin(event)">
+      
+      <div class="form-group">
+        <label for="loginEmail" class="form-label">Your Email Address</label>
+        <div class="input-wrapper">
+          <input type="email" id="loginEmail" class="input-field" placeholder="your-email@domain.com" required value="minhthao.botany@gmail.com">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label">
+          <label for="loginPassword">Password</label>
+          <a href="#" onclick="alert('Password recovery link will be sent to your registered email address.'); return false;">Forgot password?</a>
+        </div>
+        <div class="input-wrapper">
+          <input type="password" id="loginPassword" class="input-field" placeholder="••••••••" required value="GreenCanopy2026">
+          <button type="button" class="input-icon-btn" onclick="togglePasswordVisibility('loginPassword', this)" title="Show/Hide password">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-options">
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="rememberMe" checked>
+          <span>Remember me on this device</span>
+        </label>
+        <span style="font-size: 0.78rem; color: #86efac;">⚡ Prototype Mode</span>
+      </div>
+
+      <button type="submit" class="btn-auth-submit" id="submitBtn">
+        <span>Sign In to Sanctuary →</span>
+      </button>
+
+      <!-- Toast Feedback -->
+      <div class="login-status-toast" id="loginToast">
+        <span>🌿</span>
+        <div id="toastMessage">Sign in successful! Redirecting to Overview...</div>
+      </div>
+
+    </form>
+
+    <div class="auth-footer">
+      Don't have a GreenNest account? 
+      <a href="register.html">Create an account now →</a>
+    </div>
+  </main>
+
+  <div class="auth-page-credits">
+    © 2026 The Living Canopy & GreenNest Consortium. All rights reserved.
+  </div>
+
+  <script>
+    // Toggle Password Visibility
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.style.color = '#22c55e';
+      } else {
+        input.type = 'password';
+        btn.style.color = '';
+      }
+    }
+
+    // Simulate Social / Google Login
+    function handleSocialLogin(provider) {
+      const toast = document.getElementById('loginToast');
+      const toastMsg = document.getElementById('toastMessage');
+      const submitBtn = document.getElementById('submitBtn');
+
+      toastMsg.innerHTML = `<strong>Authenticating via ${provider}...</strong> Connected successfully! Redirecting to Overview.`;
+      toast.classList.add('active');
+
+      // Set logged-in state in localStorage
+      const mockUser = {
+        name: "Minh Thao",
+        email: "minhthao.botany@gmail.com",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        role: "Tropical Botanist",
+        level: "Tier 3",
+        biome: "Tropical Biome",
+        joinDate: "March 2026",
+        loginMethod: provider
+      };
+      localStorage.setItem('livingCanopyUser', JSON.stringify(mockUser));
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 900);
+    }
+
+    // Handle Email Login Submission
+    function handleEmailLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const toast = document.getElementById('loginToast');
+      const toastMsg = document.getElementById('toastMessage');
+      const submitBtn = document.getElementById('submitBtn');
+
+      submitBtn.innerHTML = '<span>Verifying credentials...</span>';
+      submitBtn.style.opacity = '0.7';
+      submitBtn.disabled = true;
+
+      toastMsg.innerHTML = `Welcome back, <strong>${email.split('@')[0]}</strong>! Sign in successful. Redirecting to Overview...`;
+      toast.classList.add('active');
+
+      const mockUser = {
+        name: email.split('@')[0].toUpperCase(),
+        email: email,
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        role: "Ecological Gardener",
+        level: "Tier 2",
+        biome: "Tropical Biome",
+        joinDate: "March 2026",
+        loginMethod: "Email"
+      };
+      localStorage.setItem('livingCanopyUser', JSON.stringify(mockUser));
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 900);
+    }
+  </script>
+</body>
+</html>

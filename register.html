@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Registration — The Living Canopy & GreenNest</title>
+  <meta name="description" content="Create a GreenNest member account with Google or Email to curate and nurture your botanical collection.">
+
+  <!-- Google Fonts: Cinzel, Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #050d08;
+      --emerald-accent: #22c55e;
+      --emerald-light: #86efac;
+      --emerald-glow: rgba(34, 197, 94, 0.45);
+      --amber-accent: #f59e0b;
+      --glass-bg: rgba(11, 24, 17, 0.85);
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-focus: rgba(34, 197, 94, 0.6);
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+      padding: 40px 20px;
+    }
+
+    /* Cinematic Nature Fade Background */
+    .nature-bg-layer {
+      position: fixed;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1920&q=85');
+      background-size: cover;
+      background-position: center;
+      z-index: -3;
+      transform: scale(1.04);
+      filter: brightness(0.62) saturate(1.25);
+      animation: gentle-zoom 22s infinite alternate ease-in-out;
+    }
+
+    @keyframes gentle-zoom {
+      0% { transform: scale(1.02); }
+      100% { transform: scale(1.07); }
+    }
+
+    .nature-fade-overlay {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 35%, rgba(7, 18, 12, 0.6) 0%, rgba(5, 13, 8, 0.94) 80%),
+        linear-gradient(180deg, rgba(5, 13, 8, 0.7) 0%, rgba(5, 13, 8, 0.98) 100%);
+      z-index: -2;
+    }
+
+    .ambient-glow-circle {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.16) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      pointer-events: none;
+      filter: blur(40px);
+    }
+
+    /* Top Corner Navigation */
+    .top-nav-bar {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      z-index: 10;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #ffffff;
+    }
+
+    .brand-svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--emerald-accent);
+      filter: drop-shadow(0 0 10px var(--emerald-glow));
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .btn-return-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(14, 30, 22, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-return-home:hover {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: rgba(34, 197, 94, 0.4);
+      color: #ffffff;
+      transform: translateX(-3px);
+    }
+
+    /* Register Glass Card */
+    .auth-container {
+      width: 100%;
+      max-width: 530px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border-glass);
+      border-radius: 32px;
+      padding: 44px 40px;
+      box-shadow: 0 30px 75px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(34, 197, 94, 0.25);
+      position: relative;
+      margin-top: 50px;
+      margin-bottom: 30px;
+      transition: var(--transition);
+    }
+
+    .auth-container:hover {
+      border-color: rgba(34, 197, 94, 0.4);
+      box-shadow: 0 35px 85px rgba(0, 0, 0, 0.85), 0 0 50px -5px rgba(34, 197, 94, 0.35);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .auth-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      padding: 5px 16px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #86efac;
+      margin-bottom: 14px;
+    }
+
+    .auth-pill-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--emerald-accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--emerald-accent);
+    }
+
+    .auth-title {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .auth-subtitle {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    /* Google Button */
+    .btn-google-auth {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      padding: 13px 20px;
+      border-radius: 16px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 22px;
+      text-decoration: none;
+    }
+
+    .btn-google-auth:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .google-icon-svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Divider */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 24px;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .auth-divider span {
+      padding: 0 14px;
+    }
+
+    /* Form Fields */
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-field {
+      width: 100%;
+      background: rgba(5, 13, 8, 0.65);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 12px 42px 12px 16px;
+      color: #ffffff;
+      font-size: 0.92rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .input-field:focus {
+      border-color: var(--emerald-accent);
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.35);
+      background: rgba(8, 20, 13, 0.85);
+    }
+
+    .input-field::placeholder {
+      color: #64748b;
+    }
+
+    .input-icon-btn {
+      position: absolute;
+      right: 14px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .input-icon-btn:hover {
+      color: #ffffff;
+    }
+
+    /* Biome Select Grid (Option 1 Integration) */
+    .biome-choice-title {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .biome-radio-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .biome-radio-label {
+      background: rgba(5, 13, 8, 0.6);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .biome-radio-label input {
+      display: none;
+    }
+
+    .biome-radio-label:hover {
+      border-color: rgba(34, 197, 94, 0.4);
+      background: rgba(34, 197, 94, 0.08);
+    }
+
+    .biome-radio-label.selected {
+      border-color: var(--emerald-accent);
+      background: rgba(34, 197, 94, 0.18);
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.25);
+    }
+
+    .biome-icon {
+      font-size: 1.2rem;
+    }
+
+    .biome-name {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    /* Checkbox */
+    .checkbox-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      cursor: pointer;
+      user-select: none;
+      margin-top: 4px;
+    }
+
+    .checkbox-wrap input[type="checkbox"] {
+      accent-color: var(--emerald-accent);
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    /* Submit Button */
+    .btn-auth-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+      color: #041008;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+    }
+
+    .btn-auth-submit:hover {
+      background: linear-gradient(135deg, #86efac 0%, #22c55e 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.6);
+    }
+
+    /* Feedback Toast */
+    .login-status-toast {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid var(--emerald-accent);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #86efac;
+      font-size: 0.88rem;
+      margin-top: 14px;
+      text-align: left;
+    }
+
+    .login-status-toast.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer Switch to Login */
+    .auth-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 18px;
+    }
+
+    .auth-footer a {
+      color: var(--emerald-accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .auth-footer a:hover {
+      color: #86efac;
+      text-decoration: underline;
+    }
+
+    .auth-page-credits {
+      color: #64748b;
+      font-size: 0.8rem;
+      text-align: center;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Nature Layers with Cinematic Vignette Fade -->
+  <div class="nature-bg-layer"></div>
+  <div class="nature-fade-overlay"></div>
+  <div class="ambient-glow-circle"></div>
+
+  <!-- Top Navigation -->
+  <header class="top-nav-bar">
+    <a href="index.html" class="brand-link" title="The Living Canopy">
+      <svg class="brand-svg" viewBox="0 0 32 32" fill="none">
+        <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fill-opacity="0.3"/>
+        <path d="M16 8C14 11 11 14 11 17C11 19.8 13.2 22 16 22C18.8 22 21 19.8 21 17C21 14 18 11 16 8Z" fill="currentColor"/>
+        <circle cx="16" cy="17" r="2.5" fill="#ffffff"/>
+      </svg>
+      <span class="brand-name">The Living Canopy</span>
+    </a>
+
+    <a href="index.html" class="btn-return-home">
+      <span>← Back to Overview</span>
+    </a>
+  </header>
+
+  <!-- Register Glassmorphic Card -->
+  <main class="auth-container">
+    <div class="auth-header">
+      <div class="auth-pill-badge">
+        <span class="auth-pill-dot"></span>
+        <span>BEGIN YOUR BOTANICAL JOURNEY</span>
+      </div>
+      <h1 class="auth-title">Member Registration</h1>
+      <p class="auth-subtitle">Create your GreenNest sanctuary account to curate, monitor, and nurture your living collection.</p>
+    </div>
+
+    <!-- Continue with Google / Gmail -->
+    <button type="button" class="btn-google-auth" id="btnGoogleRegister" onclick="handleSocialRegister('Google')">
+      <svg class="google-icon-svg" viewBox="0 0 24 24">
+        <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
+        <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+        <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9c-.1-.7-.3-1.5-.3-2.4l.3-3z"/>
+        <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 16.9C3.7 20.6 7.5 23.5 12 23.5z"/>
+      </svg>
+      <span>Quick Register with Google / Gmail</span>
+    </button>
+
+    <div class="auth-divider">
+      <span>Or register with email</span>
+    </div>
+
+    <!-- Registration Form -->
+    <form class="auth-form" id="registerForm" onsubmit="handleEmailRegister(event)">
+      
+      <div class="form-group">
+        <label for="regName" class="form-label">Full Name</label>
+        <div class="input-wrapper">
+          <input type="text" id="regName" class="input-field" placeholder="e.g. Alex Morgan" required value="Alex Morgan">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="regEmail" class="form-label">Email Address</label>
+        <div class="input-wrapper">
+          <input type="email" id="regEmail" class="input-field" placeholder="your-email@domain.com" required value="alex.morgan.botany@gmail.com">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="regPassword" class="form-label">Password</label>
+        <div class="input-wrapper">
+          <input type="password" id="regPassword" class="input-field" placeholder="Minimum 8 characters" required value="GreenCanopy2026">
+          <button type="button" class="input-icon-btn" onclick="togglePasswordVisibility('regPassword', this)" title="Show/Hide">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Biome of Interest (Option 1 Integration) -->
+      <div class="form-group">
+        <div class="biome-choice-title">Climatic Biome of Primary Focus:</div>
+        <div class="biome-radio-group">
+          <label class="biome-radio-label selected" onclick="selectBiomeOption(this)">
+            <input type="radio" name="preferredBiome" value="tropical" checked>
+            <span class="biome-icon">🌴</span>
+            <span class="biome-name">Tropical</span>
+          </label>
+          <label class="biome-radio-label" onclick="selectBiomeOption(this)">
+            <input type="radio" name="preferredBiome" value="subtropical">
+            <span class="biome-icon">🌲</span>
+            <span class="biome-name">Subtropical</span>
+          </label>
+          <label class="biome-radio-label" onclick="selectBiomeOption(this)">
+            <input type="radio" name="preferredBiome" value="arid">
+            <span class="biome-icon">🏜️</span>
+            <span class="biome-name">Arid & Desert</span>
+          </label>
+        </div>
+      </div>
+
+      <label class="checkbox-wrap">
+        <input type="checkbox" id="agreeTerms" checked required>
+        <span>I commit to ecological conservation stewardship and agree to chemical-free plant cultivation principles.</span>
+      </label>
+
+      <button type="submit" class="btn-auth-submit" id="submitRegBtn">
+        <span>Create Account & Enter Conservatory →</span>
+      </button>
+
+      <!-- Feedback Toast -->
+      <div class="login-status-toast" id="regToast">
+        <span>🌿</span>
+        <div id="regToastMsg">Account created successfully! Redirecting to Overview...</div>
+      </div>
+
+    </form>
+
+    <div class="auth-footer">
+      Already have a GreenNest account? 
+      <a href="login.html">Sign in here →</a>
+    </div>
+  </main>
+
+  <div class="auth-page-credits">
+    © 2026 The Living Canopy & GreenNest Consortium. All rights reserved.
+  </div>
+
+  <script>
+    // Toggle Password Visibility
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.style.color = '#22c55e';
+      } else {
+        input.type = 'password';
+        btn.style.color = '';
+      }
+    }
+
+    // Select Biome Radio Card
+    function selectBiomeOption(label) {
+      document.querySelectorAll('.biome-radio-label').forEach(l => l.classList.remove('selected'));
+      label.classList.add('selected');
+      const radio = label.querySelector('input');
+      if (radio) radio.checked = true;
+    }
+
+    // Handle Social / Google Register
+    function handleSocialRegister(provider) {
+      const toast = document.getElementById('regToast');
+      const toastMsg = document.getElementById('regToastMsg');
+      const submitBtn = document.getElementById('submitRegBtn');
+
+      toastMsg.innerHTML = `<strong>Connected via ${provider} successfully!</strong> Welcome to GreenNest. Redirecting to Overview...`;
+      toast.classList.add('active');
+
+      const mockUser = {
+        name: "Alex Morgan",
+        email: "alex.morgan.botany@gmail.com",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        role: "Conservatory Member",
+        level: "Tier 1 (Apprentice)",
+        biome: "Tropical Biome",
+        joinDate: "March 2026",
+        loginMethod: provider
+      };
+      localStorage.setItem('livingCanopyUser', JSON.stringify(mockUser));
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 950);
+    }
+
+    // Handle Email Register
+    function handleEmailRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value;
+      const email = document.getElementById('regEmail').value;
+      const selectedBiomeInput = document.querySelector('input[name="preferredBiome"]:checked');
+      const biomeVal = selectedBiomeInput ? selectedBiomeInput.value : 'tropical';
+      const biomeText = biomeVal === 'tropical' ? 'Tropical Biome' : biomeVal === 'subtropical' ? 'Subtropical Highlands' : 'Arid & Desert Biome';
+
+      const toast = document.getElementById('regToast');
+      const toastMsg = document.getElementById('regToastMsg');
+      const submitBtn = document.getElementById('submitRegBtn');
+
+      submitBtn.innerHTML = '<span>Initializing your sanctuary...</span>';
+      submitBtn.disabled = true;
+
+      toastMsg.innerHTML = `Welcome, <strong>${name}</strong>! Your account is ready. Redirecting to Overview...`;
+      toast.classList.add('active');
+
+      const mockUser = {
+        name: name,
+        email: email,
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        role: "Natural Flora Steward",
+        level: "Tier 1 (Explorer)",
+        biome: biomeText,
+        joinDate: "March 2026",
+        loginMethod: "Email"
+      };
+      localStorage.setItem('livingCanopyUser', JSON.stringify(mockUser));
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 950);
+    }
+  </script>
+</body>
+</html>

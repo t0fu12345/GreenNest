@@ -1,0 +1,3015 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Living Canopy — Exhibition No. 01: The Domestic Arboretum</title>
+  <meta name="description" content="A digital conservatory and curated herbarium catalog for the living home. Explore 500+ botanical specimens with intelligent search.">
+  
+  <!-- Google Fonts: Playfair Display for luxury botanical serif & Plus Jakarta Sans for clean UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & CSS VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-dark: #07100b;
+      --bg-surface: #0e1e16;
+      --bg-surface-elevated: #162c21;
+      --forest-900: #05140d;
+      --forest-800: #0a2318;
+      --forest-700: #123826;
+      --emerald-accent: #22c55e;
+      --emerald-glow: rgba(34, 197, 94, 0.35);
+      --amber-accent: #eab308;
+      --sage-muted: #8ca395;
+      --text-primary: #f0fdf4;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-accent: rgba(34, 197, 94, 0.3);
+      --glass-bg: rgba(10, 28, 19, 0.72);
+      --glass-pill: rgba(14, 30, 22, 0.82);
+      --shadow-ambient: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      --shadow-glow: 0 0 30px -5px rgba(34, 197, 94, 0.4);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Base Setup */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ==========================================================================
+       FLOATING GLASS PILL NAVBAR (Inspired by Trees for the Future)
+       ========================================================================== */
+    .header-floating-wrap {
+      position: fixed;
+      top: 24px;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+      pointer-events: none;
+    }
+
+    .navbar-pill {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(16px, 2.5vw, 36px);
+      background: var(--glass-pill);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      border-radius: 9999px;
+      padding: 8px 12px 8px 22px;
+      max-width: 1220px;
+      width: 100%;
+      transition: var(--transition-smooth);
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .navbar-pill:hover {
+      border-color: rgba(34, 197, 94, 0.4);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), var(--shadow-glow);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .brand-icon-svg {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      fill: var(--emerald-accent);
+      filter: drop-shadow(0 0 8px var(--emerald-glow));
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      white-space: nowrap;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #ffffff;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
+
+    .brand-sub {
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sage-muted);
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(14px, 1.8vw, 24px);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-links li {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 500;
+      letter-spacing: 0.015em;
+      transition: var(--transition-smooth);
+      position: relative;
+      padding: 6px 2px;
+      white-space: nowrap;
+      display: inline-block;
+      line-height: 1.2;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: #ffffff;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--emerald-accent);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-links a:hover::after, .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* ==========================================================================
+       NOTIFICATION BELL TRIGGER & POPOVER
+       ========================================================================== */
+    .notif-container {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .btn-notif-bell {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      padding: 0;
+      outline: none;
+      flex-shrink: 0;
+    }
+
+    .btn-notif-bell:hover,
+    .btn-notif-bell.active {
+      background: rgba(34, 197, 94, 0.16);
+      border-color: rgba(34, 197, 94, 0.45);
+      color: #ffffff;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-notif-bell svg {
+      width: 19px;
+      height: 19px;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-notif-bell:hover svg,
+    .btn-notif-bell.active svg {
+      transform: rotate(10deg);
+    }
+
+    .notif-badge-pill {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      color: #03130a;
+      font-size: 0.68rem;
+      font-weight: 800;
+      min-width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      border-radius: 999px;
+      padding: 0 4px;
+      border: 2px solid #081710;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .notif-badge-pill.hidden {
+      opacity: 0;
+      transform: scale(0.5);
+      pointer-events: none;
+    }
+
+    /* Notification Dropdown Popover */
+    .notif-dropdown {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: -10px;
+      width: 370px;
+      max-width: calc(100vw - 32px);
+      background: rgba(10, 24, 17, 0.96);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.85), 0 0 30px -5px rgba(34, 197, 94, 0.2);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px) scale(0.96);
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+      z-index: 1200;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+      white-space: normal;
+    }
+
+    .notif-dropdown.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .notif-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .notif-header-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .notif-header-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .notif-count-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: rgba(34, 197, 94, 0.18);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.32);
+      padding: 1px 7px;
+      border-radius: 999px;
+    }
+
+    .notif-mark-read {
+      font-size: 0.73rem;
+      color: var(--sage-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-family: inherit;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+
+    .notif-mark-read:hover {
+      color: var(--emerald-accent);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .notif-list {
+      list-style: none;
+      padding: 6px 0;
+      margin: 0;
+      max-height: 380px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(34, 197, 94, 0.3) transparent;
+    }
+
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      position: relative;
+      border-left: 3px solid transparent;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .notif-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .notif-item.unread {
+      background: rgba(34, 197, 94, 0.06);
+      border-left-color: var(--emerald-accent);
+    }
+
+    .notif-item.unread:hover {
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .notif-icon-bubble {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .notif-icon-bubble.garden {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: rgba(34, 197, 94, 0.35);
+      color: #4ade80;
+    }
+
+    .notif-icon-bubble.gallery {
+      background: rgba(14, 165, 233, 0.15);
+      border-color: rgba(14, 165, 233, 0.35);
+      color: #38bdf8;
+    }
+
+    .notif-icon-bubble.about {
+      background: rgba(234, 179, 8, 0.15);
+      border-color: rgba(234, 179, 8, 0.35);
+      color: #facc15;
+    }
+
+    .notif-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .notif-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .notif-source-badge {
+      font-size: 0.67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--sage-muted);
+    }
+
+    .notif-source-badge.garden {
+      color: #4ade80;
+    }
+
+    .notif-time {
+      font-size: 0.66rem;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+    }
+
+    .notif-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+
+    .notif-text {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .notif-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald-accent);
+      box-shadow: 0 0 8px var(--emerald-accent);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .notif-item.read .notif-dot {
+      display: none;
+    }
+
+    .notif-footer {
+      padding: 10px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .notif-footer-link {
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: #4ade80;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s, color 0.2s;
+    }
+
+    .notif-footer-link:hover {
+      color: #86efac;
+      gap: 9px;
+    }
+
+    /* Auth CTA button */
+    .btn-cta-pill {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-cta-pill:hover {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.55);
+      color: #ffffff;
+    }
+
+    .btn-garden-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .btn-garden-badge:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+
+    /* Mobile toggle */
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    /* ==========================================================================
+       HERO SECTION WITH CINEMATIC BOTANICAL FADE & NATURE BACKDROP
+       ========================================================================== */
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 160px 24px 100px;
+      overflow: hidden;
+      background: 
+        /* Top radial ambient glow */
+        radial-gradient(circle at 50% 20%, rgba(34, 197, 94, 0.18) 0%, transparent 60%),
+        /* Deep cinematic multi-stop fade overlay */
+        linear-gradient(to bottom, 
+          rgba(7, 16, 11, 0.65) 0%, 
+          rgba(7, 16, 11, 0.4) 30%, 
+          rgba(7, 16, 11, 0.75) 70%, 
+          var(--bg-dark) 100%
+        ),
+        /* High-res lush conservatory forest canopy background */
+        url('https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=2000&q=80') center center / cover no-repeat;
+    }
+
+    /* Subtle animated ambient dust motes / light beam overlay */
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 30%, rgba(52, 211, 153, 0.12) 0%, transparent 50%),
+                  radial-gradient(ellipse at 20% 60%, rgba(20, 83, 45, 0.25) 0%, transparent 60%);
+      pointer-events: none;
+      animation: ambientPulse 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes ambientPulse {
+      0% { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+
+    /* Bottom fade mask ensuring ultra-smooth transition into contents */
+    .hero-bottom-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 180px;
+      background: linear-gradient(to top, var(--bg-dark) 0%, rgba(7, 16, 11, 0) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Exhibition Badge & Registration Code */
+    .hero-kicker-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 16px;
+      background: rgba(14, 30, 22, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      border-radius: 9999px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      animation: fadeInDown 0.8s ease backwards;
+    }
+
+    .kicker-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--emerald-accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--emerald-accent);
+      animation: blink 2s infinite ease-in-out;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .kicker-text {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #d1fae5;
+    }
+
+    .kicker-folio {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--sage-muted);
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      padding-left: 12px;
+    }
+
+    /* Dramatic Hero Headline */
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 6.5vw, 5rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 20px;
+      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      animation: fadeInUp 0.9s ease 0.1s backwards;
+    }
+
+    .hero-title span.italic-accent {
+      font-style: italic;
+      font-weight: 400;
+      color: #a7f3d0;
+      background: linear-gradient(135deg, #a7f3d0 0%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: #cbd5e1;
+      max-width: 680px;
+      line-height: 1.65;
+      font-weight: 300;
+      margin-bottom: 40px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+      animation: fadeInUp 0.9s ease 0.2s backwards;
+    }
+
+    /* ==========================================================================
+       REPOSITIONED CENTRAL SEARCH BAR (The Core Feature Highlight)
+       ========================================================================== */
+    .search-hero-container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto 28px;
+      position: relative;
+      animation: fadeInUp 0.9s ease 0.3s backwards;
+    }
+
+    .search-box-pill {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: rgba(14, 30, 22, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1.5px solid rgba(34, 197, 94, 0.35);
+      border-radius: 9999px;
+      padding: 8px 12px 8px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px -10px rgba(34, 197, 94, 0.3);
+      transition: var(--transition-smooth);
+    }
+
+    .search-box-pill:focus-within {
+      border-color: var(--emerald-accent);
+      background: rgba(12, 34, 22, 0.95);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 45px rgba(34, 197, 94, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .search-icon-left {
+      width: 24px;
+      height: 24px;
+      color: var(--emerald-accent);
+      flex-shrink: 0;
+      margin-right: 14px;
+    }
+
+    .search-input-field {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-family: var(--font-sans);
+      font-weight: 400;
+    }
+
+    .search-input-field::placeholder {
+      color: #8ca395;
+      font-weight: 300;
+    }
+
+    .search-shortcut-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #94a3b8;
+      letter-spacing: 0.05em;
+      margin-right: 8px;
+      user-select: none;
+    }
+
+    .search-submit-btn {
+      background: linear-gradient(135deg, var(--emerald-accent) 0%, #15803d 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 9999px;
+      padding: 12px 26px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+      transition: var(--transition-smooth);
+    }
+
+    .search-submit-btn:hover {
+      background: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+      transform: scale(1.02);
+    }
+
+    /* Live Search Suggestions Dropdown */
+    .search-suggestions-panel {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 0;
+      right: 0;
+      background: rgba(14, 30, 22, 0.95);
+      backdrop-filter: blur(25px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 12px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      display: none;
+      text-align: left;
+      z-index: 100;
+      max-height: 380px;
+      overflow-y: auto;
+    }
+
+    .search-suggestions-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .suggestion-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .suggestion-item:hover {
+      background: rgba(34, 197, 94, 0.15);
+    }
+
+    .suggestion-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .suggestion-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .suggestion-botanical {
+      font-style: italic;
+      font-size: 0.8rem;
+      color: var(--sage-muted);
+    }
+
+    .suggestion-badge {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.2);
+      color: #86efac;
+      font-weight: 600;
+    }
+
+    /* Interactive Index Facets (Tags) directly under search */
+    .facets-hero-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      max-width: 820px;
+      margin: 0 auto 36px;
+      animation: fadeInUp 0.9s ease 0.4s backwards;
+    }
+
+    .facet-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sage-muted);
+      margin-right: 4px;
+    }
+
+    .facet-tag {
+      background: rgba(14, 30, 22, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: var(--transition-smooth);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .facet-tag:hover, .facet-tag.active {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: var(--emerald-accent);
+      color: #86efac;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+    }
+
+    /* Dual Action Row: Explore CTA + Watch Video Tour */
+    .hero-actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      animation: fadeInUp 0.9s ease 0.5s backwards;
+    }
+
+    .btn-hero-primary {
+      background: #ffffff;
+      color: #07100b;
+      padding: 14px 28px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition-smooth);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-hero-primary:hover {
+      background: #d1fae5;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-video-tour {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-video-tour:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .video-play-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(34, 197, 94, 0.25);
+      border: 1px solid var(--emerald-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--emerald-accent);
+      transition: transform 0.3s ease;
+    }
+
+    .btn-video-tour:hover .video-play-circle {
+      transform: scale(1.1);
+      background: var(--emerald-accent);
+      color: #05140d;
+    }
+
+    /* ==========================================================================
+       SECTION: HERBARIUM SPECIMEN ARCHIVE (Redesigned Gallery with Depth)
+       ========================================================================== */
+    .archive-section {
+      position: relative;
+      padding: 80px 24px 120px;
+      max-width: 1300px;
+      margin: 0 auto;
+      z-index: 10;
+    }
+
+    .section-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .section-title-wrap {
+      max-width: 600px;
+    }
+
+    .section-subtitle-kicker {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--emerald-accent);
+      margin-bottom: 8px;
+    }
+
+    .section-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.15;
+    }
+
+    .archive-counter-status {
+      color: var(--sage-muted);
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+
+    .archive-counter-status strong {
+      color: #ffffff;
+    }
+
+    /* Filter Category Pills */
+    .category-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 24px;
+      margin-bottom: 36px;
+      scrollbar-width: none;
+    }
+
+    .category-filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition-smooth);
+    }
+
+    .cat-btn:hover, .cat-btn.active {
+      background: var(--emerald-accent);
+      color: #05140d;
+      font-weight: 600;
+      border-color: var(--emerald-accent);
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+    }
+
+    /* Grid of Specimen Cards */
+    .specimen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 32px;
+    }
+
+    .specimen-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition-smooth);
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .specimen-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-accent);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), var(--shadow-glow);
+    }
+
+    /* Card Image Thumbnail & Vignette */
+    .card-thumb-wrap {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+      background: #020905;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .specimen-card:hover .card-img {
+      transform: scale(1.08);
+    }
+
+    /* Dark gradient fade over thumbnail for readability */
+    .card-img-fade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--bg-surface) 0%, rgba(14, 30, 22, 0.2) 60%, rgba(0,0,0,0.4) 100%);
+    }
+
+    .card-badge-top {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 3;
+    }
+
+    .badge-pill-micro {
+      background: rgba(7, 16, 11, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #86efac;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .btn-bookmark-action {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(7, 16, 11, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-bookmark-action:hover, .btn-bookmark-action.saved {
+      background: var(--emerald-accent);
+      color: #05140d;
+      border-color: var(--emerald-accent);
+      transform: scale(1.1);
+    }
+
+    /* Card Details Body */
+    .card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-folio-num {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: var(--sage-muted);
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .card-botanical-name {
+      font-style: italic;
+      color: #86efac;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+
+    .card-desc {
+      color: #94a3b8;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    /* Plant Care Requirement Indicators */
+    .care-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 14px 0;
+      margin-bottom: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .care-metric {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .care-metric-label {
+      font-size: 0.68rem;
+      color: var(--sage-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .care-metric-val {
+      font-size: 0.82rem;
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+
+    .card-footer-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn-inspect-specimen {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-inspect-specimen:hover {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: var(--emerald-accent);
+      color: #86efac;
+    }
+
+    /* ==========================================================================
+       SIDE-BY-SIDE DESIGN COMPARISON DRAWER / MODAL
+       ========================================================================== */
+    .comparison-float-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      background: linear-gradient(135deg, #0f2c1c 0%, #06180e 100%);
+      border: 1.5px solid var(--emerald-accent);
+      color: #86efac;
+      padding: 12px 20px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(34, 197, 94, 0.4);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition-smooth);
+    }
+
+    .comparison-float-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(34, 197, 94, 0.6);
+      background: #123d26;
+      color: #ffffff;
+    }
+
+    .comparison-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 8, 5, 0.85);
+      backdrop-filter: blur(16px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .comparison-modal-backdrop.open {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .comparison-modal-window {
+      background: #0b1a12;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 28px;
+      max-width: 1000px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 36px;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.9);
+      position: relative;
+    }
+
+    .close-modal-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+
+    .close-modal-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .comp-col {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .comp-col.new-version {
+      background: rgba(34, 197, 94, 0.06);
+      border-color: rgba(34, 197, 94, 0.35);
+    }
+
+    .comp-header {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .comp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+
+    .comp-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    /* Modal for Plant Detail (Specimen Inspection) */
+    .specimen-modal-window {
+      background: #0a1b12;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 28px;
+      max-width: 800px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+      position: relative;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Responsive Header & Layout */
+    @media (max-width: 1100px) {
+      .navbar-pill {
+        gap: 16px;
+        padding: 7px 10px 7px 18px;
+      }
+      .nav-links {
+        gap: 12px;
+      }
+      .nav-links a {
+        font-size: 0.8rem;
+      }
+      .brand-title {
+        font-size: 0.86rem;
+      }
+      .brand-sub {
+        font-size: 0.58rem;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .header-floating-wrap { top: 12px; padding: 0 12px; }
+      .navbar-pill { padding: 8px 14px; gap: 12px; }
+      .notif-dropdown {
+        right: -10px;
+        width: 320px;
+      }
+      .comparison-grid { grid-template-columns: 1fr; }
+      .specimen-grid { grid-template-columns: 1fr; }
+    }
+
+    /* 3 Climatic Biome Theme Cards */
+    .biomes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      margin-bottom: 36px;
+    }
+
+    .biome-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
+      padding: 30px 26px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition-smooth);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .biome-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-accent);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), var(--shadow-glow);
+    }
+
+    .biome-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .biome-icon-wrap {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .biome-tag-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      color: #86efac;
+    }
+
+    .biome-title {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      color: #ffffff;
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+
+    .biome-desc {
+      color: #94a3b8;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .biome-specs-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 22px;
+    }
+
+    .biome-spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .biome-spec-label {
+      font-size: 0.65rem;
+      color: var(--sage-muted);
+      text-transform: uppercase;
+    }
+
+    .biome-spec-val {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .btn-biome-select {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-biome-select:hover, .btn-biome-select.active {
+      background: var(--emerald-accent);
+      color: #05140d;
+      border-color: var(--emerald-accent);
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+    }
+
+    /* No Data Container */
+    .no-data-display {
+      background: rgba(14, 30, 22, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1.5px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 28px;
+      padding: 50px 24px;
+      text-align: center;
+      max-width: 800px;
+      margin: 24px auto 0;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .no-data-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    .no-data-title {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .no-data-text {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      max-width: 580px;
+      margin: 0 auto 20px;
+    }
+
+    .no-data-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      color: #fbbf24;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================================
+       SECTION: ABOUT & BOTANICAL MANIFESTO
+       ========================================================================== */
+    .about-section {
+      position: relative;
+      padding: 100px 24px 120px;
+      max-width: 1300px;
+      margin: 0 auto;
+      z-index: 10;
+    }
+
+    .about-hero-card {
+      background: linear-gradient(145deg, rgba(14, 30, 22, 0.8) 0%, rgba(8, 20, 14, 0.95) 100%);
+      border: 1px solid var(--border-glass);
+      border-radius: 32px;
+      padding: clamp(32px, 5vw, 64px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 60px;
+    }
+
+    .about-hero-card::before {
+      content: '';
+      position: absolute;
+      top: -150px;
+      right: -150px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .about-grid-content {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .about-text-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .about-kicker {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--emerald-accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .about-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      line-height: 1.18;
+      color: #ffffff;
+      margin-bottom: 24px;
+    }
+
+    .about-desc {
+      color: #cbd5e1;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    .about-quote-box {
+      border-left: 3px solid var(--emerald-accent);
+      padding-left: 20px;
+      margin: 20px 0 32px;
+      font-style: italic;
+      color: #a7f3d0;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .quote-author {
+      display: block;
+      margin-top: 8px;
+      font-style: normal;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sage-muted);
+    }
+
+    /* Metrics Grid */
+    .about-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .metric-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: var(--transition-smooth);
+    }
+
+    .metric-box:hover {
+      border-color: rgba(34, 197, 94, 0.35);
+      background: rgba(34, 197, 94, 0.06);
+      transform: translateY(-4px);
+    }
+
+    .metric-num-nobackend {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fbbf24;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      width: fit-content;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
+      margin-bottom: 4px;
+    }
+
+    .metric-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .metric-detail {
+      font-size: 0.8rem;
+      color: var(--sage-muted);
+      line-height: 1.4;
+    }
+
+    /* ==========================================================================
+       SECTION: COMPREHENSIVE LUXURY BOTANICAL FOOTER
+       ========================================================================== */
+    .site-footer {
+      background: linear-gradient(to bottom, var(--bg-dark) 0%, #040d08 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 80px 24px 36px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .footer-main-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1.6fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .footer-bio {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 360px;
+    }
+
+    .footer-social-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .social-btn:hover {
+      background: var(--emerald-accent);
+      color: #05140d;
+      border-color: var(--emerald-accent);
+      transform: translateY(-2px);
+    }
+
+    .footer-col-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .footer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-nav-list a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: var(--transition-smooth);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-nav-list a:hover {
+      color: #86efac;
+      transform: translateX(4px);
+    }
+
+    .footer-newsletter-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .newsletter-desc {
+      color: #94a3b8;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      border-radius: 9999px;
+      padding: 12px 18px;
+      color: #ffffff;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    .newsletter-input:focus {
+      border-color: var(--emerald-accent);
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+    }
+
+    .newsletter-submit {
+      background: var(--emerald-accent);
+      color: #05140d;
+      font-weight: 700;
+      border: none;
+      border-radius: 9999px;
+      padding: 12px 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .newsletter-submit:hover {
+      background: #4ade80;
+      transform: scale(1.02);
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+    }
+
+    .footer-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.84rem;
+      color: #64748b;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-legal-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-legal-links a {
+      color: #64748b;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-legal-links a:hover {
+      color: #94a3b8;
+    }
+
+    .btn-back-to-top {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-back-to-top:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    @media (max-width: 992px) {
+      .about-grid-content { grid-template-columns: 1fr; }
+      .footer-main-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+    }
+
+    @media (max-width: 640px) {
+      .footer-main-grid { grid-template-columns: 1fr; }
+      .about-metrics-grid { grid-template-columns: 1fr; }
+      .newsletter-form { flex-direction: column; }
+    }
+
+    /* ==========================================================================
+       BENTO BOX LAYOUT
+       ========================================================================== */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1.1fr 1.1fr;
+      grid-template-rows: 280px 280px;
+      gap: 16px;
+      width: 100%;
+      margin: 40px auto;
+    }
+    .bento-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
+      background-color: var(--bg-surface-elevated);
+      border: 1px solid var(--border-glass);
+    }
+    .bento-map {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+      background-color: #a3c4c9;
+      color: #1a2a3a;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
+      background-size: 200%;
+      background-position: left center;
+      background-repeat: no-repeat;
+      border: none;
+    }
+    .bento-map h3 {
+      position: absolute;
+      bottom: 40px;
+      left: 30px;
+      font-size: 3.2rem;
+      font-family: var(--font-serif);
+      line-height: 1.1;
+      color: #1a2a3a;
+      font-weight: 400;
+    }
+    .bento-map p {
+      position: absolute;
+      bottom: 135px;
+      left: 35px;
+      font-size: 1.05rem;
+      color: #1a2a3a;
+      opacity: 0.9;
+    }
+    
+    .bento-orange {
+      background-color: #f9a826;
+      border: none;
+      justify-content: center;
+      padding-left: 40px;
+    }
+    .bento-orange .bento-num {
+      font-size: 4.5rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 8px;
+      color: #e55227;
+      font-family: var(--font-sans);
+    }
+    .bento-orange .bento-label {
+      font-size: 1.1rem;
+      color: #e55227;
+      font-weight: 500;
+    }
+    
+    .bento-red {
+      background-color: #e34e2c;
+      border: none;
+      justify-content: center;
+      padding-left: 40px;
+    }
+    .bento-red .bento-num {
+      font-size: 4.5rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 8px;
+      color: white;
+      font-family: var(--font-sans);
+    }
+    .bento-red .bento-label {
+      font-size: 1.1rem;
+      color: white;
+      font-weight: 500;
+    }
+    
+    .bento-img {
+      padding: 0;
+      border: none;
+    }
+    .bento-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 992px) {
+      .bento-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .bento-map {
+        grid-column: 1 / -1;
+        grid-row: 1 / 2;
+        min-height: 350px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-map {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       FLOATING GLASS PILL NAVIGATION (Like Trees for the Future)
+       ======================================================================== -->
+  <header class="header-floating-wrap">
+    <nav class="navbar-pill" aria-label="Main Navigation">
+      <!-- Brand Logo -->
+      <a href="#hero" class="brand-logo" title="The Living Canopy">
+        <svg class="brand-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fill-opacity="0.3"/>
+          <path d="M16 8C14 11 11 14 11 17C11 19.8 13.2 22 16 22C18.8 22 21 19.8 21 17C21 14 18 11 16 8Z" fill="currentColor"/>
+          <circle cx="16" cy="17" r="2.5" fill="#ffffff"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-title">The Living Canopy</span>
+          <span class="brand-sub">GreenNest Herbarium</span>
+        </div>
+      </a>
+
+      <!-- Menu links (Clean English on a single horizontal row) -->
+      <ul class="nav-links">
+        <li><a href="#hero" class="active">Overview</a></li>
+        <li><a href="gallery.html">Gallery ↗</a></li>
+        <li><a href="about.html">About Us ↗</a></li>
+        <li><a href="user.html">My Garden 🌿</a></li>
+        <li><a href="#footer">Contact</a></li>
+      </ul>
+
+      <!-- Right CTAs -->
+      <div class="nav-actions">
+        <!-- Notification Bell with Popover Dropdown -->
+        <div class="notif-container" id="notifContainer">
+          <button type="button" class="btn-notif-bell" id="notifBellBtn" aria-label="Notifications" aria-expanded="false" title="Notifications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge-pill" id="notifBadge">3</span>
+          </button>
+
+          <!-- Notification Dropdown Popover Box -->
+          <div class="notif-dropdown" id="notifDropdown" role="region" aria-label="Notifications Panel">
+            <div class="notif-header">
+              <div class="notif-header-title-wrap">
+                <span class="notif-header-title">Notifications</span>
+                <span class="notif-count-tag" id="notifCountTag">3 New</span>
+              </div>
+              <button type="button" class="notif-mark-read" id="notifMarkAllRead">Mark all as read</button>
+            </div>
+
+            <ul class="notif-list" id="notifList">
+              <!-- Notification 1: From "Your Garden" -> user.html -->
+              <li class="notif-item unread" data-href="user.html" data-id="notif-1" title="Go to Your Garden">
+                <div class="notif-icon-bubble garden">🌿</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge garden">Your Garden</span>
+                    <span class="notif-time">10m ago</span>
+                  </div>
+                  <div class="notif-title">Watering Schedule Due</div>
+                  <div class="notif-text"><span id="savedCount">3</span> saved plants in your sanctuary need hydration check.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+
+              <!-- Notification 2: From "Gallery Archive" -> gallery.html -->
+              <li class="notif-item unread" data-href="gallery.html" data-id="notif-2" title="Go to Plant Gallery">
+                <div class="notif-icon-bubble gallery">🌱</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge">Gallery Archive</span>
+                    <span class="notif-time">45m ago</span>
+                  </div>
+                  <div class="notif-title">New Rare Specimen Added</div>
+                  <div class="notif-text">Silver Vase Bromeliad (Aechmea) cataloged in Arid folio.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+
+              <!-- Notification 3: From "Curator Bulletin / About" -> about.html -->
+              <li class="notif-item unread" data-href="about.html" data-id="notif-3" title="Go to About Us">
+                <div class="notif-icon-bubble about">📖</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge">Curator Bulletin</span>
+                    <span class="notif-time">2h ago</span>
+                  </div>
+                  <div class="notif-title">Winter Care Advisory</div>
+                  <div class="notif-text">Botanist Dr. Rostova updated conservatory wintering guidance.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+
+              <!-- Notification 4: From "Your Garden" -> user.html -->
+              <li class="notif-item" data-href="user.html" data-id="notif-4" title="Go to Your Garden">
+                <div class="notif-icon-bubble garden">🌿</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge garden">Your Garden</span>
+                    <span class="notif-time">Yesterday</span>
+                  </div>
+                  <div class="notif-title">Optimal Climate Stability</div>
+                  <div class="notif-text">Monstera Deliciosa is thriving at 68% ambient humidity.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+            </ul>
+
+            <div class="notif-footer">
+              <a href="user.html" class="notif-footer-link">
+                <span>View Garden Sanctuary</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <a href="login.html" class="btn-cta-pill" id="navAuthBtn">Sign In</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ========================================================================
+       HERO SECTION WITH CINEMATIC BOTANICAL FADE & REPOSITIONED CENTRAL SEARCH
+       ======================================================================== -->
+  <section class="hero-section" id="hero">
+    <div class="hero-content">
+      
+      <!-- Foliage / Exhibition Tag -->
+      <div class="hero-kicker-wrap">
+        <span class="kicker-dot"></span>
+        <span class="kicker-text">Exhibition No. 01 — The Domestic Arboretum</span>
+        <span class="kicker-folio">Reg. Archive // Folio 01</span>
+      </div>
+
+      <!-- Headline inspired by high-end nature conservation & editorial design -->
+      <h1 class="hero-title">
+        Think you know <span class="italic-accent">Nature?</span><br>
+        Curate Your Sanctuary.
+      </h1>
+
+      <p class="hero-subtitle">
+        Khám phá bộ sưu tập các loài thực vật quý hiếm được bảo tồn và tuyển chọn cho không gian sống hiện đại. Tương tác đa chiều, hướng dẫn chăm sóc chuyên sâu từ chuyên gia thực vật học.
+      </p>
+
+      <!-- REPOSITIONED CENTRAL INTELLIGENT SEARCH BAR -->
+      <div class="search-hero-container">
+        <div class="search-box-pill">
+          <svg class="search-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            class="search-input-field" 
+            id="herbariumSearchInput" 
+            placeholder="Tìm theo tên thường gọi, chi khoa học, hoặc #tag (VD: Monstera, Velvet, Shade)..."
+            autocomplete="off"
+          >
+          <span class="search-shortcut-pill">⌘K</span>
+          <button class="search-submit-btn" id="searchSubmitBtn">
+            <span>Tìm Kiếm</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Live Instant Suggestions Dropdown -->
+        <div class="search-suggestions-panel" id="suggestionsPanel">
+          <!-- Dynamically Populated -->
+        </div>
+      </div>
+
+      <!-- INDEX FACETS (Tags directly below central search) -->
+      <div class="facets-hero-wrap">
+        <span class="facet-label">Index Facets:</span>
+        <button class="facet-tag" data-tag="araceae">#Araceae</button>
+        <button class="facet-tag" data-tag="trailingfoliage">#TrailingFoliage</button>
+        <button class="facet-tag" data-tag="petsafe">#PetSafe</button>
+        <button class="facet-tag" data-tag="velvetleaf">#VelvetLeaf</button>
+        <button class="facet-tag" data-tag="rarecultivar">#RareCultivar</button>
+        <button class="facet-tag" data-tag="deepshadethriving">#DeepShadeThriving</button>
+      </div>
+
+      <!-- Action Row: Primary Action + Video Tour (Like Trees for the Future) -->
+      <div class="hero-actions-row">
+        <a href="#specimens" class="btn-hero-primary">
+          <span>Xem Thư Viện Bản Mẫu</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+          </svg>
+        </a>
+
+        <button class="btn-video-tour" id="openVideoTourBtn">
+          <div class="video-play-circle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <span>Xem Tour Vườn Kỹ Thuật Số</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Bottom cinematic fade blend -->
+    <div class="hero-bottom-fade"></div>
+  </section>
+
+  <!-- ========================================================================
+       ARCHIVE GALLERY: HERBARIUM ACCESSION
+       ======================================================================== -->
+  <!-- ========================================================================
+       ARCHIVE GALLERY: THE TRI-BIOME THEMES (Phương Án 1: 3 Đại Đới Khí Hậu)
+       ======================================================================== -->
+  <main class="archive-section" id="specimens">
+    <div class="bento-grid">
+      <!-- Item 1: Map / Region -->
+      <div class="bento-item bento-map">
+        <p>Program area</p>
+        <h3>All World<br>Region</h3>
+      </div>
+      
+      <!-- Item 2: Number Box (Orange) -->
+      <div class="bento-item bento-orange">
+        <div class="bento-num">20+</div>
+        <div class="bento-label">Plants</div>
+      </div>
+      
+      <!-- Item 3: Image (Botanist) -->
+      <div class="bento-item bento-img">
+        <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=600&q=80" alt="Botanist">
+      </div>
+      
+      <!-- Item 4: Image (Plant) -->
+      <div class="bento-item bento-img">
+        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=600&q=80" alt="Plant">
+      </div>
+      
+      <!-- Item 5: Number Box (Red) -->
+      <div class="bento-item bento-red">
+        <div class="bento-num">100+</div>
+        <div class="bento-label">Botanists</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       SECTION: ABOUT & CONSERVATION MANIFESTO (Phần Giới Thiệu Dự Án)
+       ======================================================================== -->
+  <section class="about-section" id="about">
+    <div class="about-hero-card">
+      <div class="about-grid-content">
+        <div class="about-text-wrap">
+          <div class="about-kicker">
+            <span class="kicker-dot"></span>
+            <span>Manifesto & Conservation // Về Dự Án</span>
+          </div>
+          <h2 class="about-title">
+            Tái Định Nghĩa Mảng Xanh Cho Không Gian Sống Kỷ Nguyên Số.
+          </h2>
+          <p class="about-desc">
+            Lấy cảm hứng từ phong trào kiến trúc sinh thái (Biophilic Design) và các hiệp hội bảo tồn thực vật học quốc tế, <strong>The Living Canopy</strong> ra đời với sứ mệnh đưa các giống thực vật quý hiếm từ những nhà kính hàn lâm vào môi trường sống hiện đại.
+          </p>
+          <div class="about-quote-box">
+            “Chúng tôi tin rằng việc chăm sóc một loài cây không đơn thuần là thú vui cảnh quan, mà là một hành trình thực hành chánh niệm, làm sạch vi khí hậu và kết nối lại với nhịp điệu nguyên sơ của thiên nhiên.”
+            <span class="quote-author">— Ban Cố Vấn Thực Vật Học GreenNest</span>
+          </div>
+          <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+            <a href="about.html" class="btn-cta-pill">Xem Mục Đích & Đội Ngũ Botanist (Trang Riêng) →</a>
+            <a href="gallery.html" class="btn-garden-badge" style="border-radius: 9999px; padding: 10px 20px;">Khám Phá Gallery →</a>
+          </div>
+        </div>
+
+        <!-- Status highlights -->
+        <div class="about-metrics-grid">
+          <div class="metric-box">
+            <div class="metric-num-nobackend">⚡ No Backend Yet</div>
+            <div class="metric-title">Bản Mẫu Tuyển Chọn</div>
+            <div class="metric-detail">Dữ liệu mẫu demo tĩnh (Đang chuẩn bị API Node.js & MongoDB)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-num-nobackend">⚡ No Backend Yet</div>
+            <div class="metric-title">Dữ Liệu Khoa Học</div>
+            <div class="metric-detail">Chẩn đoán ánh sáng & giá thể (Sẽ đồng bộ từ Database)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-num-nobackend">⚡ No Backend Yet</div>
+            <div class="metric-title">Vườn Của Tôi & Bookmark</div>
+            <div class="metric-detail">Hiện lưu tạm ở Client, sẽ lưu vào User Collection khi có Auth</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-num-nobackend">⚡ No Backend Yet</div>
+            <div class="metric-title">Bộ Lọc Thú Cưng & Cây Hiếm</div>
+            <div class="metric-detail">Client filtering tức thời trước khi chuyển sang Backend Queries</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bright Teaser of Botanists & Lush Greenery -->
+      <div style="margin-top: 48px; padding-top: 36px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+        <div style="position: relative; border-radius: 20px; overflow: hidden; height: 180px; border: 1px solid var(--border-glass);">
+          <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=600&q=80" alt="Botanist Elena Vũ" style="width: 100%; height: 100%; object-fit: cover;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,16,11,0.85) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 12px 16px;">
+            <span style="font-size: 0.82rem; font-weight: 600; color: #fff;">TS. Elena Vũ — Ban Nhiệt Đới</span>
+          </div>
+        </div>
+        <div style="position: relative; border-radius: 20px; overflow: hidden; height: 180px; border: 1px solid var(--border-glass);">
+          <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=600&q=80" alt="Cây cối tươi sáng dưới ánh nắng" style="width: 100%; height: 100%; object-fit: cover;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,16,11,0.85) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 12px 16px;">
+            <span style="font-size: 0.82rem; font-weight: 600; color: #fff;">Lá xanh tươi sáng đón ban mai</span>
+          </div>
+        </div>
+        <div style="position: relative; border-radius: 20px; overflow: hidden; height: 180px; border: 1px solid var(--border-glass);">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Nhà nghiên cứu Alexandre Phạm" style="width: 100%; height: 100%; object-fit: cover;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,16,11,0.85) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 12px 16px;">
+            <span style="font-size: 0.82rem; font-weight: 600; color: #fff;">Alexandre Phạm — Ban Cận Nhiệt</span>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECTION: COMPREHENSIVE LUXURY BOTANICAL FOOTER
+       ======================================================================== -->
+  <footer class="site-footer" id="footer">
+    <div class="footer-inner">
+      <div class="footer-main-grid">
+        
+        <!-- Brand column -->
+        <div class="footer-brand-col">
+          <a href="#hero" class="brand-logo" style="text-decoration: none;">
+            <svg class="brand-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fill-opacity="0.3"/>
+              <path d="M16 8C14 11 11 14 11 17C11 19.8 13.2 22 16 22C18.8 22 21 19.8 21 17C21 14 18 11 16 8Z" fill="currentColor"/>
+              <circle cx="16" cy="17" r="2.5" fill="#ffffff"/>
+            </svg>
+            <div class="brand-text">
+              <span class="brand-title">The Living Canopy</span>
+              <span class="brand-sub">GreenNest Herbarium</span>
+            </div>
+          </a>
+          <p class="footer-bio">
+            Triển lãm thực vật học và kho lưu trữ số dành riêng cho không gian sống hiện đại. Đưa thiên nhiên hoang dã vào ngôi nhà với sự tôn trọng và hiểu biết sâu sắc.
+          </p>
+          <div class="footer-social-links">
+            <a href="#" class="social-btn" title="Instagram" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="#" class="social-btn" title="GitHub" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+            </a>
+            <a href="#" class="social-btn" title="Twitter / X" aria-label="Twitter">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: About Us -->
+        <div>
+          <h4 class="footer-col-title">About Us</h4>
+          <p style="color: #94a3b8; font-size: 0.88rem; line-height: 1.7; max-width: 240px; margin-bottom: 8px;">
+            Dự án nghiên cứu và lưu trữ số hóa các loài thực vật nhiệt đới dành cho không gian sống hiện đại.
+          </p>
+          <a href="about.html" style="color: #86efac; font-size: 0.84rem; text-decoration: underline;">Xem Mục Đích & Botanists →</a>
+        </div>
+
+        <!-- Col 3: More Info -->
+        <div>
+          <h4 class="footer-col-title">More Info</h4>
+          <p style="color: #94a3b8; font-size: 0.88rem; line-height: 1.7; max-width: 240px;">
+            Mô hình thử nghiệm giao diện GreenNest. Khám phá toàn bộ danh mục tại <a href="gallery.html" style="color: #86efac; text-decoration: underline;">Gallery Archive →</a>
+          </p>
+        </div>
+
+        <!-- Col 4: Newsletter -->
+        <div>
+          <h4 class="footer-col-title">Bản Tin Thực Vật Học</h4>
+          <div class="footer-newsletter-wrap">
+            <p class="newsletter-desc">
+              Đăng ký để nhận các bài viết phân loại học, mẹo chăm sóc độc quyền và thông báo triển lãm mới vào mỗi thứ Năm.
+            </p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký nhận Bản tin Thực vật học GreenNest!'); this.reset();">
+              <input type="email" class="newsletter-input" placeholder="Nhập địa chỉ email của bạn..." required>
+              <button type="submit" class="newsletter-submit">Đăng Ký</button>
+            </form>
+            <div style="font-size: 0.76rem; color: #64748b; display: flex; align-items: center; gap: 6px;">
+              <span style="color: var(--emerald-accent);">●</span> Không spam. Hủy đăng ký bất cứ lúc nào.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Bottom Bar -->
+      <div class="footer-bottom-row">
+        <div>
+          © 2026 The Living Canopy & GreenNest Consortium. Bảo lưu mọi quyền.
+        </div>
+        <div class="footer-legal-links">
+          <a href="#" onclick="alert('Quy chuẩn bảo tồn CITES & IUCN áp dụng cho toàn bộ dữ liệu.'); return false;">Quy Chuẩn CITES</a>
+          <a href="#" onclick="alert('Chính sách bảo mật dữ liệu người dùng.'); return false;">Chính Sách Bảo Mật</a>
+          <a href="#" onclick="alert('Điều khoản dịch vụ thư viện thực vật học.'); return false;">Điều Khoản</a>
+        </div>
+        <button class="btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+          <span>Lên đầu trang ↑</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       FLOATING TRIGGER: VIEW BEFORE & AFTER COMPARISON
+       ======================================================================== -->
+  <button class="comparison-float-btn" id="openCompBtn">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M12 16v-4"></path>
+      <path d="M12 8h.01"></path>
+    </svg>
+    <span>So Sánh Thiết Kế (Before vs After)</span>
+  </button>
+
+  <!-- ========================================================================
+       MODAL: DESIGN COMPARISON ANALYSIS (Directly In-Page)
+       ======================================================================== -->
+  <div class="comparison-modal-backdrop" id="compModal">
+    <div class="comparison-modal-window">
+      <button class="close-modal-btn" id="closeCompBtn">✕</button>
+      <h2 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 8px; color: #fff;">
+        Bảng So Sánh Chi Tiết Thiết Kế
+      </h2>
+      <p style="color: var(--sage-muted); font-size: 0.9rem; margin-bottom: 24px;">
+        Đánh giá điểm mạnh của <strong>Trees for the Future</strong> và cách chúng ta khắc phục những nhược điểm của phiên bản cũ.
+      </p>
+
+      <div class="comparison-grid">
+        <!-- Old Version Critique -->
+        <div class="comp-col">
+          <div class="comp-header" style="color: #f87171;">
+            <span>❌ Bản Cũ (Nhạt Nhòa & Lộn Xộn)</span>
+          </div>
+          <ul class="comp-list">
+            <li>
+              <strong>Nền trắng phẳng lì:</strong> Không có chiều sâu thị giác, cảm giác như file tài liệu thô sơ chưa style CSS.
+            </li>
+            <li>
+              <strong>Thanh Search bị giấu ở góc:</strong> Bị nhét vào góc phải trên cùng (`⌘K SEARCH...`) với kích thước nhỏ, người dùng khó nhìn thấy.
+            </li>
+            <li>
+              <strong>Bố cục phân mảnh:</strong> Lại có thêm một ô `HERBARIUM ACCESSION SEARCH` nằm trơ trọi lệch bên trái, gây thừa thãi và mất tập trung.
+            </li>
+            <li>
+              <strong>Không có hiệu ứng chuyển cảnh:</strong> Chuyển trang gắt, thiếu các lớp phủ bóng đổ và gradient fade tự nhiên.
+            </li>
+            <li>
+              <strong>Button thô cứng:</strong> Các nút vuông outline đơn sắc không tạo được cảm giác sang trọng của một triển lãm thực vật.
+            </li>
+          </ul>
+        </div>
+
+        <!-- New Redesigned Version -->
+        <div class="comp-col new-version">
+          <div class="comp-header" style="color: #4ade80;">
+            <span>✨ Bản Mới (Học Hỏi Trees for the Future)</span>
+          </div>
+          <ul class="comp-list">
+            <li>
+              <strong>Fade & Chiều sâu điện ảnh:</strong> Phông nền rừng nhiệt đới cao cấp với lớp phủ đa tầng (Multi-layer gradient fade), hiệu ứng chuyển mượt mà xuống danh mục.
+            </li>
+            <li>
+              <strong>Thanh Search đưa vào TRUNG TÂM:</strong> Trở thành "trái tim" của Hero section với hiệu ứng phát sáng ngọc lục bảo (Glow), phím tắt `⌘K` và gợi ý tự động ngay khi gõ.
+            </li>
+            <li>
+              <strong>Floating Pill Navbar:</strong> Thanh điều hướng dạng viên thuốc kính mờ (Glassmorphic Pill) bo tròn sang trọng giống hệt Trees for the Future.
+            </li>
+            <li>
+              <strong>Typography & Kicker hiện đại:</strong> Kết hợp Serif cổ điển sang trọng và Sans-serif sắc nét, thể hiện đẳng cấp "Domestic Arboretum".
+            </li>
+            <li>
+              <strong>Tương tác nhanh:</strong> Tích hợp nút Tour video, các chip tag `#Araceae`, `#PetSafe` lọc tức thì, và nút lưu trữ vào "Vườn của tôi".
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL: PLANT SPECIMEN INSPECTOR (Lightbox)
+       ======================================================================== -->
+  <div class="comparison-modal-backdrop" id="specimenModal">
+    <div class="specimen-modal-window">
+      <button class="close-modal-btn" id="closeSpecimenModalBtn">✕</button>
+      <div id="specimenModalContent">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL: VIDEO TOUR SIMULATION
+       ======================================================================== -->
+  <div class="comparison-modal-backdrop" id="videoModal">
+    <div class="specimen-modal-window" style="padding: 32px; text-align: center;">
+      <button class="close-modal-btn" id="closeVideoModalBtn">✕</button>
+      <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(34, 197, 94, 0.2); border: 2px solid var(--emerald-accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: var(--emerald-accent);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+      </div>
+      <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: #fff; margin-bottom: 12px;">Digital Conservatory Tour</h3>
+      <p style="color: #94a3b8; font-size: 0.95rem; max-width: 520px; margin: 0 auto 24px; line-height: 1.6;">
+        Trải nghiệm không gian nhà kính 360 độ và âm thanh sinh thái rừng nhiệt đới mô phỏng dành riêng cho triển lãm <em>Exhibition No. 01 — The Domestic Arboretum</em>.
+      </p>
+      <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-glass); border-radius: 16px; padding: 20px; display: inline-flex; align-items: center; gap: 16px;">
+        <span style="font-size: 0.85rem; color: #86efac; font-weight: 600;">🌿 Trạng thái: Sẵn sàng tương tác</span>
+        <button class="btn-cta-pill" onclick="alert('Đang phát âm thanh và video trải nghiệm rừng nhiệt đới!')">Bắt Đầu Trải Nghiệm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       JAVASCRIPT LOGIC
+       ======================================================================== -->
+  <script>
+    // JavaScript Logic: Tri-Biome Climate Architecture (No Data Yet)
+    const specimensResults = document.getElementById("specimensResults");
+    const noDataMessage = document.getElementById("noDataMessage");
+    const searchInput = document.getElementById("herbariumSearchInput");
+    const suggestionsPanel = document.getElementById("suggestionsPanel");
+    const facetTags = document.querySelectorAll(".facet-tag");
+
+    // Modal elements
+    const compModal = document.getElementById("compModal");
+    const openCompBtn = document.getElementById("openCompBtn");
+    const closeCompBtn = document.getElementById("closeCompBtn");
+
+    const videoModal = document.getElementById("videoModal");
+    const openVideoTourBtn = document.getElementById("openVideoTourBtn");
+    const closeVideoModalBtn = document.getElementById("closeVideoModalBtn");
+
+    // Filter Biome Function
+    window.filterBiome = function(biomeKey, biomeTitle, btn) {
+      document.querySelectorAll(".btn-biome-select").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      specimensResults.innerHTML = `
+        <div class="no-data-icon">${biomeKey === 'tropical' ? '🌴' : biomeKey === 'subtropical' ? '🌲' : '🏜️'}</div>
+        <h3 class="no-data-title">No Data Yet (${biomeTitle})</h3>
+        <p class="no-data-text">
+          Chúng tôi đang biên soạn hồ sơ thực vật học cho nhóm <strong>${biomeTitle}</strong>. Dữ liệu sẽ sẵn sàng ngay sau khi hoàn thành kết nối cơ sở dữ liệu MongoDB và API.
+        </p>
+        <div class="no-data-badge">
+          <span>⚡ Trạng Thái: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+        </div>
+      `;
+
+      specimensResults.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    // Central Search Input handling
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        const q = e.target.value.trim();
+        if (q.length > 0) {
+          specimensResults.innerHTML = `
+            <div class="no-data-icon">🔍</div>
+            <h3 class="no-data-title">No Data Yet ("${q}")</h3>
+            <p class="no-data-text">
+              Hệ thống tìm kiếm thông minh đang trong giai đoạn phát triển prototype. Hiện chưa có bản mẫu hoàn thiện cho từ khóa này.
+            </p>
+            <div class="no-data-badge">
+              <span>⚡ Trạng Thái: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+            </div>
+          `;
+          if (suggestionsPanel) {
+            suggestionsPanel.innerHTML = `<div style="padding: 14px; color: #fbbf24; font-size: 0.85rem; font-weight: 600;">⚡ No Data Yet — Đang hoàn thiện sản phẩm</div>`;
+            suggestionsPanel.classList.add("active");
+          }
+        } else {
+          if (suggestionsPanel) suggestionsPanel.classList.remove("active");
+        }
+      });
+    }
+
+    // Facet tags click handling
+    facetTags.forEach(tag => {
+      tag.addEventListener("click", () => {
+        const tagText = tag.textContent;
+        facetTags.forEach(t => t.classList.remove("active"));
+        tag.classList.add("active");
+
+        specimensResults.innerHTML = `
+          <div class="no-data-icon">🏷️</div>
+          <h3 class="no-data-title">No Data Yet (${tagText})</h3>
+          <p class="no-data-text">
+            Chưa có dữ liệu cây trồng được liên kết với tag <strong>${tagText}</strong> vì sản phẩm đang trong giai đoạn xây dựng.
+          </p>
+          <div class="no-data-badge">
+            <span>⚡ Trạng Thái: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+          </div>
+        `;
+        specimensResults.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (suggestionsPanel && searchInput && !searchInput.contains(e.target) && !suggestionsPanel.contains(e.target)) {
+        suggestionsPanel.classList.remove("active");
+      }
+    });
+
+    // Toggle Bookmarks
+    window.toggleSavePlant = function(id, e) {
+      if (e) e.stopPropagation();
+      if (savedGarden.has(id)) {
+        savedGarden.delete(id);
+      } else {
+        savedGarden.add(id);
+      }
+      const savedCountEl = document.getElementById('savedCount');
+      if (savedCountEl) savedCountEl.textContent = savedGarden.size;
+      
+      const gardenNotifText = document.querySelector('.notif-item[data-id="notif-1"] .notif-text');
+      if (gardenNotifText) {
+        gardenNotifText.innerHTML = `<span id="savedCount">${savedGarden.size}</span> saved plants in your sanctuary need hydration check.`;
+      }
+      renderSpecimens();
+    };
+
+    // Category button click
+    catButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        catButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentCategory = btn.getAttribute("data-cat");
+        renderSpecimens();
+      });
+    });
+
+    // Tag Facets Click
+    facetTags.forEach(tag => {
+      tag.addEventListener("click", () => {
+        const tagVal = tag.getAttribute("data-tag");
+        if (currentTagFilter === tagVal) {
+          currentTagFilter = "";
+          tag.classList.remove("active");
+        } else {
+          facetTags.forEach(t => t.classList.remove("active"));
+          tag.classList.add("active");
+          currentTagFilter = tagVal;
+        }
+        renderSpecimens();
+      });
+    });
+
+    // Realtime Intelligent Central Search
+    searchInput.addEventListener("input", (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      currentSearchQuery = q;
+      renderSpecimens();
+
+      // Suggestions handling
+      if (q.length > 0) {
+        const matches = specimensData.filter(s => 
+          s.name.toLowerCase().includes(q) || 
+          s.botanicalName.toLowerCase().includes(q) ||
+          s.tags.some(t => t.includes(q))
+        );
+
+        if (matches.length > 0) {
+          suggestionsPanel.innerHTML = matches.slice(0, 4).map(item => `
+            <div class="suggestion-item" onclick="selectSuggestion('${item.name}')">
+              <div class="suggestion-info">
+                <span class="suggestion-name">${item.name}</span>
+                <span class="suggestion-botanical">${item.botanicalName}</span>
+              </div>
+              <span class="suggestion-badge">${item.folio}</span>
+            </div>
+          `).join('');
+          suggestionsPanel.classList.add("active");
+        } else {
+          suggestionsPanel.innerHTML = `<div style="padding: 12px; color: var(--sage-muted); font-size: 0.85rem;">Không có gợi ý trùng khớp</div>`;
+          suggestionsPanel.classList.add("active");
+        }
+      } else {
+        suggestionsPanel.classList.remove("active");
+      }
+    });
+
+    window.selectSuggestion = function(plantName) {
+      searchInput.value = plantName;
+      currentSearchQuery = plantName;
+      suggestionsPanel.classList.remove("active");
+      renderSpecimens();
+    };
+
+    document.addEventListener("click", (e) => {
+      if (!searchInput.contains(e.target) && !suggestionsPanel.contains(e.target)) {
+        suggestionsPanel.classList.remove("active");
+      }
+    });
+
+    // Keyboard shortcut CMD+K or Ctrl+K to jump to search
+    window.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        searchInput.focus();
+        window.scrollTo({ top: searchInput.getBoundingClientRect().top + window.scrollY - 150, behavior: "smooth" });
+      }
+    });
+
+    window.resetAllFilters = function() {
+      currentCategory = "all";
+      currentSearchQuery = "";
+      currentTagFilter = "";
+      searchInput.value = "";
+      catButtons.forEach(b => b.classList.remove("active"));
+      catButtons[0].classList.add("active");
+      facetTags.forEach(t => t.classList.remove("active"));
+      renderSpecimens();
+    };
+
+    // Plant Detail Modal (Lightbox Inspector)
+    window.openPlantDetail = function(id) {
+      const plant = specimensData.find(p => p.id === id);
+      if (!plant) return;
+
+      specimenModalContent.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+          <div style="height: 380px; position: relative;">
+            <img src="${plant.image}" alt="${plant.name}" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(to top, #0a1b12 0%, transparent 60%);"></div>
+          </div>
+          <div style="padding: 32px; display: flex; flex-direction: column;">
+            <span style="font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.15em; color: var(--emerald-accent); margin-bottom: 6px;">${plant.folio} // BOTANICAL DATA</span>
+            <h2 style="font-family: var(--font-serif); font-size: 1.8rem; color: #fff; margin-bottom: 4px;">${plant.name}</h2>
+            <p style="font-style: italic; color: #86efac; margin-bottom: 16px;">${plant.botanicalName}</p>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6; margin-bottom: 24px;">${plant.desc}</p>
+            
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-glass); border-radius: 16px; padding: 16px; margin-bottom: 24px;">
+              <div style="font-size: 0.8rem; color: var(--sage-muted); margin-bottom: 6px;">GIÁ THỂ KHUYẾN NGHỊ:</div>
+              <div style="font-size: 0.92rem; color: #fff; font-weight: 600;">${plant.soil}</div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: auto;">
+              <button class="btn-cta-pill" style="flex: 1; justify-content: center;" onclick="toggleSavePlant('${plant.id}'); specimenModal.classList.remove('open');">
+                ${savedGarden.has(plant.id) ? '✓ Đã Lưu Trong Vườn' : '+ Lưu Vào Vườn'}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      specimenModal.classList.add("open");
+    };
+
+    closeSpecimenModalBtn.addEventListener("click", () => specimenModal.classList.remove("open"));
+    specimenModal.addEventListener("click", (e) => {
+      if (e.target === specimenModal) specimenModal.classList.remove("open");
+    });
+
+    // Comparison Modal
+    openCompBtn.addEventListener("click", () => compModal.classList.add("open"));
+    closeCompBtn.addEventListener("click", () => compModal.classList.remove("open"));
+    compModal.addEventListener("click", (e) => {
+      if (e.target === compModal) compModal.classList.remove("open");
+    });
+
+    // Video Tour Modal
+    openVideoTourBtn.addEventListener("click", () => videoModal.classList.add("open"));
+    closeVideoModalBtn.addEventListener("click", () => videoModal.classList.remove("open"));
+    videoModal.addEventListener("click", (e) => {
+      if (e.target === videoModal) videoModal.classList.remove("open");
+    });
+
+    // Check logged-in user session
+    const storedUser = localStorage.getItem('livingCanopyUser');
+    const navAuthBtn = document.getElementById('navAuthBtn');
+    if (storedUser && navAuthBtn) {
+      try {
+        const u = JSON.parse(storedUser);
+        navAuthBtn.innerHTML = `👤 ${u.name || 'Profile'}`;
+        navAuthBtn.href = 'user.html';
+        navAuthBtn.style.background = 'rgba(34, 197, 94, 0.2)';
+        navAuthBtn.style.borderColor = 'var(--emerald-accent)';
+      } catch (err) {}
+    }
+
+    // =========================================================================
+    // NOTIFICATION BELL & DROPDOWN INTERACTION
+    // =========================================================================
+    const notifBellBtn = document.getElementById('notifBellBtn');
+    const notifDropdown = document.getElementById('notifDropdown');
+    const notifBadge = document.getElementById('notifBadge');
+    const notifCountTag = document.getElementById('notifCountTag');
+    const notifMarkAllRead = document.getElementById('notifMarkAllRead');
+    const notifItems = document.querySelectorAll('.notif-item');
+
+    function updateNotifBadges() {
+      const unreadCount = document.querySelectorAll('.notif-item.unread').length;
+      if (notifBadge) {
+        if (unreadCount > 0) {
+          notifBadge.textContent = unreadCount;
+          notifBadge.classList.remove('hidden');
+        } else {
+          notifBadge.classList.add('hidden');
+        }
+      }
+      if (notifCountTag) {
+        notifCountTag.textContent = unreadCount > 0 ? `${unreadCount} New` : 'All read';
+      }
+    }
+
+    if (notifBellBtn && notifDropdown) {
+      notifBellBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = notifDropdown.classList.contains('show');
+        if (isOpen) {
+          notifDropdown.classList.remove('show');
+          notifBellBtn.classList.remove('active');
+          notifBellBtn.setAttribute('aria-expanded', 'false');
+        } else {
+          notifDropdown.classList.add('show');
+          notifBellBtn.classList.add('active');
+          notifBellBtn.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      // Prevent clicks inside dropdown from bubbling and closing it
+      notifDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', () => {
+        notifDropdown.classList.remove('show');
+        notifBellBtn.classList.remove('active');
+        notifBellBtn.setAttribute('aria-expanded', 'false');
+      });
+
+      // Close dropdown on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          notifDropdown.classList.remove('show');
+          notifBellBtn.classList.remove('active');
+          notifBellBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // Mark all as read button
+    if (notifMarkAllRead) {
+      notifMarkAllRead.addEventListener('click', (e) => {
+        e.stopPropagation();
+        notifItems.forEach(item => {
+          item.classList.remove('unread');
+          item.classList.add('read');
+        });
+        updateNotifBadges();
+      });
+    }
+
+    // Clicking notification item marks as read and brings user to demanded page
+    notifItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetUrl = item.getAttribute('data-href');
+        item.classList.remove('unread');
+        item.classList.add('read');
+        updateNotifBadges();
+        if (targetUrl) {
+          window.location.href = targetUrl;
+        }
+      });
+    });
+
+    // Initial render
+    renderSpecimens();
+  </script>
+</body>
+</html>
