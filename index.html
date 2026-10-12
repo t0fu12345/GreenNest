@@ -1,5 +1,5 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1807,49 +1807,29 @@
 
     .footer-main-grid {
       display: grid;
-      grid-template-columns: 1.8fr 1fr 1fr 1.6fr;
-      gap: 48px;
+      grid-template-columns: 1.8fr 1fr 1fr;
+      gap: 60px;
       margin-bottom: 60px;
+      align-items: start;
     }
 
     .footer-brand-col {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 18px;
     }
 
     .footer-bio {
       color: #94a3b8;
       font-size: 0.9rem;
       line-height: 1.7;
-      max-width: 360px;
+      max-width: 440px;
     }
 
-    .footer-social-links {
+    .footer-col {
       display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .social-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-glass);
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      transition: var(--transition-smooth);
-    }
-
-    .social-btn:hover {
-      background: var(--emerald-accent);
-      color: #05140d;
-      border-color: var(--emerald-accent);
-      transform: translateY(-2px);
+      flex-direction: column;
+      gap: 12px;
     }
 
     .footer-col-title {
@@ -1858,82 +1838,31 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #ffffff;
-      margin-bottom: 20px;
+      margin-bottom: 6px;
     }
 
-    .footer-nav-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .footer-nav-list a {
+    .footer-desc {
       color: #94a3b8;
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: var(--transition-smooth);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      max-width: 320px;
+      margin-bottom: 4px;
+    }
+
+    .footer-link {
+      color: #86efac;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: underline;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-    }
-
-    .footer-nav-list a:hover {
-      color: #86efac;
-      transform: translateX(4px);
-    }
-
-    .footer-newsletter-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .newsletter-desc {
-      color: #94a3b8;
-      font-size: 0.88rem;
-      line-height: 1.6;
-    }
-
-    .newsletter-form {
-      display: flex;
-      gap: 8px;
-    }
-
-    .newsletter-input {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-glass);
-      border-radius: 9999px;
-      padding: 12px 18px;
-      color: #ffffff;
-      font-size: 0.88rem;
-      outline: none;
-      transition: border 0.3s;
-    }
-
-    .newsletter-input:focus {
-      border-color: var(--emerald-accent);
-      box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
-    }
-
-    .newsletter-submit {
-      background: var(--emerald-accent);
-      color: #05140d;
-      font-weight: 700;
-      border: none;
-      border-radius: 9999px;
-      padding: 12px 20px;
-      font-size: 0.85rem;
-      cursor: pointer;
       transition: var(--transition-smooth);
-      white-space: nowrap;
     }
 
-    .newsletter-submit:hover {
-      background: #4ade80;
-      transform: scale(1.02);
-      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+    .footer-link:hover {
+      color: #4ade80;
+      transform: translateX(4px);
     }
 
     .footer-bottom-row {
@@ -1985,13 +1914,14 @@
 
     @media (max-width: 992px) {
       .about-grid-content { grid-template-columns: 1fr; }
-      .footer-main-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .footer-main-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .footer-brand-col { grid-column: span 2; }
     }
 
     @media (max-width: 640px) {
-      .footer-main-grid { grid-template-columns: 1fr; }
+      .footer-main-grid { grid-template-columns: 1fr; gap: 32px; }
+      .footer-brand-col { grid-column: span 1; }
       .about-metrics-grid { grid-template-columns: 1fr; }
-      .newsletter-form { flex-direction: column; }
     }
 
     /* ==========================================================================
@@ -2260,7 +2190,7 @@
       </h1>
 
       <p class="hero-subtitle">
-        Khám phá bộ sưu tập các loài thực vật quý hiếm được bảo tồn và tuyển chọn cho không gian sống hiện đại. Tương tác đa chiều, hướng dẫn chăm sóc chuyên sâu từ chuyên gia thực vật học.
+        Explore a curated collection of rare botanical specimens preserved and cultivated for contemporary living spaces. Interactive taxonomy, biophilic design insights, and expert horticultural care protocols.
       </p>
 
       <!-- REPOSITIONED CENTRAL INTELLIGENT SEARCH BAR -->
@@ -2274,12 +2204,12 @@
             type="text" 
             class="search-input-field" 
             id="herbariumSearchInput" 
-            placeholder="Tìm theo tên thường gọi, chi khoa học, hoặc #tag (VD: Monstera, Velvet, Shade)..."
+            placeholder="Search by common name, genus, or #tag (e.g., Monstera, Velvet, Shade)..."
             autocomplete="off"
           >
           <span class="search-shortcut-pill">⌘K</span>
           <button class="search-submit-btn" id="searchSubmitBtn">
-            <span>Tìm Kiếm</span>
+            <span>Search</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
@@ -2304,25 +2234,7 @@
         <button class="facet-tag" data-tag="deepshadethriving">#DeepShadeThriving</button>
       </div>
 
-      <!-- Action Row: Primary Action + Video Tour (Like Trees for the Future) -->
-      <div class="hero-actions-row">
-        <a href="#specimens" class="btn-hero-primary">
-          <span>Xem Thư Viện Bản Mẫu</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <polyline points="19 12 12 19 5 12"></polyline>
-          </svg>
-        </a>
 
-        <button class="btn-video-tour" id="openVideoTourBtn">
-          <div class="video-play-circle">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-          </div>
-          <span>Xem Tour Vườn Kỹ Thuật Số</span>
-        </button>
-      </div>
 
     </div>
 
@@ -2334,7 +2246,7 @@
        ARCHIVE GALLERY: HERBARIUM ACCESSION
        ======================================================================== -->
   <!-- ========================================================================
-       ARCHIVE GALLERY: THE TRI-BIOME THEMES (Phương Án 1: 3 Đại Đới Khí Hậu)
+       ARCHIVE GALLERY: THE TRI-BIOME THEMES (Tri-Biome Climate Regions)
        ======================================================================== -->
   <main class="archive-section" id="specimens">
     <div class="bento-grid">
@@ -2369,7 +2281,7 @@
   </main>
 
   <!-- ========================================================================
-       SECTION: ABOUT & CONSERVATION MANIFESTO (Phần Giới Thiệu Dự Án)
+       SECTION: ABOUT & CONSERVATION MANIFESTO
        ======================================================================== -->
   <section class="about-section" id="about">
     <div class="about-hero-card">
@@ -2377,21 +2289,21 @@
         <div class="about-text-wrap">
           <div class="about-kicker">
             <span class="kicker-dot"></span>
-            <span>Manifesto & Conservation // Về Dự Án</span>
+            <span>Manifesto & Conservation // About The Initiative</span>
           </div>
           <h2 class="about-title">
-            Tái Định Nghĩa Mảng Xanh Cho Không Gian Sống Kỷ Nguyên Số.
+            Redefining Living Flora for Contemporary Architectural Sanctuaries.
           </h2>
           <p class="about-desc">
-            Lấy cảm hứng từ phong trào kiến trúc sinh thái (Biophilic Design) và các hiệp hội bảo tồn thực vật học quốc tế, <strong>The Living Canopy</strong> ra đời với sứ mệnh đưa các giống thực vật quý hiếm từ những nhà kính hàn lâm vào môi trường sống hiện đại.
+            Inspired by international biophilic design principles and botanical preservation charters, <strong>The Living Canopy</strong> brings rare botanical accessions from academic conservatories into modern curated living spaces.
           </p>
           <div class="about-quote-box">
-            “Chúng tôi tin rằng việc chăm sóc một loài cây không đơn thuần là thú vui cảnh quan, mà là một hành trình thực hành chánh niệm, làm sạch vi khí hậu và kết nối lại với nhịp điệu nguyên sơ của thiên nhiên.”
-            <span class="quote-author">— Ban Cố Vấn Thực Vật Học GreenNest</span>
+            “We believe cultivating botanical life is not merely ornamental decoration, but a mindful ritual, purifying indoor microclimates and reconnecting everyday living with the rhythms of nature.”
+            <span class="quote-author">— GreenNest Botanical Advisory Board</span>
           </div>
           <div style="display: flex; gap: 14px; flex-wrap: wrap;">
-            <a href="about.html" class="btn-cta-pill">Xem Mục Đích & Đội Ngũ Botanist (Trang Riêng) →</a>
-            <a href="gallery.html" class="btn-garden-badge" style="border-radius: 9999px; padding: 10px 20px;">Khám Phá Gallery →</a>
+            <a href="about.html" class="btn-cta-pill">Explore Mission & Botanist Team →</a>
+            <a href="gallery.html" class="btn-garden-badge" style="border-radius: 9999px; padding: 10px 20px;">Explore Gallery Archive →</a>
           </div>
         </div>
 
@@ -2399,23 +2311,23 @@
         <div class="about-metrics-grid">
           <div class="metric-box">
             <div class="metric-num-nobackend">⚡ No Backend Yet</div>
-            <div class="metric-title">Bản Mẫu Tuyển Chọn</div>
-            <div class="metric-detail">Dữ liệu mẫu demo tĩnh (Đang chuẩn bị API Node.js & MongoDB)</div>
+            <div class="metric-title">Curated Accessions</div>
+            <div class="metric-detail">Static preview catalog (Node.js & MongoDB API integration in progress)</div>
           </div>
           <div class="metric-box">
             <div class="metric-num-nobackend">⚡ No Backend Yet</div>
-            <div class="metric-title">Dữ Liệu Khoa Học</div>
-            <div class="metric-detail">Chẩn đoán ánh sáng & giá thể (Sẽ đồng bộ từ Database)</div>
+            <div class="metric-title">Botanical Science Data</div>
+            <div class="metric-detail">Substrate & lux analysis (Synchronizing from conservatory database)</div>
           </div>
           <div class="metric-box">
             <div class="metric-num-nobackend">⚡ No Backend Yet</div>
-            <div class="metric-title">Vườn Của Tôi & Bookmark</div>
-            <div class="metric-detail">Hiện lưu tạm ở Client, sẽ lưu vào User Collection khi có Auth</div>
+            <div class="metric-title">My Garden & Bookmarks</div>
+            <div class="metric-detail">Stored client-side, syncing to User profiles with Auth</div>
           </div>
           <div class="metric-box">
             <div class="metric-num-nobackend">⚡ No Backend Yet</div>
-            <div class="metric-title">Bộ Lọc Thú Cưng & Cây Hiếm</div>
-            <div class="metric-detail">Client filtering tức thời trước khi chuyển sang Backend Queries</div>
+            <div class="metric-title">Pet-Safe & Rare Filters</div>
+            <div class="metric-detail">Instant client-side taxonomy filtering across all biomes</div>
           </div>
         </div>
       </div>
@@ -2423,21 +2335,21 @@
       <!-- Bright Teaser of Botanists & Lush Greenery -->
       <div style="margin-top: 48px; padding-top: 36px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
         <div style="position: relative; border-radius: 20px; overflow: hidden; height: 180px; border: 1px solid var(--border-glass);">
-          <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=600&q=80" alt="Botanist Elena Vũ" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=600&q=80" alt="Botanist Elena Vu" style="width: 100%; height: 100%; object-fit: cover;">
           <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,16,11,0.85) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 12px 16px;">
-            <span style="font-size: 0.82rem; font-weight: 600; color: #fff;">TS. Elena Vũ — Ban Nhiệt Đới</span>
+            <span style="font-size: 0.82rem; font-weight: 600; color: #fff;">Dr. Elena Vu — Tropical Flora Division</span>
           </div>
         </div>
         <div style="position: relative; border-radius: 20px; overflow: hidden; height: 180px; border: 1px solid var(--border-glass);">
-          <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=600&q=80" alt="Cây cối tươi sáng dưới ánh nắng" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=600&q=80" alt="Lush foliage in sunlight" style="width: 100%; height: 100%; object-fit: cover;">
           <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,16,11,0.85) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 12px 16px;">
-            <span style="font-size: 0.82rem; font-weight: 600; color: #fff;">Lá xanh tươi sáng đón ban mai</span>
+            <span style="font-size: 0.82rem; font-weight: 600; color: #fff;">Lush morning foliage in natural sunlight</span>
           </div>
         </div>
         <div style="position: relative; border-radius: 20px; overflow: hidden; height: 180px; border: 1px solid var(--border-glass);">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Nhà nghiên cứu Alexandre Phạm" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Researcher Alexandre Pham" style="width: 100%; height: 100%; object-fit: cover;">
           <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,16,11,0.85) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 12px 16px;">
-            <span style="font-size: 0.82rem; font-weight: 600; color: #fff;">Alexandre Phạm — Ban Cận Nhiệt</span>
+            <span style="font-size: 0.82rem; font-weight: 600; color: #fff;">Alexandre Pham — Subtropical Research</span>
           </div>
         </div>
       </div>
@@ -2456,7 +2368,7 @@
         <div class="footer-brand-col">
           <a href="#hero" class="brand-logo" style="text-decoration: none;">
             <svg class="brand-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fill-opacity="0.3"/>
+              <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fillOpacity="0.3"/>
               <path d="M16 8C14 11 11 14 11 17C11 19.8 13.2 22 16 22C18.8 22 21 19.8 21 17C21 14 18 11 16 8Z" fill="currentColor"/>
               <circle cx="16" cy="17" r="2.5" fill="#ffffff"/>
             </svg>
@@ -2466,61 +2378,26 @@
             </div>
           </a>
           <p class="footer-bio">
-            Triển lãm thực vật học và kho lưu trữ số dành riêng cho không gian sống hiện đại. Đưa thiên nhiên hoang dã vào ngôi nhà với sự tôn trọng và hiểu biết sâu sắc.
+            A curated botanical exhibition and digital archive dedicated to contemporary architectural living spaces. Bringing wilderness into the modern home with reverence and botanical precision.
           </p>
-          <div class="footer-social-links">
-            <a href="#" class="social-btn" title="Instagram" aria-label="Instagram">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
-            </a>
-            <a href="#" class="social-btn" title="GitHub" aria-label="GitHub">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-              </svg>
-            </a>
-            <a href="#" class="social-btn" title="Twitter / X" aria-label="Twitter">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-              </svg>
-            </a>
-          </div>
         </div>
 
         <!-- Col 2: About Us -->
-        <div>
+        <div class="footer-col">
           <h4 class="footer-col-title">About Us</h4>
-          <p style="color: #94a3b8; font-size: 0.88rem; line-height: 1.7; max-width: 240px; margin-bottom: 8px;">
-            Dự án nghiên cứu và lưu trữ số hóa các loài thực vật nhiệt đới dành cho không gian sống hiện đại.
+          <p class="footer-desc">
+            A research and digitization initiative documenting tropical flora and biophilic living systems for modern architecture.
           </p>
-          <a href="about.html" style="color: #86efac; font-size: 0.84rem; text-decoration: underline;">Xem Mục Đích & Botanists →</a>
+          <a href="about.html" class="footer-link">Our Purpose & Botanists →</a>
         </div>
 
         <!-- Col 3: More Info -->
-        <div>
+        <div class="footer-col">
           <h4 class="footer-col-title">More Info</h4>
-          <p style="color: #94a3b8; font-size: 0.88rem; line-height: 1.7; max-width: 240px;">
-            Mô hình thử nghiệm giao diện GreenNest. Khám phá toàn bộ danh mục tại <a href="gallery.html" style="color: #86efac; text-decoration: underline;">Gallery Archive →</a>
+          <p class="footer-desc">
+            GreenNest digital interface and taxonomy. Discover the complete specimen collection in our curated archive.
           </p>
-        </div>
-
-        <!-- Col 4: Newsletter -->
-        <div>
-          <h4 class="footer-col-title">Bản Tin Thực Vật Học</h4>
-          <div class="footer-newsletter-wrap">
-            <p class="newsletter-desc">
-              Đăng ký để nhận các bài viết phân loại học, mẹo chăm sóc độc quyền và thông báo triển lãm mới vào mỗi thứ Năm.
-            </p>
-            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký nhận Bản tin Thực vật học GreenNest!'); this.reset();">
-              <input type="email" class="newsletter-input" placeholder="Nhập địa chỉ email của bạn..." required>
-              <button type="submit" class="newsletter-submit">Đăng Ký</button>
-            </form>
-            <div style="font-size: 0.76rem; color: #64748b; display: flex; align-items: center; gap: 6px;">
-              <span style="color: var(--emerald-accent);">●</span> Không spam. Hủy đăng ký bất cứ lúc nào.
-            </div>
-          </div>
+          <a href="gallery.html" class="footer-link">Gallery Archive →</a>
         </div>
 
       </div>
@@ -2528,15 +2405,15 @@
       <!-- Footer Bottom Bar -->
       <div class="footer-bottom-row">
         <div>
-          © 2026 The Living Canopy & GreenNest Consortium. Bảo lưu mọi quyền.
+          © 2026 The Living Canopy & GreenNest Consortium. All rights reserved.
         </div>
         <div class="footer-legal-links">
-          <a href="#" onclick="alert('Quy chuẩn bảo tồn CITES & IUCN áp dụng cho toàn bộ dữ liệu.'); return false;">Quy Chuẩn CITES</a>
-          <a href="#" onclick="alert('Chính sách bảo mật dữ liệu người dùng.'); return false;">Chính Sách Bảo Mật</a>
-          <a href="#" onclick="alert('Điều khoản dịch vụ thư viện thực vật học.'); return false;">Điều Khoản</a>
+          <a href="#" onclick="alert('CITES & IUCN conservation protocols apply to all catalog records.'); return false;">CITES Protocol</a>
+          <a href="#" onclick="alert('Privacy policy for botanical data and user profiles.'); return false;">Privacy Policy</a>
+          <a href="#" onclick="alert('Terms of service for botanical archive and exhibition.'); return false;">Terms of Service</a>
         </div>
         <button class="btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
-          <span>Lên đầu trang ↑</span>
+          <span>Back to top ↑</span>
         </button>
       </div>
     </div>
@@ -2551,7 +2428,7 @@
       <path d="M12 16v-4"></path>
       <path d="M12 8h.01"></path>
     </svg>
-    <span>So Sánh Thiết Kế (Before vs After)</span>
+    <span>Design Comparison (Before vs After)</span>
   </button>
 
   <!-- ========================================================================
@@ -2561,33 +2438,33 @@
     <div class="comparison-modal-window">
       <button class="close-modal-btn" id="closeCompBtn">✕</button>
       <h2 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 8px; color: #fff;">
-        Bảng So Sánh Chi Tiết Thiết Kế
+        Detailed Design Comparison
       </h2>
       <p style="color: var(--sage-muted); font-size: 0.9rem; margin-bottom: 24px;">
-        Đánh giá điểm mạnh của <strong>Trees for the Future</strong> và cách chúng ta khắc phục những nhược điểm của phiên bản cũ.
+        Evaluating inspirations from <strong>Trees for the Future</strong> and how we elevated the botanical exhibition experience.
       </p>
 
       <div class="comparison-grid">
         <!-- Old Version Critique -->
         <div class="comp-col">
           <div class="comp-header" style="color: #f87171;">
-            <span>❌ Bản Cũ (Nhạt Nhòa & Lộn Xộn)</span>
+            <span>❌ Legacy Version (Cluttered & Flat)</span>
           </div>
           <ul class="comp-list">
             <li>
-              <strong>Nền trắng phẳng lì:</strong> Không có chiều sâu thị giác, cảm giác như file tài liệu thô sơ chưa style CSS.
+              <strong>Flat white backdrop:</strong> Lacked atmospheric botanical depth and visual hierarchy, resembling an unstyled document.
             </li>
             <li>
-              <strong>Thanh Search bị giấu ở góc:</strong> Bị nhét vào góc phải trên cùng (`⌘K SEARCH...`) với kích thước nhỏ, người dùng khó nhìn thấy.
+              <strong>Hidden corner search:</strong> Constrained in the top right corner (`⌘K SEARCH...`) with minimal prominence and poor accessibility.
             </li>
             <li>
-              <strong>Bố cục phân mảnh:</strong> Lại có thêm một ô `HERBARIUM ACCESSION SEARCH` nằm trơ trọi lệch bên trái, gây thừa thãi và mất tập trung.
+              <strong>Fragmented layout:</strong> Redundant isolated `HERBARIUM ACCESSION SEARCH` boxes cluttering the canvas and disrupting visual flow.
             </li>
             <li>
-              <strong>Không có hiệu ứng chuyển cảnh:</strong> Chuyển trang gắt, thiếu các lớp phủ bóng đổ và gradient fade tự nhiên.
+              <strong>No atmospheric transitions:</strong> Abrupt section jumps lacking organic gradient fades and lighting depth.
             </li>
             <li>
-              <strong>Button thô cứng:</strong> Các nút vuông outline đơn sắc không tạo được cảm giác sang trọng của một triển lãm thực vật.
+              <strong>Rigid button styling:</strong> Monochromatic square outline buttons that failed to convey luxury arboretum aesthetics.
             </li>
           </ul>
         </div>
@@ -2595,23 +2472,23 @@
         <!-- New Redesigned Version -->
         <div class="comp-col new-version">
           <div class="comp-header" style="color: #4ade80;">
-            <span>✨ Bản Mới (Học Hỏi Trees for the Future)</span>
+            <span>✨ Redesigned Sanctuary (Inspired by Trees for the Future)</span>
           </div>
           <ul class="comp-list">
             <li>
-              <strong>Fade & Chiều sâu điện ảnh:</strong> Phông nền rừng nhiệt đới cao cấp với lớp phủ đa tầng (Multi-layer gradient fade), hiệu ứng chuyển mượt mà xuống danh mục.
+              <strong>Cinematic gradient fade:</strong> Deep forest atmospheric palette with multi-layered depth and seamless transitions into the archive.
             </li>
             <li>
-              <strong>Thanh Search đưa vào TRUNG TÂM:</strong> Trở thành "trái tim" của Hero section với hiệu ứng phát sáng ngọc lục bảo (Glow), phím tắt `⌘K` và gợi ý tự động ngay khi gõ.
+              <strong>Centralized intelligent search:</strong> Prominently featured as the heart of the Hero section with emerald glow and instant auto-suggestions.
             </li>
             <li>
-              <strong>Floating Pill Navbar:</strong> Thanh điều hướng dạng viên thuốc kính mờ (Glassmorphic Pill) bo tròn sang trọng giống hệt Trees for the Future.
+              <strong>Floating glassmorphic pill navbar:</strong> Rounded frosted glass pill design inspired by high-end editorial nature platforms.
             </li>
             <li>
-              <strong>Typography & Kicker hiện đại:</strong> Kết hợp Serif cổ điển sang trọng và Sans-serif sắc nét, thể hiện đẳng cấp "Domestic Arboretum".
+              <strong>Editorial typography:</strong> Harmonious pairing of classical serif headers with refined modern sans-serif interface text.
             </li>
             <li>
-              <strong>Tương tác nhanh:</strong> Tích hợp nút Tour video, các chip tag `#Araceae`, `#PetSafe` lọc tức thì, và nút lưu trữ vào "Vườn của tôi".
+              <strong>Instant interactivity:</strong> Direct virtual conservatory tour, instant taxonomy filter chips (`#Araceae`, `#PetSafe`), and sanctuary bookmarking.
             </li>
           </ul>
         </div>
@@ -2644,11 +2521,11 @@
       </div>
       <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: #fff; margin-bottom: 12px;">Digital Conservatory Tour</h3>
       <p style="color: #94a3b8; font-size: 0.95rem; max-width: 520px; margin: 0 auto 24px; line-height: 1.6;">
-        Trải nghiệm không gian nhà kính 360 độ và âm thanh sinh thái rừng nhiệt đới mô phỏng dành riêng cho triển lãm <em>Exhibition No. 01 — The Domestic Arboretum</em>.
+        Experience our 360-degree virtual conservatory and ambient rainforest soundscapes created for <em>Exhibition No. 01 — The Domestic Arboretum</em>.
       </p>
       <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-glass); border-radius: 16px; padding: 20px; display: inline-flex; align-items: center; gap: 16px;">
-        <span style="font-size: 0.85rem; color: #86efac; font-weight: 600;">🌿 Trạng thái: Sẵn sàng tương tác</span>
-        <button class="btn-cta-pill" onclick="alert('Đang phát âm thanh và video trải nghiệm rừng nhiệt đới!')">Bắt Đầu Trải Nghiệm</button>
+        <span style="font-size: 0.85rem; color: #86efac; font-weight: 600;">🌿 Status: Interactive preview ready</span>
+        <button class="btn-cta-pill" onclick="alert('Now playing conservatory ambient rainforest soundscapes and video tour!')">Start Experience</button>
       </div>
     </div>
   </div>
@@ -2682,10 +2559,10 @@
         <div class="no-data-icon">${biomeKey === 'tropical' ? '🌴' : biomeKey === 'subtropical' ? '🌲' : '🏜️'}</div>
         <h3 class="no-data-title">No Data Yet (${biomeTitle})</h3>
         <p class="no-data-text">
-          Chúng tôi đang biên soạn hồ sơ thực vật học cho nhóm <strong>${biomeTitle}</strong>. Dữ liệu sẽ sẵn sàng ngay sau khi hoàn thành kết nối cơ sở dữ liệu MongoDB và API.
+          Currently cataloging botanical accession profiles for <strong>${biomeTitle}</strong>. Specimen records will sync automatically upon database and API connection.
         </p>
         <div class="no-data-badge">
-          <span>⚡ Trạng Thái: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+          <span>⚡ Status: Prototype Catalog (Records in curation)</span>
         </div>
       `;
 
@@ -2701,14 +2578,14 @@
             <div class="no-data-icon">🔍</div>
             <h3 class="no-data-title">No Data Yet ("${q}")</h3>
             <p class="no-data-text">
-              Hệ thống tìm kiếm thông minh đang trong giai đoạn phát triển prototype. Hiện chưa có bản mẫu hoàn thiện cho từ khóa này.
+              Intelligent botanical search is currently in prototype mode. No specimen records currently indexed for this query.
             </p>
             <div class="no-data-badge">
-              <span>⚡ Trạng Thái: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+              <span>⚡ Status: Prototype Catalog (Search indexing in progress)</span>
             </div>
           `;
           if (suggestionsPanel) {
-            suggestionsPanel.innerHTML = `<div style="padding: 14px; color: #fbbf24; font-size: 0.85rem; font-weight: 600;">⚡ No Data Yet — Đang hoàn thiện sản phẩm</div>`;
+            suggestionsPanel.innerHTML = `<div style="padding: 14px; color: #fbbf24; font-size: 0.85rem; font-weight: 600;">⚡ Prototype Search — Indexing in progress</div>`;
             suggestionsPanel.classList.add("active");
           }
         } else {
@@ -2728,10 +2605,10 @@
           <div class="no-data-icon">🏷️</div>
           <h3 class="no-data-title">No Data Yet (${tagText})</h3>
           <p class="no-data-text">
-            Chưa có dữ liệu cây trồng được liên kết với tag <strong>${tagText}</strong> vì sản phẩm đang trong giai đoạn xây dựng.
+            No botanical accessions are currently linked to tag <strong>${tagText}</strong> while catalog curation is underway.
           </p>
           <div class="no-data-badge">
-            <span>⚡ Trạng Thái: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+            <span>⚡ Status: Prototype Catalog (Curation in progress)</span>
           </div>
         `;
         specimensResults.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2814,7 +2691,7 @@
           `).join('');
           suggestionsPanel.classList.add("active");
         } else {
-          suggestionsPanel.innerHTML = `<div style="padding: 12px; color: var(--sage-muted); font-size: 0.85rem;">Không có gợi ý trùng khớp</div>`;
+          suggestionsPanel.innerHTML = `<div style="padding: 12px; color: var(--sage-muted); font-size: 0.85rem;">No matching suggestions found</div>`;
           suggestionsPanel.classList.add("active");
         }
       } else {
@@ -2873,13 +2750,13 @@
             <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6; margin-bottom: 24px;">${plant.desc}</p>
             
             <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-glass); border-radius: 16px; padding: 16px; margin-bottom: 24px;">
-              <div style="font-size: 0.8rem; color: var(--sage-muted); margin-bottom: 6px;">GIÁ THỂ KHUYẾN NGHỊ:</div>
+              <div style="font-size: 0.8rem; color: var(--sage-muted); margin-bottom: 6px;">RECOMMENDED SUBSTRATE:</div>
               <div style="font-size: 0.92rem; color: #fff; font-weight: 600;">${plant.soil}</div>
             </div>
 
             <div style="display: flex; gap: 12px; margin-top: auto;">
               <button class="btn-cta-pill" style="flex: 1; justify-content: center;" onclick="toggleSavePlant('${plant.id}'); specimenModal.classList.remove('open');">
-                ${savedGarden.has(plant.id) ? '✓ Đã Lưu Trong Vườn' : '+ Lưu Vào Vườn'}
+                ${savedGarden.has(plant.id) ? '✓ Saved in Sanctuary' : '+ Add to Sanctuary'}
               </button>
             </div>
           </div>

@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Specimen Dossier — The Living Canopy</title>
+  <meta name="description" content="Detailed botanical taxonomy dossier, environmental care telemetry, and field observations archive.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #07100b;
+      --bg-surface: #0e1e16;
+      --bg-surface-elevated: #162c21;
+      --emerald-accent: #22c55e;
+      --emerald-light: #86efac;
+      --emerald-glow: rgba(34, 197, 94, 0.35);
+      --amber-accent: #eab308;
+      --amber-glow: rgba(234, 179, 8, 0.35);
+      --sage-muted: #8ca395;
+      --text-primary: #f0fdf4;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-accent: rgba(34, 197, 94, 0.3);
+      --glass-pill: rgba(14, 30, 22, 0.88);
+      --shadow-ambient: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      --shadow-glow: 0 0 30px -5px rgba(34, 197, 94, 0.4);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(ellipse 90% 60% at 50% -15%, rgba(16, 185, 129, 0.18), transparent 70%),
+        radial-gradient(circle 600px at 0% 40%, rgba(5, 150, 105, 0.1), transparent 60%),
+        radial-gradient(circle 500px at 100% 70%, rgba(234, 179, 8, 0.05), transparent 50%),
+        linear-gradient(180deg, #07100b 0%, #050d09 100%);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Floating Pill Header */
+    .header-floating-wrap {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+      pointer-events: none;
+    }
+
+    .navbar-pill {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(14px, 2vw, 32px);
+      background: var(--glass-pill);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      border-radius: 9999px;
+      padding: 8px 12px 8px 22px;
+      max-width: 1280px;
+      width: 100%;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .navbar-pill:hover {
+      border-color: rgba(34, 197, 94, 0.4);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), var(--shadow-glow);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+
+    .brand-icon-svg {
+      width: 30px;
+      height: 30px;
+      fill: var(--emerald-accent);
+      filter: drop-shadow(0 0 8px var(--emerald-glow));
+      flex-shrink: 0;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .brand-sub {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: 20px;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #fff;
+      background: rgba(34, 197, 94, 0.15);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn-return-gallery {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      padding: 7px 16px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-return-gallery:hover {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: var(--emerald-accent);
+      color: #fff;
+    }
+
+    .nav-btn-icon {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-btn-icon:hover {
+      background: rgba(34, 197, 94, 0.2);
+      color: #fff;
+      border-color: var(--emerald-accent);
+    }
+
+    /* Main Container */
+    .dossier-wrapper {
+      max-width: 1540px;
+      margin: 105px auto 60px;
+      padding: 0 clamp(16px, 2.5vw, 36px);
+    }
+
+    /* Layout: Left Sidebar + Main Content */
+    .dossier-layout {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1040px) {
+      .dossier-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ----------------------------------------------------
+       LEFT SIDEBAR (Booru / Imageboard inspired Tag Index)
+       ---------------------------------------------------- */
+    .dossier-sidebar {
+      background: rgba(14, 30, 22, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 0px;
+      padding: 22px 18px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+      position: sticky;
+      top: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+    .dossier-sidebar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .dossier-sidebar::-webkit-scrollbar-thumb {
+      background: rgba(34, 197, 94, 0.3);
+      border-radius: 0px;
+    }
+
+    .sidebar-header-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Tag Search Box */
+    .sidebar-search-wrap {
+      position: relative;
+    }
+
+    .sidebar-search-input {
+      width: 100%;
+      background: rgba(7, 16, 11, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0px;
+      padding: 9px 14px 9px 34px;
+      color: #fff;
+      font-size: 0.84rem;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .sidebar-search-input:focus {
+      border-color: var(--emerald-accent);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.25);
+    }
+
+    .sidebar-search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+      pointer-events: none;
+    }
+
+    /* Categorized Tag Lists */
+    .tag-category-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tag-category-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #86efac;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 4px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+
+    .tag-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .tag-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      padding: 4px 6px;
+      border-radius: 0px;
+      transition: var(--transition-smooth);
+    }
+
+    .tag-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tag-left-part {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tag-help-btn {
+      color: #64748b;
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-decoration: none;
+      width: 15px;
+      height: 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0px;
+      background: rgba(255, 255, 255, 0.05);
+      flex-shrink: 0;
+      cursor: help;
+      transition: var(--transition-smooth);
+    }
+
+    .tag-help-btn:hover {
+      color: var(--amber-accent);
+      background: rgba(234, 179, 8, 0.2);
+    }
+
+    .tag-name-link {
+      color: #93c5fd;
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .tag-name-link.taxonomy { color: #f472b6; }
+    .tag-name-link.biome { color: #4ade80; }
+    .tag-name-link.trait { color: #facc15; }
+    .tag-name-link.general { color: #38bdf8; }
+
+    .tag-name-link:hover {
+      text-decoration: underline;
+      filter: brightness(1.2);
+    }
+
+    .tag-count {
+      color: #64748b;
+      font-size: 0.75rem;
+      font-family: monospace;
+      padding-left: 6px;
+    }
+
+    /* Specimen Metadata Box in Sidebar */
+    .sidebar-stats-card {
+      background: rgba(7, 16, 11, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+    }
+
+    .stat-label {
+      color: #94a3b8;
+    }
+
+    .stat-val {
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+
+    .stat-val.badge-green {
+      color: #4ade80;
+    }
+
+    .stat-val.badge-amber {
+      color: #fbbf24;
+    }
+
+    .sidebar-star-toggle-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(234, 179, 8, 0.12);
+      border: 1px solid rgba(234, 179, 8, 0.35);
+      color: #fef08a;
+      padding: 9px 12px;
+      border-radius: 0px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .sidebar-star-toggle-btn:hover {
+      background: rgba(234, 179, 8, 0.25);
+      box-shadow: 0 0 14px rgba(234, 179, 8, 0.3);
+    }
+
+    .sidebar-star-toggle-btn.starred {
+      background: rgba(234, 179, 8, 0.9);
+      color: #07100b;
+      font-weight: 700;
+    }
+
+    /* ----------------------------------------------------
+       MAIN CONTENT (Pagination Bar + Two Sub-Columns)
+       ---------------------------------------------------- */
+    .dossier-main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Booru-style Top Navigation Switcher */
+    .pagination-switcher-bar {
+      background: rgba(14, 30, 22, 0.85);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glass);
+      border-radius: 0px;
+      padding: 10px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-arrow-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 0px;
+      border: 1px solid rgba(147, 197, 253, 0.2);
+      background: rgba(147, 197, 253, 0.05);
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+
+    .nav-arrow-btn:hover {
+      background: rgba(147, 197, 253, 0.15);
+      border-color: #93c5fd;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(147, 197, 253, 0.25);
+    }
+
+    .nav-center-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: #94a3b8;
+    }
+
+    .nav-center-highlight {
+      color: #fff;
+      font-weight: 600;
+      font-family: var(--font-display);
+      letter-spacing: 0.05em;
+    }
+
+    /* Two Sub-Columns: Left = Image & Comments, Right = Descriptions */
+    .dossier-content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) {
+      .dossier-content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ----------------------------------------------------
+       LEFT SUB-COLUMN: Picture + Comments below picture
+       ---------------------------------------------------- */
+    .dossier-visual-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .specimen-image-card {
+      position: relative;
+      background: rgba(14, 30, 22, 0.7);
+      border: 1px solid var(--border-glass);
+      border-radius: 0px;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+      transition: var(--transition-smooth);
+    }
+
+    .specimen-image-card:hover {
+      border-color: rgba(34, 197, 94, 0.35);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7), var(--shadow-glow);
+    }
+
+    .specimen-photo-wrap {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      overflow: hidden;
+      background: #000;
+      border-radius: 0px;
+    }
+
+    @media (max-width: 640px) {
+      .specimen-photo-wrap {
+        height: 320px;
+      }
+    }
+
+    .specimen-photo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .specimen-photo-wrap:hover .specimen-photo-img {
+      transform: scale(1.035);
+    }
+
+    .specimen-photo-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 40%, rgba(7, 16, 11, 0.85) 100%);
+      pointer-events: none;
+    }
+
+    .specimen-image-top-badges {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      right: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 5;
+    }
+
+    .specimen-biome-tag {
+      background: rgba(14, 30, 22, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 0px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    }
+
+    .specimen-floating-star {
+      background: rgba(14, 30, 22, 0.85);
+      border: 1px solid var(--border-glass);
+      width: 44px;
+      height: 44px;
+      border-radius: 0px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 1.35rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
+
+    .specimen-floating-star:hover {
+      background: rgba(234, 179, 8, 0.2);
+      color: #facc15;
+      transform: scale(1.08);
+      border-color: #facc15;
+    }
+
+    .specimen-floating-star.starred {
+      color: #facc15;
+      background: rgba(234, 179, 8, 0.95);
+      color: #07100b;
+      box-shadow: 0 0 20px rgba(234, 179, 8, 0.6);
+    }
+
+    .specimen-image-footer-bar {
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(7, 16, 11, 0.5);
+    }
+
+    .specimen-image-tools {
+      display: flex;
+      gap: 12px;
+    }
+
+    .specimen-tool-link {
+      color: #86efac;
+      text-decoration: none;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .specimen-tool-link:hover {
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    /* ----------------------------------------------------
+       COMMENT SECTION (DIRECTLY BELOW PICTURE)
+       Mongo Atlas Job: View-only, commenting locked pending connection
+       ---------------------------------------------------- */
+    .dossier-comments-card {
+      background: rgba(14, 30, 22, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 0px;
+      padding: 24px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .comments-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .comments-header-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .atlas-sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(234, 179, 8, 0.12);
+      border: 1px solid rgba(234, 179, 8, 0.35);
+      color: #fef08a;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 0px;
+      letter-spacing: 0.04em;
+    }
+
+    .atlas-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #eab308;
+      box-shadow: 0 0 8px #eab308;
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.5; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    /* Comment Composer UI (Locked State) */
+    .comment-composer-box {
+      background: rgba(7, 16, 11, 0.65);
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      border-radius: 0px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .composer-user-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .composer-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 0px;
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: #86efac;
+    }
+
+    .composer-username {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    .composer-role-tag {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 8px;
+      border-radius: 0px;
+    }
+
+    .comment-locked-textarea {
+      width: 100%;
+      min-height: 85px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0px;
+      padding: 12px 14px;
+      color: #94a3b8;
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      resize: none;
+      outline: none;
+      cursor: not-allowed;
+    }
+
+    .composer-action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .composer-status-tip {
+      font-size: 0.74rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-submit-comment-disabled {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #64748b;
+      padding: 8px 18px;
+      border-radius: 0px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    /* Comment List Empty State */
+    .comments-empty-state {
+      padding: 36px 20px;
+      text-align: center;
+      background: rgba(7, 16, 11, 0.45);
+      border-radius: 0px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .comments-empty-icon {
+      font-size: 2.2rem;
+      margin-bottom: 2px;
+      opacity: 0.75;
+    }
+
+    .comments-empty-title {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: #f1f5f9;
+    }
+
+    .comments-empty-desc {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      max-width: 440px;
+      line-height: 1.5;
+    }
+
+    /* ----------------------------------------------------
+       RIGHT SUB-COLUMN: Specimen Descriptions & Telemetry
+       Matching user's attached design screenshot
+       ---------------------------------------------------- */
+    .dossier-descriptions-column {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* Specimen Header Block */
+    .specimen-hero-info {
+      background: rgba(14, 30, 22, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 0px;
+      padding: 26px 24px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+
+    .specimen-header-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .specimen-pill-biome {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 0px;
+    }
+
+    .specimen-archive-id {
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+
+    .specimen-main-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3.2vw, 2.7rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+    }
+
+    .specimen-latin-name {
+      font-style: italic;
+      color: #86efac;
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* Tags Row */
+    .specimen-tag-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .specimen-tag-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      padding: 5px 13px;
+      border-radius: 0px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .specimen-tag-pill:hover {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: var(--emerald-accent);
+      color: #fff;
+    }
+
+    .specimen-summary-text {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Detailed Telemetry Cards (Natural Origin & Main Purposes) */
+    .dossier-card {
+      background: rgba(14, 30, 22, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glass);
+      border-radius: 0px;
+      padding: 20px 22px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: var(--transition-smooth);
+    }
+
+    .dossier-card:hover {
+      border-color: rgba(34, 197, 94, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .dossier-card-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #86efac;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dossier-card-body {
+      color: #e2e8f0;
+      font-size: 0.94rem;
+      line-height: 1.65;
+    }
+
+    /* Care Telemetry Triplet (Watering, Sunlight, Substrate) */
+    .care-telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .care-telemetry-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .care-pill-card {
+      background: rgba(7, 16, 11, 0.75);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      border-radius: 0px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: var(--transition-smooth);
+    }
+
+    .care-pill-card:hover {
+      border-color: var(--emerald-accent);
+      background: rgba(14, 30, 22, 0.9);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .care-card-header {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #86efac;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .care-card-text {
+      color: #cbd5e1;
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+
+    /* Conservatory Micro-Metrics Bar */
+    .vital-metrics-card {
+      background: rgba(14, 30, 22, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0px;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .vital-metrics-card {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .vital-stat-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .vital-stat-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #94a3b8;
+    }
+
+    .vital-stat-val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .vital-stat-val.accent {
+      color: #34d399;
+    }
+
+    /* Bottom Action Controls */
+    .dossier-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .btn-action-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 0px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.35);
+      transition: var(--transition-smooth);
+    }
+
+    .btn-action-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(34, 197, 94, 0.5);
+    }
+
+    .btn-action-star {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(234, 179, 8, 0.12);
+      border: 1px solid rgba(234, 179, 8, 0.4);
+      color: #fef08a;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 12px 22px;
+      border-radius: 0px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-action-star:hover {
+      background: rgba(234, 179, 8, 0.25);
+      border-color: #facc15;
+    }
+
+    .btn-action-star.starred {
+      background: rgba(234, 179, 8, 0.95);
+      color: #07100b;
+      font-weight: 700;
+    }
+
+    /* Toast Notification */
+    .specimen-toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 2000;
+      background: rgba(14, 30, 22, 0.95);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(34, 197, 94, 0.25);
+      border-radius: 0px;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      font-size: 0.9rem;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    .specimen-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .toast-icon {
+      font-size: 1.25rem;
+      color: #facc15;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation Pill Header -->
+  <header class="header-floating-wrap">
+    <nav class="navbar-pill">
+      <a href="index.html" class="brand-logo">
+        <svg class="brand-icon-svg" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-title">The Living Canopy</span>
+          <span class="brand-sub">Botanical Conservatory</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="gallery.html" class="nav-link active">Gallery Archive</a></li>
+        <li><a href="garden.html" class="nav-link">My Garden</a></li>
+        <li><a href="personal-gallery.html" class="nav-link">Personal Gallery</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="gallery.html" class="btn-return-gallery">
+          <span>←</span>
+          <span>Gallery Index</span>
+        </a>
+        <a href="personal-gallery.html" class="nav-btn-icon" title="View Personal Saved Plants">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Dossier Main Content Container -->
+  <main class="dossier-wrapper">
+    <div class="dossier-layout">
+
+      <!-- ====================================================
+           LEFT SIDEBAR: Booru-style Categorized Tags & Catalog Info
+           ==================================================== -->
+      <aside class="dossier-sidebar">
+        <div class="sidebar-header-title">
+          <span>🌿 Specimen Tag Index</span>
+        </div>
+
+        <!-- Tag Search Input -->
+        <div class="sidebar-search-wrap">
+          <span class="sidebar-search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="sidebarTagSearch" 
+            class="sidebar-search-input" 
+            placeholder="Search specimen tags..." 
+            oninput="filterSidebarTags(this.value)"
+          >
+        </div>
+
+        <!-- Taxonomy / Scientific Classification -->
+        <div class="tag-category-group" id="groupTaxonomy">
+          <div class="tag-category-label">
+            <span>Taxonomy</span>
+            <span style="font-family: monospace; font-size: 0.7rem; color: #f472b6;">Phylum & Genus</span>
+          </div>
+          <ul class="tag-list" id="tagListTaxonomy">
+            <!-- Populated dynamically -->
+          </ul>
+        </div>
+
+        <!-- Climatic Biome -->
+        <div class="tag-category-group" id="groupBiome">
+          <div class="tag-category-label">
+            <span>Climatic Biome</span>
+            <span style="font-family: monospace; font-size: 0.7rem; color: #4ade80;">Eco-Region</span>
+          </div>
+          <ul class="tag-list" id="tagListBiome">
+            <!-- Populated dynamically -->
+          </ul>
+        </div>
+
+        <!-- Morphology & Characteristics -->
+        <div class="tag-category-group" id="groupTraits">
+          <div class="tag-category-label">
+            <span>Morphology</span>
+            <span style="font-family: monospace; font-size: 0.7rem; color: #facc15;">Leaf & Growth</span>
+          </div>
+          <ul class="tag-list" id="tagListTraits">
+            <!-- Populated dynamically -->
+          </ul>
+        </div>
+
+        <!-- General Herbarium Tags -->
+        <div class="tag-category-group" id="groupGeneral">
+          <div class="tag-category-label">
+            <span>Herbarium Tags</span>
+            <span style="font-family: monospace; font-size: 0.7rem; color: #38bdf8;">Archival #Tags</span>
+          </div>
+          <ul class="tag-list" id="tagListGeneral">
+            <!-- Populated dynamically -->
+          </ul>
+        </div>
+
+        <!-- Specimen Catalog Metadata -->
+        <div class="sidebar-stats-card">
+          <div class="stat-row">
+            <span class="stat-label">Catalog ID:</span>
+            <span class="stat-val" id="metaCatalogId">BIO-4091</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Taxonomy Grade:</span>
+            <span class="stat-val badge-green">Class A Holotype</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Conservation:</span>
+            <span class="stat-val badge-amber">Living Cultivar</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Database Status:</span>
+            <span class="stat-val" style="color: #60a5fa;">MongoDB Ready</span>
+          </div>
+          <button type="button" class="sidebar-star-toggle-btn" id="sidebarStarBtn" onclick="toggleCurrentSpecimenStar()">
+            <span id="sidebarStarIcon">★</span>
+            <span id="sidebarStarText">Save to Personal Gallery</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- ====================================================
+           MAIN CONTENT: Switcher Bar + Two Column Split
+           ==================================================== -->
+      <section class="dossier-main">
+
+        <!-- Top Navigation Switcher Bar (Booru < previous / next > inspired) -->
+        <div class="pagination-switcher-bar">
+          <a href="#" id="btnPrevSpecimen" class="nav-arrow-btn">
+            <span>&lt; previous</span>
+          </a>
+
+          <div class="nav-center-status">
+            <span>Specimen <strong id="specimenIndexCounter">1 of 4</strong>:</span>
+            <span class="nav-center-highlight" id="specimenSwitcherTitle">Monstera Deliciosa</span>
+          </div>
+
+          <a href="#" id="btnNextSpecimen" class="nav-arrow-btn">
+            <span>next &gt;</span>
+          </a>
+        </div>
+
+        <!-- Two Column Grid (Picture + Comments below picture on left, Descriptions on right) -->
+        <div class="dossier-content-grid">
+
+          <!-- LEFT SUB-COLUMN: Specimen Picture & Comments Section Below -->
+          <div class="dossier-visual-column">
+
+            <!-- High-Resolution Specimen Image Card -->
+            <div class="specimen-image-card">
+              <div class="specimen-image-top-badges">
+                <span class="specimen-biome-tag" id="photoBiomeBadge">Tropical Rainforest</span>
+                <button 
+                  type="button" 
+                  class="specimen-floating-star" 
+                  id="photoStarBtn" 
+                  onclick="toggleCurrentSpecimenStar()"
+                  title="Toggle Personal Gallery Favorite"
+                >
+                  ★
+                </button>
+              </div>
+
+              <div class="specimen-photo-wrap">
+                <img src="" alt="" id="specimenMainImg" class="specimen-photo-img">
+                <div class="specimen-photo-gradient"></div>
+              </div>
+
+              <div class="specimen-image-footer-bar">
+                <span>Resolution: 1200 × 800 px (300 DPI Herbarium Scan)</span>
+                <div class="specimen-image-tools">
+                  <a href="#" id="btnViewFullSize" target="_blank" class="specimen-tool-link">Full Image ↗</a>
+                  <span style="color: #475569;">•</span>
+                  <a href="gallery.html" class="specimen-tool-link">Gallery Archive</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMMENTS SECTION (Directly Below Picture) -->
+            <div class="dossier-comments-card">
+              <div class="comments-header-row">
+                <h3 class="comments-header-title">
+                  <span>💬 Botanist Field Notes</span>
+                  <span style="font-size: 0.85rem; color: #94a3b8; font-weight: normal;">(Observations)</span>
+                </h3>
+
+                <!-- Mongo Atlas Status Badge -->
+                <div class="atlas-sync-badge" title="Observations persistence via MongoDB Atlas cluster">
+                  <span class="atlas-dot"></span>
+                  <span>MongoDB Atlas Connection: Pending Cloud Sync</span>
+                </div>
+              </div>
+
+              <!-- Comment Composer (Locked / Disabled State for MongoDB Atlas) -->
+              <div class="comment-composer-box">
+                <div class="composer-user-bar">
+                  <div class="composer-avatar">🔬</div>
+                  <span class="composer-username">Resident Botanist</span>
+                  <span class="composer-role-tag">Member Reviewer</span>
+                </div>
+
+                <textarea 
+                  class="comment-locked-textarea" 
+                  disabled 
+                  placeholder="Field notes and soil observations are temporarily locked. Online comment persistence via MongoDB Atlas cluster will be connected soon..."
+                ></textarea>
+
+                <div class="composer-action-bar">
+                  <div class="composer-status-tip">
+                    <span>🔒 Comments locked — Waiting for MongoDB Atlas database initialization.</span>
+                  </div>
+                  <button type="button" class="btn-submit-comment-disabled" disabled>
+                    <span>🔒 Post Observation</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Empty State Display -->
+              <div class="comments-empty-state">
+                <div class="comments-empty-icon">🌱</div>
+                <h4 class="comments-empty-title">No Field Observations Recorded Yet</h4>
+                <p class="comments-empty-desc">
+                  Soil condition logs, fenestration notes, and peer growth reviews submitted by verified conservatory botanists will be preserved and displayed here once the MongoDB Atlas collection is live.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT SUB-COLUMN: Specimen Descriptions & Care Telemetry -->
+          <div class="dossier-descriptions-column">
+
+            <!-- Hero Header Description Card -->
+            <div class="specimen-hero-info">
+              <div class="specimen-header-topline">
+                <span class="specimen-pill-biome" id="detailBiomeBadge">Tropical Rainforest</span>
+                <span class="specimen-archive-id" id="detailArchiveCode">CATALOG #CANOPY-001</span>
+              </div>
+
+              <div>
+                <h1 class="specimen-main-title" id="detailCommonName">Monstera Deliciosa</h1>
+                <div class="specimen-latin-name" id="detailSciName">Monstera deliciosa Liebm.</div>
+              </div>
+
+              <!-- Tags list -->
+              <div class="specimen-tag-pills" id="detailTagsWrap">
+                <!-- Tag pills rendered dynamically -->
+              </div>
+
+              <p class="specimen-summary-text" id="detailSummaryText">
+                Iconic Swiss Cheese plant featuring magnificent fenestrated emerald leaves engineered to filter tropical canopy sunlight.
+              </p>
+            </div>
+
+            <!-- Natural Origin Card (Matching user screenshot) -->
+            <div class="dossier-card">
+              <div class="dossier-card-title">
+                <span>🌍 Natural Origin</span>
+              </div>
+              <p class="dossier-card-body" id="detailOriginText">
+                Dense rainforests and tropical riverbanks of southern Mexico and Central America.
+              </p>
+            </div>
+
+            <!-- Main Purposes Card (Matching user screenshot) -->
+            <div class="dossier-card">
+              <div class="dossier-card-title">
+                <span>✨ Main Purposes</span>
+              </div>
+              <p class="dossier-card-body" id="detailPurposeText">
+                Indoor air scrubbing, ambient humidity modulation, and dramatic biophilic architectural styling.
+              </p>
+            </div>
+
+            <!-- Care Telemetry Matrix (Watering, Sunlight, Substrate - Matching user screenshot) -->
+            <div class="care-telemetry-grid">
+              <div class="care-pill-card">
+                <div class="care-card-header">
+                  <span>💧 Watering</span>
+                </div>
+                <p class="care-card-text" id="detailWaterText">
+                  Hydrate every 7–10 days when top 50% of potting mix dries out. Mist aerial roots regularly.
+                </p>
+              </div>
+
+              <div class="care-pill-card">
+                <div class="care-card-header">
+                  <span>☀️ Sunlight</span>
+                </div>
+                <p class="care-card-text" id="detailLightText">
+                  Dappled, bright indirect sunlight (1,200–2,000 FC). Avoid harsh midday sun on glass.
+                </p>
+              </div>
+
+              <div class="care-pill-card">
+                <div class="care-card-header">
+                  <span>🌱 Substrate</span>
+                </div>
+                <p class="care-card-text" id="detailSoilText">
+                  Chunky aroid substrate: orchid bark, pumice, perlite, and coco coir.
+                </p>
+              </div>
+            </div>
+
+            <!-- Conservatory Vital Metrics -->
+            <div class="vital-metrics-card">
+              <div class="vital-stat-block">
+                <span class="vital-stat-label">Humidity Req.</span>
+                <span class="vital-stat-val accent" id="metricHumidity">65% – 85%</span>
+              </div>
+              <div class="vital-stat-block">
+                <span class="vital-stat-label">Opt. Temperature</span>
+                <span class="vital-stat-val" id="metricTemp">20°C – 28°C</span>
+              </div>
+              <div class="vital-stat-block">
+                <span class="vital-stat-label">Growth Rate</span>
+                <span class="vital-stat-val" id="metricGrowth">Moderate</span>
+              </div>
+              <div class="vital-stat-block">
+                <span class="vital-stat-label">Toxicity Profile</span>
+                <span class="vital-stat-val" style="color: #f87171;" id="metricToxicity">Insoluble Oxalates</span>
+              </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="dossier-actions-row">
+              <button type="button" class="btn-action-star" id="mainStarBtn" onclick="toggleCurrentSpecimenStar()">
+                <span id="mainStarBtnIcon">★</span>
+                <span id="mainStarBtnText">Add to Personal Gallery</span>
+              </button>
+              <a href="#" id="viewMacroBtn" class="btn-action-primary" style="background: rgba(34, 197, 94, 0.18); border: 1px solid var(--border-accent); color: var(--emerald-light);">
+                <span>🌿 Inspect Tree Macros</span>
+                <span>→</span>
+              </a>
+              <a href="gallery.html" class="btn-action-primary">
+                <span>Explore Archive</span>
+                <span>→</span>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Interactive Toast Notification -->
+  <div class="specimen-toast" id="specimenToast">
+    <span class="toast-icon">★</span>
+    <span id="toastMessage">Specimen updated in your Personal Gallery!</span>
+  </div>
+
+  <script>
+    // Master Botanical Database
+    const BOTANICAL_SPECIMENS = {
+      'specimen-monstera': {
+        id: 'specimen-monstera',
+        catalogCode: 'CANOPY-001',
+        name: 'Monstera Deliciosa',
+        scientificName: 'Monstera deliciosa Liebm.',
+        biome: 'tropical',
+        biomeLabel: 'Tropical Rainforest',
+        image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
+        tags: ['#Araceae', '#TrailingFoliage', '#VelvetLeaf', '#DeepShadeThriving', '#RareCultivar'],
+        taxonomyTags: ['Araceae', 'Monstera', 'Alismatales', 'Angiosperms', 'Plantae'],
+        traits: ['Fenestrated Leaf', 'Aerial Roots', 'Evergreen Climber', 'Air Scrubber'],
+        shortDesc: 'Iconic Swiss Cheese plant featuring magnificent fenestrated emerald leaves engineered to filter tropical canopy sunlight.',
+        origin: 'Dense rainforests and tropical riverbanks of southern Mexico and Central America.',
+        purpose: 'Indoor air scrubbing, ambient humidity modulation, and dramatic biophilic architectural styling.',
+        water: 'Hydrate every 7–10 days when top 50% of potting mix dries out. Mist aerial roots regularly.',
+        light: 'Dappled, bright indirect sunlight (1,200–2,000 FC). Avoid harsh midday sun on glass.',
+        soil: 'Chunky aroid substrate: orchid bark, pumice, perlite, and coco coir.',
+        humidity: '65% – 85%',
+        temp: '20°C – 28°C',
+        growth: 'Moderate / Vigorous',
+        toxicity: 'Pet Caution (Oxalates)'
+      },
+      'specimen-red-rose': {
+        id: 'specimen-red-rose',
+        catalogCode: 'CANOPY-002',
+        name: 'Red Rose',
+        scientificName: 'Rosa damascena / Rosa gallica',
+        biome: 'subtropical',
+        biomeLabel: 'Subtropical Highlands',
+        image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80',
+        tags: ['#SubtropicalHighlands', '#TemperateGarden', '#AromaticBloom', '#SunLoving', '#RareCultivar', '#Rosa'],
+        taxonomyTags: ['Rosaceae', 'Rosa', 'Rosales', 'Eudicots', 'Plantae'],
+        traits: ['Aromatic Bloom', 'Velvet Petals', 'Thorny Stems', 'Deciduous Shrub'],
+        shortDesc: 'A revered classical bloom bearing velvety scarlet petals and an intoxicating heritage aroma. Requires generous sunlight and aerated highland drainage.',
+        origin: 'Temperate highland valleys of Central Asia & Ancient Persia, widely naturalized across the sunlit Mediterranean Basin.',
+        purpose: 'Prized ornamental focal point, therapeutic aromatherapy, extraction of natural essential oils & floral hydrosols, and biophilic mood elevation.',
+        water: 'Deep saturation 1–2 times weekly when the top 2 inches of soil feel dry. Always hydrate at the base; keep leaves dry to prevent fungal mildew.',
+        light: 'Full direct sunlight (6+ hours daily). Thrives between 18°C–26°C with constant, refreshing air circulation.',
+        soil: 'Nutrient-rich, loamy, well-draining organic soil blend enriched with perlite and compost (optimal pH 6.0–6.8).',
+        humidity: '40% – 60%',
+        temp: '18°C – 26°C',
+        growth: 'Seasonal Flush',
+        toxicity: 'Non-Toxic (Pet Safe)'
+      },
+      'specimen-aechmea': {
+        id: 'specimen-aechmea',
+        catalogCode: 'CANOPY-003',
+        name: 'Silver Vase Bromeliad',
+        scientificName: 'Aechmea fasciata',
+        biome: 'arid',
+        biomeLabel: 'Arid & Semi-Desert',
+        image: 'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80',
+        tags: ['#AridBiome', '#RareCultivar', '#SunLoving', '#PetSafe'],
+        taxonomyTags: ['Bromeliaceae', 'Aechmea', 'Poales', 'Monocots', 'Plantae'],
+        traits: ['Silver Banding', 'Rosette Reservoir', 'Pink Torch Inflorescence', 'Epiphytic'],
+        shortDesc: 'Dramatic banded silver-powdered foliage culminating in an extraordinary pink torch inflorescence.',
+        origin: 'Tropical rocky outcrops and high-canopy epiphyte perches in southeastern Brazil.',
+        purpose: 'Slow-growing architectural statement with months of persistent pink flowering displays.',
+        water: 'Keep the central rosette tank filled with clean rainwater. Mist lightly in summer.',
+        light: 'Generous indirect daylight to gentle morning direct sun. Tolerates arid living conditions.',
+        soil: 'Porous epiphyte grit or orchid bark mixture with superior aeration.',
+        humidity: '45% – 70%',
+        temp: '18°C – 30°C',
+        growth: 'Slow / Enduring',
+        toxicity: 'Non-Toxic (Pet Safe)'
+      },
+      'specimen-boston-fern': {
+        id: 'specimen-boston-fern',
+        catalogCode: 'CANOPY-004',
+        name: 'Highland Boston Fern',
+        scientificName: 'Nephrolepis exaltata',
+        biome: 'subtropical',
+        biomeLabel: 'Subtropical Highlands',
+        image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80',
+        tags: ['#SubtropicalHighlands', '#DeepShadeThriving', '#PetSafe', '#AirPurifier'],
+        taxonomyTags: ['Nephrolepidaceae', 'Nephrolepis', 'Polypodiales', 'Monilophytes', 'Plantae'],
+        traits: ['Feather Fronds', 'Cascading Habit', 'Spores Underside', 'Air Purifying'],
+        shortDesc: 'Lush cascading arching fronds with feather-like pinnae that elevate ambient moisture and ground human focus.',
+        origin: 'Misty humid cloud forests, swamp margins, and highland valleys of tropical and subtropical America.',
+        purpose: 'Active volatile organic compound (VOC) scrubbing, natural air purification, and pet-safe green cascading.',
+        water: 'Maintain steady root moisture; never let the root ball completely dry out.',
+        light: 'Soft filtered shade or gentle eastern morning light.',
+        soil: 'Rich peat moss blend with perlite and vermiculite.',
+        humidity: '70% – 90%',
+        temp: '16°C – 24°C',
+        growth: 'Vigorous Cascading',
+        toxicity: 'Non-Toxic (Pet Safe)'
+      }
+    };
+
+    const SPECIMEN_KEYS = Object.keys(BOTANICAL_SPECIMENS);
+    const STORAGE_KEY = 'livingCanopyStarredPlants';
+
+    function getStarredIds() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored === null) {
+        const initial = ['specimen-red-rose'];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+        return initial;
+      }
+      try {
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    // Determine current specimen from URL params (e.g. ?id=specimen-monstera)
+    function getCurrentPlantId() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedId = urlParams.get('id');
+      if (requestedId && BOTANICAL_SPECIMENS[requestedId]) {
+        return requestedId;
+      }
+      return 'specimen-monstera';
+    }
+
+    let activePlantId = getCurrentPlantId();
+
+    function renderSpecimenDossier(plantId) {
+      const plant = BOTANICAL_SPECIMENS[plantId];
+      if (!plant) return;
+
+      activePlantId = plantId;
+      const starredIds = getStarredIds();
+      const isStarred = starredIds.includes(plantId);
+
+      // Page Title
+      document.title = `${plant.name} Dossier — The Living Canopy`;
+
+      // Switcher bar pagination
+      const currentIndex = SPECIMEN_KEYS.indexOf(plantId);
+      const prevIndex = (currentIndex - 1 + SPECIMEN_KEYS.length) % SPECIMEN_KEYS.length;
+      const nextIndex = (currentIndex + 1) % SPECIMEN_KEYS.length;
+
+      document.getElementById('btnPrevSpecimen').href = `specimen-detail.html?id=${SPECIMEN_KEYS[prevIndex]}`;
+      document.getElementById('btnNextSpecimen').href = `specimen-detail.html?id=${SPECIMEN_KEYS[nextIndex]}`;
+      document.getElementById('specimenIndexCounter').textContent = `${currentIndex + 1} of ${SPECIMEN_KEYS.length}`;
+      document.getElementById('specimenSwitcherTitle').textContent = plant.name;
+
+      // Picture & visual attributes
+      document.getElementById('specimenMainImg').src = plant.image;
+      document.getElementById('specimenMainImg').alt = plant.name;
+      document.getElementById('photoBiomeBadge').textContent = plant.biomeLabel;
+      document.getElementById('btnViewFullSize').href = plant.image;
+      const macroBtn = document.getElementById('viewMacroBtn');
+      if (macroBtn) macroBtn.href = `plant-macro.html?id=${encodeURIComponent(plantId)}`;
+
+      // Sidebar Metadata
+      document.getElementById('metaCatalogId').textContent = plant.catalogCode;
+
+      // Right Column Header
+      document.getElementById('detailBiomeBadge').textContent = plant.biomeLabel;
+      document.getElementById('detailArchiveCode').textContent = `CATALOG #${plant.catalogCode}`;
+      document.getElementById('detailCommonName').textContent = plant.name;
+      document.getElementById('detailSciName').textContent = plant.scientificName;
+      document.getElementById('detailSummaryText').textContent = plant.shortDesc;
+
+      // Tag Pills in Header
+      const tagsWrap = document.getElementById('detailTagsWrap');
+      tagsWrap.innerHTML = plant.tags.map(t => `
+        <span class="specimen-tag-pill" onclick="window.location.href='gallery.html?tag=${encodeURIComponent(t)}'">
+          ${t}
+        </span>
+      `).join('');
+
+      // Descriptions (Origin & Purposes)
+      document.getElementById('detailOriginText').textContent = plant.origin;
+      document.getElementById('detailPurposeText').textContent = plant.purpose;
+
+      // Care Telemetry Grid (Watering, Sunlight, Substrate)
+      document.getElementById('detailWaterText').textContent = plant.water;
+      document.getElementById('detailLightText').textContent = plant.light;
+      document.getElementById('detailSoilText').textContent = plant.soil;
+
+      // Vital Metrics
+      document.getElementById('metricHumidity').textContent = plant.humidity || '60% – 80%';
+      document.getElementById('metricTemp').textContent = plant.temp || '18°C – 26°C';
+      document.getElementById('metricGrowth').textContent = plant.growth || 'Steady';
+      document.getElementById('metricToxicity').textContent = plant.toxicity || 'Pet Safe';
+
+      // Star states
+      updateStarUI(isStarred);
+
+      // Render Left Sidebar Tags categorized
+      renderSidebarTags(plant);
+    }
+
+    function updateStarUI(isStarred) {
+      const photoStar = document.getElementById('photoStarBtn');
+      const sideStarBtn = document.getElementById('sidebarStarBtn');
+      const sideStarIcon = document.getElementById('sidebarStarIcon');
+      const sideStarText = document.getElementById('sidebarStarText');
+      const mainStarBtn = document.getElementById('mainStarBtn');
+      const mainStarBtnIcon = document.getElementById('mainStarBtnIcon');
+      const mainStarBtnText = document.getElementById('mainStarBtnText');
+
+      if (isStarred) {
+        photoStar.classList.add('starred');
+        sideStarBtn.classList.add('starred');
+        sideStarIcon.textContent = '★';
+        sideStarText.textContent = 'Saved in Personal Gallery';
+        mainStarBtn.classList.add('starred');
+        mainStarBtnIcon.textContent = '★';
+        mainStarBtnText.textContent = 'Saved in Personal Gallery';
+      } else {
+        photoStar.classList.remove('starred');
+        sideStarBtn.classList.remove('starred');
+        sideStarIcon.textContent = '☆';
+        sideStarText.textContent = 'Save to Personal Gallery';
+        mainStarBtn.classList.remove('starred');
+        mainStarBtnIcon.textContent = '★';
+        mainStarBtnText.textContent = 'Add to Personal Gallery';
+      }
+    }
+
+    window.toggleCurrentSpecimenStar = function() {
+      let starred = getStarredIds();
+      const isStarred = starred.includes(activePlantId);
+      const plant = BOTANICAL_SPECIMENS[activePlantId];
+
+      if (isStarred) {
+        starred = starred.filter(id => id !== activePlantId);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(starred));
+        updateStarUI(false);
+        showToast(`Removed "${plant.name}" from Personal Gallery.`);
+      } else {
+        starred.push(activePlantId);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(starred));
+        updateStarUI(true);
+        showToast(`⭐ Added "${plant.name}" to Personal Gallery!`);
+      }
+    };
+
+    function showToast(msg) {
+      const toast = document.getElementById('specimenToast');
+      const text = document.getElementById('toastMessage');
+      if (!toast || !text) return;
+      text.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    // Render categorized tags in the left sidebar
+    function renderSidebarTags(plant) {
+      // 1. Taxonomy
+      const taxList = document.getElementById('tagListTaxonomy');
+      taxList.innerHTML = plant.taxonomyTags.map((t, idx) => `
+        <li class="tag-item">
+          <div class="tag-left-part">
+            <span class="tag-help-btn" title="Botanical taxonomic rank">?</span>
+            <span class="tag-name-link taxonomy" onclick="window.location.href='gallery.html?tag=${encodeURIComponent('#' + t)}'">${t}</span>
+          </div>
+          <span class="tag-count">${SPECIMEN_KEYS.filter(k => BOTANICAL_SPECIMENS[k].taxonomyTags && BOTANICAL_SPECIMENS[k].taxonomyTags.includes(t)).length}</span>
+        </li>
+      `).join('');
+
+      // 2. Biome
+      const biomeList = document.getElementById('tagListBiome');
+      biomeList.innerHTML = `
+        <li class="tag-item">
+          <div class="tag-left-part">
+            <span class="tag-help-btn" title="Ecosystem climatic classification">?</span>
+            <span class="tag-name-link biome" onclick="window.location.href='gallery.html'">${plant.biomeLabel}</span>
+          </div>
+          <span class="tag-count">${SPECIMEN_KEYS.filter(k => BOTANICAL_SPECIMENS[k].biome === plant.biome).length}</span>
+        </li>
+      `;
+
+      // 3. Traits & Morphology
+      const traitList = document.getElementById('tagListTraits');
+      traitList.innerHTML = plant.traits.map(t => `
+        <li class="tag-item">
+          <div class="tag-left-part">
+            <span class="tag-help-btn" title="Observed physical botanical morphology">?</span>
+            <span class="tag-name-link trait">${t}</span>
+          </div>
+          <span class="tag-count">1</span>
+        </li>
+      `).join('');
+
+      // 4. Herbarium Archival Tags
+      const genList = document.getElementById('tagListGeneral');
+      genList.innerHTML = plant.tags.map(t => {
+        const count = SPECIMEN_KEYS.filter(k => BOTANICAL_SPECIMENS[k].tags.includes(t)).length;
+        return `
+          <li class="tag-item">
+            <div class="tag-left-part">
+              <span class="tag-help-btn" title="Herbarium classification hashtag">?</span>
+              <span class="tag-name-link general" onclick="window.location.href='gallery.html?tag=${encodeURIComponent(t)}'">${t}</span>
+            </div>
+            <span class="tag-count">${count}</span>
+          </li>
+        `;
+      }).join('');
+    }
+
+    // Filter sidebar tags based on search input
+    window.filterSidebarTags = function(term) {
+      const q = term.toLowerCase().trim();
+      const items = document.querySelectorAll('.dossier-sidebar .tag-item');
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (!q || text.includes(q)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    };
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSpecimenDossier(activePlantId);
+    });
+  </script>
+</body>
+</html>

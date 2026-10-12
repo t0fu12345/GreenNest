@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tree Macro Telemetry — The Living Canopy</title>
+  <meta name="description" content="Botanical macro telemetry dashboard: Daily hydration intake, ambient humidity targets, and growth environment protocols.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #07100b;
+      --bg-surface: #0e1e16;
+      --bg-surface-elevated: #162c21;
+      --emerald-accent: #22c55e;
+      --emerald-light: #86efac;
+      --emerald-glow: rgba(34, 197, 94, 0.35);
+      --amber-accent: #eab308;
+      --cyan-accent: #38bdf8;
+      --text-primary: #f0fdf4;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-accent: rgba(34, 197, 94, 0.35);
+      --glass-pill: rgba(14, 30, 22, 0.9);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      /* STRICTLY NO ROUNDED CORNERS ACROSS MACRO SITE */
+      border-radius: 0 !important;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      background-image: 
+        radial-gradient(ellipse 90% 60% at 50% -15%, rgba(16, 185, 129, 0.18), transparent 70%),
+        radial-gradient(circle 600px at 0% 40%, rgba(5, 150, 105, 0.1), transparent 60%),
+        radial-gradient(circle 500px at 100% 70%, rgba(234, 179, 8, 0.05), transparent 50%),
+        linear-gradient(180deg, #07100b 0%, #050d09 100%);
+    }
+
+    /* Floating Navigation (Unrounded Square Style) */
+    .header-floating-wrap {
+      position: fixed;
+      top: 18px;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+      pointer-events: none;
+    }
+
+    .navbar-pill {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(14px, 2vw, 32px);
+      background: var(--glass-pill);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+      padding: 10px 16px 10px 22px;
+      max-width: 1320px;
+      width: 100%;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .navbar-pill:hover {
+      border-color: rgba(34, 197, 94, 0.45);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon-svg {
+      width: 30px;
+      height: 30px;
+      color: var(--emerald-accent);
+      flex-shrink: 0;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #ffffff;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+      margin-top: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+      padding: 5px 8px;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-return-garden {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid var(--border-accent);
+      color: var(--emerald-light);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-return-garden:hover {
+      background: var(--emerald-accent);
+      color: #05140b;
+      box-shadow: 0 0 20px var(--emerald-glow);
+    }
+
+    /* Main Macro Dashboard Container */
+    .macro-container {
+      max-width: 1440px;
+      margin: 100px auto 60px;
+      padding: 0 clamp(16px, 2.5vw, 36px);
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    /* Top Switcher Bar (Booru < previous / next > inspired, Unrounded) */
+    .macro-top-bar {
+      background: rgba(14, 30, 22, 0.88);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glass);
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .macro-nav-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border: 1px solid rgba(147, 197, 253, 0.2);
+      background: rgba(147, 197, 253, 0.05);
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+
+    .macro-nav-arrow:hover {
+      background: rgba(147, 197, 253, 0.15);
+      border-color: #93c5fd;
+      color: #fff;
+    }
+
+    .macro-center-counter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: #94a3b8;
+    }
+
+    .macro-highlight-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.06em;
+    }
+
+    /* Tree Hero Card */
+    .macro-hero-card {
+      background: rgba(14, 30, 22, 0.82);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      padding: 26px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+    }
+
+    .macro-hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .macro-hero-biome {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .macro-tree-name {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 3.4vw, 3rem);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.15;
+    }
+
+    .macro-tree-latin {
+      font-style: italic;
+      color: #86efac;
+      font-size: 1.05rem;
+    }
+
+    /* Notification Sync Badge (Connecting to future notification system) */
+    .macro-notif-sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      padding: 10px 18px;
+      color: #dcfce7;
+      font-size: 0.84rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    }
+
+    .notif-pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--emerald-accent);
+      box-shadow: 0 0 10px var(--emerald-accent);
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.5; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* ====================================================
+       GYM-STYLE "BOTANICAL MACROS" 4-CARD TOP ROW
+       Like gym macros: Daily Water, Daily Humidity, Growth Env, Bio-Nutrients
+       ==================================================== */
+    .botanical-macros-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 1024px) {
+      .botanical-macros-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .botanical-macros-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Individual Macro Card (Strictly Square Corners: border-radius: 0) */
+    .macro-metric-card {
+      background: rgba(14, 30, 22, 0.85);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glass);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      transition: var(--transition-smooth);
+    }
+
+    .macro-metric-card:hover {
+      border-color: var(--emerald-accent);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+    }
+
+    .macro-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .macro-card-icon {
+      font-size: 1.1rem;
+    }
+
+    .macro-main-value {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: #ffffff;
+      font-family: var(--font-display);
+      letter-spacing: 0.02em;
+    }
+
+    .macro-progress-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .macro-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
+      transition: width 0.8s ease-out;
+    }
+
+    .macro-progress-fill.water {
+      background: linear-gradient(90deg, #38bdf8 0%, #93c5fd 100%);
+    }
+
+    .macro-progress-fill.humidity {
+      background: linear-gradient(90deg, #22c55e 0%, #34d399 100%);
+    }
+
+    .macro-progress-fill.env {
+      background: linear-gradient(90deg, #f59e0b 0%, #fde047 100%);
+    }
+
+    .macro-progress-fill.soil {
+      background: linear-gradient(90deg, #10b981 0%, #6ee7b7 100%);
+    }
+
+    .macro-card-footer {
+      font-size: 0.76rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    /* ====================================================
+       SQUARE-NEXT-TO-SQUARE BENTO GRID FOR DETAILED TELEMETRY
+       (Environment Needed to Grow, Humidity, Daily Water)
+       ==================================================== */
+    .macro-bento-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .macro-bento-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .macro-bento-box {
+      background: rgba(14, 30, 22, 0.82);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      padding: 24px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+    }
+
+    .bento-box-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .bento-specs-table {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .spec-item-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 8px 10px;
+      background: rgba(7, 16, 11, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .spec-item-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+    }
+
+    .spec-item-val {
+      font-size: 0.88rem;
+      color: #f1f5f9;
+      text-align: right;
+    }
+
+    .spec-item-val.highlight {
+      color: var(--emerald-light);
+      font-weight: 600;
+    }
+
+    /* Picture Bento Tile (Square Image) */
+    .macro-photo-bento {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+    }
+
+    .macro-photo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .macro-photo-bento:hover .macro-photo-img {
+      transform: scale(1.04);
+    }
+
+    .macro-photo-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(14, 30, 22, 0.9);
+      border: 1px solid var(--border-accent);
+      color: var(--emerald-light);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+    }
+
+    /* Interactive Action Row */
+    .macro-care-action-bar {
+      background: rgba(14, 30, 22, 0.85);
+      border: 1px solid var(--border-glass);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .care-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-log-macro {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac;
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-log-macro:hover {
+      background: var(--emerald-accent);
+      color: #07100b;
+      font-weight: 700;
+    }
+
+    .btn-log-macro.water {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: #7dd3fc;
+    }
+
+    .btn-log-macro.water:hover {
+      background: #38bdf8;
+      color: #07100b;
+    }
+
+    /* Toast Notification */
+    .macro-toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 2000;
+      background: rgba(14, 30, 22, 0.95);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      font-size: 0.9rem;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    .macro-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation Bar (Unrounded) -->
+  <header class="header-floating-wrap">
+    <nav class="navbar-pill">
+      <a href="index.html" class="brand-logo">
+        <svg class="brand-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-title">The Living Canopy</span>
+          <span class="brand-sub">Tree Macro Telemetry</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="garden.html">My Garden</a></li>
+        <li><a href="gallery.html">Specimens ↗</a></li>
+        <li><a href="personal-gallery.html">Personal Gallery</a></li>
+        <li><a href="about.html">About Us ↗</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="garden.html" class="btn-return-garden">
+          <span>← Back to Garden</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Macro Dashboard -->
+  <main class="macro-container">
+
+    <!-- Top Switcher Pagination Bar -->
+    <div class="macro-top-bar">
+      <a href="#" id="btnPrevTree" class="macro-nav-arrow">&lt; previous tree</a>
+      <div class="macro-center-counter">
+        <span>Specimen Macro Telemetry:</span>
+        <span class="macro-highlight-title" id="treeCounterLabel">1 of 4 • Monstera Deliciosa</span>
+      </div>
+      <a href="#" id="btnNextTree" class="macro-nav-arrow">next tree &gt;</a>
+    </div>
+
+    <!-- Tree Hero Card & Sanctuary Notification Banner -->
+    <div class="macro-hero-card">
+      <div class="macro-hero-left">
+        <span class="macro-hero-biome" id="treeBiomeLabel">🌿 Tropical Rainforest Cultivar</span>
+        <h1 class="macro-tree-name" id="treeCommonName">Monstera Deliciosa</h1>
+        <div class="macro-tree-latin" id="treeLatinName">Monstera deliciosa Liebm.</div>
+      </div>
+
+      <!-- Sanctuary Notification Live Sync Banner -->
+      <div class="macro-notif-sync-badge">
+        <span class="notif-pulse-dot"></span>
+        <span id="treeNotifMessage">Monstera Deliciosa is thriving at 68% ambient humidity.</span>
+      </div>
+    </div>
+
+    <!-- ====================================================
+         GYM-STYLE "BOTANICAL MACROS" 4-CARD TOP ROW
+         1: Daily Water Intake
+         2: Daily Ambient Humidity
+         3: Environment Needed to Grow
+         4: Substrate Bio-Nutrient Porosity
+         ==================================================== -->
+    <section class="botanical-macros-row">
+
+      <!-- Macro 1: Daily Water Intake -->
+      <div class="macro-metric-card">
+        <div class="macro-card-header">
+          <span>💧 Daily Water Intake</span>
+          <span class="macro-card-icon">🌊</span>
+        </div>
+        <div class="macro-main-value" id="macroWaterVal">350 ml</div>
+        <div class="macro-progress-bar-wrap">
+          <div class="macro-progress-fill water" id="macroWaterBar" style="width: 82%;"></div>
+        </div>
+        <div class="macro-card-footer" id="macroWaterSub">
+          Optimal root zone saturation. Next deep hydration scheduled in 4 days.
+        </div>
+      </div>
+
+      <!-- Macro 2: Daily Ambient Humidity -->
+      <div class="macro-metric-card">
+        <div class="macro-card-header">
+          <span>🌫️ Daily Ambient Humidity</span>
+          <span class="macro-card-icon">🍃</span>
+        </div>
+        <div class="macro-main-value" id="macroHumidityVal">68% RH</div>
+        <div class="macro-progress-bar-wrap">
+          <div class="macro-progress-fill humidity" id="macroHumidityBar" style="width: 88%;"></div>
+        </div>
+        <div class="macro-card-footer" id="macroHumiditySub">
+          High foliar turgor. Aerial root transpiration balanced under diffused daylight.
+        </div>
+      </div>
+
+      <!-- Macro 3: Environment Needed to Grow -->
+      <div class="macro-metric-card">
+        <div class="macro-card-header">
+          <span>☀️ Growth Environment</span>
+          <span class="macro-card-icon">⚡</span>
+        </div>
+        <div class="macro-main-value" id="macroEnvVal">1,600 FC</div>
+        <div class="macro-progress-bar-wrap">
+          <div class="macro-progress-fill env" id="macroEnvBar" style="width: 95%;"></div>
+        </div>
+        <div class="macro-card-footer" id="macroEnvSub">
+          Dappled canopy daylight • 22°C ambient conservatory thermal curve.
+        </div>
+      </div>
+
+      <!-- Macro 4: Substrate Bio-Nutrients & NPK -->
+      <div class="macro-metric-card">
+        <div class="macro-card-header">
+          <span>🌱 Soil Bio-Macro</span>
+          <span class="macro-card-icon">🔬</span>
+        </div>
+        <div class="macro-main-value" id="macroSoilVal">Aroid Chunk</div>
+        <div class="macro-progress-bar-wrap">
+          <div class="macro-progress-fill soil" id="macroSoilBar" style="width: 90%;"></div>
+        </div>
+        <div class="macro-card-footer" id="macroSoilSub">
+          High aeration blend: orchid bark, pumice, and coco coir at 6.0 pH.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====================================================
+         SQUARE BENTO GRID FOR DETAILED TELEMETRY
+         Square next to square with no rounded corners!
+         ==================================================== -->
+    <section class="macro-bento-grid">
+
+      <!-- Square 1: Specimen Macro Capture -->
+      <div class="macro-photo-bento">
+        <span class="macro-photo-badge" id="photoBadgeTag">Holotype Scan</span>
+        <img src="" alt="" id="macroPhotoImg" class="macro-photo-img">
+      </div>
+
+      <!-- Square 2: Environment Needed to Grow -->
+      <div class="macro-bento-box">
+        <h3 class="bento-box-title">
+          <span>🌍 Environment Needed to Grow</span>
+        </h3>
+        <div class="bento-specs-table">
+          <div class="spec-item-row">
+            <span class="spec-item-label">Climatic Biome</span>
+            <span class="spec-item-val highlight" id="specBiome">Tropical Rainforest</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Daylight Illuminance</span>
+            <span class="spec-item-val" id="specLight">1,200 – 2,000 Foot-Candles (FC)</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Thermal Gradient</span>
+            <span class="spec-item-val" id="specTemp">20°C min night / 28°C max day</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Air Circulation</span>
+            <span class="spec-item-val">Steady gentle convection (prevents fungal mold)</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Photoperiod</span>
+            <span class="spec-item-val">12 hours diffused daylight (no harsh glass focus)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Square 3: Daily Humidity Telemetry -->
+      <div class="macro-bento-box">
+        <h3 class="bento-box-title">
+          <span>🌫️ Daily Humidity Telemetry</span>
+        </h3>
+        <div class="bento-specs-table">
+          <div class="spec-item-row">
+            <span class="spec-item-label">Target Humidity</span>
+            <span class="spec-item-val highlight" id="specHumidity">65% – 85% RH (Current: 68%)</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Vapor Deficit (VPD)</span>
+            <span class="spec-item-val">0.85 kPa (Optimal stomata aperture)</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Aerial Root Mist</span>
+            <span class="spec-item-val" id="specMist">Mist every 48 hours with filtered rainwater</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Foliar Turgor</span>
+            <span class="spec-item-val">Firm, glossy fenestrations without tip browning</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Dry Air Defense</span>
+            <span class="spec-item-val">Active pebble tray or ultrasonic humidifier</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Square 4: Daily Water & Hydration Cadence -->
+      <div class="macro-bento-box">
+        <h3 class="bento-box-title">
+          <span>💧 Daily Water & Hydration Cadence</span>
+        </h3>
+        <div class="bento-specs-table">
+          <div class="spec-item-row">
+            <span class="spec-item-label">Hydration Volume</span>
+            <span class="spec-item-val highlight" id="specWaterVol">350 ml per saturation cycle</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Frequency Cadence</span>
+            <span class="spec-item-val" id="specWaterFreq">Every 7–10 days when top 50% dries</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Hydration Method</span>
+            <span class="spec-item-val">Deep base saturation; preserve dry foliage crown</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Percolation Rate</span>
+            <span class="spec-item-val">Free-flowing drainage within 45 seconds</span>
+          </div>
+          <div class="spec-item-row">
+            <span class="spec-item-label">Overwatering Shield</span>
+            <span class="spec-item-val">Empty drip reservoir completely after 15 min</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Interactive Daily Macro Logging Controls -->
+    <div class="macro-care-action-bar">
+      <div>
+        <span style="font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--emerald-light); font-weight: 700;">Garden Telemetry Actions</span>
+        <h4 style="font-size: 1.05rem; color: #fff; margin-top: 2px;">Log Daily Care Telemetry</h4>
+      </div>
+
+      <div class="care-actions-group">
+        <button type="button" class="btn-log-macro water" onclick="logMacroAction('water')">
+          <span>💧 Log Hydration Intake</span>
+        </button>
+        <button type="button" class="btn-log-macro" onclick="logMacroAction('humidity')">
+          <span>🌫️ Log Foliage Mist</span>
+        </button>
+        <button type="button" class="btn-log-macro" onclick="logMacroAction('soil')">
+          <span>🌱 Log Soil Inspection</span>
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Interactive Toast Notification -->
+  <div class="macro-toast" id="macroToast">
+    <span>🌿</span>
+    <span id="macroToastMsg">Macro telemetry action logged!</span>
+  </div>
+
+  <script>
+    // Master Botanical Database with Gym-Style Macros
+    const BOTANICAL_SPECIMENS = {
+      'specimen-monstera': {
+        id: 'specimen-monstera',
+        catalogCode: 'CANOPY-001',
+        name: 'Monstera Deliciosa',
+        scientificName: 'Monstera deliciosa Liebm.',
+        biomeLabel: 'Tropical Rainforest Cultivar',
+        biome: 'Tropical Rainforest',
+        image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
+        notifMsg: 'Monstera Deliciosa is thriving at 68% ambient humidity.',
+        waterVal: '350 ml',
+        waterBar: '82%',
+        waterSub: 'Optimal root zone saturation. Next deep hydration scheduled in 4 days.',
+        waterVol: '350 ml per saturation cycle',
+        waterFreq: 'Every 7–10 days when top 50% potting mix dries',
+        humidityVal: '68% RH',
+        humidityBar: '88%',
+        humiditySub: 'High foliar turgor. Aerial root transpiration balanced under diffused light.',
+        humidityTarget: '65% – 85% RH (Current: 68%)',
+        mistCadence: 'Mist aerial roots every 48 hours with filtered water',
+        envVal: '1,600 FC',
+        envBar: '95%',
+        envSub: 'Dappled canopy daylight • 22°C ambient conservatory thermal curve.',
+        light: '1,200 – 2,000 Foot-Candles (FC) bright indirect light',
+        temp: '20°C min night / 28°C max day',
+        soilVal: 'Aroid Chunk',
+        soilBar: '90%',
+        soilSub: 'High aeration blend: orchid bark, pumice, and coco coir at 6.0 pH.'
+      },
+      'specimen-red-rose': {
+        id: 'specimen-red-rose',
+        catalogCode: 'CANOPY-002',
+        name: 'Red Rose',
+        scientificName: 'Rosa damascena / Rosa gallica',
+        biomeLabel: 'Subtropical Highlands Cultivar',
+        biome: 'Subtropical Highlands',
+        image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80',
+        notifMsg: 'Red Rose is thriving with 6.5 hours of daily direct light exposure.',
+        waterVal: '500 ml',
+        waterBar: '90%',
+        waterSub: 'Deep base hydration saturation completed. Keep foliage dry.',
+        waterVol: '500 ml deep saturation',
+        waterFreq: '1–2 times weekly when top 2 inches dry out',
+        humidityVal: '50% RH',
+        humidityBar: '75%',
+        humiditySub: 'Moderate highland humidity. Optimal air circulation prevents mildew.',
+        humidityTarget: '40% – 60% RH (Current: 50%)',
+        mistCadence: 'Avoid overhead misting; hydrate only root zone',
+        envVal: '3,200 FC',
+        envBar: '98%',
+        envSub: 'Full direct sunlight (6+ hours daily) • 18°C – 26°C highland aeration.',
+        light: 'Full direct sunlight (3,000 – 4,500 FC)',
+        temp: '18°C min night / 26°C max day',
+        soilVal: 'Loamy Blend',
+        soilBar: '92%',
+        soilSub: 'Nutrient-rich loamy soil enriched with compost and perlite (pH 6.5).'
+      },
+      'specimen-aechmea': {
+        id: 'specimen-aechmea',
+        catalogCode: 'CANOPY-003',
+        name: 'Silver Vase Bromeliad',
+        scientificName: 'Aechmea fasciata',
+        biomeLabel: 'Arid & Semi-Desert Epiphyte',
+        biome: 'Arid & Semi-Desert',
+        image: 'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80',
+        notifMsg: 'Silver Vase Bromeliad central rosette reservoir is at 95% capacity.',
+        waterVal: '150 ml',
+        waterBar: '95%',
+        waterSub: 'Central rosette urn reservoir refreshed with clean rainwater.',
+        waterVol: '150 ml (Urn reservoir)',
+        waterFreq: 'Flush and refill central vase weekly; light root misting',
+        humidityVal: '55% RH',
+        humidityBar: '80%',
+        humiditySub: 'Tolerates arid ambient air. Epiphyte scales conserve moisture.',
+        humidityTarget: '45% – 70% RH (Current: 55%)',
+        mistCadence: 'Light misting on banded foliage 2 times weekly',
+        envVal: '1,800 FC',
+        envBar: '90%',
+        envSub: 'Generous indirect daylight • 18°C – 30°C thermal tolerance.',
+        light: 'Bright indirect daylight or gentle morning direct sun',
+        temp: '18°C min night / 30°C max day',
+        soilVal: 'Epiphyte Grit',
+        soilBar: '94%',
+        soilSub: 'Porous epiphyte bark grit with superior root aeration.'
+      },
+      'specimen-boston-fern': {
+        id: 'specimen-boston-fern',
+        catalogCode: 'CANOPY-004',
+        name: 'Highland Boston Fern',
+        scientificName: 'Nephrolepis exaltata',
+        biomeLabel: 'Subtropical Cloud Forest Epiphyte',
+        biome: 'Subtropical Highlands',
+        image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80',
+        notifMsg: 'Highland Boston Fern fronds are absorbing 80% cloud forest moisture.',
+        waterVal: '300 ml',
+        waterBar: '88%',
+        waterSub: 'Steady root moisture maintained. Root ball never allowed to dry.',
+        waterVol: '300 ml regular hydration',
+        waterFreq: 'Every 3–4 days to sustain continuous root moisture',
+        humidityVal: '80% RH',
+        humidityBar: '96%',
+        humiditySub: 'Cloud forest ambient moisture. Feathery pinnae cascading vigorously.',
+        humidityTarget: '70% – 90% RH (Current: 80%)',
+        mistCadence: 'Daily gentle ambient misting around frond canopy',
+        envVal: '1,100 FC',
+        envBar: '85%',
+        envSub: 'Soft filtered shade • 16°C – 24°C cool highland cloud cover.',
+        light: 'Filtered soft shade or eastern morning light (800 – 1,200 FC)',
+        temp: '16°C min night / 24°C max day',
+        soilVal: 'Peat Blend',
+        soilBar: '88%',
+        soilSub: 'Rich peat moss blend with vermiculite for high moisture retention.'
+      }
+    };
+
+    const SPECIMEN_KEYS = Object.keys(BOTANICAL_SPECIMENS);
+
+    function getCurrentPlantId() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedId = urlParams.get('id');
+      if (requestedId && BOTANICAL_SPECIMENS[requestedId]) {
+        return requestedId;
+      }
+      return 'specimen-monstera';
+    }
+
+    let activePlantId = getCurrentPlantId();
+
+    function renderTreeMacro(plantId) {
+      const plant = BOTANICAL_SPECIMENS[plantId];
+      if (!plant) return;
+
+      activePlantId = plantId;
+      document.title = `${plant.name} Macro Telemetry — The Living Canopy`;
+
+      // Top pagination switcher
+      const currentIndex = SPECIMEN_KEYS.indexOf(plantId);
+      const prevIndex = (currentIndex - 1 + SPECIMEN_KEYS.length) % SPECIMEN_KEYS.length;
+      const nextIndex = (currentIndex + 1) % SPECIMEN_KEYS.length;
+
+      document.getElementById('btnPrevTree').href = `plant-macro.html?id=${SPECIMEN_KEYS[prevIndex]}`;
+      document.getElementById('btnNextTree').href = `plant-macro.html?id=${SPECIMEN_KEYS[nextIndex]}`;
+      document.getElementById('treeCounterLabel').textContent = `${currentIndex + 1} of ${SPECIMEN_KEYS.length} • ${plant.name}`;
+
+      // Hero Titles & Notification Banner
+      document.getElementById('treeBiomeLabel').textContent = `🌿 ${plant.biomeLabel}`;
+      document.getElementById('treeCommonName').textContent = plant.name;
+      document.getElementById('treeLatinName').textContent = plant.scientificName;
+      document.getElementById('treeNotifMessage').textContent = plant.notifMsg;
+
+      // 4 Gym-Style Botanical Macro Cards
+      document.getElementById('macroWaterVal').textContent = plant.waterVal;
+      document.getElementById('macroWaterBar').style.width = plant.waterBar;
+      document.getElementById('macroWaterSub').textContent = plant.waterSub;
+
+      document.getElementById('macroHumidityVal').textContent = plant.humidityVal;
+      document.getElementById('macroHumidityBar').style.width = plant.humidityBar;
+      document.getElementById('macroHumiditySub').textContent = plant.humiditySub;
+
+      document.getElementById('macroEnvVal').textContent = plant.envVal;
+      document.getElementById('macroEnvBar').style.width = plant.envBar;
+      document.getElementById('macroEnvSub').textContent = plant.envSub;
+
+      document.getElementById('macroSoilVal').textContent = plant.soilVal;
+      document.getElementById('macroSoilBar').style.width = plant.soilBar;
+      document.getElementById('macroSoilSub').textContent = plant.soilSub;
+
+      // Photo Bento Box
+      document.getElementById('macroPhotoImg').src = plant.image;
+      document.getElementById('macroPhotoImg').alt = plant.name;
+      document.getElementById('photoBadgeTag').textContent = `${plant.catalogCode} • Macro Holotype`;
+
+      // Environment Needed to Grow Table
+      document.getElementById('specBiome').textContent = plant.biome;
+      document.getElementById('specLight').textContent = plant.light;
+      document.getElementById('specTemp').textContent = plant.temp;
+
+      // Humidity Telemetry Table
+      document.getElementById('specHumidity').textContent = plant.humidityTarget;
+      document.getElementById('specMist').textContent = plant.mistCadence;
+
+      // Water Telemetry Table
+      document.getElementById('specWaterVol').textContent = plant.waterVol;
+      document.getElementById('specWaterFreq').textContent = plant.waterFreq;
+    }
+
+    // Interactive Log Button Action
+    window.logMacroAction = function(actionType) {
+      const plant = BOTANICAL_SPECIMENS[activePlantId];
+      const toast = document.getElementById('macroToast');
+      const msg = document.getElementById('macroToastMsg');
+
+      let actionDesc = '';
+      if (actionType === 'water') {
+        actionDesc = `💧 Logged ${plant.waterVal} hydration for ${plant.name}! Moisture macro updated.`;
+      } else if (actionType === 'humidity') {
+        actionDesc = `🌫️ Foliage mist logged for ${plant.name}! Ambient humidity stable at ${plant.humidityVal}.`;
+      } else {
+        actionDesc = `🌱 Root inspection logged for ${plant.name}! Substrate aeration optimal.`;
+      }
+
+      msg.textContent = actionDesc;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTreeMacro(activePlantId);
+    });
+  </script>
+</body>
+</html>

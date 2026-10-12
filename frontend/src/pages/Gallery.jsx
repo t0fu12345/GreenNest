@@ -33,7 +33,7 @@ const Gallery = () => {
           The Specimen Gallery.
         </h1>
         <p className="gallery-subtitle" style={{ color: '#cbd5e1', fontSize: '1.05rem', lineHeight: 1.65, maxWidth: '680px', margin: '0 auto 36px', fontWeight: 300 }}>
-          Khám phá kho lưu trữ hoàn chỉnh các loài thực vật quý hiếm, tra cứu điều kiện sinh trưởng, độ râm mát và khả năng thanh lọc không khí cho ngôi nhà hiện đại.
+          Explore the comprehensive archive of rare botanical specimens, examine growth parameters, shade tolerance metrics, and air purification telemetry for contemporary living spaces.
         </p>
 
         {/* Search Input */}
@@ -46,7 +46,7 @@ const Gallery = () => {
             <input 
               type="text" 
               className="search-input" 
-              placeholder="Tìm theo tên loài, chi khoa học, hoặc hashtag (#Araceae, #PetSafe)..."
+              placeholder="Search by common name, botanical genus, or facet tag (#Araceae, #PetSafe)..."
               style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#ffffff', fontSize: '1rem', fontFamily: 'var(--font-sans)' }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -60,10 +60,10 @@ const Gallery = () => {
       <section className="filter-section-wrap" style={{ maxWidth: '1300px', margin: '0 auto 36px', padding: '0 24px' }}>
         {/* Category Filter Bar */}
         <div className="category-filter-bar" style={{ display: 'flex', alignItems: 'center', gap: '12px', overflowX: 'auto', paddingBottom: '16px' }}>
-          <button className={`cat-btn ${activeBiome === 'all' ? 'active' : ''}`} onClick={() => handleBiomeSelect('all')}>Tất Cả Đới Khí Hậu</button>
-          <button className={`cat-btn ${activeBiome === 'tropical' ? 'active' : ''}`} onClick={() => handleBiomeSelect('tropical')}>🌴 Đới Nóng (Nhiệt Đới & Xích Đạo)</button>
-          <button className={`cat-btn ${activeBiome === 'subtropical' ? 'active' : ''}`} onClick={() => handleBiomeSelect('subtropical')}>🌲 Đới Ôn Hòa & Cận Nhiệt</button>
-          <button className={`cat-btn ${activeBiome === 'arid' ? 'active' : ''}`} onClick={() => handleBiomeSelect('arid')}>🏜️ Đới Khô Hạn & Bán Hoang Mạc</button>
+          <button className={`cat-btn ${activeBiome === 'all' ? 'active' : ''}`} onClick={() => handleBiomeSelect('all')}>All Climatic Biomes</button>
+          <button className={`cat-btn ${activeBiome === 'tropical' ? 'active' : ''}`} onClick={() => handleBiomeSelect('tropical')}>🌴 Tropical Biome</button>
+          <button className={`cat-btn ${activeBiome === 'subtropical' ? 'active' : ''}`} onClick={() => handleBiomeSelect('subtropical')}>🌲 Subtropical Highlands</button>
+          <button className={`cat-btn ${activeBiome === 'arid' ? 'active' : ''}`} onClick={() => handleBiomeSelect('arid')}>🏜️ Arid & Desert</button>
         </div>
 
         {/* Facet Tags */}
@@ -83,8 +83,8 @@ const Gallery = () => {
 
         {/* Status Bar */}
         <div className="gallery-status-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', marginBottom: '30px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', fontSize: '0.88rem', color: 'var(--sage-muted)' }}>
-          <div>Đang lọc: <strong style={{ color: '#fff' }}>{activeTag ? activeTag : (activeBiome === 'all' ? 'Tất Cả Đới Khí Hậu' : activeBiome)}</strong></div>
-          <div style={{ fontSize: '0.8rem', color: '#fbbf24' }}>⚡ No Data Yet (Chưa Hoàn Thành Sản Phẩm)</div>
+          <div>Filtering by: <strong style={{ color: '#fff' }}>{activeTag ? activeTag : (activeBiome === 'all' ? 'All Climatic Biomes' : activeBiome)}</strong></div>
+          <div style={{ fontSize: '0.8rem', color: '#fbbf24' }}>⚡ Active Prototype (Catalog Ingestion Phase)</div>
         </div>
       </section>
 
@@ -93,18 +93,16 @@ const Gallery = () => {
         <div style={{ textAlign: 'center', padding: '75px 24px', background: 'rgba(14, 30, 22, 0.75)', backdropFilter: 'blur(25px)', border: '1.5px dashed rgba(245, 158, 11, 0.45)', borderRadius: '28px', boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6)', maxWidth: '820px', margin: '0 auto' }}>
           <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🌱</div>
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#fff', marginBottom: '12px' }}>
-            No Data Yet {searchQuery && `("${searchQuery}")`}
+            Specimen Database Ingestion {searchQuery && `("${searchQuery}")`}
           </h2>
           <p style={{ color: '#94a3b8', fontSize: '1.05rem', lineHeight: 1.7, maxWidth: '600px', margin: '0 auto 26px' }}>
-            Hệ thống dữ liệu cây trồng theo 3 đại đới khí hậu đang trong quá trình chuẩn hóa thực vật học và chưa hoàn thành sản phẩm. Cơ sở dữ liệu sẽ hiển thị đầy đủ ngay sau khi tích hợp Backend & API!
+            The curated plant database across our 3 primary biomes is undergoing botanical taxonomy verification. Full specimen records and live care telemetry will display upon Backend API connection!
           </p>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(245, 158, 11, 0.12)', border: '1px solid rgba(245, 158, 11, 0.35)', padding: '8px 22px', borderRadius: '9999px', color: '#fbbf24', fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            <span>⚡ Product Status: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+            <span>⚡ Product Status: Database Catalog Ingestion in Progress</span>
           </div>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 };
