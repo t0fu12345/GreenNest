@@ -1,0 +1,1099 @@
+[
+  {
+    "slug": "monstera-deliciosa",
+    "name": "Trầu bà lá xẻ",
+    "botanicalName": "Monstera deliciosa",
+    "category": "foliage",
+    "description": "Cây cảnh nội thất kinh điển với phiến lá xẻ độc đáo, mang đậm phong cách nhiệt đới hoang dã. Biểu tượng của không gian Biophilic.",
+    "light": "bright-indirect",
+    "water": "moderate",
+    "difficulty": "easy",
+    "regions": [
+      "north",
+      "south",
+      "central"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "tags": [
+      "indoor",
+      "easy-care",
+      "air-purifying",
+      "tropical"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
+        "alt": "Cây trầu bà lá xẻ tổng thể",
+        "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1579730043132-1b1cbdfdcb2d?auto=format&fit=crop&w=800&q=80",
+        "alt": "Chi tiết lá xẻ Monstera",
+        "isPrimary": false
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office",
+        "balcony"
+      ],
+      "growthHabit": "Dạng thân leo vươn dài, lá xẻ sâu khi trưởng thành. Cần cọc dớn để leo.",
+      "soil": "Đất trồng giàu mùn, tơi xốp, kết hợp xơ dừa và đá perlite để thoát nước tốt.",
+      "container": "Chậu nhựa hoặc gốm sứ có lỗ thoát nước, đường kính tối thiểu 25cm.",
+      "watering": "Tưới 1-2 lần/tuần. Để lớp đất mặt khô 3-5cm trước khi tưới đẫm nước tiếp theo.",
+      "routineCare": "Bón phân NPK loãng 1 tháng/lần vào mùa Xuân/Hạ. Thường xuyên lau bụi trên lá bằng khăn ẩm.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Chứa tinh thể canxi oxalat. Gây sưng, rát miệng và buồn nôn nếu chó mèo ăn phải.",
+        "source": "ASPCA Animal Poison Control"
+      }
+    },
+    "similarPlantSlugs": [
+      "pothos-gold",
+      "philodendron-birkin"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "sansevieria-trifasciata",
+    "name": "Lưỡi Hổ",
+    "botanicalName": "Dracaena trifasciata",
+    "category": "succulent",
+    "description": "Loài cây vô cùng bền bỉ, nổi tiếng với khả năng lọc khí độc ban đêm. Phù hợp cho những người bận rộn nhất.",
+    "light": "low",
+    "water": "low",
+    "difficulty": "easy",
+    "regions": [
+      "north",
+      "central",
+      "south",
+      "highlands"
+    ],
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn",
+      "winter"
+    ],
+    "tags": [
+      "indoor",
+      "bedroom",
+      "air-purifying",
+      "low-light"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1610630877758-c0b25e7144e7?auto=format&fit=crop&w=800&q=80",
+        "alt": "Chậu cây lưỡi hổ trong phòng ngủ",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office",
+        "bedroom"
+      ],
+      "growthHabit": "Mọc thẳng đứng, dạng cụm rễ ngầm, lá dày trữ nước.",
+      "soil": "Đất dành cho xương rồng/sen đá, thoát nước cực kỳ tốt, pha nhiều cát/đá pumice.",
+      "container": "Chậu đất nung (terracotta) giúp thoát hơi nước nhanh.",
+      "watering": "Rất ít tưới. Chỉ tưới khi toàn bộ bầu đất đã khô hoàn toàn (khoảng 2-3 tuần/lần).",
+      "routineCare": "Tuyệt đối không để đọng nước ở lõi cây. Hiếm khi cần bón phân.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "safe",
+        "note": "Gây rối loạn tiêu hóa nhẹ ở chó mèo nếu nhai phải lá.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "zz-plant",
+      "aloe-vera"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "ficus-lyrata",
+    "name": "Bàng Singapore",
+    "botanicalName": "Ficus lyrata",
+    "category": "tree",
+    "description": "Sở hữu những chiếc lá to hình đàn tỳ bà, mang lại cấu trúc thẳng đứng mạnh mẽ và điểm nhấn kiến trúc cho mọi góc phòng.",
+    "light": "bright-indirect",
+    "water": "moderate",
+    "difficulty": "medium",
+    "regions": [
+      "north",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "tags": [
+      "indoor",
+      "statement-plant",
+      "tree"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1612474149814-c36da41753c1?auto=format&fit=crop&w=800&q=80",
+        "alt": "Bàng Singapore đặt cạnh cửa sổ",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office",
+        "terrace"
+      ],
+      "growthHabit": "Cây thân gỗ đứng, phát triển cao lớn. Lá to, mọc cách đều.",
+      "soil": "Đất trồng tiêu chuẩn, giàu mùn hữu cơ và thông thoáng.",
+      "container": "Chậu nặng, chắc chắn để giữ thăng bằng cho cây cao.",
+      "watering": "Tưới đều đặn nhưng không để úng nước. Tưới khi 5cm đất mặt đã khô.",
+      "routineCare": "Thường xuyên xoay chậu 90 độ mỗi tháng để cây phát triển thẳng. Rất nhạy cảm với việc thay đổi vị trí.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Nhựa cây có thể gây kích ứng da nghiêm trọng và độc với thú cưng.",
+        "source": "Pet Poison Helpline"
+      }
+    },
+    "similarPlantSlugs": [
+      "ficus-elastica",
+      "pachira-aquatica"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "calathea-orbifolia",
+    "name": "Đuôi Công Tròn",
+    "botanicalName": "Calathea orbifolia",
+    "category": "foliage",
+    "description": "Nổi bật với những chiếc lá to bản có sọc bạc tinh tế. Loài cây khó tính nhưng vô cùng lộng lẫy, xứng đáng cho những người yêu thích sự hoàn mỹ.",
+    "light": "medium",
+    "water": "high",
+    "difficulty": "hard",
+    "regions": [
+      "central",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn"
+    ],
+    "tags": [
+      "indoor",
+      "patterned-leaves",
+      "humidity-loving"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1616690710400-a16d146927c5?auto=format&fit=crop&w=800&q=80",
+        "alt": "Lá cây Đuôi công sọc bạc",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office"
+      ],
+      "growthHabit": "Phát triển theo bụi, lá di chuyển (cụp lại) vào ban đêm theo nhịp sinh học (Nyctinasty).",
+      "soil": "Đất giữ ẩm tốt nhưng không được sũng nước (xơ dừa, perlite, mùn cưa).",
+      "container": "Chậu nhựa giữ ẩm tốt.",
+      "watering": "Yêu cầu nước lọc hoặc nước cất. Tưới ngay khi bề mặt đất vừa chớm khô, luôn giữ đất ẩm nhẹ.",
+      "routineCare": "Đòi hỏi độ ẩm không khí rất cao (>60%). Cần dùng máy phun sương nếu dùng điều hòa.",
+      "toxicityCaution": {
+        "pets": "safe",
+        "humans": "safe",
+        "note": "Hoàn toàn an toàn cho mèo, chó và trẻ nhỏ.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "calathea-makoyana",
+      "maranta-leuconeura"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "lavandula-angustifolia",
+    "name": "Hương Thảo Oải Hương (Lavender)",
+    "botanicalName": "Lavandula angustifolia",
+    "category": "herb",
+    "description": "Thảo mộc ôn đới mang hương thơm thư giãn đặc trưng, cần rất nhiều nắng và môi trường thông thoáng. Trị liệu tuyệt vời cho giấc ngủ.",
+    "light": "full-sun",
+    "water": "low",
+    "difficulty": "hard",
+    "regions": [
+      "highlands"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "tags": [
+      "outdoor",
+      "aromatic",
+      "flower",
+      "herb"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1595963955621-c167b0d778fb?auto=format&fit=crop&w=800&q=80",
+        "alt": "Cánh đồng Oải Hương rực rỡ",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "balcony",
+        "garden",
+        "terrace"
+      ],
+      "growthHabit": "Cây bụi, phân nhánh nhiều, ưa gió và khô ráo.",
+      "soil": "Đất kiềm tính, pha cực nhiều sỏi cát để thoát nước ngay lập tức.",
+      "container": "Chậu đất nung, chậu to có lớp sỏi lót đáy.",
+      "watering": "Để đất khô hoàn toàn giữa các lần tưới. Tuyệt đối tránh tưới lên lá gây nấm.",
+      "routineCare": "Cắt tỉa 1/3 cây sau mỗi mùa hoa để kích thích mọc nhánh mới. Tránh nơi độ ẩm cao.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "safe",
+        "note": "Chứa linalool và linalyl acetate có thể độc cho chó mèo.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "rosemary",
+      "thyme"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "epipremnum-aureum",
+    "name": "Trầu Bà Vàng",
+    "botanicalName": "Epipremnum aureum",
+    "category": "foliage",
+    "description": "Cây leo vô cùng dễ trồng, mang đến sắc xanh tươi mát và thanh lọc không khí cực tốt. Phù hợp trồng treo hoặc thủy sinh.",
+    "light": "low",
+    "water": "moderate",
+    "difficulty": "easy",
+    "regions": [
+      "north",
+      "central",
+      "south",
+      "highlands"
+    ],
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn",
+      "winter"
+    ],
+    "tags": [
+      "indoor",
+      "easy-care",
+      "trailing",
+      "low-light"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1644485573429-1065b93d6d09?auto=format&fit=crop&w=800&q=80",
+        "alt": "Dây trầu bà vàng leo trên kệ",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office",
+        "balcony"
+      ],
+      "growthHabit": "Thân leo dài, rễ phụ bám chắc. Cắt tỉa để nhánh um tùm hơn.",
+      "soil": "Đất trồng cơ bản, thoát nước vừa phải.",
+      "container": "Chậu treo hoặc chậu để bàn, có thể trồng thủy sinh.",
+      "watering": "Tưới 1 lần/tuần, chịu hạn khá tốt.",
+      "routineCare": "Bón phân dạng lỏng 2 tháng/lần.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Gây kích ứng miệng và nôn mửa cho vật nuôi.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "philodendron-hederaceum",
+      "monstera-deliciosa"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "zamioculcas-zamiifolia",
+    "name": "Kim Tiền",
+    "botanicalName": "Zamioculcas zamiifolia",
+    "category": "succulent",
+    "description": "Loài cây nổi tiếng với khả năng sinh tồn mạnh mẽ, thân mọng nước và lá xanh bóng. Tượng trưng cho sự thịnh vượng.",
+    "light": "low",
+    "water": "low",
+    "difficulty": "easy",
+    "regions": [
+      "north",
+      "central",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "tags": [
+      "indoor",
+      "office",
+      "indestructible",
+      "low-light"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=800&q=80",
+        "alt": "Chậu Kim Tiền xanh mướt",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office"
+      ],
+      "growthHabit": "Phát triển chậm, thân ngầm (rhizome) trữ nước.",
+      "soil": "Đất trồng xương rồng/sen đá, thoát nước nhanh.",
+      "container": "Chậu gốm hoặc đất nung.",
+      "watering": "Chỉ tưới khi đất khô hoàn toàn (2-3 tuần/lần). Tránh tưới úng.",
+      "routineCare": "Lau sạch lá để tăng khả năng quang hợp.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Gây rát miệng, kích ứng da nhẹ.",
+        "source": "Pet Poison Helpline"
+      }
+    },
+    "similarPlantSlugs": [
+      "sansevieria-trifasciata",
+      "cast-iron-plant"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "spathiphyllum",
+    "name": "Lan Ý (Huệ Hòa Bình)",
+    "botanicalName": "Spathiphyllum wallisii",
+    "category": "flower",
+    "description": "Cây lọc không khí cực tốt (đứng đầu danh sách NASA), ra hoa trắng thanh tao và có khả năng báo hiệu khi thiếu nước.",
+    "light": "medium",
+    "water": "high",
+    "difficulty": "easy",
+    "regions": [
+      "north",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn"
+    ],
+    "tags": [
+      "indoor",
+      "flowering",
+      "air-purifying"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1593691509543-c20fb144e117?auto=format&fit=crop&w=800&q=80",
+        "alt": "Hoa Lan Ý trắng muốt",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office"
+      ],
+      "growthHabit": "Mọc thành bụi, lá rủ xuống khi thiếu nước và tươi lại ngay khi được tưới.",
+      "soil": "Đất giàu mùn, giữ ẩm tốt.",
+      "container": "Chậu nhựa hoặc gốm sứ.",
+      "watering": "Tưới 2-3 lần/tuần. Giữ đất luôn hơi ẩm nhưng không úng.",
+      "routineCare": "Cắt bỏ hoa tàn ở sát gốc để cây tập trung dinh dưỡng.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Gây kích ứng mạnh ở miệng do tinh thể canxi oxalat.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "anthurium-andraeanum",
+      "aglaonema"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "chlorophytum-comosum",
+    "name": "Cỏ Lan Chi",
+    "botanicalName": "Chlorophytum comosum",
+    "category": "foliage",
+    "description": "Một trong những loài cây dễ chăm sóc nhất thế giới, với những dải lá xanh sọc trắng duyên dáng và những cây con rủ xuống như mạng nhện.",
+    "light": "bright-indirect",
+    "water": "moderate",
+    "difficulty": "easy",
+    "regions": [
+      "north",
+      "central",
+      "south",
+      "highlands"
+    ],
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn"
+    ],
+    "tags": [
+      "indoor",
+      "pet-safe",
+      "hanging",
+      "air-purifying"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1616016769032-47533f0e8f00?auto=format&fit=crop&w=800&q=80",
+        "alt": "Cỏ Lan Chi trong giỏ treo",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "balcony",
+        "office"
+      ],
+      "growthHabit": "Phát triển thành cụm rậm rạp, sinh ra nhánh cây con có rễ rủ xuống đung đưa.",
+      "soil": "Đất trồng cơ bản, thoát nước tốt.",
+      "container": "Giỏ treo hoặc chậu để kệ cao.",
+      "watering": "Tưới đều khi bề mặt đất khô 2cm. Nhạy cảm với nước chứa nhiều clo (sẽ làm cháy chóp lá).",
+      "routineCare": "Có thể ngắt cây con để nhân giống dễ dàng.",
+      "toxicityCaution": {
+        "pets": "safe",
+        "humans": "safe",
+        "note": "Hoàn toàn an toàn. Mèo rất thích chơi với lá của cây này.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "epipremnum-aureum",
+      "boston-fern"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "ficus-elastica",
+    "name": "Đa Búp Đỏ",
+    "botanicalName": "Ficus elastica",
+    "category": "tree",
+    "description": "Cây thân gỗ nội thất với những chiếc lá dày bóng bẩy, màu sắc đậm đà. Mang lại vẻ đẹp mạnh mẽ và sang trọng.",
+    "light": "bright-indirect",
+    "water": "moderate",
+    "difficulty": "medium",
+    "regions": [
+      "north",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "tags": [
+      "indoor",
+      "tree",
+      "bold-foliage"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1601111002341-b84784a92306?auto=format&fit=crop&w=800&q=80",
+        "alt": "Lá Đa Búp Đỏ bóng bẩy",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office",
+        "balcony"
+      ],
+      "growthHabit": "Phát triển nhanh nếu đủ sáng. Có thể cắt ngọn để cây phân nhánh đâm chồi ngang.",
+      "soil": "Đất tơi xốp, thoát nước cực kỳ tốt.",
+      "container": "Chậu nặng đáy sâu để chịu được trọng lượng cây lớn.",
+      "watering": "Đợi đất thật khô rồi tưới đẫm. Dễ bị rụng lá nếu tưới quá dư.",
+      "routineCare": "Dùng khăn ẩm lau mặt lá thường xuyên để giữ độ bóng.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Nhựa mủ trắng (latex) gây kích ứng da, nôn mửa cho chó mèo.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "ficus-lyrata",
+      "ficus-benjamina"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "philodendron-birkin",
+    "name": "Trầu Bà Đế Vương Xọc (Birkin)",
+    "botanicalName": "Philodendron 'Birkin'",
+    "category": "foliage",
+    "description": "Giống cây đột biến tuyệt đẹp với những đường sọc trắng tinh tế trên nền lá xanh đậm, càng nhiều sáng vạch trắng càng dày.",
+    "light": "bright-indirect",
+    "water": "moderate",
+    "difficulty": "medium",
+    "regions": [
+      "north",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "tags": [
+      "indoor",
+      "variegated",
+      "compact"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1643194090729-3079db444a1e?auto=format&fit=crop&w=800&q=80",
+        "alt": "Lá sọc trắng của Philodendron Birkin",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office"
+      ],
+      "growthHabit": "Phát triển bụi thấp (compact), không vươn dài bám rêu như các dòng Philodendron khác.",
+      "soil": "Đất giàu mùn (peat moss), thông thoáng nhờ đá perlite.",
+      "container": "Chậu vừa phải (size 12-15cm).",
+      "watering": "Tưới khi 3cm đất mặt khô, yêu cầu độ ẩm trung bình cao.",
+      "routineCare": "Tránh ánh nắng gắt trực tiếp làm cháy lá.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Độc tương tự các dòng họ Ráy (Araceae).",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "monstera-deliciosa",
+      "aglaonema"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "alocasia-amazonica",
+    "name": "Môn Quan Âm",
+    "botanicalName": "Alocasia amazonica (Polly)",
+    "category": "foliage",
+    "description": "Lá hình mũi tên ấn tượng với đường gân nổi trắng sáng, mép lá lượn sóng mang đến dáng vẻ nguyên thủy độc nhất.",
+    "light": "bright-indirect",
+    "water": "high",
+    "difficulty": "hard",
+    "regions": [
+      "central",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "tags": [
+      "indoor",
+      "bold-foliage",
+      "humidity-loving"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1620601618146-52fcecefb060?auto=format&fit=crop&w=800&q=80",
+        "alt": "Cây Môn Quan Âm góc cận",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "terrace"
+      ],
+      "growthHabit": "Mọc từ củ ngầm, thân đứng, có hiện tượng ngủ đông rụng lá vào mùa lạnh.",
+      "soil": "Đất cực kỳ xốp nhưng giữ ẩm tốt (xơ dừa, perlite dồi dào).",
+      "container": "Chậu sứ, lỗ thoát nước lớn.",
+      "watering": "Cần tưới ngay khi bề mặt chớm khô, tuyệt đối không để bầu rễ khô khốc hoàn toàn.",
+      "routineCare": "Cần độ ẩm rất cao (>60%). Đề phòng nhện đỏ vào mùa hanh khô.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Rất độc, có thể gây tắc nghẽn đường thở nếu nuốt phải lượng lớn.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "calathea-orbifolia",
+      "colocasia-esculenta"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "crassula-ovata",
+    "name": "Ngọc Bích",
+    "botanicalName": "Crassula ovata",
+    "category": "succulent",
+    "description": "Cây mọng nước dạng bụi cây gỗ nhỏ. Theo phong thủy mang ý nghĩa thu hút tài lộc và tuổi thọ.",
+    "light": "full-sun",
+    "water": "low",
+    "difficulty": "easy",
+    "regions": [
+      "north",
+      "highlands",
+      "central",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn",
+      "winter"
+    ],
+    "tags": [
+      "indoor",
+      "outdoor",
+      "succulent",
+      "bonsai-potential"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1632782343883-eb80c7db2eb2?auto=format&fit=crop&w=800&q=80",
+        "alt": "Cây Ngọc Bích đầy đặn dưới nắng",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "balcony",
+        "window-sill",
+        "terrace"
+      ],
+      "growthHabit": "Thân gỗ, lớn chậm, có thể tạo dáng bonsai.",
+      "soil": "Đất cho sen đá/xương rồng.",
+      "container": "Chậu đất nung nông vừa phải.",
+      "watering": "Thật hạn chế, tưới 1 lần/tháng vào mùa đông, 2 tuần/lần mùa hè khi đất thật khô.",
+      "routineCare": "Phơi nắng trực tiếp vài giờ mỗi ngày sẽ giúp mép lá viền đỏ tươi rất đẹp.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "safe",
+        "note": "Có thể gây trầm cảm, nôn mửa, nhịp tim bất thường cho chó mèo.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "sansevieria-trifasciata",
+      "aloe-vera"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "strelitzia-reginae",
+    "name": "Thiên Điểu",
+    "botanicalName": "Strelitzia reginae",
+    "category": "flower",
+    "description": "Loài cây nhiệt đới với bông hoa rực rỡ mang hình dáng chim thiên điểu đang bay. Tán lá lớn toát lên sự sang trọng.",
+    "light": "full-sun",
+    "water": "moderate",
+    "difficulty": "medium",
+    "regions": [
+      "central",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "tags": [
+      "outdoor",
+      "statement-plant",
+      "flowering"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1596700877894-3708e2ec05fb?auto=format&fit=crop&w=800&q=80",
+        "alt": "Hoa Thiên Điểu rực rỡ dưới nắng",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "garden",
+        "balcony",
+        "terrace"
+      ],
+      "growthHabit": "Phát triển lớn, có thể cao tới 1.5 - 2 mét. Hoa nở vào cuối đông/xuân nếu đủ sáng.",
+      "soil": "Đất thịt màu mỡ pha cát.",
+      "container": "Chậu rất lớn, nặng.",
+      "watering": "Giữ đất ẩm vào mùa Hè, giảm tưới mùa Đông.",
+      "routineCare": "Cần rất nhiều ánh sáng (ít nhất 4-6h nắng trực tiếp mỗi ngày) để ra hoa.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Quả/Hạt có chứa tannin độc hại. Lá gây kích ứng nhẹ.",
+        "source": "Pet Poison Helpline"
+      }
+    },
+    "similarPlantSlugs": [
+      "ficus-lyrata",
+      "musa-acuminata"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "nephrolepis-exaltata",
+    "name": "Dương Xỉ Boston",
+    "botanicalName": "Nephrolepis exaltata",
+    "category": "foliage",
+    "description": "Tán lá mỏng, nhẹ và rủ xuống uyển chuyển. Chuyên gia lọc khí độc trong nhà và tạo độ ẩm tự nhiên.",
+    "light": "medium",
+    "water": "high",
+    "difficulty": "medium",
+    "regions": [
+      "north",
+      "highlands",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn"
+    ],
+    "tags": [
+      "indoor",
+      "hanging",
+      "pet-safe",
+      "humidity-loving"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1616886470077-d35b1d564efc?auto=format&fit=crop&w=800&q=80",
+        "alt": "Giỏ treo Dương xỉ Boston",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "bathroom",
+        "balcony"
+      ],
+      "growthHabit": "Mọc cụm, lá kép lông chim rủ dài.",
+      "soil": "Đất giàu mùn (peat moss) giữ ẩm cực tốt.",
+      "container": "Chậu treo nhựa hoặc gốm không men.",
+      "watering": "Yêu cầu đất LUÔN ẨM (nhưng không sũng nước). Đừng bao giờ để đất khô kiệt.",
+      "routineCare": "Thích hợp treo trong phòng tắm hoặc nơi có máy phun sương. Thường xuyên rụng lá khô.",
+      "toxicityCaution": {
+        "pets": "safe",
+        "humans": "safe",
+        "note": "Hoàn toàn an toàn cho thú cưng và con người.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "chlorophytum-comosum",
+      "calathea-orbifolia"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "senecio-rowleyanus",
+    "name": "Chuỗi Ngọc",
+    "botanicalName": "Senecio rowleyanus",
+    "category": "succulent",
+    "description": "Loại cây mọng nước dạng dây leo với những chiếc lá nhỏ nhắn hình hạt ngọc nối tiếp nhau rất đẹp mắt.",
+    "light": "bright-indirect",
+    "water": "low",
+    "difficulty": "hard",
+    "regions": [
+      "highlands",
+      "central"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "tags": [
+      "indoor",
+      "succulent",
+      "trailing"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=800&q=80",
+        "alt": "Chuỗi ngọc buông thõng",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "window-sill",
+        "balcony"
+      ],
+      "growthHabit": "Mọc rủ rất dài (có thể tới 1 mét), rễ nông.",
+      "soil": "Đất xương rồng, nhiều đá bọt/pumice.",
+      "container": "Chậu treo nông (shallow pot) vì rễ cây rất mỏng.",
+      "watering": "Tưới thật ít, chỉ tưới khi các hạt ngọc có dấu hiệu hơi nhăn lại. Chết cực nhanh nếu dư nước.",
+      "routineCare": "Đảm bảo ánh sáng hắt sáng mạnh ở TẬN GỐC cây để gốc không bị thối.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Gây tiêu chảy và nôn mửa; nhựa cây gây ngứa rát ngoài da.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "crassula-ovata",
+      "ceropegia-woodii"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "hedera-helix",
+    "name": "Thường Xuân",
+    "botanicalName": "Hedera helix",
+    "category": "foliage",
+    "description": "Dây leo duyên dáng đậm chất châu Âu, khả năng chịu lạnh giỏi và giúp lọc loại bỏ nấm mốc trong không khí.",
+    "light": "medium",
+    "water": "moderate",
+    "difficulty": "medium",
+    "regions": [
+      "north",
+      "highlands"
+    ],
+    "seasons": [
+      "autumn",
+      "winter",
+      "spring"
+    ],
+    "tags": [
+      "indoor",
+      "outdoor",
+      "trailing",
+      "cold-tolerant"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1628151016551-789a552528dc?auto=format&fit=crop&w=800&q=80",
+        "alt": "Dây thường xuân leo mảng",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "balcony",
+        "garden"
+      ],
+      "growthHabit": "Leo bám tốt trên mặt tường hoặc rủ rậm rạp từ giỏ treo.",
+      "soil": "Đất ẩm vừa phải, hơi phèn.",
+      "container": "Chậu sứ, giỏ treo.",
+      "watering": "Tưới khi bề mặt đất khô. Tránh để sũng nước.",
+      "routineCare": "Hay bị nhện đỏ tấn công nếu không khí quá khô nóng.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Lá chứa triterpenoid saponins gây kích ứng tiêu hóa.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "epipremnum-aureum",
+      "chlorophytum-comosum"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "aspidistra-elatior",
+    "name": "Cô Tòng (Tỏi Rừng)",
+    "botanicalName": "Aspidistra elatior",
+    "category": "foliage",
+    "description": "Được mệnh danh là 'Cast Iron Plant' (Cây Gang Thép) vì khả năng chịu đựng bóng tối dày đặc, khô hạn và sự bỏ bê.",
+    "light": "low",
+    "water": "low",
+    "difficulty": "easy",
+    "regions": [
+      "north",
+      "central",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn",
+      "winter"
+    ],
+    "tags": [
+      "indoor",
+      "indestructible",
+      "pet-safe",
+      "low-light"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1624897262529-577bfafdb7d7?auto=format&fit=crop&w=800&q=80",
+        "alt": "Khóm Cô Tòng xanh sẫm",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office",
+        "dark-corners"
+      ],
+      "growthHabit": "Mọc từ rễ củ (rhizome), lá xanh sẫm, vươn dài, phát triển siêu chậm.",
+      "soil": "Đất cơ bản, thoát nước tốt.",
+      "container": "Bất kỳ chậu nào có lỗ thoát nước.",
+      "watering": "Chịu hạn xuất sắc, có thể tưới 2 tuần 1 lần.",
+      "routineCare": "Lau bụi lá để giúp cây bắt sáng tốt hơn do trồng ở góc tối.",
+      "toxicityCaution": {
+        "pets": "safe",
+        "humans": "safe",
+        "note": "Hoàn toàn an toàn, lựa chọn tuyệt vời cho nhà nuôi thú cưng.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "sansevieria-trifasciata",
+      "zamioculcas-zamiifolia"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "anthurium-andraeanum",
+    "name": "Hồng Môn",
+    "botanicalName": "Anthurium andraeanum",
+    "category": "flower",
+    "description": "Sở hữu những chiếc 'hoa' (thực chất là mo lá) màu đỏ rực rỡ hình trái tim, ra hoa liên tục quanh năm nếu đủ sáng.",
+    "light": "bright-indirect",
+    "water": "moderate",
+    "difficulty": "medium",
+    "regions": [
+      "north",
+      "south"
+    ],
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn"
+    ],
+    "tags": [
+      "indoor",
+      "flowering",
+      "bold-foliage"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1598270183186-068d83935391?auto=format&fit=crop&w=800&q=80",
+        "alt": "Hồng Môn đỏ rực rỡ",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "indoor",
+        "office"
+      ],
+      "growthHabit": "Mọc thành cụm bụi nhỏ, rễ khí sinh đôi khi thò ra ngoài đất.",
+      "soil": "Giống với lan (phối trộn xơ dừa, dớn, vỏ thông, than củi).",
+      "container": "Chậu nhựa/sứ nhỏ gọn.",
+      "watering": "Giữ ẩm nhẹ nhưng phải cực kỳ thông thoáng khí ở rễ.",
+      "routineCare": "Bón phân dạng lỏng pha thật loãng hàng tuần vào mùa sinh trưởng.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "irritant",
+        "note": "Chứa canxi oxalat, gây sưng miệng, lưỡi và họng.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "spathiphyllum",
+      "philodendron-birkin"
+    ],
+    "status": "published"
+  },
+  {
+    "slug": "aloe-vera",
+    "name": "Nha Đam (Lô Hội)",
+    "botanicalName": "Aloe vera",
+    "category": "succulent",
+    "description": "Thực vật mọng nước nổi danh toàn cầu về công dụng y tế (trị phỏng, làm dịu da). Sống cực kỳ bền trong nhà.",
+    "light": "full-sun",
+    "water": "low",
+    "difficulty": "easy",
+    "regions": [
+      "north",
+      "central",
+      "south",
+      "highlands"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "tags": [
+      "indoor",
+      "outdoor",
+      "succulent",
+      "medicinal"
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1596547609652-9cb5d4d7308e?auto=format&fit=crop&w=800&q=80",
+        "alt": "Nha đam mọng nước xanh tốt",
+        "isPrimary": true
+      }
+    ],
+    "guide": {
+      "environments": [
+        "balcony",
+        "window-sill",
+        "kitchen"
+      ],
+      "growthHabit": "Lá mọc vươn dài thành hình hoa thị, sinh nhiều cây con ở gốc.",
+      "soil": "Đất cát pha sỏi, thoát nước tức thì.",
+      "container": "Chậu đất nung rộng bề ngang.",
+      "watering": "Tưới thật thưa (2-3 tuần/lần). Chết rất nhanh nếu ngâm rễ trong nước.",
+      "routineCare": "Nên đặt cạnh bậu cửa sổ ngập nắng. Có thể tách cây con sang chậu mới.",
+      "toxicityCaution": {
+        "pets": "toxic",
+        "humans": "safe",
+        "note": "Gel trong thì tốt cho da người, nhưng phần vỏ nhựa (latex) vàng chứa saponin độc cho chó mèo.",
+        "source": "ASPCA"
+      }
+    },
+    "similarPlantSlugs": [
+      "sansevieria-trifasciata",
+      "crassula-ovata"
+    ],
+    "status": "published"
+  }
+]

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -82,17 +82,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 32px;
+      gap: clamp(16px, 2.5vw, 36px);
       background: var(--glass-pill);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-glass);
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
       border-radius: 9999px;
-      padding: 10px 14px 10px 24px;
-      max-width: 1100px;
+      padding: 8px 12px 8px 22px;
+      max-width: 1220px;
       width: 100%;
       transition: var(--transition-smooth);
+      position: relative;
+      white-space: nowrap;
     }
 
     .navbar-pill:hover {
@@ -106,11 +108,14 @@
       gap: 12px;
       text-decoration: none;
       color: var(--text-primary);
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .brand-icon-svg {
       width: 32px;
       height: 32px;
+      flex-shrink: 0;
       fill: var(--emerald-accent);
       filter: drop-shadow(0 0 8px var(--emerald-glow));
     }
@@ -118,41 +123,56 @@
     .brand-text {
       display: flex;
       flex-direction: column;
+      white-space: nowrap;
     }
 
     .brand-title {
       font-family: var(--font-display);
-      font-size: 0.95rem;
-      letter-spacing: 0.12em;
+      font-size: 0.92rem;
+      letter-spacing: 0.08em;
       font-weight: 700;
       text-transform: uppercase;
       color: #ffffff;
-      line-height: 1.1;
+      line-height: 1.15;
+      white-space: nowrap;
     }
 
     .brand-sub {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--sage-muted);
+      white-space: nowrap;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: clamp(14px, 1.8vw, 24px);
       list-style: none;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-links li {
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .nav-links a {
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       font-weight: 500;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.015em;
       transition: var(--transition-smooth);
       position: relative;
-      padding: 4px 0;
+      padding: 6px 2px;
+      white-space: nowrap;
+      display: inline-block;
+      line-height: 1.2;
     }
 
     .nav-links a:hover, .nav-links a.active {
@@ -179,60 +199,369 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
-    .btn-garden-badge {
-      display: flex;
+    /* ==========================================================================
+       NOTIFICATION BELL TRIGGER & POPOVER
+       ========================================================================== */
+    .notif-container {
+      position: relative;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-notif-bell {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--border-glass);
       color: var(--text-secondary);
-      padding: 8px 14px;
-      border-radius: 9999px;
-      font-size: 0.8rem;
-      font-weight: 500;
       cursor: pointer;
       transition: var(--transition-smooth);
+      padding: 0;
+      outline: none;
+      flex-shrink: 0;
     }
 
-    .btn-garden-badge:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
+    .btn-notif-bell:hover,
+    .btn-notif-bell.active {
+      background: rgba(34, 197, 94, 0.16);
+      border-color: rgba(34, 197, 94, 0.45);
+      color: #ffffff;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.3);
+      transform: translateY(-1px);
     }
 
-    .badge-counter {
-      background: var(--emerald-accent);
-      color: #05140d;
+    .btn-notif-bell svg {
+      width: 19px;
+      height: 19px;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-notif-bell:hover svg,
+    .btn-notif-bell.active svg {
+      transform: rotate(10deg);
+    }
+
+    .notif-badge-pill {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      color: #03130a;
+      font-size: 0.68rem;
+      font-weight: 800;
+      min-width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      border-radius: 999px;
+      padding: 0 4px;
+      border: 2px solid #081710;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .notif-badge-pill.hidden {
+      opacity: 0;
+      transform: scale(0.5);
+      pointer-events: none;
+    }
+
+    /* Notification Dropdown Popover */
+    .notif-dropdown {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: -10px;
+      width: 370px;
+      max-width: calc(100vw - 32px);
+      background: rgba(10, 24, 17, 0.96);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.85), 0 0 30px -5px rgba(34, 197, 94, 0.2);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px) scale(0.96);
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+      z-index: 1200;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+      white-space: normal;
+    }
+
+    .notif-dropdown.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .notif-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .notif-header-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .notif-header-title {
+      font-size: 0.9rem;
       font-weight: 700;
-      font-size: 0.72rem;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .notif-count-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: rgba(34, 197, 94, 0.18);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.32);
       padding: 1px 7px;
       border-radius: 999px;
     }
 
+    .notif-mark-read {
+      font-size: 0.73rem;
+      color: var(--sage-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-family: inherit;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+
+    .notif-mark-read:hover {
+      color: var(--emerald-accent);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .notif-list {
+      list-style: none;
+      padding: 6px 0;
+      margin: 0;
+      max-height: 380px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(34, 197, 94, 0.3) transparent;
+    }
+
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      position: relative;
+      border-left: 3px solid transparent;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .notif-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .notif-item.unread {
+      background: rgba(34, 197, 94, 0.06);
+      border-left-color: var(--emerald-accent);
+    }
+
+    .notif-item.unread:hover {
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .notif-icon-bubble {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .notif-icon-bubble.garden {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: rgba(34, 197, 94, 0.35);
+      color: #4ade80;
+    }
+
+    .notif-icon-bubble.gallery {
+      background: rgba(14, 165, 233, 0.15);
+      border-color: rgba(14, 165, 233, 0.35);
+      color: #38bdf8;
+    }
+
+    .notif-icon-bubble.about {
+      background: rgba(234, 179, 8, 0.15);
+      border-color: rgba(234, 179, 8, 0.35);
+      color: #facc15;
+    }
+
+    .notif-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .notif-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .notif-source-badge {
+      font-size: 0.67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--sage-muted);
+    }
+
+    .notif-source-badge.garden {
+      color: #4ade80;
+    }
+
+    .notif-time {
+      font-size: 0.66rem;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+    }
+
+    .notif-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+
+    .notif-text {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .notif-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald-accent);
+      box-shadow: 0 0 8px var(--emerald-accent);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .notif-item.read .notif-dot {
+      display: none;
+    }
+
+    .notif-footer {
+      padding: 10px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .notif-footer-link {
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: #4ade80;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s, color 0.2s;
+    }
+
+    .notif-footer-link:hover {
+      color: #86efac;
+      gap: 9px;
+    }
+
+    /* Auth CTA button */
     .btn-cta-pill {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #ffffff;
-      padding: 10px 22px;
+      padding: 8px 18px;
       border-radius: 9999px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      letter-spacing: 0.03em;
-      border: none;
+      letter-spacing: 0.02em;
+      border: 1px solid transparent;
       cursor: pointer;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
       transition: var(--transition-smooth);
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .btn-cta-pill:hover {
       background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.55);
+      color: #ffffff;
+    }
+
+    .btn-garden-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .btn-garden-badge:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border-color: rgba(34, 197, 94, 0.4);
     }
 
     /* Mobile toggle */
@@ -1105,12 +1434,34 @@
       to { opacity: 1; }
     }
 
-    /* Responsive */
+    /* Responsive Header & Layout */
+    @media (max-width: 1100px) {
+      .navbar-pill {
+        gap: 16px;
+        padding: 7px 10px 7px 18px;
+      }
+      .nav-links {
+        gap: 12px;
+      }
+      .nav-links a {
+        font-size: 0.8rem;
+      }
+      .brand-title {
+        font-size: 0.86rem;
+      }
+      .brand-sub {
+        font-size: 0.58rem;
+      }
+    }
+
     @media (max-width: 900px) {
       .nav-links { display: none; }
-      .menu-toggle { display: block; }
       .header-floating-wrap { top: 12px; padding: 0 12px; }
-      .navbar-pill { padding: 8px 12px; }
+      .navbar-pill { padding: 8px 14px; gap: 12px; }
+      .notif-dropdown {
+        right: -10px;
+        width: 320px;
+      }
       .comparison-grid { grid-template-columns: 1fr; }
       .specimen-grid { grid-template-columns: 1fr; }
     }
@@ -1642,6 +1993,128 @@
       .about-metrics-grid { grid-template-columns: 1fr; }
       .newsletter-form { flex-direction: column; }
     }
+
+    /* ==========================================================================
+       BENTO BOX LAYOUT
+       ========================================================================== */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1.1fr 1.1fr;
+      grid-template-rows: 280px 280px;
+      gap: 16px;
+      width: 100%;
+      margin: 40px auto;
+    }
+    .bento-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
+      background-color: var(--bg-surface-elevated);
+      border: 1px solid var(--border-glass);
+    }
+    .bento-map {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+      background-color: #a3c4c9;
+      color: #1a2a3a;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
+      background-size: 200%;
+      background-position: left center;
+      background-repeat: no-repeat;
+      border: none;
+    }
+    .bento-map h3 {
+      position: absolute;
+      bottom: 40px;
+      left: 30px;
+      font-size: 3.2rem;
+      font-family: var(--font-serif);
+      line-height: 1.1;
+      color: #1a2a3a;
+      font-weight: 400;
+    }
+    .bento-map p {
+      position: absolute;
+      bottom: 135px;
+      left: 35px;
+      font-size: 1.05rem;
+      color: #1a2a3a;
+      opacity: 0.9;
+    }
+    
+    .bento-orange {
+      background-color: #f9a826;
+      border: none;
+      justify-content: center;
+      padding-left: 40px;
+    }
+    .bento-orange .bento-num {
+      font-size: 4.5rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 8px;
+      color: #e55227;
+      font-family: var(--font-sans);
+    }
+    .bento-orange .bento-label {
+      font-size: 1.1rem;
+      color: #e55227;
+      font-weight: 500;
+    }
+    
+    .bento-red {
+      background-color: #e34e2c;
+      border: none;
+      justify-content: center;
+      padding-left: 40px;
+    }
+    .bento-red .bento-num {
+      font-size: 4.5rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 8px;
+      color: white;
+      font-family: var(--font-sans);
+    }
+    .bento-red .bento-label {
+      font-size: 1.1rem;
+      color: white;
+      font-weight: 500;
+    }
+    
+    .bento-img {
+      padding: 0;
+      border: none;
+    }
+    .bento-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 992px) {
+      .bento-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .bento-map {
+        grid-column: 1 / -1;
+        grid-row: 1 / 2;
+        min-height: 350px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-map {
+        grid-column: 1 / -1;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1664,22 +2137,105 @@
         </div>
       </a>
 
-      <!-- Menu links -->
+      <!-- Menu links (Clean English on a single horizontal row) -->
       <ul class="nav-links">
-        <li><a href="#hero" class="active">Tổng Quan</a></li>
-        <li><a href="gallery.html">Thư Viện Gallery ↗</a></li>
+        <li><a href="#hero" class="active">Overview</a></li>
+        <li><a href="gallery.html">Gallery ↗</a></li>
         <li><a href="about.html">About Us ↗</a></li>
-        <li><a href="user.html">Khu Vườn Của Tôi 🌿</a></li>
-        <li><a href="#footer">Liên Hệ</a></li>
+        <li><a href="user.html">My Garden 🌿</a></li>
+        <li><a href="#footer">Contact</a></li>
       </ul>
 
       <!-- Right CTAs -->
       <div class="nav-actions">
-        <a href="user.html" class="btn-garden-badge" id="gardenBadgeBtn" title="Xem Khu Vườn Cá Nhân">
-          <span>🌿 Vườn Của Tôi</span>
-          <span class="badge-counter" id="savedCount">3</span>
-        </a>
-        <a href="login.html" class="btn-cta-pill" id="navAuthBtn" style="padding: 9px 18px; font-size: 0.84rem;">Đăng Nhập</a>
+        <!-- Notification Bell with Popover Dropdown -->
+        <div class="notif-container" id="notifContainer">
+          <button type="button" class="btn-notif-bell" id="notifBellBtn" aria-label="Notifications" aria-expanded="false" title="Notifications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge-pill" id="notifBadge">3</span>
+          </button>
+
+          <!-- Notification Dropdown Popover Box -->
+          <div class="notif-dropdown" id="notifDropdown" role="region" aria-label="Notifications Panel">
+            <div class="notif-header">
+              <div class="notif-header-title-wrap">
+                <span class="notif-header-title">Notifications</span>
+                <span class="notif-count-tag" id="notifCountTag">3 New</span>
+              </div>
+              <button type="button" class="notif-mark-read" id="notifMarkAllRead">Mark all as read</button>
+            </div>
+
+            <ul class="notif-list" id="notifList">
+              <!-- Notification 1: From "Your Garden" -> user.html -->
+              <li class="notif-item unread" data-href="user.html" data-id="notif-1" title="Go to Your Garden">
+                <div class="notif-icon-bubble garden">🌿</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge garden">Your Garden</span>
+                    <span class="notif-time">10m ago</span>
+                  </div>
+                  <div class="notif-title">Watering Schedule Due</div>
+                  <div class="notif-text"><span id="savedCount">3</span> saved plants in your sanctuary need hydration check.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+
+              <!-- Notification 2: From "Gallery Archive" -> gallery.html -->
+              <li class="notif-item unread" data-href="gallery.html" data-id="notif-2" title="Go to Plant Gallery">
+                <div class="notif-icon-bubble gallery">🌱</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge">Gallery Archive</span>
+                    <span class="notif-time">45m ago</span>
+                  </div>
+                  <div class="notif-title">New Rare Specimen Added</div>
+                  <div class="notif-text">Silver Vase Bromeliad (Aechmea) cataloged in Arid folio.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+
+              <!-- Notification 3: From "Curator Bulletin / About" -> about.html -->
+              <li class="notif-item unread" data-href="about.html" data-id="notif-3" title="Go to About Us">
+                <div class="notif-icon-bubble about">📖</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge">Curator Bulletin</span>
+                    <span class="notif-time">2h ago</span>
+                  </div>
+                  <div class="notif-title">Winter Care Advisory</div>
+                  <div class="notif-text">Botanist Dr. Rostova updated conservatory wintering guidance.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+
+              <!-- Notification 4: From "Your Garden" -> user.html -->
+              <li class="notif-item" data-href="user.html" data-id="notif-4" title="Go to Your Garden">
+                <div class="notif-icon-bubble garden">🌿</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge garden">Your Garden</span>
+                    <span class="notif-time">Yesterday</span>
+                  </div>
+                  <div class="notif-title">Optimal Climate Stability</div>
+                  <div class="notif-text">Monstera Deliciosa is thriving at 68% ambient humidity.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+            </ul>
+
+            <div class="notif-footer">
+              <a href="user.html" class="notif-footer-link">
+                <span>View Garden Sanctuary</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <a href="login.html" class="btn-cta-pill" id="navAuthBtn">Sign In</a>
       </div>
     </nav>
   </header>
@@ -1781,122 +2337,34 @@
        ARCHIVE GALLERY: THE TRI-BIOME THEMES (Phương Án 1: 3 Đại Đới Khí Hậu)
        ======================================================================== -->
   <main class="archive-section" id="specimens">
-    <div class="section-header-row">
-      <div class="section-title-wrap">
-        <div class="section-subtitle-kicker">The Tri-Biome Architecture // 3 Đại Đới Sinh Thái</div>
-        <h2 class="section-heading">Khám Phá Cây Theo Đới Khí Hậu</h2>
+    <div class="bento-grid">
+      <!-- Item 1: Map / Region -->
+      <div class="bento-item bento-map">
+        <p>Program area</p>
+        <h3>All World<br>Region</h3>
       </div>
-      <a href="gallery.html" class="btn-cta-pill" style="font-size: 0.85rem;">
-        <span>Xem Toàn Bộ Thư Viện (Gallery Page) →</span>
-      </a>
-    </div>
-
-    <!-- 3 Climatic Biome Theme Cards -->
-    <div class="biomes-grid">
-      <!-- Biome 1: Đới Nóng -->
-      <div class="biome-card">
-        <div class="biome-header">
-          <div class="biome-icon-wrap">🌴</div>
-          <span class="biome-tag-badge">Đới Nóng & Xích Đạo</span>
-        </div>
-        <h3 class="biome-title">Tropical Canopy</h3>
-        <p class="biome-desc">
-          Vùng nhiệt độ cao và ổn định quanh năm, là môi trường lý tưởng nhất cho cây ưa nhiệt. Thích hợp cho phòng khách ấm, giếng trời và góc nhiều ánh sáng gián tiếp.
-        </p>
-        <div class="biome-specs-row">
-          <div class="biome-spec-item">
-            <span class="biome-spec-label">Nhiệt Độ</span>
-            <span class="biome-spec-val">25°C - 35°C</span>
-          </div>
-          <div class="biome-spec-item">
-            <span class="biome-spec-label">Độ Ẩm</span>
-            <span class="biome-spec-val">> 70%</span>
-          </div>
-          <div class="biome-spec-item">
-            <span class="biome-spec-label">Môi Trường</span>
-            <span class="biome-spec-val">Ưa nhiệt ẩm</span>
-          </div>
-        </div>
-        <button class="btn-biome-select" onclick="filterBiome('tropical', '🌴 Đới Nóng (Rừng Mưa Nhiệt Đới & Xích Đạo)', this)">
-          <span>Lọc Đới Nóng (Nhiệt Đới)</span>
-        </button>
+      
+      <!-- Item 2: Number Box (Orange) -->
+      <div class="bento-item bento-orange">
+        <div class="bento-num">20+</div>
+        <div class="bento-label">Plants</div>
       </div>
-
-      <!-- Biome 2: Đới Ôn Hòa & Cận Nhiệt -->
-      <div class="biome-card">
-        <div class="biome-header">
-          <div class="biome-icon-wrap">🌲</div>
-          <span class="biome-tag-badge">Ôn Đới & Cận Nhiệt</span>
-        </div>
-        <h3 class="biome-title">Subtropical Highlands</h3>
-        <p class="biome-desc">
-          Khí hậu mát mẻ hơn, phù hợp cho các loài cây cận nhiệt và ôn đới (như vùng Trung du & miền núi Bắc Bộ, Đà Lạt). Thích hợp phòng điều hòa và ban công mát.
-        </p>
-        <div class="biome-specs-row">
-          <div class="biome-spec-item">
-            <span class="biome-spec-label">Nhiệt Độ</span>
-            <span class="biome-spec-val">16°C - 24°C</span>
-          </div>
-          <div class="biome-spec-item">
-            <span class="biome-spec-label">Độ Ẩm</span>
-            <span class="biome-spec-val">50% - 65%</span>
-          </div>
-          <div class="biome-spec-item">
-            <span class="biome-spec-label">Môi Trường</span>
-            <span class="biome-spec-val">Chịu rét nhẹ</span>
-          </div>
-        </div>
-        <button class="btn-biome-select" onclick="filterBiome('subtropical', '🌲 Đới Ôn Hòa & Cận Nhiệt Cao Nguyên', this)">
-          <span>Lọc Đới Cận Nhiệt & Ôn Đới</span>
-        </button>
+      
+      <!-- Item 3: Image (Botanist) -->
+      <div class="bento-item bento-img">
+        <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=600&q=80" alt="Botanist">
       </div>
-
-      <!-- Biome 3: Đới Khô Hạn -->
-      <div class="biome-card">
-        <div class="biome-header">
-          <div class="biome-icon-wrap">🏜️</div>
-          <span class="biome-tag-badge">Khô Hạn & Bán Hoang Mạc</span>
-        </div>
-        <h3 class="biome-title">Arid & Semi-Arid</h3>
-        <p class="biome-desc">
-          Ánh nắng trực tiếp dồi dào, biên độ nhiệt ngày/đêm lớn. Cây có khả năng tích trữ nước bền bỉ, thích hợp ban công hướng Tây đón nắng gắt và người bận rộn.
-        </p>
-        <div class="biome-specs-row">
-          <div class="biome-spec-item">
-            <span class="biome-spec-label">Nhiệt Độ</span>
-            <span class="biome-spec-val">20°C - 38°C</span>
-          </div>
-          <div class="biome-spec-item">
-            <span class="biome-spec-label">Độ Ẩm</span>
-            <span class="biome-spec-val">< 40%</span>
-          </div>
-          <div class="biome-spec-item">
-            <span class="biome-spec-label">Môi Trường</span>
-            <span class="biome-spec-val">Chịu hạn cao</span>
-          </div>
-        </div>
-        <button class="btn-biome-select" onclick="filterBiome('arid', '🏜️ Đới Khô Hạn & Bán Hoang Mạc', this)">
-          <span>Lọc Đới Khô Hạn</span>
-        </button>
+      
+      <!-- Item 4: Image (Plant) -->
+      <div class="bento-item bento-img">
+        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=600&q=80" alt="Plant">
       </div>
-    </div>
-
-    <!-- Active Filter Result / No Data Yet Box -->
-    <div class="no-data-display" id="specimensResults">
-      <div class="no-data-icon">🌱</div>
-      <h3 class="no-data-title">No Data Yet</h3>
-      <p class="no-data-text" id="noDataMessage">
-        Cơ sở dữ liệu danh mục cây theo 3 đại đới khí hậu đang trong giai đoạn chuẩn bị dữ liệu và hoàn thiện sản phẩm. Vui lòng quay lại sau khi backend và cơ sở dữ liệu được tích hợp!
-      </p>
-      <div class="no-data-badge">
-        <span>⚡ Product Status: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+      
+      <!-- Item 5: Number Box (Red) -->
+      <div class="bento-item bento-red">
+        <div class="bento-num">100+</div>
+        <div class="bento-label">Botanists</div>
       </div>
-    </div>
-
-    <div style="text-align: center; margin-top: 40px;">
-      <a href="gallery.html" class="btn-hero-primary" style="display: inline-flex; padding: 14px 32px; font-size: 0.95rem; gap: 10px;">
-        <span>Chuyển Sang Trang Gallery Riêng (Xem Bộ Lọc) →</span>
-      </a>
     </div>
   </main>
 
@@ -2284,7 +2752,13 @@
       } else {
         savedGarden.add(id);
       }
-      savedCount.textContent = savedGarden.size;
+      const savedCountEl = document.getElementById('savedCount');
+      if (savedCountEl) savedCountEl.textContent = savedGarden.size;
+      
+      const gardenNotifText = document.querySelector('.notif-item[data-id="notif-1"] .notif-text');
+      if (gardenNotifText) {
+        gardenNotifText.innerHTML = `<span id="savedCount">${savedGarden.size}</span> saved plants in your sanctuary need hydration check.`;
+      }
       renderSpecimens();
     };
 
@@ -2439,12 +2913,100 @@
     if (storedUser && navAuthBtn) {
       try {
         const u = JSON.parse(storedUser);
-        navAuthBtn.innerHTML = `👤 ${u.name || 'Hồ Sơ'}`;
+        navAuthBtn.innerHTML = `👤 ${u.name || 'Profile'}`;
         navAuthBtn.href = 'user.html';
         navAuthBtn.style.background = 'rgba(34, 197, 94, 0.2)';
         navAuthBtn.style.borderColor = 'var(--emerald-accent)';
       } catch (err) {}
     }
+
+    // =========================================================================
+    // NOTIFICATION BELL & DROPDOWN INTERACTION
+    // =========================================================================
+    const notifBellBtn = document.getElementById('notifBellBtn');
+    const notifDropdown = document.getElementById('notifDropdown');
+    const notifBadge = document.getElementById('notifBadge');
+    const notifCountTag = document.getElementById('notifCountTag');
+    const notifMarkAllRead = document.getElementById('notifMarkAllRead');
+    const notifItems = document.querySelectorAll('.notif-item');
+
+    function updateNotifBadges() {
+      const unreadCount = document.querySelectorAll('.notif-item.unread').length;
+      if (notifBadge) {
+        if (unreadCount > 0) {
+          notifBadge.textContent = unreadCount;
+          notifBadge.classList.remove('hidden');
+        } else {
+          notifBadge.classList.add('hidden');
+        }
+      }
+      if (notifCountTag) {
+        notifCountTag.textContent = unreadCount > 0 ? `${unreadCount} New` : 'All read';
+      }
+    }
+
+    if (notifBellBtn && notifDropdown) {
+      notifBellBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = notifDropdown.classList.contains('show');
+        if (isOpen) {
+          notifDropdown.classList.remove('show');
+          notifBellBtn.classList.remove('active');
+          notifBellBtn.setAttribute('aria-expanded', 'false');
+        } else {
+          notifDropdown.classList.add('show');
+          notifBellBtn.classList.add('active');
+          notifBellBtn.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      // Prevent clicks inside dropdown from bubbling and closing it
+      notifDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', () => {
+        notifDropdown.classList.remove('show');
+        notifBellBtn.classList.remove('active');
+        notifBellBtn.setAttribute('aria-expanded', 'false');
+      });
+
+      // Close dropdown on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          notifDropdown.classList.remove('show');
+          notifBellBtn.classList.remove('active');
+          notifBellBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // Mark all as read button
+    if (notifMarkAllRead) {
+      notifMarkAllRead.addEventListener('click', (e) => {
+        e.stopPropagation();
+        notifItems.forEach(item => {
+          item.classList.remove('unread');
+          item.classList.add('read');
+        });
+        updateNotifBadges();
+      });
+    }
+
+    // Clicking notification item marks as read and brings user to demanded page
+    notifItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetUrl = item.getAttribute('data-href');
+        item.classList.remove('unread');
+        item.classList.add('read');
+        updateNotifBadges();
+        if (targetUrl) {
+          window.location.href = targetUrl;
+        }
+      });
+    });
 
     // Initial render
     renderSpecimens();

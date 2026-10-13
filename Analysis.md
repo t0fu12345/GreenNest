@@ -63,7 +63,6 @@ greennest/
     │   │   ├── auth/           # Login, Register (Route, Controller, Service...)
     │   │   ├── user/           # Quản lý User & My Garden
     │   │   ├── plant/          # CRUD Cây trồng
-    │   │   ├── gardener/       # CRUD Chuyên gia
     │   │   └── collection/     # CRUD Bộ sưu tập
     │   └── server.js           # Entry point của ứng dụng
     └── package.json

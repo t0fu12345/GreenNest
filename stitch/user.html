@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Khu Vườn Của Tôi & Hồ Sơ — The Living Canopy</title>
-  <meta name="description" content="Quản lý thông tin tài khoản người dùng và theo dõi tình trạng các cây trồng đã thêm vào khu vườn sinh thái của bạn.">
+  <title>My Botanical Sanctuary & Profile — The Living Canopy</title>
+  <meta name="description" content="Manage your member profile and track soil moisture, hydration cadence, and specimen health in your living botanical sanctuary.">
 
   <!-- Google Fonts: Cinzel, Playfair Display & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,17 +79,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 28px;
+      gap: clamp(16px, 2.5vw, 36px);
       background: var(--glass-pill);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--border-glass);
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
       border-radius: 9999px;
-      padding: 10px 14px 10px 24px;
-      max-width: 1120px;
+      padding: 8px 12px 8px 22px;
+      max-width: 1220px;
       width: 100%;
       transition: var(--transition-smooth);
+      white-space: nowrap;
     }
 
     .navbar-pill:hover {
@@ -103,6 +104,8 @@
       gap: 12px;
       text-decoration: none;
       color: var(--text-primary);
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .brand-icon-svg {
@@ -110,45 +113,58 @@
       height: 32px;
       fill: var(--emerald-accent);
       filter: drop-shadow(0 0 10px var(--emerald-glow));
+      flex-shrink: 0;
     }
 
     .brand-text {
       display: flex;
       flex-direction: column;
+      white-space: nowrap;
     }
 
     .brand-title {
       font-family: var(--font-display);
-      font-size: 0.95rem;
-      letter-spacing: 0.12em;
+      font-size: 0.92rem;
+      letter-spacing: 0.08em;
       font-weight: 700;
       text-transform: uppercase;
       color: #ffffff;
-      line-height: 1.1;
+      line-height: 1.15;
+      white-space: nowrap;
     }
 
     .brand-sub {
-      font-size: 0.66rem;
-      letter-spacing: 0.18em;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--emerald-light);
+      white-space: nowrap;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: clamp(14px, 1.8vw, 24px);
       list-style: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-links li {
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .nav-links a {
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       font-weight: 500;
       transition: var(--transition-smooth);
       position: relative;
-      padding: 4px 0;
+      padding: 6px 2px;
+      white-space: nowrap;
+      display: inline-block;
     }
 
     .nav-links a:hover, .nav-links a.active {
@@ -804,7 +820,7 @@
   <!-- Floating Navigation -->
   <header class="header-floating-wrap">
     <nav class="navbar-pill">
-      <a href="index.html" class="brand-logo" title="Trang Chủ The Living Canopy">
+      <a href="index.html" class="brand-logo" title="The Living Canopy Overview">
         <svg class="brand-icon-svg" viewBox="0 0 32 32" fill="none">
           <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fill-opacity="0.3"/>
           <path d="M16 8C14 11 11 14 11 17C11 19.8 13.2 22 16 22C18.8 22 21 19.8 21 17C21 14 18 11 16 8Z" fill="currentColor"/>
@@ -817,16 +833,16 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="index.html">← Trang Chủ</a></li>
-        <li><a href="gallery.html">Thư Viện Gallery ↗</a></li>
+        <li><a href="index.html">← Overview</a></li>
+        <li><a href="gallery.html">Gallery ↗</a></li>
         <li><a href="about.html">About Us ↗</a></li>
-        <li><a href="user.html" class="active">Khu Vườn Của Tôi</a></li>
+        <li><a href="user.html" class="active">My Garden</a></li>
       </ul>
 
       <div class="nav-actions">
-        <a href="gallery.html" class="btn-add-plant" style="background: rgba(34, 197, 94, 0.15); border: 1px solid var(--border-accent); color: #86efac; padding: 7px 16px; font-size: 0.82rem;">+ Thêm Cây ↗</a>
-        <button class="btn-logout" onclick="handleLogout()" title="Đăng xuất khỏi hệ thống">
-          <span>Đăng Xuất</span>
+        <a href="gallery.html" class="btn-add-plant" style="background: rgba(34, 197, 94, 0.15); border: 1px solid var(--border-accent); color: #86efac; padding: 7px 16px; font-size: 0.82rem;">+ Add Specimen ↗</a>
+        <button class="btn-logout" onclick="handleLogout()" title="Sign out of system">
+          <span>Sign Out</span>
         </button>
       </div>
     </nav>
@@ -838,36 +854,36 @@
       
       <!-- Avatar -->
       <div class="avatar-wrapper">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Avatar người dùng" class="user-avatar-img" id="userAvatar">
-        <span class="avatar-level-badge" id="userLevelBadge">CẤP 3</span>
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="User avatar" class="user-avatar-img" id="userAvatar">
+        <span class="avatar-level-badge" id="userLevelBadge">TIER 3</span>
       </div>
 
       <!-- User Information -->
       <div class="profile-info-wrap">
         <div class="profile-pill-tag">
-          <span>🌱 THÀNH VIÊN SINH THÁI CHÍNH THỨC</span>
+          <span>🌱 VERIFIED BOTANICAL MEMBER</span>
         </div>
-        <h1 class="user-name" id="displayUserName">Hoàng Minh Thảo</h1>
+        <h1 class="user-name" id="displayUserName">Alex Morgan</h1>
         <div class="user-email-meta">
-          <span class="meta-item" id="displayUserEmail">minhthao.botany@gmail.com</span>
+          <span class="meta-item" id="displayUserEmail">alex.morgan.botany@gmail.com</span>
           <span class="meta-dot">•</span>
-          <span class="meta-item" id="displayJoinDate">Thành viên từ: Tháng 03, 2026</span>
+          <span class="meta-item" id="displayJoinDate">Member since: March 2026</span>
           <span class="meta-dot">•</span>
-          <span class="meta-item" id="displayLoginMethod" style="color: #86efac;">Đã xác thực qua Google</span>
+          <span class="meta-item" id="displayLoginMethod" style="color: #86efac;">Verified via Google</span>
         </div>
 
         <div class="profile-badges-row">
           <div class="eco-badge">
             <span>🌴</span>
-            <span id="displayUserBiome">Đới Nóng (Tropical)</span>
+            <span id="displayUserBiome">Tropical Biome</span>
           </div>
           <div class="eco-badge">
             <span>🏆</span>
-            <span id="displayUserRole">Nhà Làm Vườn Nhiệt Đới</span>
+            <span id="displayUserRole">Tropical Conservatory Steward</span>
           </div>
           <div class="eco-badge">
             <span>✨</span>
-            <span>Không Hóa Chất Độc Hại</span>
+            <span>Organic & Chemical-Free</span>
           </div>
         </div>
       </div>
@@ -875,10 +891,10 @@
       <!-- Action Buttons -->
       <div class="profile-actions-col">
         <button class="btn-edit-profile" onclick="openEditModal()">
-          <span>✏️ Chỉnh Sửa Hồ Sơ</span>
+          <span>✏️ Edit Profile</span>
         </button>
         <div style="font-size: 0.78rem; color: #86efac; text-align: right;">
-          <span>⚡ Trạng thái: Đang hoạt động</span>
+          <span>⚡ Status: Active Steward</span>
         </div>
       </div>
 
@@ -890,45 +906,45 @@
       <div class="metric-bento-card">
         <div class="metric-icon-small">🌿</div>
         <div class="metric-val" id="totalPlantsCounter">3</div>
-        <div class="metric-label">Cây Đang Chăm Sóc</div>
-        <div class="metric-subhint">100% sinh trưởng ổn định</div>
+        <div class="metric-label">Specimens Nurtured</div>
+        <div class="metric-subhint">100% stable growth index</div>
       </div>
 
       <div class="metric-bento-card">
         <div class="metric-icon-small">💧</div>
-        <div class="metric-val" id="pendingWaterCounter">1 Cây</div>
-        <div class="metric-label">Cần Tưới Chiều Nay</div>
-        <div class="metric-subhint">Monstera Deliciosa (45% ẩm)</div>
+        <div class="metric-val" id="pendingWaterCounter">1 Plant</div>
+        <div class="metric-label">Hydration Due Today</div>
+        <div class="metric-subhint">Monstera Deliciosa (45% moisture)</div>
       </div>
 
       <div class="metric-bento-card">
         <div class="metric-icon-small">🌬️</div>
         <div class="metric-val">~450 L</div>
-        <div class="metric-label">O₂ Tạo Ra Ước Tính</div>
-        <div class="metric-subhint">Thanh lọc không khí phòng khách</div>
+        <div class="metric-label">Estimated O₂ Output</div>
+        <div class="metric-subhint">Living room air purification</div>
       </div>
 
       <div class="metric-bento-card">
         <div class="metric-icon-small">☀️</div>
         <div class="metric-val">1,500 FC</div>
-        <div class="metric-label">Cường Độ Sáng Trung Bình</div>
-        <div class="metric-subhint">Ánh sáng tán xạ tự nhiên hoàn hảo</div>
+        <div class="metric-label">Avg. Ambient Lumens</div>
+        <div class="metric-subhint">Optimal diffused canopy daylight</div>
       </div>
 
     </div>
   </section>
 
-  <!-- My Garden Section (Danh sách cây đã thêm) -->
+  <!-- My Garden Section (Specimen catalog) -->
   <section class="my-garden-section">
     <div class="garden-header-bar">
       <div class="garden-title-wrap">
-        <h2>Khu Vườn Sinh Thái Của Tôi</h2>
-        <p>Danh sách các bản mẫu thực vật học bạn đã thêm vào khu vườn. Theo dõi độ ẩm và nhịp tưới ráo từng cây.</p>
+        <h2>My Living Botanical Sanctuary</h2>
+        <p>Catalog of botanical specimens curated in your sanctuary. Monitor root zone humidity, light intake, and watering intervals.</p>
       </div>
 
       <div class="garden-controls">
         <a href="gallery.html" class="btn-add-plant">
-          <span>+ Khám Phá Thêm Cây Mới (Gallery) →</span>
+          <span>+ Explore Specimen Catalog (Gallery) →</span>
         </a>
       </div>
     </div>
@@ -941,28 +957,28 @@
         <div class="plant-card-thumb-wrap">
           <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80" alt="Monstera Deliciosa" class="plant-card-thumb">
           <div class="plant-thumb-fade"></div>
-          <span class="plant-biome-badge">🌴 Đới Nóng</span>
-          <span class="plant-health-badge">TƯƠI TỐT</span>
+          <span class="plant-biome-badge">🌴 Tropical</span>
+          <span class="plant-health-badge">THRIVING</span>
         </div>
         <div class="plant-body">
           <div class="plant-names">
-            <h3 class="plant-common-name">Trầu Bà Lá Xẻ</h3>
+            <h3 class="plant-common-name">Swiss Cheese Plant</h3>
             <p class="plant-botanical-name">Monstera Deliciosa Liebm.</p>
           </div>
 
           <div class="plant-care-status-box">
             <div class="care-row">
-              <span class="care-key"><span>☀️</span> Ánh Sáng:</span>
-              <span class="care-val">Tán xạ 1,200 FC</span>
+              <span class="care-key"><span>☀️</span> Light Level:</span>
+              <span class="care-val">Diffused 1,200 FC</span>
             </div>
             <div class="care-row">
-              <span class="care-key"><span>💧</span> Lịch Tưới:</span>
-              <span class="care-val" id="water-status-monstera">Cần tưới chiều nay</span>
+              <span class="care-key"><span>💧</span> Watering:</span>
+              <span class="care-val" id="water-status-monstera">Hydration due this afternoon</span>
             </div>
             <div class="soil-meter-wrap">
               <div class="soil-meter-header">
-                <span>Độ ẩm giá thể:</span>
-                <span id="soil-pct-monstera">45% (Hơi khô)</span>
+                <span>Substrate Moisture:</span>
+                <span id="soil-pct-monstera">45% (Slightly Dry)</span>
               </div>
               <div class="soil-bar-track">
                 <div class="soil-bar-fill" id="soil-bar-monstera" style="width: 45%;"></div>
@@ -971,10 +987,10 @@
           </div>
 
           <div class="plant-card-actions">
-            <button class="btn-action-water" onclick="waterPlant('monstera', 'Trầu Bà Lá Xẻ')">
-              <span>💧 Tưới Nước Ngay</span>
+            <button class="btn-action-water" onclick="waterPlant('monstera', 'Monstera Deliciosa')">
+              <span>💧 Hydrate Now</span>
             </button>
-            <button class="btn-action-delete" onclick="removePlant('monstera', 'Trầu Bà Lá Xẻ')" title="Gỡ khỏi vườn">
+            <button class="btn-action-delete" onclick="removePlant('monstera', 'Monstera Deliciosa')" title="Remove from sanctuary">
               <span>🗑️</span>
             </button>
           </div>
@@ -986,28 +1002,28 @@
         <div class="plant-card-thumb-wrap">
           <img src="https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=800&q=80" alt="Ficus Lyrata" class="plant-card-thumb">
           <div class="plant-thumb-fade"></div>
-          <span class="plant-biome-badge">🌴 Đới Nóng</span>
-          <span class="plant-health-badge">ĐÂM CHỒI MỚI</span>
+          <span class="plant-biome-badge">🌴 Tropical</span>
+          <span class="plant-health-badge">NEW GROWTH</span>
         </div>
         <div class="plant-body">
           <div class="plant-names">
-            <h3 class="plant-common-name">Bàng Singapore</h3>
+            <h3 class="plant-common-name">Fiddle Leaf Fig</h3>
             <p class="plant-botanical-name">Ficus Lyrata Warb.</p>
           </div>
 
           <div class="plant-care-status-box">
             <div class="care-row">
-              <span class="care-key"><span>☀️</span> Ánh Sáng:</span>
-              <span class="care-val">Nắng gián tiếp 2,000 FC</span>
+              <span class="care-key"><span>☀️</span> Light Level:</span>
+              <span class="care-val">Indirect 2,000 FC</span>
             </div>
             <div class="care-row">
-              <span class="care-key"><span>💧</span> Lịch Tưới:</span>
-              <span class="care-val" id="water-status-ficus">Đã tưới hôm qua</span>
+              <span class="care-key"><span>💧</span> Watering:</span>
+              <span class="care-val" id="water-status-ficus">Hydrated yesterday</span>
             </div>
             <div class="soil-meter-wrap">
               <div class="soil-meter-header">
-                <span>Độ ẩm giá thể:</span>
-                <span id="soil-pct-ficus">75% (Tốt)</span>
+                <span>Substrate Moisture:</span>
+                <span id="soil-pct-ficus">75% (Optimal)</span>
               </div>
               <div class="soil-bar-track">
                 <div class="soil-bar-fill" id="soil-bar-ficus" style="width: 75%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
@@ -1016,10 +1032,10 @@
           </div>
 
           <div class="plant-card-actions">
-            <button class="btn-action-water" onclick="waterPlant('ficus', 'Bàng Singapore')">
-              <span>💧 Tưới Phun Sương</span>
+            <button class="btn-action-water" onclick="waterPlant('ficus', 'Fiddle Leaf Fig')">
+              <span>💧 Mist Canopy</span>
             </button>
-            <button class="btn-action-delete" onclick="removePlant('ficus', 'Bàng Singapore')" title="Gỡ khỏi vườn">
+            <button class="btn-action-delete" onclick="removePlant('ficus', 'Fiddle Leaf Fig')" title="Remove from sanctuary">
               <span>🗑️</span>
             </button>
           </div>
@@ -1029,30 +1045,30 @@
       <!-- Plant 3: Haworthia Fasciata -->
       <article class="plant-card" id="plant-card-succulent" data-id="succulent">
         <div class="plant-card-thumb-wrap">
-          <img src="https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=800&q=80" alt="Sen đá móng rồng" class="plant-card-thumb">
+          <img src="https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=800&q=80" alt="Haworthia" class="plant-card-thumb">
           <div class="plant-thumb-fade"></div>
-          <span class="plant-biome-badge">🏜️ Đới Khô Hạn</span>
-          <span class="plant-health-badge">MỌNG NƯỚC</span>
+          <span class="plant-biome-badge">🏜️ Arid & Desert</span>
+          <span class="plant-health-badge">SUCCULENT</span>
         </div>
         <div class="plant-body">
           <div class="plant-names">
-            <h3 class="plant-common-name">Sen Đá Móng Rồng</h3>
-            <p class="plant-botanical-name">Haworthia Fasciata Haw.</p>
+            <h3 class="plant-common-name">Zebra Haworthia</h3>
+            <p class="plant-botanical-name">Haworthiopsis Attenuata Haw.</p>
           </div>
 
           <div class="plant-care-status-box">
             <div class="care-row">
-              <span class="care-key"><span>☀️</span> Ánh Sáng:</span>
-              <span class="care-val">Nắng trực tiếp 3,500 FC</span>
+              <span class="care-key"><span>☀️</span> Light Level:</span>
+              <span class="care-val">Direct Sunlight 3,500 FC</span>
             </div>
             <div class="care-row">
-              <span class="care-key"><span>💧</span> Lịch Tưới:</span>
-              <span class="care-val" id="water-status-succulent">Không cần tưới 8 ngày tới</span>
+              <span class="care-key"><span>💧</span> Watering:</span>
+              <span class="care-val" id="water-status-succulent">No watering needed for 8 days</span>
             </div>
             <div class="soil-meter-wrap">
               <div class="soil-meter-header">
-                <span>Độ ẩm giá thể:</span>
-                <span id="soil-pct-succulent">20% (Khô chuẩn CAM)</span>
+                <span>Substrate Moisture:</span>
+                <span id="soil-pct-succulent">20% (Dry CAM Mode)</span>
               </div>
               <div class="soil-bar-track">
                 <div class="soil-bar-fill" id="soil-bar-succulent" style="width: 20%; background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div>
@@ -1061,10 +1077,10 @@
           </div>
 
           <div class="plant-card-actions">
-            <button class="btn-action-water" onclick="waterPlant('succulent', 'Sen Đá Móng Rồng')">
-              <span>💧 Tưới Nhỏ Giọt</span>
+            <button class="btn-action-water" onclick="waterPlant('succulent', 'Zebra Haworthia')">
+              <span>💧 Drip Hydrate</span>
             </button>
-            <button class="btn-action-delete" onclick="removePlant('succulent', 'Sen Đá Móng Rồng')" title="Gỡ khỏi vườn">
+            <button class="btn-action-delete" onclick="removePlant('succulent', 'Zebra Haworthia')" title="Remove from sanctuary">
               <span>🗑️</span>
             </button>
           </div>
@@ -1076,11 +1092,11 @@
     <!-- Empty State Container -->
     <div class="empty-garden-state" id="emptyGardenBox">
       <div class="empty-icon">🪴</div>
-      <h3 class="empty-title">Khu Vườn Của Bạn Chưa Có Cây Nào</h3>
+      <h3 class="empty-title">Your Sanctuary Has No Specimens Yet</h3>
       <p class="empty-text">
-        Hãy ghé thăm kho thư viện bản mẫu để khám phá các dòng cây theo 3 đới khí hậu và thêm cây đầu tiên vào khu vườn của bạn!
+        Visit our botanical archive to discover flora across 3 distinct biomes and add your first living specimen!
       </p>
-      <a href="gallery.html" class="btn-add-plant">Khám Phá Thư Viện Gallery Ngay →</a>
+      <a href="gallery.html" class="btn-add-plant">Explore Gallery Archive Now →</a>
     </div>
 
   </section>
@@ -1089,27 +1105,27 @@
   <div class="modal-backdrop" id="editModal">
     <div class="modal-box">
       <button class="modal-close-btn" onclick="closeEditModal()">✕</button>
-      <h3 class="modal-title">Cập Nhật Thông Tin</h3>
-      <p class="modal-subtitle">Chỉnh sửa tên hiển thị và đới khí hậu yêu thích của bạn.</p>
+      <h3 class="modal-title">Update Member Profile</h3>
+      <p class="modal-subtitle">Edit your display name and primary climatic biome focus.</p>
 
       <form onsubmit="saveProfileChanges(event)">
         <div style="margin-bottom: 16px;">
-          <label style="font-size: 0.85rem; color: #cbd5e1; display: block; margin-bottom: 6px;">Tên hiển thị:</label>
-          <input type="text" id="editNameInput" style="width: 100%; background: rgba(5,13,8,0.7); border: 1px solid var(--border-glass); border-radius: 12px; padding: 10px 14px; color: #fff; font-size: 0.9rem;" value="Hoàng Minh Thảo" required>
+          <label style="font-size: 0.85rem; color: #cbd5e1; display: block; margin-bottom: 6px;">Display Name:</label>
+          <input type="text" id="editNameInput" style="width: 100%; background: rgba(5,13,8,0.7); border: 1px solid var(--border-glass); border-radius: 12px; padding: 10px 14px; color: #fff; font-size: 0.9rem;" value="Alex Morgan" required>
         </div>
 
         <div style="margin-bottom: 24px;">
-          <label style="font-size: 0.85rem; color: #cbd5e1; display: block; margin-bottom: 6px;">Đới khí hậu bạn ưu tiên:</label>
+          <label style="font-size: 0.85rem; color: #cbd5e1; display: block; margin-bottom: 6px;">Preferred Climatic Biome:</label>
           <select id="editBiomeSelect" style="width: 100%; background: #0c1c14; border: 1px solid var(--border-glass); border-radius: 12px; padding: 10px 14px; color: #fff; font-size: 0.9rem;">
-            <option value="Đới Nóng (Tropical)">🌴 Đới Nóng Nhiệt Đới</option>
-            <option value="Đới Ôn Hòa (Subtropical)">🌲 Đới Ôn Hòa & Cận Nhiệt</option>
-            <option value="Đới Khô Hạn (Arid)">🏜️ Đới Khô Hạn & Sen Đá</option>
+            <option value="Tropical Biome">🌴 Tropical Conservatory</option>
+            <option value="Subtropical Biome">🌲 Subtropical Highlands</option>
+            <option value="Arid & Desert Biome">🏜️ Arid & Succulents</option>
           </select>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end;">
-          <button type="button" onclick="closeEditModal()" style="background: transparent; border: 1px solid var(--border-glass); color: #cbd5e1; padding: 8px 18px; border-radius: 9999px; cursor: pointer;">Hủy</button>
-          <button type="submit" class="btn-add-plant" style="border: none; cursor: pointer;">Lưu Thay Đổi</button>
+          <button type="button" onclick="closeEditModal()" style="background: transparent; border: 1px solid var(--border-glass); color: #cbd5e1; padding: 8px 18px; border-radius: 9999px; cursor: pointer;">Cancel</button>
+          <button type="submit" class="btn-add-plant" style="border: none; cursor: pointer;">Save Changes</button>
         </div>
       </form>
     </div>
@@ -1119,11 +1135,11 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div>
-        © 2026 The Living Canopy & GreenNest Consortium. Bảo lưu mọi quyền.
+        © 2026 The Living Canopy & GreenNest Consortium. All rights reserved.
       </div>
       <div style="display: flex; gap: 20px;">
-        <a href="index.html" style="color: #86efac; text-decoration: none;">Trang Chủ</a>
-        <a href="gallery.html" style="color: #cbd5e1; text-decoration: none;">Thư Viện Gallery</a>
+        <a href="index.html" style="color: #86efac; text-decoration: none;">Overview</a>
+        <a href="gallery.html" style="color: #cbd5e1; text-decoration: none;">Gallery Archive</a>
         <a href="about.html" style="color: #cbd5e1; text-decoration: none;">About Us</a>
       </div>
     </div>
@@ -1142,8 +1158,8 @@
           if (user.biome) document.getElementById('displayUserBiome').textContent = user.biome;
           if (user.role) document.getElementById('displayUserRole').textContent = user.role;
           if (user.level) document.getElementById('userLevelBadge').textContent = user.level.toUpperCase();
-          if (user.joinDate) document.getElementById('displayJoinDate').textContent = "Thành viên: " + user.joinDate;
-          if (user.loginMethod) document.getElementById('displayLoginMethod').textContent = "Đã kết nối qua " + user.loginMethod;
+          if (user.joinDate) document.getElementById('displayJoinDate').textContent = "Member since: " + user.joinDate;
+          if (user.loginMethod) document.getElementById('displayLoginMethod').textContent = "Connected via " + user.loginMethod;
         } catch (e) {
           console.error(e);
         }
@@ -1158,20 +1174,20 @@
       const waterStatus = document.getElementById(`water-status-${id}`);
 
       if (soilPct && soilBar && waterStatus) {
-        soilPct.textContent = '90% (Vừa tưới)';
+        soilPct.textContent = '90% (Hydrated)';
         soilPct.style.color = '#86efac';
         soilBar.style.width = '90%';
         soilBar.style.background = 'linear-gradient(90deg, #3b82f6, #60a5fa)';
-        waterStatus.textContent = 'Đã tưới đẫm hôm nay ✓';
+        waterStatus.textContent = 'Fully hydrated today ✓';
         waterStatus.style.color = '#86efac';
 
-        alert(`Đã tưới nước thành công cho ${plantName}! Độ ẩm rễ đạt 90%.`);
+        alert(`Successfully hydrated ${plantName}! Root zone moisture is now 90%.`);
       }
     }
 
     // Remove Plant from Garden
     function removePlant(id, plantName) {
-      if (confirm(`Bạn có chắc chắn muốn gỡ "${plantName}" khỏi khu vườn của mình?`)) {
+      if (confirm(`Are you sure you want to remove "${plantName}" from your sanctuary?`)) {
         const card = document.getElementById(`plant-card-${id}`);
         if (card) {
           card.style.transition = 'all 0.4s ease';
@@ -1233,14 +1249,14 @@
         user.biome = newBiome;
         localStorage.setItem('livingCanopyUser', JSON.stringify(user));
 
-        alert('Đã cập nhật thông tin hồ sơ thành công!');
+        alert('Profile details updated successfully!');
         closeEditModal();
       }
     }
 
     // Logout
     function handleLogout() {
-      if (confirm('Bạn có muốn đăng xuất khỏi GreenNest?')) {
+      if (confirm('Are you sure you want to sign out of GreenNest?')) {
         localStorage.removeItem('livingCanopyUser');
         window.location.href = 'login.html';
       }
