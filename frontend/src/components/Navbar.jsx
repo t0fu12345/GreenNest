@@ -43,9 +43,10 @@ const Navbar = () => {
         {/* Menu links in English */}
         <ul className="nav-links">
           <li><NavLink to="/" end>Overview</NavLink></li>
+          <li><NavLink to="/plants">Plants 🌿</NavLink></li>
           <li><NavLink to="/gallery">Gallery ↗</NavLink></li>
           <li><NavLink to="/about">About Us ↗</NavLink></li>
-          <li><NavLink to="/user">My Garden 🌿</NavLink></li>
+          <li><NavLink to="/user">My Garden</NavLink></li>
           <li><a href="#footer">Contact</a></li>
         </ul>
 
@@ -111,7 +112,7 @@ const Navbar = () => {
                   className={`notif-item ${unreadItems.includes(2) ? 'unread' : ''}`}
                   onClick={() => handleItemClick(2)}
                 >
-                  <Link to="/gallery" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
+                  <Link to="/plants" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
                     <div className="notif-icon-bubble gallery">🌱</div>
                     <div className="notif-body">
                       <div className="notif-meta">
