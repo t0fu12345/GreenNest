@@ -40,7 +40,9 @@ const Footer = () => {
             <p className="footer-desc">
               GreenNest digital interface and taxonomy. Discover the complete specimen collection in our curated archive.
             </p>
-            <Link to="/gallery" className="footer-link">Gallery Archive →</Link>
+            <Link to="/plants" className="footer-link">Plants Directory →</Link>
+            <br />
+            <Link to="/gallery" className="footer-link" style={{ marginTop: '8px', display: 'inline-block' }}>Gallery Exhibition →</Link>
           </div>
 
         </div>

@@ -71,7 +71,7 @@ const SpecimenDetail = () => {
           marginBottom: '32px'
         }}>
           <Link
-            to="/gallery"
+            to="/plants"
             style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--emerald-light)', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600 }}
           >
             <span>← Back to Specimen Archive</span>
