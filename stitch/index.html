@@ -2166,6 +2166,7 @@
         </div>
 
         <a href="login.html" class="btn-cta-pill" id="navAuthBtn">Sign In</a>
+        <button type="button" id="navLogoutBtn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; padding: 7px 16px; font-size: 0.82rem; cursor: pointer; font-weight: 600; border-radius: 9999px; transition: all 0.25s ease;" title="Sign out of account">Sign Out</button>
       </div>
     </nav>
   </header>
@@ -2621,180 +2622,115 @@
       }
     });
 
-    // Toggle Bookmarks
-    window.toggleSavePlant = function(id, e) {
-      if (e) e.stopPropagation();
-      if (savedGarden.has(id)) {
-        savedGarden.delete(id);
-      } else {
-        savedGarden.add(id);
-      }
-      const savedCountEl = document.getElementById('savedCount');
-      if (savedCountEl) savedCountEl.textContent = savedGarden.size;
-      
-      const gardenNotifText = document.querySelector('.notif-item[data-id="notif-1"] .notif-text');
-      if (gardenNotifText) {
-        gardenNotifText.innerHTML = `<span id="savedCount">${savedGarden.size}</span> saved plants in your sanctuary need hydration check.`;
-      }
-      renderSpecimens();
-    };
-
-    // Category button click
-    catButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        catButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentCategory = btn.getAttribute("data-cat");
-        renderSpecimens();
+    // Modal Listeners
+    if (closeSpecimenModalBtn && specimenModal) {
+      closeSpecimenModalBtn.addEventListener("click", () => specimenModal.classList.remove("open"));
+      specimenModal.addEventListener("click", (e) => {
+        if (e.target === specimenModal) specimenModal.classList.remove("open");
       });
-    });
+    }
 
-    // Tag Facets Click
-    facetTags.forEach(tag => {
-      tag.addEventListener("click", () => {
-        const tagVal = tag.getAttribute("data-tag");
-        if (currentTagFilter === tagVal) {
-          currentTagFilter = "";
-          tag.classList.remove("active");
-        } else {
-          facetTags.forEach(t => t.classList.remove("active"));
-          tag.classList.add("active");
-          currentTagFilter = tagVal;
-        }
-        renderSpecimens();
+    if (openCompBtn && compModal) {
+      openCompBtn.addEventListener("click", () => compModal.classList.add("open"));
+    }
+    if (closeCompBtn && compModal) {
+      closeCompBtn.addEventListener("click", () => compModal.classList.remove("open"));
+      compModal.addEventListener("click", (e) => {
+        if (e.target === compModal) compModal.classList.remove("open");
       });
-    });
+    }
 
-    // Realtime Intelligent Central Search
-    searchInput.addEventListener("input", (e) => {
-      const q = e.target.value.trim().toLowerCase();
-      currentSearchQuery = q;
-      renderSpecimens();
+    if (openVideoTourBtn && videoModal) {
+      openVideoTourBtn.addEventListener("click", () => videoModal.classList.add("open"));
+    }
+    if (closeVideoModalBtn && videoModal) {
+      closeVideoModalBtn.addEventListener("click", () => videoModal.classList.remove("open"));
+      videoModal.addEventListener("click", (e) => {
+        if (e.target === videoModal) videoModal.classList.remove("open");
+      });
+    }
 
-      // Suggestions handling
-      if (q.length > 0) {
-        const matches = specimensData.filter(s => 
-          s.name.toLowerCase().includes(q) || 
-          s.botanicalName.toLowerCase().includes(q) ||
-          s.tags.some(t => t.includes(q))
-        );
-
-        if (matches.length > 0) {
-          suggestionsPanel.innerHTML = matches.slice(0, 4).map(item => `
-            <div class="suggestion-item" onclick="selectSuggestion('${item.name}')">
-              <div class="suggestion-info">
-                <span class="suggestion-name">${item.name}</span>
-                <span class="suggestion-botanical">${item.botanicalName}</span>
-              </div>
-              <span class="suggestion-badge">${item.folio}</span>
-            </div>
-          `).join('');
-          suggestionsPanel.classList.add("active");
-        } else {
-          suggestionsPanel.innerHTML = `<div style="padding: 12px; color: var(--sage-muted); font-size: 0.85rem;">No matching suggestions found</div>`;
-          suggestionsPanel.classList.add("active");
-        }
-      } else {
-        suggestionsPanel.classList.remove("active");
-      }
-    });
-
-    window.selectSuggestion = function(plantName) {
-      searchInput.value = plantName;
-      currentSearchQuery = plantName;
-      suggestionsPanel.classList.remove("active");
-      renderSpecimens();
-    };
-
-    document.addEventListener("click", (e) => {
-      if (!searchInput.contains(e.target) && !suggestionsPanel.contains(e.target)) {
-        suggestionsPanel.classList.remove("active");
-      }
-    });
-
-    // Keyboard shortcut CMD+K or Ctrl+K to jump to search
-    window.addEventListener("keydown", (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        searchInput.focus();
-        window.scrollTo({ top: searchInput.getBoundingClientRect().top + window.scrollY - 150, behavior: "smooth" });
-      }
-    });
-
-    window.resetAllFilters = function() {
-      currentCategory = "all";
-      currentSearchQuery = "";
-      currentTagFilter = "";
-      searchInput.value = "";
-      catButtons.forEach(b => b.classList.remove("active"));
-      catButtons[0].classList.add("active");
-      facetTags.forEach(t => t.classList.remove("active"));
-      renderSpecimens();
-    };
-
-    // Plant Detail Modal (Lightbox Inspector)
-    window.openPlantDetail = function(id) {
-      const plant = specimensData.find(p => p.id === id);
-      if (!plant) return;
-
-      specimenModalContent.innerHTML = `
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-          <div style="height: 380px; position: relative;">
-            <img src="${plant.image}" alt="${plant.name}" style="width: 100%; height: 100%; object-fit: cover;">
-            <div style="position: absolute; inset: 0; background: linear-gradient(to top, #0a1b12 0%, transparent 60%);"></div>
-          </div>
-          <div style="padding: 32px; display: flex; flex-direction: column;">
-            <span style="font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.15em; color: var(--emerald-accent); margin-bottom: 6px;">${plant.folio} // BOTANICAL DATA</span>
-            <h2 style="font-family: var(--font-serif); font-size: 1.8rem; color: #fff; margin-bottom: 4px;">${plant.name}</h2>
-            <p style="font-style: italic; color: #86efac; margin-bottom: 16px;">${plant.botanicalName}</p>
-            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6; margin-bottom: 24px;">${plant.desc}</p>
-            
-            <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-glass); border-radius: 16px; padding: 16px; margin-bottom: 24px;">
-              <div style="font-size: 0.8rem; color: var(--sage-muted); margin-bottom: 6px;">RECOMMENDED SUBSTRATE:</div>
-              <div style="font-size: 0.92rem; color: #fff; font-weight: 600;">${plant.soil}</div>
-            </div>
-
-            <div style="display: flex; gap: 12px; margin-top: auto;">
-              <button class="btn-cta-pill" style="flex: 1; justify-content: center;" onclick="toggleSavePlant('${plant.id}'); specimenModal.classList.remove('open');">
-                ${savedGarden.has(plant.id) ? '✓ Saved in Sanctuary' : '+ Add to Sanctuary'}
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-      specimenModal.classList.add("open");
-    };
-
-    closeSpecimenModalBtn.addEventListener("click", () => specimenModal.classList.remove("open"));
-    specimenModal.addEventListener("click", (e) => {
-      if (e.target === specimenModal) specimenModal.classList.remove("open");
-    });
-
-    // Comparison Modal
-    openCompBtn.addEventListener("click", () => compModal.classList.add("open"));
-    closeCompBtn.addEventListener("click", () => compModal.classList.remove("open"));
-    compModal.addEventListener("click", (e) => {
-      if (e.target === compModal) compModal.classList.remove("open");
-    });
-
-    // Video Tour Modal
-    openVideoTourBtn.addEventListener("click", () => videoModal.classList.add("open"));
-    closeVideoModalBtn.addEventListener("click", () => videoModal.classList.remove("open"));
-    videoModal.addEventListener("click", (e) => {
-      if (e.target === videoModal) videoModal.classList.remove("open");
-    });
-
-    // Check logged-in user session
-    const storedUser = localStorage.getItem('livingCanopyUser');
-    const navAuthBtn = document.getElementById('navAuthBtn');
-    if (storedUser && navAuthBtn) {
+    // =========================================================================
+    // USER AUTHENTICATION: SIGN IN BUTTON VISIBILITY
+    // If a user is signed in -> Sign In button disappears.
+    // If not signed in -> Sign In button stays.
+    // =========================================================================
+    function isUserLoggedIn() {
       try {
-        const u = JSON.parse(storedUser);
-        navAuthBtn.innerHTML = `👤 ${u.name || 'Profile'}`;
-        navAuthBtn.href = 'user.html';
-        navAuthBtn.style.background = 'rgba(34, 197, 94, 0.2)';
-        navAuthBtn.style.borderColor = 'var(--emerald-accent)';
+        const local = localStorage.getItem('livingCanopyUser');
+        if (local && local !== 'null' && local !== 'undefined') {
+          const u = JSON.parse(local);
+          if (u && (u.name || u.email || u.nickname || u.role || u.id)) {
+            return true;
+          }
+        }
       } catch (err) {}
+
+      try {
+        const sess = sessionStorage.getItem('livingCanopyUser');
+        if (sess && sess !== 'null' && sess !== 'undefined') {
+          const u = JSON.parse(sess);
+          if (u && (u.name || u.email || u.nickname || u.role || u.id)) {
+            return true;
+          }
+        }
+      } catch (err) {}
+
+      try {
+        const cookies = document.cookie.split(';');
+        for (let c of cookies) {
+          const [k, v] = c.trim().split('=');
+          if ((k === 'greenNest_session' || k === 'greenNest_jwt' || k === 'livingCanopyUser') && v && v !== 'null') {
+            return true;
+          }
+        }
+      } catch (err) {}
+
+      return false;
+    }
+
+    function syncAuthButton() {
+      const navAuthBtn = document.getElementById('navAuthBtn');
+      const navLogoutBtn = document.getElementById('navLogoutBtn');
+      const loggedIn = isUserLoggedIn();
+
+      if (navAuthBtn) {
+        if (loggedIn) {
+          // If signed in, the Sign In button disappears
+          navAuthBtn.style.display = 'none';
+        } else {
+          // If not signed in, the Sign In button stays
+          navAuthBtn.style.display = 'inline-flex';
+        }
+      }
+
+      if (navLogoutBtn) {
+        navLogoutBtn.style.display = loggedIn ? 'inline-flex' : 'none';
+      }
+    }
+
+    // Run auth check immediately
+    syncAuthButton();
+
+    // Listen for storage changes across tabs/windows or login actions
+    window.addEventListener('storage', syncAuthButton);
+    window.addEventListener('focus', syncAuthButton);
+
+    // Sign Out handler
+    const navLogoutBtn = document.getElementById('navLogoutBtn');
+    if (navLogoutBtn) {
+      navLogoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        try {
+          localStorage.removeItem('livingCanopyUser');
+          localStorage.removeItem('greenNest_jwt_token');
+          sessionStorage.removeItem('livingCanopyUser');
+          document.cookie = 'greenNest_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+          document.cookie = 'greenNest_jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+          document.cookie = 'livingCanopyUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+        } catch (err) {}
+        syncAuthButton();
+      });
     }
 
     // =========================================================================
@@ -2885,8 +2821,6 @@
       });
     });
 
-    // Initial render
-    renderSpecimens();
   </script>
 </body>
 </html>

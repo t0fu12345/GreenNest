@@ -45,6 +45,7 @@ const Navbar = () => {
         {/* Menu links in English */}
         <ul className="nav-links">
           <li><NavLink to="/" end>Overview</NavLink></li>
+          <li><NavLink to="/plants">Plants 🌿</NavLink></li>
           <li><NavLink to="/gallery">Gallery ↗</NavLink></li>
           <li><NavLink to="/about">About Us ↗</NavLink></li>
           <li><NavLink to="/user">My Garden 🌿</NavLink></li>
@@ -127,7 +128,7 @@ const Navbar = () => {
                   className={`notif-item ${unreadItems.includes(2) ? 'unread' : ''}`}
                   onClick={() => handleItemClick(2)}
                 >
-                  <Link to="/gallery" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
+                  <Link to="/plants" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
                     <div className="notif-icon-bubble gallery">🌱</div>
                     <div className="notif-body">
                       <div className="notif-meta">
@@ -168,26 +169,6 @@ const Navbar = () => {
 
           {isAuthenticated && user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Link
-                to="/user"
-                className="btn-cta-pill"
-                id="navAuthBtn"
-                style={{
-                  padding: '7px 15px',
-                  fontSize: '0.82rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '7px',
-                  background: 'rgba(34, 197, 94, 0.2)',
-                  borderColor: 'rgba(34, 197, 94, 0.6)',
-                  color: '#f0fdf4',
-                  borderRadius: 0
-                }}
-                title={`Đang đăng nhập: ${user.name} (${user.email})`}
-              >
-                <span>👤</span>
-                <span>{user.name.split(' ').slice(-1)[0] || user.name}</span>
-              </Link>
               <button
                 type="button"
                 onClick={logout}
@@ -196,15 +177,15 @@ const Navbar = () => {
                   border: '1px solid rgba(239, 68, 68, 0.35)',
                   color: '#fca5a5',
                   borderRadius: 0,
-                  padding: '6px 12px',
-                  fontSize: '0.78rem',
+                  padding: '7px 14px',
+                  fontSize: '0.8rem',
                   cursor: 'pointer',
                   fontWeight: 600,
                   transition: 'all 0.25s ease'
                 }}
-                title="Đăng xuất khỏi tài khoản"
+                title={`Logged in as ${user.name}. Click to sign out.`}
               >
-                Thoát
+                Sign Out
               </button>
             </div>
           ) : (
