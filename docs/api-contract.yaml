@@ -1,0 +1,1999 @@
+openapi: 3.0.3
+info:
+  title: GreenNest REST API Specification
+  description: >-
+    Đặc tả giao diện lập trình ứng dụng RESTful API cho nền tảng triển lãm thực vật sinh học,
+    chăm sóc cây trồng & giám sát thông số vi khí hậu GreenNest (Dự án eProject MERN Stack - Aptech).
+  version: 1.0.0
+  contact:
+    name: GreenNest Development Team
+    email: contact@greennest.botanical.vn
+servers:
+  - url: http://localhost:5000/api
+    description: Máy chủ phát triển cục bộ (Local Development)
+  - url: https://api.greennest.botanical.vn/api
+    description: Máy chủ môi trường sản xuất (Production Server)
+
+tags:
+  - name: Auth
+    description: Xác thực người dùng, đăng ký, đăng nhập JWT và quản lý hồ sơ cá nhân
+  - name: Plants
+    description: Tra cứu, tìm kiếm, lọc đa chiều và quản lý dữ liệu cây trồng (Public & Admin CRUD)
+  - name: Gardeners
+    description: Hồ sơ chuyên gia thực vật, nghệ nhân vườn ươm đối tác và cây trồng bảo trợ
+  - name: Collections
+    description: Bộ sưu tập cây trồng theo mùa, theo chủ đề không gian kiến trúc
+  - name: Gallery
+    description: Thư viện ảnh thực vật tương tác Lightbox, tương thích phím tắt và chú thích tác quyền
+  - name: Garden
+    description: Quản lý Vườn của tôi (My Garden), cơ chế đồng bộ lưỡng thể (Hybrid Sync) và Care Checklist
+  - name: Contact
+    description: Tiếp nhận tin nhắn liên hệ từ khách truy cập và xử lý hòm thư phản hồi của Admin
+  - name: Admin
+    description: Bảng điều khiển quản trị (Dashboard Stats & Metrics tổng hợp)
+  - name: Metadata
+    description: Dữ liệu tra cứu danh mục, môi trường sinh trưởng và thông số vi khí hậu
+
+paths:
+  # ============================================================================
+  # AUTHENTICATION & USER PROFILE
+  # ============================================================================
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Đăng ký tài khoản người dùng mới
+      description: Tạo tài khoản thành viên mới với vai trò mặc định là 'user'. Mật khẩu được băm tự động bằng bcrypt (salt rounds = 10).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Đăng ký thành công, trả về JWT Token và thông tin tài khoản
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '409':
+          description: Email đã được đăng ký trong hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Đăng nhập vào hệ thống
+      description: Xác thực thông tin đăng nhập email & mật khẩu, trả về JSON Web Token (JWT) và thông tin vai trò người dùng (user hoặc admin).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Đăng nhập thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          description: Sai thông tin email hoặc mật khẩu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+
+  /auth/me:
+    get:
+      tags:
+        - Auth
+      summary: Lấy thông tin tài khoản hiện tại
+      description: Trả về thông tin chi tiết của người dùng đang đăng nhập dựa trên JWT token được gửi kèm trong Header.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Lấy thông tin tài khoản thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/401Error'
+
+  /auth/change-password:
+    put:
+      tags:
+        - Auth
+      summary: Đổi mật khẩu tài khoản
+      description: Người dùng đăng nhập đổi mật khẩu bằng cách cung cấp mật khẩu hiện tại và mật khẩu mới.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        '200':
+          description: Đổi mật khẩu thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+
+  # ============================================================================
+  # PLANTS DIRECTORY & CRUD ENDPOINTS
+  # ============================================================================
+  /plants:
+    get:
+      tags:
+        - Plants
+      summary: Danh sách cây trồng kèm tìm kiếm và bộ lọc đa chiều (FRS 2, 3)
+      description: >-
+        Tìm kiếm toàn văn theo tên cây / tên khoa học. Lọc linh hoạt theo danh mục (category),
+        môi trường sinh trưởng (environment), mức độ ánh sáng (light), tần suất tưới (watering),
+        độ khó chăm sóc (careLevel), và sắp xếp phân trang.
+      parameters:
+        - name: q
+          in: query
+          description: Từ khóa tìm kiếm Full-Text (tên phổ thông, tên khoa học)
+          schema:
+            type: string
+            example: monstera
+        - name: category
+          in: query
+          description: Lọc theo nhóm phân loại (Aroid, Foliage, Succulent, Fern, Flowering, Bonsai)
+          schema:
+            type: string
+            example: Aroid
+        - name: environment
+          in: query
+          description: Môi trường sinh trưởng (Indoor, Balcony, Partial Shade, Full Sun, Terrarium)
+          schema:
+            type: string
+            example: Indoor
+        - name: light
+          in: query
+          description: Yêu cầu ánh sáng (Bright Indirect, Low Light, Direct Sunlight)
+          schema:
+            type: string
+            example: Bright Indirect
+        - name: careLevel
+          in: query
+          description: Mức độ chăm sóc
+          schema:
+            type: string
+            enum: [Easy, Moderate, Challenging]
+            example: Easy
+        - name: sort
+          in: query
+          description: Tiêu chí sắp xếp
+          schema:
+            type: string
+            enum: [latest, name_asc, name_desc, popular]
+            default: latest
+        - name: page
+          in: query
+          description: Trang hiện tại (1-based index)
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: Số lượng bản ghi mỗi trang
+          schema:
+            type: integer
+            default: 12
+      responses:
+        '200':
+          description: Danh sách cây trồng kèm siêu dữ liệu phân trang
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlantSummary'
+                  pagination:
+                    $ref: '#/components/schemas/PaginationMeta'
+
+    post:
+      tags:
+        - Plants
+      summary: "[Admin] Thêm cây trồng mới vào cơ sở dữ liệu"
+      description: Dành riêng cho Quản trị viên (Role Admin). Tạo một thực thể cây trồng mới với đầy đủ thông số kỹ thuật và hướng dẫn chăm sóc.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlantRequest'
+      responses:
+        '201':
+          description: Tạo mới cây trồng thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Cây trồng mới đã được lưu thành công
+                  data:
+                    $ref: '#/components/schemas/PlantDetail'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /plants/{id}:
+    get:
+      tags:
+        - Plants
+      summary: Xem chi tiết cây trồng & thông số vi khí hậu (FRS 4)
+      description: Trả về thông tin chi tiết đầy đủ gồm tên khoa học, đất trồng, cỡ chậu, chu kỳ tưới, cảnh báo độc tính và hồ sơ chuyên gia bảo trợ.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ObjectId MongoDB hoặc slug duy nhất của cây trồng
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6b01
+      responses:
+        '200':
+          description: Chi tiết cây trồng hoàn chỉnh
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/PlantDetail'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+    put:
+      tags:
+        - Plants
+      summary: "[Admin] Cập nhật thông tin cây trồng"
+      description: Chỉnh sửa toàn bộ hoặc một phần các trường dữ liệu của cây trồng. Yêu cầu quyền Quản trị viên.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ObjectId MongoDB của cây trồng cần chỉnh sửa
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6b01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePlantRequest'
+      responses:
+        '200':
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Cập nhật cây trồng thành công
+                  data:
+                    $ref: '#/components/schemas/PlantDetail'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+    delete:
+      tags:
+        - Plants
+      summary: "[Admin] Xóa cây trồng khỏi hệ thống"
+      description: Xóa vĩnh viễn bản ghi cây trồng khỏi MongoDB. Yêu cầu quyền Quản trị viên.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ObjectId MongoDB của cây trồng cần xóa
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6b01
+      responses:
+        '200':
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+  /plants/{id}/related:
+    get:
+      tags:
+        - Plants
+      summary: Gợi ý các loài cây tương tự (FRS 4)
+      description: Trả về danh sách 4 cây tương tự dựa trên cùng nhóm phân loại (category) hoặc môi trường sinh trưởng (environment).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ObjectId của cây hiện tại
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6b01
+      responses:
+        '200':
+          description: Danh sách cây gợi ý tương tự
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlantSummary'
+
+  # ============================================================================
+  # GARDENER PROFILES (EXPERTS & BOTANISTS)
+  # ============================================================================
+  /gardeners:
+    get:
+      tags:
+        - Gardeners
+      summary: Lấy danh sách chuyên gia thực vật & đối tác vườn ươm (FRS 5)
+      description: Hiển thị danh sách hồ sơ chuyên gia bao gồm tên, chuyên môn, số năm kinh nghiệm và ảnh đại diện.
+      responses:
+        '200':
+          description: Danh sách chuyên gia thực vật
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GardenerProfile'
+
+    post:
+      tags:
+        - Gardeners
+      summary: "[Admin] Thêm hồ sơ chuyên gia mới"
+      description: Yêu cầu quyền Quản trị viên (Admin).
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGardenerRequest'
+      responses:
+        '201':
+          description: Tạo hồ sơ thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/GardenerProfile'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /gardeners/{id}:
+    get:
+      tags:
+        - Gardeners
+      summary: Xem chi tiết hồ sơ chuyên gia & cây họ bảo trợ (FRS 5)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6g01
+      responses:
+        '200':
+          description: Chi tiết hồ sơ chuyên gia và các cây liên kết
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/GardenerDetail'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+    put:
+      tags:
+        - Gardeners
+      summary: "[Admin] Cập nhật hồ sơ chuyên gia"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6g01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGardenerRequest'
+      responses:
+        '200':
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+    delete:
+      tags:
+        - Gardeners
+      summary: "[Admin] Xóa hồ sơ chuyên gia"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6g01
+      responses:
+        '200':
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+  # ============================================================================
+  # COLLECTIONS (SEASONAL & THEMATIC)
+  # ============================================================================
+  /collections:
+    get:
+      tags:
+        - Collections
+      summary: Danh sách bộ sưu tập theo mùa & chủ đề (FRS 8)
+      description: Lấy danh sách các bộ sưu tập thực vật đặc tuyển (Ví dụ Ban công mùa hè, Cây lọc không khí, Cây ít bảo dưỡng).
+      parameters:
+        - name: season
+          in: query
+          description: Lọc theo mùa sinh trưởng
+          schema:
+            type: string
+            enum: [all, spring, summer, autumn, winter]
+            default: all
+      responses:
+        '200':
+          description: Danh sách bộ sưu tập
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CollectionSummary'
+
+    post:
+      tags:
+        - Collections
+      summary: "[Admin] Tạo mới bộ sưu tập"
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionRequest'
+      responses:
+        '201':
+          description: Tạo bộ sưu tập thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/CollectionDetail'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /collections/{id}:
+    get:
+      tags:
+        - Collections
+      summary: Chi tiết bộ sưu tập kèm danh sách các cây trồng thành phần (FRS 8)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6c01
+      responses:
+        '200':
+          description: Chi tiết bộ sưu tập
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/CollectionDetail'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+    put:
+      tags:
+        - Collections
+      summary: "[Admin] Cập nhật bộ sưu tập"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6c01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionRequest'
+      responses:
+        '200':
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+    delete:
+      tags:
+        - Collections
+      summary: "[Admin] Xóa bộ sưu tập"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6c01
+      responses:
+        '200':
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+  # ============================================================================
+  # INTERACTIVE PLANT GALLERY (LIGHTBOX - FRS 6)
+  # ============================================================================
+  /gallery:
+    get:
+      tags:
+        - Gallery
+      summary: Lấy danh sách ảnh cho Thư viện ảnh tương tác Lightbox (FRS 6)
+      description: >-
+        Trả về danh sách ảnh chất lượng cao kèm thông tin alt text, caption miêu tả, nguồn trích dẫn
+        (credit: Pinterest) và tỷ lệ khung hình phục vụ bố cục Bento Grid và Lightbox Modal.
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: aspectRatio
+          in: query
+          schema:
+            type: string
+            enum: [all, tall, wide, square, large]
+            default: all
+      responses:
+        '200':
+          description: Danh sách ảnh gallery kèm thông tin tác quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GalleryImage'
+                  pagination:
+                    $ref: '#/components/schemas/PaginationMeta'
+
+    post:
+      tags:
+        - Gallery
+      summary: "[Admin] Thêm ảnh mới vào Thư viện tương tác"
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGalleryImageRequest'
+      responses:
+        '201':
+          description: Thêm ảnh thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/GalleryImage'
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /gallery/{id}:
+    put:
+      tags:
+        - Gallery
+      summary: "[Admin] Cập nhật chú thích và tác quyền ảnh gallery"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6d01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGalleryImageRequest'
+      responses:
+        '200':
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+    delete:
+      tags:
+        - Gallery
+      summary: "[Admin] Xóa ảnh khỏi thư viện gallery"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6d01
+      responses:
+        '200':
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+
+  /gallery/{id}/like:
+    post:
+      tags:
+        - Gallery
+      summary: Thích (Like) một bức ảnh trong thư viện
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6d01
+      responses:
+        '200':
+          description: Thích ảnh thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  likesCount:
+                    type: integer
+                    example: 128
+
+  # ============================================================================
+  # MY GARDEN & CARE TELEMETRY (HYBRID SYNC & CHECKLIST - FRS 9, 13)
+  # ============================================================================
+  /garden:
+    get:
+      tags:
+        - Garden
+      summary: Lấy danh sách cây trong Vườn của tôi (My Garden) & tiến độ chăm sóc (FRS 9, 13)
+      description: Trả về danh sách cây đã lưu của tài khoản người dùng kèm theo trạng thái checklist gần nhất (tưới, bón phân, tỉa cành).
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Danh sách cây trong vườn cá nhân
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/MyGardenPayload'
+        '401':
+          $ref: '#/components/responses/401Error'
+
+  /garden/{plantId}:
+    post:
+      tags:
+        - Garden
+      summary: Lưu một cây vào Vườn của tôi (Bookmark)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: plantId
+          in: path
+          required: true
+          description: ObjectId của cây trồng
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6b01
+      responses:
+        '201':
+          description: Thêm cây vào vườn thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+
+    delete:
+      tags:
+        - Garden
+      summary: Xóa một cây khỏi Vườn của tôi
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: plantId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6b01
+      responses:
+        '200':
+          description: Xóa khỏi vườn thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+
+  /garden/sync:
+    post:
+      tags:
+        - Garden
+      summary: Đồng bộ dữ liệu Vườn của tôi từ LocalStorage sau khi Đăng nhập (Hybrid Sync - FRS 9)
+      description: >-
+        Khi người dùng duyệt web dưới tư cách khách (Guest), danh sách cây bookmark được lưu ở LocalStorage.
+        Sau khi người dùng đăng nhập hoặc đăng ký thành công, Frontend sẽ gọi endpoint này để gộp các ID cây
+        từ LocalStorage vào tài khoản MongoDB mà không làm mất dữ liệu cũ.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GardenSyncRequest'
+      responses:
+        '200':
+          description: Đồng bộ hoàn tất
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Đồng bộ thành công 4 cây vào Vườn của bạn
+                  syncedCount:
+                    type: integer
+                    example: 4
+                  totalGardenPlants:
+                    type: array
+                    items:
+                      type: string
+                      example: 66f8e21a4f3b2c1d0e5a6b01
+        '401':
+          $ref: '#/components/responses/401Error'
+
+  /garden/checklist/{plantId}:
+    put:
+      tags:
+        - Garden
+      summary: Cập nhật nhật ký chăm sóc của cây (Care Checklist - FRS 13)
+      description: Lưu mốc thời gian hoàn thành tưới nước, bón phân, lau lá hoặc sang chậu cho một cây cụ thể trong vườn.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: plantId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6b01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateChecklistRequest'
+      responses:
+        '200':
+          description: Cập nhật nhật ký chăm sóc thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+
+  # ============================================================================
+  # CONTACT US (FRS 11) & ADMIN INBOX
+  # ============================================================================
+  /contact:
+    post:
+      tags:
+        - Contact
+      summary: Gửi tin nhắn liên hệ từ người dùng (FRS 11)
+      description: Lưu tin nhắn, họ tên, email và chủ đề của người dùng vào cơ sở dữ liệu MongoDB để bộ phận quản trị xử lý.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContactRequest'
+      responses:
+        '201':
+          description: Gửi tin nhắn liên hệ thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/400Error'
+
+    get:
+      tags:
+        - Contact
+      summary: "[Admin] Xem danh sách tin nhắn liên hệ của khách hàng"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [all, pending, resolved]
+            default: all
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 15
+      responses:
+        '200':
+          description: Danh sách tin nhắn liên hệ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ContactItem'
+                  pagination:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /contact/{id}/status:
+    patch:
+      tags:
+        - Contact
+      summary: "[Admin] Cập nhật trạng thái xử lý tin nhắn liên hệ"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6e01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum: [pending, resolved]
+                  example: resolved
+      responses:
+        '200':
+          description: Trạng thái đã được cập nhật
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  # ============================================================================
+  # ADMIN DASHBOARD METRICS
+  # ============================================================================
+  /admin/dashboard/stats:
+    get:
+      tags:
+        - Admin
+      summary: "[Admin] Lấy số liệu thống kê tổng quan hệ thống"
+      description: Cung cấp tổng số cây, số chuyên gia, bộ sưu tập, ảnh gallery, số liên hệ chờ xử lý và tổng thành viên phục vụ giao diện Admin Dashboard.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dữ liệu thống kê tổng hợp
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/DashboardStats'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  # ============================================================================
+  # METADATA & LOOKUPS
+  # ============================================================================
+  /metadata/filters:
+    get:
+      tags:
+        - Metadata
+      summary: Lấy dữ liệu danh mục & bộ lọc chuẩn bị trước (FRS 3, 7)
+      description: Trả về danh sách tất cả các danh mục cây, môi trường sinh trưởng, mức độ ánh sáng và nhu cầu tưới để render dynamic filter pills.
+      responses:
+        '200':
+          description: Dữ liệu bộ lọc đầy đủ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/FilterMetadata'
+
+# ============================================================================
+# COMPONENTS (SCHEMAS, RESPONSES, SECURITY)
+# ============================================================================
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Chuỗi mã thông báo xác thực JWT được cấp sau khi đăng nhập thành công. Gửi kèm theo Header Authorization 'Bearer <token>'.
+
+  responses:
+    400Error:
+      description: Dữ liệu gửi lên không hợp lệ hoặc thiếu trường bắt buộc
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErrorResponse'
+    401Error:
+      description: Chưa xác thực danh tính hoặc phiên đăng nhập đã hết hạn
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErrorResponse'
+    403Error:
+      description: Không có quyền truy cập (Yêu cầu tài khoản có vai trò Quản trị viên - Admin)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErrorResponse'
+    404Error:
+      description: Không tìm thấy tài nguyên yêu cầu trong hệ thống
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErrorResponse'
+
+  schemas:
+    # --------------------------------------------------------------------------
+    # CHUNG / BASE RESPONSES
+    # --------------------------------------------------------------------------
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Thao tác thực hiện thành công
+
+    ApiErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        statusCode:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: Dữ liệu gửi lên không đúng định dạng yêu cầu
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: email
+              issue:
+                type: string
+                example: Email không đúng định dạng
+
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 12
+        totalItems:
+          type: integer
+          example: 24
+        totalPages:
+          type: integer
+          example: 2
+
+    # --------------------------------------------------------------------------
+    # AUTHENTICATION & USER SCHEMAS
+    # --------------------------------------------------------------------------
+    RegisterRequest:
+      type: object
+      required:
+        - fullName
+        - email
+        - password
+      properties:
+        fullName:
+          type: string
+          example: Lê Hoàng Nam
+        email:
+          type: string
+          format: email
+          example: nam.le@greennest.vn
+        password:
+          type: string
+          minLength: 6
+          example: GreenNest@2026
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: nam.le@greennest.vn
+        password:
+          type: string
+          example: GreenNest@2026
+
+    AuthResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        user:
+          $ref: '#/components/schemas/UserProfile'
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6a01
+        fullName:
+          type: string
+          example: Lê Hoàng Nam
+        email:
+          type: string
+          example: nam.le@greennest.vn
+        role:
+          type: string
+          enum: [user, admin]
+          example: user
+        avatarUrl:
+          type: string
+          nullable: true
+          example: https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-10-13T08:00:00Z
+
+    ChangePasswordRequest:
+      type: object
+      required:
+        - currentPassword
+        - newPassword
+      properties:
+        currentPassword:
+          type: string
+          example: GreenNest@2026
+        newPassword:
+          type: string
+          minLength: 6
+          example: GreenNest@New2027
+
+    # --------------------------------------------------------------------------
+    # PLANT SCHEMAS
+    # --------------------------------------------------------------------------
+    PlantSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6b01
+        name:
+          type: string
+          example: Monstera Deliciosa (Trầu Bà Nam Mỹ)
+        botanicalName:
+          type: string
+          example: Monstera deliciosa Liebm.
+        slug:
+          type: string
+          example: monstera-deliciosa
+        category:
+          type: string
+          example: Aroid
+        environment:
+          type: string
+          example: Indoor
+        light:
+          type: string
+          example: Bright Indirect Light
+        watering:
+          type: string
+          example: 1-2 lần/tuần
+        careLevel:
+          type: string
+          example: Easy
+        primaryImage:
+          type: string
+          example: https://i.pinimg.com/736x/07/70/4e/07704e6c382ce7dc8e580a82b0be81f9.jpg
+        isPetSafe:
+          type: boolean
+          example: false
+
+    PlantDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6b01
+        name:
+          type: string
+          example: Monstera Deliciosa (Trầu Bà Nam Mỹ)
+        botanicalName:
+          type: string
+          example: Monstera deliciosa Liebm.
+        slug:
+          type: string
+          example: monstera-deliciosa
+        category:
+          type: string
+          example: Aroid
+        environment:
+          type: string
+          example: Indoor
+        description:
+          type: string
+          example: Loài thực vật biểu tượng của thiết kế nội thất hiện đại với những chiếc xẻ lá ngoạn mục.
+        light:
+          type: string
+          example: Bright Indirect Light
+        watering:
+          type: string
+          example: 1-2 lần/tuần khi lớp đất mặt khô 3-5cm
+        careLevel:
+          type: string
+          enum: [Easy, Moderate, Challenging]
+          example: Easy
+        temperature:
+          type: string
+          example: 18°C - 30°C
+        humidity:
+          type: string
+          example: 60% - 80%
+        toxicity:
+          type: object
+          properties:
+            dogs:
+              type: boolean
+              example: true
+            cats:
+              type: boolean
+              example: true
+            humans:
+              type: boolean
+              example: false
+            note:
+              type: string
+              example: Chứa tinh thể Canxi Oxalat gây kích ứng nếu thú cưng nhai phải.
+        careInstructions:
+          type: object
+          properties:
+            soil:
+              type: string
+              example: Hỗn hợp đất tơi xốp, phối trộn xơ dừa, perlite và vỏ thông thoát nước tốt.
+            potting:
+              type: string
+              example: Chậu gốm nung có lỗ thoát nước lớn, đường kính từ 25-30cm.
+            fertilizer:
+              type: string
+              example: Bón phân hữu cơ tan chậm hoặc phân NPK hòa loãng mỗi tháng 1 lần vào mùa sinh trưởng.
+            pruning:
+              type: string
+              example: Lau sạch bụi trên phiến lá định kỳ bằng khăn ẩm mềm để tối ưu quang hợp.
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                example: https://i.pinimg.com/736x/07/70/4e/07704e6c382ce7dc8e580a82b0be81f9.jpg
+              alt:
+                type: string
+                example: Monstera Deliciosa trong không gian ánh sáng tự nhiên
+              isPrimary:
+                type: boolean
+                example: true
+        gardener:
+          $ref: '#/components/schemas/GardenerProfile'
+        status:
+          type: string
+          enum: [published, draft]
+          example: published
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CreatePlantRequest:
+      type: object
+      required:
+        - name
+        - botanicalName
+        - category
+        - environment
+        - light
+        - watering
+      properties:
+        name:
+          type: string
+          example: Calathea Orbifolia (Đuôi Công Tròn)
+        botanicalName:
+          type: string
+          example: Calathea orbifolia
+        category:
+          type: string
+          example: Foliage
+        environment:
+          type: string
+          example: Indoor
+        description:
+          type: string
+          example: Cây kiểng lá với những vân sọc xanh bạc tinh tế như tranh vẽ.
+        light:
+          type: string
+          example: Medium to Low Light
+        watering:
+          type: string
+          example: Tưới đều đặn 2 lần/tuần, giữ ẩm đất
+        careLevel:
+          type: string
+          enum: [Easy, Moderate, Challenging]
+          example: Moderate
+        temperature:
+          type: string
+          example: 20°C - 26°C
+        humidity:
+          type: string
+          example: 65% - 85%
+        toxicity:
+          type: object
+          properties:
+            dogs:
+              type: boolean
+              example: false
+            cats:
+              type: boolean
+              example: false
+            note:
+              type: string
+              example: Hoàn toàn không độc hại, thân thiện với thú nuôi.
+        careInstructions:
+          type: object
+          properties:
+            soil:
+              type: string
+            potting:
+              type: string
+            fertilizer:
+              type: string
+            pruning:
+              type: string
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              alt:
+                type: string
+              isPrimary:
+                type: boolean
+        gardenerId:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6g01
+        status:
+          type: string
+          enum: [published, draft]
+          default: published
+
+    UpdatePlantRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        botanicalName:
+          type: string
+        category:
+          type: string
+        environment:
+          type: string
+        description:
+          type: string
+        light:
+          type: string
+        watering:
+          type: string
+        careLevel:
+          type: string
+        temperature:
+          type: string
+        humidity:
+          type: string
+        toxicity:
+          type: object
+        careInstructions:
+          type: object
+        images:
+          type: array
+        gardenerId:
+          type: string
+        status:
+          type: string
+          enum: [published, draft]
+
+    # --------------------------------------------------------------------------
+    # GARDENER SCHEMAS
+    # --------------------------------------------------------------------------
+    GardenerProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6g01
+        name:
+          type: string
+          example: Dr. Elena Vance
+        avatar:
+          type: string
+          example: https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80
+        specialization:
+          type: string
+          example: Nhà thực vật học & Giám tuyển khí hậu nhiệt đới
+        experienceYears:
+          type: integer
+          example: 12
+        contactEmail:
+          type: string
+          example: elena.vance@greennest.vn
+
+    GardenerDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6g01
+        name:
+          type: string
+          example: Dr. Elena Vance
+        avatar:
+          type: string
+          example: https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80
+        bio:
+          type: string
+          example: Nghiên cứu sinh tiến sĩ thực vật học với hơn 10 năm kinh nghiệm nhân giống các loài Araceae quý hiếm.
+        specialization:
+          type: string
+          example: Nhà thực vật học & Giám tuyển khí hậu nhiệt đới
+        experienceYears:
+          type: integer
+          example: 12
+        contactEmail:
+          type: string
+          example: elena.vance@greennest.vn
+        associatedPlants:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlantSummary'
+
+    CreateGardenerRequest:
+      type: object
+      required:
+        - name
+        - specialization
+        - contactEmail
+      properties:
+        name:
+          type: string
+          example: Dr. Elena Vance
+        avatar:
+          type: string
+        bio:
+          type: string
+        specialization:
+          type: string
+        experienceYears:
+          type: integer
+        contactEmail:
+          type: string
+
+    # --------------------------------------------------------------------------
+    # COLLECTION SCHEMAS
+    # --------------------------------------------------------------------------
+    CollectionSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6c01
+        title:
+          type: string
+          example: Bộ sưu tập Cây ban công xanh mướt
+        slug:
+          type: string
+          example: cay-ban-cong-xanh-muot
+        description:
+          type: string
+          example: Những loài cây chịu nắng gió tốt, kiến tạo không gian thư giãn ngay thềm nhà.
+        coverImage:
+          type: string
+          example: https://i.pinimg.com/736x/8f/c9/b5/8fc9b57b9896eef6ec8d1d86f7b975e5.jpg
+        season:
+          type: string
+          example: summer
+        isFeatured:
+          type: boolean
+          example: true
+        plantCount:
+          type: integer
+          example: 6
+
+    CollectionDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6c01
+        title:
+          type: string
+          example: Bộ sưu tập Cây ban công xanh mướt
+        slug:
+          type: string
+          example: cay-ban-cong-xanh-muot
+        description:
+          type: string
+          example: Những loài cây chịu nắng gió tốt, kiến tạo không gian thư giãn ngay thềm nhà.
+        coverImage:
+          type: string
+          example: https://i.pinimg.com/736x/8f/c9/b5/8fc9b57b9896eef6ec8d1d86f7b975e5.jpg
+        season:
+          type: string
+          enum: [all, spring, summer, autumn, winter]
+          example: summer
+        isFeatured:
+          type: boolean
+          example: true
+        plants:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlantSummary'
+
+    CreateCollectionRequest:
+      type: object
+      required:
+        - title
+        - description
+        - coverImage
+      properties:
+        title:
+          type: string
+          example: Ốc đảo thanh lọc không khí
+        description:
+          type: string
+          example: Tuyển tập các loài cây có khả năng hấp thụ độc tố và bụi mịn tốt nhất.
+        coverImage:
+          type: string
+          example: https://i.pinimg.com/736x/07/70/4e/07704e6c382ce7dc8e580a82b0be81f9.jpg
+        season:
+          type: string
+          enum: [all, spring, summer, autumn, winter]
+          default: all
+        isFeatured:
+          type: boolean
+          default: false
+        plantIds:
+          type: array
+          items:
+            type: string
+
+    # --------------------------------------------------------------------------
+    # GALLERY SCHEMAS (FRS 6)
+    # --------------------------------------------------------------------------
+    GalleryImage:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6d01
+        imageUrl:
+          type: string
+          example: https://i.pinimg.com/736x/dc/4e/18/dc4e1817fd8e15ec0bb73b91b8dd5f33.jpg
+        alt:
+          type: string
+          example: Cây Monstera xanh tươi trong chậu đất nung cạnh cửa sổ ngập nắng
+        caption:
+          type: string
+          example: Ánh sáng ban mai xuyên qua tán lá xẻ Monstera Deliciosa
+        credit:
+          type: string
+          example: Pinterest
+        aspectRatio:
+          type: string
+          enum: [tall, wide, square, large]
+          example: tall
+        plantId:
+          type: string
+          nullable: true
+          example: 66f8e21a4f3b2c1d0e5a6b01
+        likesCount:
+          type: integer
+          example: 42
+        createdAt:
+          type: string
+          format: date-time
+
+    CreateGalleryImageRequest:
+      type: object
+      required:
+        - imageUrl
+        - alt
+        - caption
+      properties:
+        imageUrl:
+          type: string
+          example: https://i.pinimg.com/736x/dc/4e/18/dc4e1817fd8e15ec0bb73b91b8dd5f33.jpg
+        alt:
+          type: string
+          example: Cây Monstera trong chậu đất nung
+        caption:
+          type: string
+          example: Ánh sáng ban mai xuyên qua phiến lá
+        credit:
+          type: string
+          default: Pinterest
+        aspectRatio:
+          type: string
+          enum: [tall, wide, square, large]
+          default: tall
+        plantId:
+          type: string
+
+    # --------------------------------------------------------------------------
+    # MY GARDEN & CHECKLIST SCHEMAS (FRS 9, 13)
+    # --------------------------------------------------------------------------
+    MyGardenPayload:
+      type: object
+      properties:
+        plants:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlantSummary'
+        checklists:
+          type: array
+          items:
+            type: object
+            properties:
+              plantId:
+                type: string
+                example: 66f8e21a4f3b2c1d0e5a6b01
+              wateredAt:
+                type: string
+                format: date-time
+                nullable: true
+                example: 2026-10-12T09:00:00Z
+              fertilizedAt:
+                type: string
+                format: date-time
+                nullable: true
+              prunedAt:
+                type: string
+                format: date-time
+                nullable: true
+              notes:
+                type: string
+                example: Cây vừa đâm thêm 2 búp lá mới rất khỏe.
+
+    GardenSyncRequest:
+      type: object
+      required:
+        - plantIds
+      properties:
+        plantIds:
+          type: array
+          items:
+            type: string
+            example: 66f8e21a4f3b2c1d0e5a6b01
+          description: Mảng các ID cây trồng người dùng đã lưu trữ trong LocalStorage khi chưa đăng nhập
+
+    UpdateChecklistRequest:
+      type: object
+      properties:
+        actionType:
+          type: string
+          enum: [water, fertilize, prune, repot, reset]
+          example: water
+        notes:
+          type: string
+          example: Đã tưới ẩm đất và phun sương lá buổi sáng.
+
+    # --------------------------------------------------------------------------
+    # CONTACT INBOX SCHEMAS (FRS 11)
+    # --------------------------------------------------------------------------
+    CreateContactRequest:
+      type: object
+      required:
+        - fullName
+        - email
+        - subject
+        - message
+      properties:
+        fullName:
+          type: string
+          example: Trần Minh Quân
+        email:
+          type: string
+          format: email
+          example: quan.tran@gmail.com
+        subject:
+          type: string
+          example: Tư vấn cây cho văn phòng thiếu sáng
+        message:
+          type: string
+          example: Chào GreenNest, tôi muốn xin tư vấn một số loài cây lọc không khí tốt đặt trong phòng kín ít ánh sáng tự nhiên.
+
+    ContactItem:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8e21a4f3b2c1d0e5a6e01
+        fullName:
+          type: string
+          example: Trần Minh Quân
+        email:
+          type: string
+          example: quan.tran@gmail.com
+        subject:
+          type: string
+          example: Tư vấn cây cho văn phòng thiếu sáng
+        message:
+          type: string
+          example: Chào GreenNest, tôi muốn xin tư vấn một số loài cây...
+        status:
+          type: string
+          enum: [pending, resolved]
+          example: pending
+        createdAt:
+          type: string
+          format: date-time
+
+    # --------------------------------------------------------------------------
+    # ADMIN DASHBOARD STATS
+    # --------------------------------------------------------------------------
+    DashboardStats:
+      type: object
+      properties:
+        totalPlants:
+          type: integer
+          example: 24
+        totalGardeners:
+          type: integer
+          example: 6
+        totalCollections:
+          type: integer
+          example: 4
+        totalGalleryImages:
+          type: integer
+          example: 20
+        pendingContacts:
+          type: integer
+          example: 3
+        totalUsers:
+          type: integer
+          example: 18
+
+    # --------------------------------------------------------------------------
+    # METADATA & LOOKUPS
+    # --------------------------------------------------------------------------
+    FilterMetadata:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+            example: Aroid
+        environments:
+          type: array
+          items:
+            type: string
+            example: Indoor
+        lightLevels:
+          type: array
+          items:
+            type: string
+            example: Bright Indirect Light
+        wateringFrequencies:
+          type: array
+          items:
+            type: string
+            example: 1-2 lần/tuần
+        careLevels:
+          type: array
+          items:
+            type: string
+            example: Easy
