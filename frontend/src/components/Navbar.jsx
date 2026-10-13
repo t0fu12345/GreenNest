@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
+  const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const [notifOpen, setNotifOpen] = useState(false);
   const [unreadItems, setUnreadItems] = useState([1, 2, 3]);
   const notifRef = useRef(null);
@@ -46,6 +48,20 @@ const Navbar = () => {
           <li><NavLink to="/gallery">Gallery ↗</NavLink></li>
           <li><NavLink to="/about">About Us ↗</NavLink></li>
           <li><NavLink to="/user">My Garden 🌿</NavLink></li>
+          {isAdmin && (
+            <li>
+              <NavLink 
+                to="/admin" 
+                style={{ 
+                  color: '#facc15', 
+                  fontWeight: 700, 
+                  textShadow: '0 0 10px rgba(234, 179, 8, 0.4)' 
+                }}
+              >
+                👑 Admin Portal
+              </NavLink>
+            </li>
+          )}
           <li><a href="#footer">Contact</a></li>
         </ul>
 
@@ -150,9 +166,52 @@ const Navbar = () => {
             </div>
           </div>
 
-          <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem' }}>
-            Sign In
-          </Link>
+          {isAuthenticated && user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Link
+                to="/user"
+                className="btn-cta-pill"
+                id="navAuthBtn"
+                style={{
+                  padding: '7px 15px',
+                  fontSize: '0.82rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '7px',
+                  background: 'rgba(34, 197, 94, 0.2)',
+                  borderColor: 'rgba(34, 197, 94, 0.6)',
+                  color: '#f0fdf4',
+                  borderRadius: 0
+                }}
+                title={`Đang đăng nhập: ${user.name} (${user.email})`}
+              >
+                <span>👤</span>
+                <span>{user.name.split(' ').slice(-1)[0] || user.name}</span>
+              </Link>
+              <button
+                type="button"
+                onClick={logout}
+                style={{
+                  background: 'rgba(239, 68, 68, 0.15)',
+                  border: '1px solid rgba(239, 68, 68, 0.35)',
+                  color: '#fca5a5',
+                  borderRadius: 0,
+                  padding: '6px 12px',
+                  fontSize: '0.78rem',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  transition: 'all 0.25s ease'
+                }}
+                title="Đăng xuất khỏi tài khoản"
+              >
+                Thoát
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem', borderRadius: 0 }}>
+              Sign In
+            </Link>
+          )}
         </div>
       </nav>
     </header>

@@ -1,31 +1,36 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
+  const { register, loginWithGoogle } = useAuth();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
-  const [name, setName] = useState('Alex Morgan');
-  const [email, setEmail] = useState('alex.morgan.botany@gmail.com');
-  const [password, setPassword] = useState('GreenCanopy2026');
+  const [name, setName] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [preferredBiome, setPreferredBiome] = useState('tropical');
   const [agreeTerms, setAgreeTerms] = useState(true);
   const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success'); // 'success' | 'error'
   const [isToastActive, setIsToastActive] = useState(false);
-  const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
+
+  const showNotification = (message, type = 'success', duration = 3000) => {
+    setToastMessage(message);
+    setToastType(type);
+    setIsToastActive(true);
+    setTimeout(() => {
+      setIsToastActive(false);
+    }, duration);
+  };
 
   const handleSocialRegister = (provider) => {
-    setToastMessage(`Connected via ${provider} successfully! Welcome to GreenNest. Redirecting to Overview...`);
-    setIsToastActive(true);
-    const mockUser = {
-      name: "Alex Morgan",
-      email: "alex.morgan.botany@gmail.com",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-      role: "Conservatory Member",
-      level: "Tier 1 (Apprentice)",
-      biome: "Tropical Biome",
-      joinDate: "March 2026",
-      loginMethod: provider
-    };
-    localStorage.setItem('livingCanopyUser', JSON.stringify(mockUser));
+    setSubmitting(true);
+    showNotification(`Đã liên kết tài khoản ${provider}! Chào mừng bạn đến với GreenNest.`, 'success');
+    loginWithGoogle();
     setTimeout(() => {
       navigate('/');
     }, 950);
@@ -33,22 +38,39 @@ const Register = () => {
 
   const handleEmailRegister = (e) => {
     e.preventDefault();
-    setToastMessage(`Account created successfully! Welcome ${name}. Redirecting to Overview...`);
-    setIsToastActive(true);
-    const mockUser = {
-      name: name,
-      email: email,
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-      role: "Conservatory Member",
-      level: "Tier 1 (Apprentice)",
-      biome: preferredBiome === 'tropical' ? 'Tropical Biome' : (preferredBiome === 'subtropical' ? 'Subtropical Biome' : 'Arid Biome'),
-      joinDate: "March 2026",
-      loginMethod: "Email"
-    };
-    localStorage.setItem('livingCanopyUser', JSON.stringify(mockUser));
-    setTimeout(() => {
-      navigate('/');
-    }, 950);
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      showNotification('Vui lòng điền đầy đủ các thông tin bắt buộc.', 'error');
+      return;
+    }
+
+    if (password.length < 6) {
+      showNotification('Mật khẩu cần tối thiểu 6 ký tự để đảm bảo an toàn.', 'error');
+      return;
+    }
+
+    if (!agreeTerms) {
+      showNotification('Vui lòng đồng ý với các nguyên tắc chăm sóc sinh thái.', 'error');
+      return;
+    }
+
+    setSubmitting(true);
+    const result = register({
+      name,
+      nickname,
+      email,
+      password,
+      preferredBiome
+    });
+
+    if (result.success) {
+      showNotification(`Tạo tài khoản thành công! Chào mừng ${result.user.name}. Đang chuyển hướng...`, 'success');
+      setTimeout(() => {
+        navigate('/');
+      }, 950);
+    } else {
+      setSubmitting(false);
+      showNotification(result.message, 'error', 4000);
+    }
   };
 
   return (
@@ -86,7 +108,13 @@ const Register = () => {
         </div>
 
         {/* Continue with Google / Gmail */}
-        <button type="button" className="btn-google-auth" id="btnGoogleRegister" onClick={() => handleSocialRegister('Google')}>
+        <button 
+          type="button" 
+          className="btn-google-auth" 
+          id="btnGoogleRegister" 
+          onClick={() => handleSocialRegister('Google')}
+          disabled={submitting}
+        >
           <svg className="google-icon-svg" viewBox="0 0 24 24">
             <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
             <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
@@ -114,6 +142,22 @@ const Register = () => {
                 required 
                 value={name}
                 onChange={(e) => setName(e.target.value)} 
+                autoComplete="name"
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="regNickname" className="form-label">Nickname (dùng để đăng nhập)</label>
+            <div className="input-wrapper">
+              <input 
+                type="text" 
+                id="regNickname" 
+                className="input-field" 
+                placeholder="e.g. alexmorgan or botanist" 
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)} 
+                autoComplete="username"
               />
             </div>
           </div>
@@ -129,6 +173,7 @@ const Register = () => {
                 required 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} 
+                autoComplete="email"
               />
             </div>
           </div>
@@ -140,19 +185,21 @@ const Register = () => {
                 type={showPassword ? 'text' : 'password'} 
                 id="regPassword" 
                 className="input-field" 
-                placeholder="Minimum 8 characters" 
+                placeholder="Tối thiểu 6 ký tự" 
                 required 
+                minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} 
+                autoComplete="new-password"
               />
               <button 
                 type="button" 
                 className="input-icon-btn" 
                 onClick={() => setShowPassword(!showPassword)} 
-                title="Show/Hide"
+                title="Hiện/Ẩn mật khẩu"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
               </button>
@@ -198,24 +245,38 @@ const Register = () => {
               onChange={(e) => setAgreeTerms(e.target.checked)} 
               required 
             />
-            <span>I commit to ecological conservation stewardship and agree to chemical-free plant cultivation principles.</span>
+            <span>Tôi cam kết bảo tồn sinh thái và tuân thủ nguyên tắc chăm sóc thực vật hữu cơ.</span>
           </label>
 
-          <button type="submit" className="btn-auth-submit" id="submitRegBtn">
-            <span>Create Account & Enter Conservatory →</span>
+          <button 
+            type="submit" 
+            className="btn-auth-submit" 
+            id="submitRegBtn"
+            disabled={submitting}
+          >
+            <span>{submitting ? 'Đang tạo tài khoản...' : 'Create Account & Enter Sanctuary →'}</span>
           </button>
 
           {/* Feedback Toast */}
-          <div className={`login-status-toast ${isToastActive ? 'active' : ''}`} id="regToast">
-            <span>🌿</span>
-            <div id="regToastMsg">{toastMessage}</div>
+          <div 
+            className={`login-status-toast ${isToastActive ? 'active' : ''}`} 
+            id="regToast"
+            style={{
+              borderColor: toastType === 'error' ? 'rgba(239, 68, 68, 0.6)' : 'rgba(34, 197, 94, 0.4)',
+              background: toastType === 'error' ? 'rgba(35, 10, 10, 0.95)' : 'rgba(14, 30, 22, 0.95)'
+            }}
+          >
+            <span>{toastType === 'error' ? '⚠️' : '🌿'}</span>
+            <div id="regToastMsg" style={{ color: toastType === 'error' ? '#fca5a5' : '#86efac' }}>
+              {toastMessage}
+            </div>
           </div>
 
         </form>
 
         <div className="auth-footer">
-          Already have a GreenNest account?{' '}
-          <Link to="/login">Sign in here →</Link>
+          Đã có tài khoản GreenNest?{' '}
+          <Link to="/login">Đăng nhập tại đây →</Link>
         </div>
       </main>
 

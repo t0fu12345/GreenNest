@@ -137,7 +137,7 @@
       border: 1px solid var(--border-glass);
       color: var(--text-secondary);
       padding: 8px 18px;
-      border-radius: 9999px;
+      border-radius: 0px;
       font-size: 0.85rem;
       font-weight: 500;
       text-decoration: none;
@@ -159,7 +159,7 @@
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       border: 1px solid var(--border-glass);
-      border-radius: 32px;
+      border-radius: 0px;
       padding: 44px 38px;
       box-shadow: 0 30px 70px rgba(0, 0, 0, 0.75), 0 0 40px -10px rgba(34, 197, 94, 0.25);
       position: relative;
@@ -185,7 +185,7 @@
       background: rgba(34, 197, 94, 0.12);
       border: 1px solid rgba(34, 197, 94, 0.3);
       padding: 5px 16px;
-      border-radius: 9999px;
+      border-radius: 0px;
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.14em;
@@ -198,7 +198,7 @@
       width: 6px;
       height: 6px;
       background: var(--emerald-accent);
-      border-radius: 50%;
+      border-radius: 0px;
       box-shadow: 0 0 8px var(--emerald-accent);
     }
 
@@ -228,7 +228,7 @@
       border: 1px solid rgba(255, 255, 255, 0.18);
       color: #ffffff;
       padding: 13px 20px;
-      border-radius: 16px;
+      border-radius: 0px;
       font-size: 0.92rem;
       font-weight: 600;
       cursor: pointer;
@@ -316,7 +316,7 @@
       width: 100%;
       background: rgba(5, 13, 8, 0.65);
       border: 1px solid var(--border-glass);
-      border-radius: 14px;
+      border-radius: 0px;
       padding: 13px 42px 13px 16px;
       color: #ffffff;
       font-size: 0.94rem;
@@ -383,7 +383,7 @@
       background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
       color: #041008;
       border: none;
-      border-radius: 16px;
+      border-radius: 0px;
       padding: 14px 20px;
       font-size: 0.98rem;
       font-weight: 700;
@@ -411,7 +411,7 @@
       gap: 10px;
       background: rgba(34, 197, 94, 0.15);
       border: 1px solid var(--emerald-accent);
-      border-radius: 12px;
+      border-radius: 0px;
       padding: 12px 16px;
       color: #86efac;
       font-size: 0.88rem;
@@ -506,16 +506,16 @@
     </button>
 
     <div class="auth-divider">
-      <span>Or continue with email</span>
+      <span>Or continue with nickname</span>
     </div>
 
-    <!-- Email & Password Form -->
+    <!-- Nickname & Password Form -->
     <form class="auth-form" id="loginForm" onsubmit="handleEmailLogin(event)">
       
       <div class="form-group">
-        <label for="loginEmail" class="form-label">Your Email Address</label>
+        <label for="loginNickname" class="form-label">Your Nickname</label>
         <div class="input-wrapper">
-          <input type="email" id="loginEmail" class="input-field" placeholder="your-email@domain.com" required value="minhthao.botany@gmail.com">
+          <input type="text" id="loginNickname" class="input-field" placeholder="e.g. admin or minhthao" required>
         </div>
       </div>
 
@@ -525,7 +525,7 @@
           <a href="#" onclick="alert('Password recovery link will be sent to your registered email address.'); return false;">Forgot password?</a>
         </div>
         <div class="input-wrapper">
-          <input type="password" id="loginPassword" class="input-field" placeholder="••••••••" required value="GreenCanopy2026">
+          <input type="password" id="loginPassword" class="input-field" placeholder="••••••••" required>
           <button type="button" class="input-icon-btn" onclick="togglePasswordVisibility('loginPassword', this)" title="Show/Hide password">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -540,7 +540,10 @@
           <input type="checkbox" id="rememberMe" checked>
           <span>Remember me on this device</span>
         </label>
-        <span style="font-size: 0.78rem; color: #86efac;">⚡ Prototype Mode</span>
+        <div style="display:flex;gap:6px;">
+          <button type="button" onclick="fillUserCredentials()" style="background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35); color: #86efac; font-size: 0.74rem; border-radius: 0px; padding: 4px 8px; cursor: pointer;">⚡ User</button>
+          <button type="button" onclick="fillAdminCredentials()" style="background: rgba(234,179,8,0.18); border: 1px solid rgba(234,179,8,0.5); color: #fef08a; font-size: 0.74rem; font-weight: 700; border-radius: 0px; padding: 4px 8px; cursor: pointer;">👑 Admin</button>
+        </div>
       </div>
 
       <button type="submit" class="btn-auth-submit" id="submitBtn">
@@ -578,6 +581,16 @@
       }
     }
 
+    function fillUserCredentials() {
+      document.getElementById('loginNickname').value = 'minhthao';
+      document.getElementById('loginPassword').value = 'GreenCanopy2026';
+    }
+
+    function fillAdminCredentials() {
+      document.getElementById('loginNickname').value = 'admin';
+      document.getElementById('loginPassword').value = 'AdminCanopy2026!';
+    }
+
     // Simulate Social / Google Login
     function handleSocialLogin(provider) {
       const toast = document.getElementById('loginToast');
@@ -590,6 +603,7 @@
       // Set logged-in state in localStorage
       const mockUser = {
         name: "Minh Thao",
+        nickname: "minhthao",
         email: "minhthao.botany@gmail.com",
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
         role: "Tropical Botanist",
@@ -605,10 +619,10 @@
       }, 900);
     }
 
-    // Handle Email Login Submission
+    // Handle Nickname Login Submission
     function handleEmailLogin(e) {
       e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
+      const identifier = document.getElementById('loginNickname').value.trim();
       const toast = document.getElementById('loginToast');
       const toastMsg = document.getElementById('toastMessage');
       const submitBtn = document.getElementById('submitBtn');
@@ -617,18 +631,20 @@
       submitBtn.style.opacity = '0.7';
       submitBtn.disabled = true;
 
-      toastMsg.innerHTML = `Welcome back, <strong>${email.split('@')[0]}</strong>! Sign in successful. Redirecting to Overview...`;
+      toastMsg.innerHTML = `Welcome back, <strong>${identifier}</strong>! Sign in successful. Redirecting to Overview...`;
       toast.classList.add('active');
 
+      const isAdmin = identifier.toLowerCase() === 'admin' || identifier.toLowerCase() === 'admin@greennest.com';
       const mockUser = {
-        name: email.split('@')[0].toUpperCase(),
-        email: email,
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-        role: "Ecological Gardener",
-        level: "Tier 2",
-        biome: "Tropical Biome",
+        name: isAdmin ? 'Administrator' : identifier.toUpperCase(),
+        nickname: identifier.toLowerCase(),
+        email: isAdmin ? 'admin@greennest.com' : `${identifier.toLowerCase()}@greennest.botany`,
+        avatar: isAdmin ? "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        role: isAdmin ? "admin" : "Ecological Gardener",
+        level: isAdmin ? "Tier 4 (Admin)" : "Tier 2",
+        biome: isAdmin ? "Global Botanical Network" : "Tropical Biome",
         joinDate: "March 2026",
-        loginMethod: "Email"
+        loginMethod: "Nickname"
       };
       localStorage.setItem('livingCanopyUser', JSON.stringify(mockUser));
 
