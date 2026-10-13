@@ -11,15 +11,6 @@ const User = () => {
     emoji: '🌿'
   });
 
-  const openModal = (title, description, emoji) => {
-    setModalData({
-      isOpen: true,
-      title,
-      description,
-      emoji
-    });
-  };
-
   const closeModal = () => {
     setModalData(prev => ({ ...prev, isOpen: false }));
   };
@@ -100,7 +91,7 @@ const User = () => {
           </p>
         </div>
 
-        {/* 2 Square Boxes Grid (Sharp corners: borderRadius 0) */}
+        {/* 2 Square Boxes Grid (Sharp corners: borderRadius 0 matching stitch/user.html) */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 440px))',
@@ -109,25 +100,12 @@ const User = () => {
           maxWidth: '960px',
           justifyContent: 'center'
         }}>
-          {/* Left Box: Garden */}
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() => openModal(
-              'Garden',
-              'Your private botanical garden & living specimen collection. Monitor individual pot hydration, soil microclimates, and growth rhythms.',
-              '🪴'
-            )}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                openModal(
-                  'Garden',
-                  'Your private botanical garden & living specimen collection. Monitor individual pot hydration, soil microclimates, and growth rhythms.',
-                  '🪴'
-                );
-              }
-            }}
+          {/* Left Box: Garden -> Leads to /garden */}
+          <Link
+            to="/garden"
             style={{
+              textDecoration: 'none',
+              color: 'inherit',
               position: 'relative',
               aspectRatio: '1 / 1',
               borderRadius: 0,
@@ -177,8 +155,8 @@ const User = () => {
                 <span style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700, color: '#86efac' }}>
                   🌱 Personal Sanctuary
                 </span>
-                <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.4)', color: '#fde68a', borderRadius: 0 }}>
-                  Coming Soon
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', background: 'rgba(34, 197, 94, 0.2)', border: '1px solid rgba(34, 197, 94, 0.4)', color: '#86efac', borderRadius: 0 }}>
+                  Enter Sanctuary →
                 </span>
               </div>
 
@@ -204,21 +182,14 @@ const User = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
 
-          {/* Right Box: Personal Gallery */}
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() => {
-              window.location.href = 'personal-gallery.html';
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                window.location.href = 'personal-gallery.html';
-              }
-            }}
+          {/* Right Box: Personal Gallery -> Leads to /personal-gallery */}
+          <Link
+            to="/personal-gallery"
             style={{
+              textDecoration: 'none',
+              color: 'inherit',
               position: 'relative',
               aspectRatio: '1 / 1',
               borderRadius: 0,
@@ -234,7 +205,7 @@ const User = () => {
               transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
             }}
           >
-            {/* Background Image: Subtle Open Book on Desk (blurred/symbolic, text illegible) */}
+            {/* Background Image: Subtle Open Book on Desk */}
             <div style={{
               position: 'absolute',
               inset: 0,
@@ -268,7 +239,7 @@ const User = () => {
                 <span style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700, color: '#86efac' }}>
                   📖 Herbarium Archive
                 </span>
-                <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', background: 'rgba(34, 197, 94, 0.18)', border: '1px solid rgba(34, 197, 94, 0.4)', color: '#86efac', borderRadius: 0 }}>
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', background: 'rgba(34, 197, 94, 0.2)', border: '1px solid rgba(34, 197, 94, 0.4)', color: '#86efac', borderRadius: 0 }}>
                   Open Archive →
                 </span>
               </div>
@@ -284,22 +255,22 @@ const User = () => {
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '18px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem', fontWeight: 600, color: '#ffffff' }}>
-                  <span>Personal Gallery</span>
+                  <span>Open Personal Gallery</span>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
                   </svg>
                 </span>
                 <div style={{ width: '38px', height: '38px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 0 }}>
-                  📚
+                  📖
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       </main>
 
-      {/* Interactive Coming Soon Modal */}
+      {/* Modal Dialog */}
       {modalData.isOpen && (
         <div
           onClick={closeModal}
@@ -308,8 +279,7 @@ const User = () => {
             inset: 0,
             background: 'rgba(3, 8, 5, 0.88)',
             backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            zIndex: 2000,
+            zIndex: 2500,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -319,115 +289,43 @@ const User = () => {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: '#0e1e16',
-              border: '1px solid rgba(34, 197, 94, 0.4)',
+              background: 'rgba(14, 30, 22, 0.98)',
+              border: '1px solid var(--border-glass)',
               borderRadius: 0,
-              maxWidth: '480px',
+              maxWidth: '520px',
               width: '100%',
-              padding: '44px 38px',
-              boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(34, 197, 94, 0.25)',
-              position: 'relative',
-              textAlign: 'center'
+              padding: '36px',
+              textAlign: 'center',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.85)'
             }}
           >
+            <div style={{ fontSize: '3rem', marginBottom: '14px' }}>{modalData.emoji}</div>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '12px' }}>
+              {modalData.title}
+            </h3>
+            <p style={{ color: '#cbd5e1', fontSize: '0.94rem', lineHeight: 1.6, marginBottom: '24px' }}>
+              {modalData.description}
+            </p>
             <button
+              type="button"
               onClick={closeModal}
               style={{
-                position: 'absolute',
-                top: '18px',
-                right: '18px',
-                background: 'transparent',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                color: '#94a3b8',
-                width: '34px',
-                height: '34px',
+                background: 'var(--emerald-accent)',
+                color: '#07100b',
+                border: 'none',
                 borderRadius: 0,
-                fontSize: '1rem',
+                padding: '10px 24px',
+                fontWeight: 700,
+                fontSize: '0.88rem',
                 cursor: 'pointer'
               }}
             >
-              ✕
+              Understood
             </button>
-
-            <div style={{ fontSize: '3rem', marginBottom: '16px' }}>
-              {modalData.emoji}
-            </div>
-
-            <div>
-              <span style={{
-                fontSize: '0.72rem',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                fontWeight: 700,
-                color: '#fde68a',
-                background: 'rgba(245, 158, 11, 0.15)',
-                border: '1px solid rgba(245, 158, 11, 0.35)',
-                padding: '4px 14px',
-                display: 'inline-block',
-                marginBottom: '16px',
-                borderRadius: 0
-              }}>
-                Feature Under Cultivation
-              </span>
-            </div>
-
-            <h3 style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: '1.9rem',
-              color: '#ffffff',
-              marginBottom: '12px',
-              lineHeight: 1.25
-            }}>
-              {modalData.title} — Coming Soon
-            </h3>
-
-            <p style={{
-              color: '#cbd5e1',
-              fontSize: '0.95rem',
-              lineHeight: 1.65,
-              marginBottom: '28px',
-              fontWeight: 300
-            }}>
-              {modalData.description} This space is currently under active cultivation and will be unveiled in the upcoming release.
-            </p>
-
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-              <button
-                onClick={closeModal}
-                style={{
-                  background: '#22c55e',
-                  color: '#05140b',
-                  fontWeight: 700,
-                  border: 'none',
-                  padding: '12px 28px',
-                  borderRadius: 0,
-                  fontSize: '0.88rem',
-                  cursor: 'pointer',
-                  letterSpacing: '0.05em'
-                }}
-              >
-                Got It
-              </button>
-              <Link
-                to="/"
-                style={{
-                  background: 'transparent',
-                  color: '#cbd5e1',
-                  border: '1px solid rgba(255, 255, 255, 0.14)',
-                  padding: '12px 24px',
-                  borderRadius: 0,
-                  fontSize: '0.88rem',
-                  textDecoration: 'none'
-                }}
-              >
-                Back to Overview
-              </Link>
-            </div>
           </div>
         </div>
       )}
 
-      {/* Footer */}
       <Footer />
     </div>
   );
