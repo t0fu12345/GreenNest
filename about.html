@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mục Đích Dự Án & Đội Ngũ Botanist — The Living Canopy</title>
-  <meta name="description" content="Tìm hiểu mục đích dự án The Living Canopy, triết lý kiến trúc sinh thái Biophilic và ngắm nhìn hình ảnh tươi sáng về các nhà thực vật học cùng cây cối nhiệt đới rực rỡ.">
+  <title>Mission & Scientific Curators — The Living Canopy</title>
+  <meta name="description" content="Discover the conservation mission of The Living Canopy, our biophilic living philosophy, and meet the passionate botanists stewarding global specimens.">
 
   <!-- Google Fonts: Cinzel, Playfair Display & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,6 +91,7 @@
       width: 100%;
       transition: var(--transition-smooth);
       white-space: nowrap;
+      position: relative;
     }
 
     .navbar-pill:hover {
@@ -189,6 +190,305 @@
       gap: 12px;
     }
 
+    /* Notification Bell Component */
+    .notif-container {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .btn-notif-bell {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      padding: 0;
+      outline: none;
+      flex-shrink: 0;
+    }
+
+    .btn-notif-bell:hover,
+    .btn-notif-bell.active {
+      background: rgba(34, 197, 94, 0.16);
+      border-color: rgba(34, 197, 94, 0.45);
+      color: #ffffff;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-notif-bell svg {
+      width: 19px;
+      height: 19px;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-notif-bell:hover svg,
+    .btn-notif-bell.active svg {
+      transform: rotate(10deg);
+    }
+
+    .notif-badge-pill {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      color: #03130a;
+      font-size: 0.68rem;
+      font-weight: 800;
+      min-width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      border-radius: 999px;
+      padding: 0 4px;
+      border: 2px solid #081710;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .notif-badge-pill.hidden {
+      opacity: 0;
+      transform: scale(0.5);
+      pointer-events: none;
+    }
+
+    /* Notification Dropdown Popover */
+    .notif-dropdown {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: -10px;
+      width: 370px;
+      max-width: calc(100vw - 32px);
+      background: rgba(10, 24, 17, 0.96);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.85), 0 0 30px -5px rgba(34, 197, 94, 0.2);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px) scale(0.96);
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+      z-index: 1200;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+      white-space: normal;
+    }
+
+    .notif-dropdown.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .notif-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .notif-header-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .notif-header-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .notif-count-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: rgba(34, 197, 94, 0.18);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.32);
+      padding: 1px 7px;
+      border-radius: 999px;
+    }
+
+    .notif-mark-read {
+      font-size: 0.73rem;
+      color: var(--sage-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-family: inherit;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+
+    .notif-mark-read:hover {
+      color: var(--emerald-accent);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .notif-list {
+      list-style: none;
+      padding: 6px 0;
+      margin: 0;
+      max-height: 380px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(34, 197, 94, 0.3) transparent;
+    }
+
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      position: relative;
+      border-left: 3px solid transparent;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .notif-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .notif-item.unread {
+      background: rgba(34, 197, 94, 0.06);
+      border-left-color: var(--emerald-accent);
+    }
+
+    .notif-item.unread:hover {
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .notif-icon-bubble {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .notif-icon-bubble.garden {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: rgba(34, 197, 94, 0.35);
+      color: #4ade80;
+    }
+
+    .notif-icon-bubble.gallery {
+      background: rgba(14, 165, 233, 0.15);
+      border-color: rgba(14, 165, 233, 0.35);
+      color: #38bdf8;
+    }
+
+    .notif-icon-bubble.about {
+      background: rgba(234, 179, 8, 0.15);
+      border-color: rgba(234, 179, 8, 0.35);
+      color: #facc15;
+    }
+
+    .notif-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .notif-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .notif-source-badge {
+      font-size: 0.67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--sage-muted);
+    }
+
+    .notif-source-badge.garden { color: #4ade80; }
+    .notif-source-badge.gallery { color: #38bdf8; }
+    .notif-source-badge.about { color: #facc15; }
+
+    .notif-time {
+      font-size: 0.68rem;
+      color: #64748b;
+    }
+
+    .notif-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.35;
+      margin-bottom: 2px;
+    }
+
+    .notif-text {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .notif-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald-accent);
+      flex-shrink: 0;
+      margin-top: 6px;
+      box-shadow: 0 0 6px var(--emerald-accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .notif-item.unread .notif-dot {
+      opacity: 1;
+    }
+
+    .notif-footer {
+      padding: 10px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.02);
+      text-align: center;
+    }
+
+    .notif-footer-link {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--emerald-accent);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .notif-footer-link:hover {
+      color: #86efac;
+      text-decoration: underline;
+    }
+
     .btn-back-home {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #ffffff;
@@ -203,230 +503,181 @@
       align-items: center;
       gap: 6px;
       transition: var(--transition-smooth);
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
     }
 
     .btn-back-home:hover {
       background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.55);
-    }
-
-    .btn-nav-outline {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid var(--border-glass);
-      color: var(--text-primary);
-      padding: 8px 18px;
-      border-radius: 9999px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: var(--transition-smooth);
-    }
-
-    .btn-nav-outline:hover {
-      background: rgba(34, 197, 94, 0.15);
-      border-color: rgba(34, 197, 94, 0.4);
-      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
     }
 
     /* Hero Section */
     .about-hero {
-      position: relative;
-      padding: 170px 24px 90px;
+      padding: 160px 24px 60px;
       text-align: center;
-      max-width: 1050px;
+      max-width: 980px;
       margin: 0 auto;
+      position: relative;
     }
 
     .about-kicker {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 7px 20px;
-      background: rgba(14, 30, 22, 0.85);
+      padding: 7px 18px;
+      background: rgba(14, 30, 22, 0.8);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(34, 197, 94, 0.35);
+      border: 1px solid rgba(34, 197, 94, 0.3);
       border-radius: 9999px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: #86efac;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      color: var(--emerald-light);
     }
 
     .kicker-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       background: var(--emerald-accent);
       border-radius: 50%;
       box-shadow: 0 0 10px var(--emerald-accent);
-      animation: pulse-dot 2s infinite ease-in-out;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
     }
 
     .about-hero-title {
       font-family: var(--font-serif);
-      font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+      font-size: clamp(2.4rem, 4.8vw, 4.2rem);
       font-weight: 700;
-      line-height: 1.16;
+      line-height: 1.15;
       color: #ffffff;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
     }
 
-    .about-hero-title span.italic-accent {
+    .italic-accent {
       font-style: italic;
-      background: linear-gradient(135deg, #a7f3d0 0%, #34d399 50%, #fde68a 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 40px rgba(52, 211, 153, 0.3);
+      color: var(--emerald-light);
+      font-weight: 400;
     }
 
     .about-hero-subtitle {
-      color: #cbd5e1;
-      font-size: 1.15rem;
-      line-height: 1.8;
+      color: var(--text-secondary);
+      font-size: clamp(1.02rem, 1.3vw, 1.18rem);
+      line-height: 1.7;
       max-width: 820px;
-      margin: 0 auto 36px;
+      margin: 0 auto 32px;
       font-weight: 300;
     }
 
     .status-tag-banner {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(245, 158, 11, 0.14);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      padding: 9px 24px;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      padding: 8px 20px;
       border-radius: 9999px;
-      color: #fde68a;
-      font-size: 0.84rem;
+      color: #86efac;
+      font-size: 0.82rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
     }
 
-    /* Purpose Deep-Dive & Mission Section */
+    /* Purpose Story Grid */
     .purpose-section {
-      max-width: 1250px;
-      margin: 0 auto 110px;
+      max-width: 1220px;
+      margin: 0 auto 100px;
       padding: 0 24px;
     }
 
-    /* Awakening Story Banner */
     .story-hero-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 40px;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: clamp(32px, 5vw, 64px);
       align-items: center;
-      background: linear-gradient(145deg, rgba(16, 38, 26, 0.9) 0%, rgba(8, 20, 14, 0.95) 100%);
-      border: 1px solid rgba(34, 197, 94, 0.35);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
       border-radius: 32px;
-      padding: clamp(36px, 5vw, 60px);
-      margin-bottom: 50px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .story-hero-grid::before {
-      content: '';
-      position: absolute;
-      top: -100px;
-      right: -100px;
-      width: 350px;
-      height: 350px;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
-      pointer-events: none;
+      padding: clamp(32px, 4vw, 56px);
+      box-shadow: var(--shadow-ambient);
+      margin-bottom: 48px;
     }
 
     .story-content-wrap h2 {
       font-family: var(--font-serif);
-      font-size: clamp(2rem, 3.4vw, 2.9rem);
+      font-size: clamp(1.8rem, 2.5vw, 2.4rem);
       color: #ffffff;
-      line-height: 1.22;
-      margin-bottom: 20px;
+      line-height: 1.25;
+      margin-bottom: 16px;
     }
 
     .story-lead-quote {
-      font-size: 1.05rem;
-      line-height: 1.75;
-      color: #e2e8f0;
-      margin-bottom: 20px;
-      padding-left: 18px;
-      border-left: 3px solid var(--emerald-accent);
+      font-family: var(--font-serif);
       font-style: italic;
+      color: #86efac;
+      font-size: 1.1rem;
+      border-left: 3px solid var(--emerald-accent);
+      padding-left: 18px;
+      margin-bottom: 20px;
+      line-height: 1.6;
     }
 
     .story-paragraph {
-      color: #94a3b8;
+      color: var(--text-secondary);
       font-size: 0.96rem;
       line-height: 1.75;
-      margin-bottom: 28px;
+      margin-bottom: 16px;
+      font-weight: 300;
     }
 
     .story-stats-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 24px;
+      gap: 16px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .story-stat-card {
-      background: rgba(7, 16, 11, 0.65);
-      border: 1px solid var(--border-glass);
-      border-radius: 18px;
-      padding: 16px;
       text-align: center;
     }
 
     .stat-number {
       font-family: var(--font-display);
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       font-weight: 700;
-      color: #86efac;
-      margin-bottom: 4px;
+      color: #ffffff;
+      line-height: 1.2;
     }
 
     .stat-caption {
-      font-size: 0.76rem;
-      color: #cbd5e1;
+      font-size: 0.74rem;
+      color: var(--emerald-light);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
     }
 
     .story-image-wrap {
       position: relative;
-      border-radius: 26px;
+      border-radius: 24px;
       overflow: hidden;
-      height: 440px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      aspect-ratio: 4 / 3.6;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
     }
 
     .story-image-wrap img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.8s ease;
-    }
-
-    .story-image-wrap:hover img {
-      transform: scale(1.05);
     }
 
     .story-image-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(7, 16, 11, 0.85) 0%, transparent 60%);
+      background: linear-gradient(to top, rgba(7, 16, 11, 0.9) 0%, transparent 60%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -434,90 +685,87 @@
     }
 
     .story-badge-floating {
-      background: rgba(14, 30, 22, 0.9);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-accent);
-      padding: 6px 14px;
-      border-radius: 9999px;
-      color: #fde68a;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 4px 12px;
+      border-radius: 999px;
       align-self: flex-start;
       margin-bottom: 8px;
     }
 
     .story-caption-text {
-      color: #ffffff;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+      color: #f1f5f9;
+      font-size: 0.88rem;
+      font-weight: 400;
     }
 
-    /* Purpose Bento Grid (3 Pillars) */
+    /* Purpose Bento Grid */
     .purpose-bento-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 28px;
-      margin-bottom: 40px;
     }
 
     .purpose-card {
-      background: linear-gradient(145deg, rgba(14, 30, 22, 0.9) 0%, rgba(9, 21, 15, 0.95) 100%);
+      background: var(--bg-surface);
       border: 1px solid var(--border-glass);
-      border-radius: 28px;
-      padding: 38px 30px;
-      position: relative;
-      overflow: hidden;
+      border-radius: 24px;
+      padding: 36px 30px;
       display: flex;
       flex-direction: column;
+      position: relative;
       transition: var(--transition-smooth);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
     }
 
     .purpose-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(34, 197, 94, 0.5);
-      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65), var(--shadow-glow);
-    }
-
-    .purpose-icon-box {
-      width: 62px;
-      height: 62px;
-      border-radius: 20px;
-      background: rgba(34, 197, 94, 0.14);
-      border: 1px solid rgba(34, 197, 94, 0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.9rem;
-      margin-bottom: 22px;
+      transform: translateY(-6px);
+      border-color: var(--border-accent);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), var(--shadow-glow);
     }
 
     .purpose-card-num {
       position: absolute;
       top: 24px;
-      right: 28px;
+      right: 26px;
       font-family: var(--font-display);
       font-size: 1.8rem;
       font-weight: 700;
-      color: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.1);
+    }
+
+    .purpose-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid var(--border-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 22px;
     }
 
     .purpose-title {
       font-family: var(--font-serif);
-      font-size: 1.5rem;
+      font-size: 1.35rem;
+      font-weight: 700;
       color: #ffffff;
-      margin-bottom: 14px;
-      line-height: 1.25;
+      margin-bottom: 12px;
+      line-height: 1.3;
     }
 
     .purpose-text {
-      color: #94a3b8;
-      font-size: 0.93rem;
-      line-height: 1.7;
-      margin-bottom: 18px;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      line-height: 1.68;
+      margin-bottom: 20px;
+      font-weight: 300;
       flex: 1;
     }
 
@@ -525,93 +773,91 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 8px;
       padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.84rem;
+      color: #cbd5e1;
     }
 
     .purpose-key-points li {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.82rem;
-      color: #cbd5e1;
+      gap: 8px;
     }
 
-    .purpose-key-points li span.bullet {
+    .bullet {
       color: var(--emerald-accent);
-      font-weight: bold;
+      font-weight: 700;
     }
 
-    /* Section Header Common */
+    /* Botanists Section */
+    .botanists-section {
+      max-width: 1220px;
+      margin: 0 auto 110px;
+      padding: 0 24px;
+    }
+
     .section-header-centered {
       text-align: center;
-      max-width: 820px;
-      margin: 0 auto 55px;
+      max-width: 760px;
+      margin: 0 auto 48px;
     }
 
     .section-subkicker {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--emerald-accent);
-      margin-bottom: 12px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+      margin-bottom: 12px;
     }
 
     .section-heading-lg {
       font-family: var(--font-serif);
-      font-size: clamp(2.3rem, 4vw, 3.4rem);
+      font-size: clamp(2.2rem, 3.5vw, 3rem);
       color: #ffffff;
+      font-weight: 700;
+      margin-bottom: 14px;
       line-height: 1.2;
-      margin-bottom: 16px;
     }
 
     .section-desc-light {
-      color: #94a3b8;
-      font-size: 1.05rem;
-      line-height: 1.7;
-    }
-
-    /* Botanists Section: Bright, Warm & Professional */
-    .botanists-section {
-      max-width: 1250px;
-      margin: 0 auto 120px;
-      padding: 0 24px;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.65;
+      font-weight: 300;
     }
 
     .botanists-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 26px;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 28px;
     }
 
     .botanist-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-glass);
-      border-radius: 28px;
+      border-radius: 24px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       transition: var(--transition-smooth);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
-      position: relative;
     }
 
     .botanist-card:hover {
       transform: translateY(-8px);
-      border-color: var(--border-accent);
-      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65), var(--shadow-glow);
+      border-color: rgba(34, 197, 94, 0.45);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), var(--shadow-glow);
     }
 
     .botanist-avatar-wrap {
       position: relative;
-      height: 300px;
+      height: 290px;
       overflow: hidden;
-      background: #020905;
       cursor: pointer;
     }
 
@@ -619,55 +865,50 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 25%;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .botanist-card:hover .botanist-img {
+    .botanist-avatar-wrap:hover .botanist-img {
       transform: scale(1.08);
     }
 
     .botanist-img-fade {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, var(--bg-surface) 0%, rgba(14, 30, 22, 0.15) 55%, rgba(0,0,0,0.2) 100%);
+      background: linear-gradient(to top, var(--bg-surface) 0%, transparent 55%);
     }
 
     .botanist-sun-badge {
       position: absolute;
       top: 14px;
-      right: 14px;
-      background: rgba(245, 158, 11, 0.9);
-      color: #041008;
-      font-weight: 800;
+      left: 14px;
+      background: rgba(245, 158, 11, 0.25);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fde68a;
       font-size: 0.68rem;
+      font-weight: 700;
       letter-spacing: 0.08em;
-      text-transform: uppercase;
       padding: 4px 10px;
-      border-radius: 9999px;
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-      z-index: 2;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
     }
 
     .botanist-badge {
       position: absolute;
       bottom: 14px;
       left: 14px;
-      background: rgba(7, 16, 11, 0.88);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(7, 16, 11, 0.85);
+      border: 1px solid rgba(34, 197, 94, 0.35);
       color: #86efac;
-      padding: 5px 12px;
-      border-radius: 9999px;
       font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      z-index: 2;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
     }
 
     .botanist-info-body {
-      padding: 24px;
+      padding: 22px 24px 28px;
       display: flex;
       flex-direction: column;
       flex: 1;
@@ -675,154 +916,218 @@
 
     .botanist-name {
       font-family: var(--font-serif);
-      font-size: 1.35rem;
-      font-weight: 700;
+      font-size: 1.4rem;
       color: #ffffff;
+      font-weight: 700;
       margin-bottom: 4px;
     }
 
     .botanist-role {
-      color: var(--emerald-accent);
+      color: var(--emerald-light);
       font-size: 0.82rem;
       font-weight: 600;
+      letter-spacing: 0.04em;
       margin-bottom: 12px;
-      line-height: 1.3;
+      line-height: 1.4;
     }
 
     .botanist-bio {
-      color: #94a3b8;
+      color: var(--text-tertiary);
       font-size: 0.86rem;
       line-height: 1.6;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
+      font-weight: 300;
       flex: 1;
     }
 
     .botanist-quote {
-      border-left: 2px solid var(--emerald-accent);
-      padding-left: 12px;
       font-style: italic;
-      color: #a7f3d0;
-      font-size: 0.8rem;
+      color: #cbd5e1;
+      font-size: 0.82rem;
+      border-left: 2px solid var(--emerald-accent);
+      padding-left: 10px;
       line-height: 1.5;
-      background: rgba(34, 197, 94, 0.05);
-      padding-top: 6px;
-      padding-bottom: 6px;
-      border-radius: 0 8px 8px 0;
     }
 
-    /* Sunlit Flora Gallery Section (Hình ảnh tươi sáng về cây cối) */
+    /* Lush Flora Showcase */
     .lush-gallery-section {
-      max-width: 1250px;
-      margin: 0 auto 130px;
+      max-width: 1220px;
+      margin: 0 auto 110px;
       padding: 0 24px;
     }
 
     .gallery-filter-tabs {
       display: flex;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 35px;
       flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 36px;
     }
 
     .gallery-tab-btn {
-      background: rgba(14, 30, 22, 0.75);
+      background: var(--bg-surface);
       border: 1px solid var(--border-glass);
-      color: #cbd5e1;
-      padding: 8px 20px;
+      color: var(--text-secondary);
+      padding: 8px 18px;
       border-radius: 9999px;
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 0.84rem;
+      font-weight: 500;
       cursor: pointer;
       transition: var(--transition-smooth);
     }
 
     .gallery-tab-btn:hover, .gallery-tab-btn.active {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.25) 0%, rgba(16, 185, 129, 0.15) 100%);
+      background: var(--emerald-accent);
+      color: #05140d;
+      font-weight: 600;
       border-color: var(--emerald-accent);
-      color: #ffffff;
-      box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
     }
 
     .lush-mosaic-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: 280px 280px;
-      gap: 22px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
     }
 
     .mosaic-item {
       position: relative;
-      border-radius: 24px;
+      border-radius: 20px;
       overflow: hidden;
-      border: 1px solid var(--border-glass);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+      aspect-ratio: 4 / 3;
       cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .mosaic-item.span-2 {
+      grid-column: span 2;
+      aspect-ratio: 8 / 3.2;
     }
 
     .mosaic-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .mosaic-item:hover img {
-      transform: scale(1.08);
-    }
-
-    .mosaic-item.span-2 {
-      grid-column: span 2;
+      transform: scale(1.06);
     }
 
     .mosaic-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(7, 16, 11, 0.9) 0%, rgba(7, 16, 11, 0.2) 50%, transparent 80%);
+      background: linear-gradient(to top, rgba(7, 16, 11, 0.88) 0%, rgba(7, 16, 11, 0.2) 60%, transparent 100%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       padding: 22px;
-      transition: var(--transition-smooth);
-    }
-
-    .mosaic-item:hover .mosaic-overlay {
-      background: linear-gradient(to top, rgba(7, 16, 11, 0.95) 0%, rgba(14, 30, 22, 0.3) 60%, transparent 90%);
     }
 
     .mosaic-tag {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #86efac;
-      margin-bottom: 6px;
+      color: var(--emerald-light);
+      margin-bottom: 4px;
     }
 
     .mosaic-caption {
       font-family: var(--font-serif);
       font-size: 1.15rem;
-      font-weight: 600;
       color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-      line-height: 1.3;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 2px;
     }
 
     .mosaic-subtext {
-      color: #94a3b8;
-      font-size: 0.8rem;
-      margin-top: 4px;
-      line-height: 1.4;
+      color: var(--text-tertiary);
+      font-size: 0.78rem;
+    }
+
+    /* Call to Action */
+    .cta-explore-banner {
+      max-width: 1220px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+    }
+
+    .cta-explore-inner {
+      background: linear-gradient(135deg, rgba(14, 30, 22, 0.95) 0%, rgba(21, 45, 33, 0.8) 100%);
+      border: 1px solid var(--border-accent);
+      border-radius: 32px;
+      padding: clamp(40px, 6vw, 70px) 32px;
+      text-align: center;
+      box-shadow: var(--shadow-ambient), var(--shadow-glow);
+    }
+
+    .cta-explore-inner h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3.2vw, 2.8rem);
+      color: #ffffff;
+      margin-bottom: 14px;
+    }
+
+    .cta-explore-inner p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 650px;
+      margin: 0 auto 32px;
+      font-weight: 300;
+      line-height: 1.65;
+    }
+
+    .cta-btn-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .btn-cta-primary {
+      background: var(--emerald-accent);
+      color: #05140b;
+      padding: 13px 28px;
+      border-radius: 9999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-cta-primary:hover {
+      background: #86efac;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px var(--emerald-glow);
+    }
+
+    .btn-cta-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-glass);
+      color: #ffffff;
+      padding: 13px 26px;
+      border-radius: 9999px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-cta-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
     }
 
     /* Lightbox Modal */
     .lightbox-modal {
       position: fixed;
       inset: 0;
-      z-index: 2000;
       background: rgba(3, 8, 5, 0.92);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      z-index: 2000;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -838,26 +1143,42 @@
     }
 
     .lightbox-content-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-accent);
-      border-radius: 28px;
       max-width: 900px;
       width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
       overflow: hidden;
-      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8), var(--shadow-glow);
       position: relative;
-      animation: modalZoom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
     }
 
-    @keyframes modalZoom {
-      from { transform: scale(0.92); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    .lightbox-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(7, 16, 11, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      z-index: 10;
+      transition: 0.2s;
+    }
+
+    .lightbox-close-btn:hover {
+      background: rgba(239, 68, 68, 0.6);
     }
 
     .lightbox-img-holder {
-      width: 100%;
-      height: 480px;
-      background: #000000;
+      max-height: 520px;
+      overflow: hidden;
     }
 
     .lightbox-img-holder img {
@@ -867,11 +1188,11 @@
     }
 
     .lightbox-details {
-      padding: 24px 30px;
+      padding: 24px 28px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      background: var(--bg-surface-elevated);
+      justify-content: space-between;
+      gap: 16px;
     }
 
     .lightbox-title {
@@ -882,193 +1203,91 @@
     }
 
     .lightbox-desc {
-      color: #94a3b8;
+      color: var(--text-tertiary);
       font-size: 0.88rem;
     }
 
-    .lightbox-close-btn {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(7, 16, 11, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transition-smooth);
-      z-index: 10;
-    }
-
-    .lightbox-close-btn:hover {
-      background: #ef4444;
-      border-color: #ef4444;
-      transform: scale(1.1);
-    }
-
-    /* Call To Action Banner: Explore Biomes */
-    .cta-explore-banner {
-      max-width: 1250px;
-      margin: 0 auto 120px;
-      padding: 0 24px;
-    }
-
-    .cta-explore-inner {
-      background: linear-gradient(135deg, rgba(20, 50, 35, 0.9) 0%, rgba(10, 24, 17, 0.95) 100%);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      border-radius: 32px;
-      padding: clamp(40px, 6vw, 70px) 40px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.7);
-    }
-
-    .cta-explore-inner::after {
-      content: '';
-      position: absolute;
-      bottom: -150px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 600px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(34, 197, 94, 0.25) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .cta-explore-inner h2 {
-      font-family: var(--font-serif);
-      font-size: clamp(2.2rem, 4.2vw, 3.2rem);
-      color: #ffffff;
-      margin-bottom: 16px;
-    }
-
-    .cta-explore-inner p {
-      color: #cbd5e1;
-      font-size: 1.08rem;
-      max-width: 720px;
-      margin: 0 auto 34px;
-      font-weight: 300;
-    }
-
-    .cta-btn-group {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 2;
-    }
-
-    .btn-cta-primary {
-      background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
-      color: #041008;
-      font-weight: 700;
-      padding: 13px 30px;
-      border-radius: 9999px;
-      text-decoration: none;
-      font-size: 0.95rem;
-      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.45);
-      transition: var(--transition-smooth);
-    }
-
-    .btn-cta-primary:hover {
-      background: linear-gradient(135deg, #86efac 0%, #22c55e 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.65);
-    }
-
-    .btn-cta-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border-glass);
-      color: #ffffff;
-      font-weight: 600;
-      padding: 13px 28px;
-      border-radius: 9999px;
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: var(--transition-smooth);
-    }
-
-    .btn-cta-secondary:hover {
-      background: rgba(255, 255, 255, 0.16);
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-2px);
-    }
-
-    /* Minimal Luxury Footer */
+    /* Footer: Sleek 3-Column Layout */
     .site-footer {
-      background: #040d08;
+      background: rgba(5, 12, 8, 0.95);
       border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 70px 24px 35px;
+      padding: 60px 24px 30px;
     }
 
-    .footer-inner {
-      max-width: 1250px;
+    .footer-container {
+      max-width: 1220px;
       margin: 0 auto;
     }
 
-    .footer-grid {
+    .footer-grid-3col {
       display: grid;
-      grid-template-columns: 1.8fr 1.1fr 1.1fr 1.6fr;
-      gap: 40px;
-      margin-bottom: 45px;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: clamp(30px, 4vw, 60px);
+      margin-bottom: 48px;
     }
 
-    .footer-title {
-      font-size: 0.86rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+    .footer-col-brand h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.08em;
       color: #ffffff;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
-    .footer-text {
-      color: #94a3b8;
+    .footer-col-brand p {
+      color: var(--text-tertiary);
       font-size: 0.9rem;
       line-height: 1.65;
+      max-width: 380px;
     }
 
-    .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 26px;
+    .footer-col-links h4 {
+      font-size: 0.82rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .footer-col-links ul {
+      list-style: none;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: var(--transition-smooth);
+    }
+
+    .footer-col-links a:hover {
+      color: #ffffff;
+      transform: translateX(4px);
+    }
+
+    .footer-bottom-row {
+      display: flex;
       align-items: center;
-      color: #64748b;
-      font-size: 0.84rem;
+      justify-content: space-between;
       flex-wrap: wrap;
       gap: 16px;
-    }
-
-    /* Responsive Queries */
-    @media (max-width: 1100px) {
-      .botanists-grid { grid-template-columns: repeat(2, 1fr); }
-      .lush-mosaic-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
-      .mosaic-item { height: 260px; }
-      .mosaic-item.span-2 { grid-column: span 2; }
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.82rem;
+      color: var(--text-tertiary);
     }
 
     @media (max-width: 900px) {
       .story-hero-grid { grid-template-columns: 1fr; }
-      .story-image-wrap { height: 320px; }
       .purpose-bento-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .nav-links { display: none; }
-    }
-
-    @media (max-width: 600px) {
-      .botanists-grid { grid-template-columns: 1fr; }
       .lush-mosaic-grid { grid-template-columns: 1fr; }
-      .mosaic-item.span-2 { grid-column: span 1; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .story-stats-row { grid-template-columns: 1fr; }
+      .mosaic-item.span-2 { grid-column: span 1; aspect-ratio: 4 / 3; }
+      .footer-grid-3col { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
     }
   </style>
 </head>
@@ -1077,7 +1296,7 @@
   <!-- Floating Navigation -->
   <header class="header-floating-wrap">
     <nav class="navbar-pill">
-      <a href="index.html" class="brand-logo" title="Trang Chủ The Living Canopy">
+      <a href="index.html" class="brand-logo" title="The Living Canopy Overview">
         <svg class="brand-icon-svg" viewBox="0 0 32 32" fill="none">
           <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fill-opacity="0.3"/>
           <path d="M16 8C14 11 11 14 11 17C11 19.8 13.2 22 16 22C18.8 22 21 19.8 21 17C21 14 18 11 16 8Z" fill="currentColor"/>
@@ -1085,7 +1304,7 @@
         </svg>
         <div class="brand-text">
           <span class="brand-title">The Living Canopy</span>
-          <span class="brand-sub">About & Botanists</span>
+          <span class="brand-sub">About & Curators</span>
         </div>
       </a>
 
@@ -1097,8 +1316,78 @@
         <li><a href="index.html#footer">Contact</a></li>
       </ul>
 
+      <!-- Right CTAs with Notification Bell -->
       <div class="nav-actions">
-        <a href="user.html" class="btn-nav-outline" title="View My Garden">🌿 My Garden</a>
+        <!-- Notification Bell with Popover Dropdown -->
+        <div class="notif-container" id="notifContainer">
+          <button type="button" class="btn-notif-bell" id="notifBellBtn" aria-label="Notifications" aria-expanded="false" title="Notifications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge-pill" id="notifBadge">3</span>
+          </button>
+
+          <!-- Notification Dropdown Popover Box -->
+          <div class="notif-dropdown" id="notifDropdown" role="region" aria-label="Notifications Panel">
+            <div class="notif-header">
+              <div class="notif-header-title-wrap">
+                <span class="notif-header-title">Notifications</span>
+                <span class="notif-count-tag" id="notifCountTag">3 New</span>
+              </div>
+              <button type="button" class="notif-mark-read" id="notifMarkAllRead">Mark all as read</button>
+            </div>
+
+            <ul class="notif-list" id="notifList">
+              <!-- Notification 1 -->
+              <li class="notif-item unread" data-href="user.html" data-id="notif-1" title="Go to Your Garden">
+                <div class="notif-icon-bubble garden">🌿</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge garden">Your Garden</span>
+                    <span class="notif-time">10m ago</span>
+                  </div>
+                  <div class="notif-title">Watering Schedule Due</div>
+                  <div class="notif-text">3 saved plants in your sanctuary need hydration check.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+
+              <!-- Notification 2 -->
+              <li class="notif-item unread" data-href="gallery.html" data-id="notif-2" title="Go to Plant Gallery">
+                <div class="notif-icon-bubble gallery">🌱</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge gallery">Gallery</span>
+                    <span class="notif-time">1h ago</span>
+                  </div>
+                  <div class="notif-title">3 New Specimens Added</div>
+                  <div class="notif-text">Explore newly curated Araceae & Velvet Leaf cultivars in the archive.</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+
+              <!-- Notification 3 -->
+              <li class="notif-item unread" data-href="about.html" data-id="notif-3" title="Learn About The Sanctuary">
+                <div class="notif-icon-bubble about">📖</div>
+                <div class="notif-body">
+                  <div class="notif-meta">
+                    <span class="notif-source-badge about">Botanical Journal</span>
+                    <span class="notif-time">Yesterday</span>
+                  </div>
+                  <div class="notif-title">Exhibition Dispatch Published</div>
+                  <div class="notif-text">Read: "Canopy Humidity & Microclimates in Modern Living Spaces".</div>
+                </div>
+                <div class="notif-dot"></div>
+              </li>
+            </ul>
+
+            <div class="notif-footer">
+              <a href="user.html" class="notif-footer-link">Go to My Garden 🌿</a>
+            </div>
+          </div>
+        </div>
+
         <a href="login.html" id="navAuthBtn" class="btn-back-home">Sign In</a>
       </div>
     </nav>
@@ -1108,19 +1397,19 @@
   <section class="about-hero">
     <div class="about-kicker">
       <span class="kicker-dot"></span>
-      <span>MISSION & PURPOSE // VỀ DỰ ÁN THE LIVING CANOPY</span>
+      <span>MISSION & PURPOSE // ABOUT THE LIVING CANOPY</span>
     </div>
 
     <h1 class="about-hero-title">
-      Mang Nhịp Đập Rừng Xanh Tươi Sáng Vào <span class="italic-accent">Không Gian Sống</span> Đô Thị.
+      Infusing the Living Forest Pulse into <span class="italic-accent">Contemporary Sanctuaries</span>.
     </h1>
 
     <p class="about-hero-subtitle">
-      <strong>The Living Canopy & GreenNest</strong> ra đời từ khát vọng giải quyết triệt để vấn đề cây trồng nội thất bị héo úa do sai đới khí hậu. Chúng tôi kết hợp nghiên cứu khoa học thực vật chuẩn mực với kiến trúc Biophilic ngập tràn ánh nắng tự nhiên, giúp mỗi gia đình tự tin nuôi dưỡng một góc rừng an lành, rực rỡ và bền bỉ.
+      <strong>The Living Canopy & GreenNest</strong> was founded to fundamentally eliminate the heartbreak of indoor houseplant failure due to misaligned microclimates. We synthesize rigorous botanical taxonomy with sunlight-filled biophilic architecture, empowering every home to cultivate a thriving, resilient indoor biome.
     </p>
 
     <div class="status-tag-banner">
-      <span>🌿 Prototype MERN: Giao diện trực quan — Dữ liệu chuẩn bị kết nối MongoDB</span>
+      <span>🌿 Open Botanical Framework: Microclimate Standardization Across 3 Global Biomes</span>
     </div>
   </section>
 
@@ -1129,41 +1418,41 @@
     <div class="story-hero-grid">
       <div class="story-content-wrap">
         <div style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; color: #86efac; text-transform: uppercase; margin-bottom: 12px;">
-          NỖI TRĂN TRỞ CỦA NGƯỜI YÊU CÂY
+          THE URBAN BOTANIST'S DILEMMA
         </div>
-        <h2>Tại Sao Cây Mua Về Rất Dễ Tàn Phai Sau Vài Tuần?</h2>
+        <h2>Why Do Cultivated Plants So Often Wither Within Weeks?</h2>
         <div class="story-lead-quote">
-          "Cây không chết vì thiếu tình thương; cây héo úa vì con người áp đặt khí hậu nhân tạo sai lệch lên nhịp sinh học tự nhiên của chúng."
+          "Plants do not perish from an absence of devotion; they deteriorate when forced into artificial microclimates contrary to their evolutionary circadian rhythms."
         </div>
         <p class="story-paragraph">
-          Tại các thành phố hiện đại, hơn 70% người yêu cây gặp phải cảm giác thất vọng khi chậu cây yêu thích bị úa vàng, thối rễ hoặc rụng lá chỉ sau một thời gian ngắn. Nguyên nhân không nằm ở kỹ năng, mà ở <strong>sự thiếu hụt dữ liệu khí hậu bản địa</strong>: mua cây ôn đới ẩm đặt trong phòng kín điều hòa khô khốc, hoặc ép cây nhiệt đới tắm nắng gay gắt qua kính kính chịu nhiệt.
+          Across metropolitan residences, over 70% of plant custodians experience profound frustration when beloved potted flora yellows, suffers root suffocation, or defoliates within a short period. The root cause rarely lies in inadequate affection, but in <strong>a profound deficit of native microclimate alignment</strong>: placing cool-mist ferns in dehumidified air conditioning, or exposing deep-understory Araceae to harsh glass reflections.
         </p>
         <p class="story-paragraph">
-          <strong>The Living Canopy</strong> được xây dựng như một <em>bộ quy chuẩn thực vật học mở</em>, phân loại cây trồng khoa học theo <strong>3 Đại Đới Khí Hậu</strong>, cung cấp tường minh từng thông số quang hợp, tưới ráo và tỷ lệ đất giá thể.
+          <strong>The Living Canopy</strong> was engineered as an <em>open botanical classification architecture</em>, categorizing indoor flora across <strong>3 Primary Climatic Biomes</strong>, providing unambiguous metrics for photon saturation, drainage cadences, and substrate aeration ratios.
         </p>
 
         <!-- Stats Counter Row -->
         <div class="story-stats-row">
           <div class="story-stat-card">
-            <div class="stat-number">3 Đới</div>
-            <div class="stat-caption">Hệ Sinh Thái Vi Khí Hậu</div>
+            <div class="stat-number">3 Biomes</div>
+            <div class="stat-caption">Microclimatic Ecosystems</div>
           </div>
           <div class="story-stat-card">
             <div class="stat-number">100%</div>
-            <div class="stat-caption">Khoa Học Thực Vật Mở</div>
+            <div class="stat-caption">Open Botanical Science</div>
           </div>
           <div class="story-stat-card">
-            <div class="stat-number">0 Hóa Chất</div>
-            <div class="stat-caption">An Toàn Cho Trẻ & Thú Cưng</div>
+            <div class="stat-number">0 Synthetics</div>
+            <div class="stat-caption">Safe for Children & Pets</div>
           </div>
         </div>
       </div>
 
       <div class="story-image-wrap">
-        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80" alt="Nhà kính thực vật học ngập tràn ánh nắng mặt trời rực rỡ">
+        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80" alt="Botanical conservatory illuminated with diffused daylight">
         <div class="story-image-overlay">
-          <span class="story-badge-floating">☀️ Viện Nghiên Cứu & Nhà Kính</span>
-          <span class="story-caption-text">Mô hình nhà kính đối tác bảo tồn nguồn gen thực vật tại Đà Lạt</span>
+          <span class="story-badge-floating">☀️ Conservatory Research Hub</span>
+          <span class="story-caption-text">Partner greenhouse conserving native biodiversity and germplasm</span>
         </div>
       </div>
     </div>
@@ -1175,14 +1464,14 @@
       <div class="purpose-card">
         <span class="purpose-card-num">01</span>
         <div class="purpose-icon-box">🌴</div>
-        <h3 class="purpose-title">Chuẩn Hóa Theo 3 Đới Khí Hậu</h3>
+        <h3 class="purpose-title">Standardized Across 3 Biomes</h3>
         <p class="purpose-text">
-          Chấm dứt việc nuôi cây bằng cảm tính. Chúng tôi xây dựng ma trận phân loại dựa trên nhiệt độ (°C) và độ ẩm không khí (%): <strong>Đới Nóng (Tropical)</strong>, <strong>Đới Ôn Hòa & Cận Nhiệt (Subtropical)</strong> và <strong>Đới Khô Hạn (Arid)</strong>.
+          Replacing guesswork with ecological telemetry. Our matrix categorizes specimens based on ambient temperature (°C) and atmospheric vapor pressure (%): <strong>Tropical Rainforest</strong>, <strong>Subtropical Cloud Forest</strong>, and <strong>Arid Semi-Desert</strong>.
         </p>
         <ul class="purpose-key-points">
-          <li><span class="bullet">✓</span> Định vị đúng độ ẩm tự nhiên của phòng</li>
-          <li><span class="bullet">✓</span> Ngăn ngừa thối rễ do sốc nhiệt đột ngột</li>
-          <li><span class="bullet">✓</span> Tối ưu biên độ nhiệt độ ngày và đêm</li>
+          <li><span class="bullet">✓</span> Precise alignment with home humidity zones</li>
+          <li><span class="bullet">✓</span> Prevention of root shock caused by thermal shifts</li>
+          <li><span class="bullet">✓</span> Optimized diurnal-nocturnal temperature shifts</li>
         </ul>
       </div>
 
@@ -1190,14 +1479,14 @@
       <div class="purpose-card">
         <span class="purpose-card-num">02</span>
         <div class="purpose-icon-box">🔬</div>
-        <h3 class="purpose-title">Chỉ Dẫn Khoa Học Minh Bạch</h3>
+        <h3 class="purpose-title">Transparent Botanical Telemetry</h3>
         <p class="purpose-text">
-          Số hóa toàn bộ kiến thức hàn lâm thành chỉ dẫn dễ áp dụng: Cường độ sáng Foot-Candle (FC), chu kỳ đất khô giữa hai lần tưới, thành phần giá thể thoát nước (Perlite, vỏ thông) và cảnh báo Pet-Safe cho mèo, chó.
+          Translating academic research into intuitive indoor directives: Foot-Candle (FC) illumination indices, dry-down substrate intervals, sterile mineral aeration media, and explicit Pet-Safe toxicity guidance for domestic animals.
         </p>
         <ul class="purpose-key-points">
-          <li><span class="bullet">✓</span> Đo lường ánh sáng tán xạ khoa học</li>
-          <li><span class="bullet">✓</span> Giá thể hữu cơ vô trùng chống nấm mốc</li>
-          <li><span class="bullet">✓</span> An toàn tuyệt đối cho trẻ nhỏ & thú nuôi</li>
+          <li><span class="bullet">✓</span> Quantified diffused light exposure thresholds</li>
+          <li><span class="bullet">✓</span> Pathogen-free organic aeration substrates</li>
+          <li><span class="bullet">✓</span> Total safety for feline and canine companions</li>
         </ul>
       </div>
 
@@ -1205,111 +1494,111 @@
       <div class="purpose-card">
         <span class="purpose-card-num">03</span>
         <div class="purpose-icon-box">☀️</div>
-        <h3 class="purpose-title">Kiến Trúc Sinh Thái Tươi Sáng</h3>
+        <h3 class="purpose-title">Sunlit Biophilic Architecture</h3>
         <p class="purpose-text">
-          Áp dụng triết lý <strong>Biophilic Design</strong> để đưa mảng xanh tự nhiên vào kiến trúc hiện đại. Cây xanh không chỉ để ngắm mà là một thành viên thanh lọc bụi mịn, điều hòa vi khí hậu và nuôi dưỡng nguồn năng lượng tích cực cho tâm hồn.
+          Applying the core principles of <strong>Biophilic Design</strong> to weave living foliage seamlessly into modern architecture. Living plants are not decorative props, but living organisms that scrub particulate matter and ground human circadian wellbeing.
         </p>
         <ul class="purpose-key-points">
-          <li><span class="bullet">✓</span> Bừng sáng các góc nhà thiếu ánh sáng</li>
-          <li><span class="bullet">✓</span> Giảm căng thẳng tinh thần sau giờ làm việc</li>
-          <li><span class="bullet">✓</span> Tạo thói quen sống chậm hòa vào tự nhiên</li>
+          <li><span class="bullet">✓</span> Illuminating low-light living alcoves</li>
+          <li><span class="bullet">✓</span> Reducing cognitive fatigue and cortisol</li>
+          <li><span class="bullet">✓</span> Cultivating mindfulness through botanical care</li>
         </ul>
       </div>
 
     </div>
   </section>
 
-  <!-- Section 2: Botanist Profiles — Bright, Sunlit & Passionate -->
+  <!-- Section 2: Botanist Profiles -->
   <section class="botanists-section">
     <div class="section-header-centered">
       <div class="section-subkicker">
         <span>🌱</span>
         <span>SCIENTIFIC CURATORS & FIELD RESEARCHERS</span>
       </div>
-      <h2 class="section-heading-lg">Đội Ngũ Nhà Thực Vật Học</h2>
+      <h2 class="section-heading-lg">Our Botanical Curators</h2>
       <p class="section-desc-light">
-        Gặp gỡ những chuyên gia tâm huyết luôn làm việc trực tiếp tại các nhà kính ngập tràn ánh nắng và các vùng rừng nguyên sinh, bảo tồn nguồn gen thực vật và xây dựng hệ thống cẩm nang cho The Living Canopy.
+        Meet the dedicated specialists working directly in sunlight-drenched conservatories and primary forest habitats, preserving plant genetics and authoring care protocols for The Living Canopy.
       </p>
     </div>
 
     <div class="botanists-grid">
       
-      <!-- Botanist 1: Elena Vũ -->
+      <!-- Botanist 1: Dr. Elena Vu -->
       <article class="botanist-card">
-        <div class="botanist-avatar-wrap" onclick="openLightbox('https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=1200&q=80', 'TS. Elena Vũ — Nhà Kính Nhiệt Đới', 'Tiến sĩ Phân loại học đang kiểm tra sự phát triển của dòng cây Monstera trong điều kiện ánh sáng tán xạ tự nhiên.')">
-          <img src="https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=800&q=80" alt="TS. Elena Vũ trong nhà kính ngập nắng ấm nhiệt đới" class="botanist-img">
+        <div class="botanist-avatar-wrap" onclick="openLightbox('https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=1200&q=80', 'Dr. Elena Vu — Tropical Conservatory', 'Doctor of Botanical Taxonomy examining understory fenestration in Monstera cultivars under diffused natural daylight.')">
+          <img src="https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=800&q=80" alt="Dr. Elena Vu in sunlit tropical greenhouse" class="botanist-img">
           <div class="botanist-img-fade"></div>
-          <span class="botanist-sun-badge">☀️ NẮNG TỰ NHIÊN</span>
-          <span class="botanist-badge">🌴 Đới Nóng Nhiệt Đới</span>
+          <span class="botanist-sun-badge">☀️ DIFFUSED CANOPY</span>
+          <span class="botanist-badge">🌴 Tropical Rainforest</span>
         </div>
         <div class="botanist-info-body">
-          <h3 class="botanist-name">TS. Elena Vũ</h3>
-          <div class="botanist-role">Trưởng Ban Phân Loại Thực Vật Học Nhiệt Đới</div>
+          <h3 class="botanist-name">Dr. Elena Vu</h3>
+          <div class="botanist-role">Lead Curator of Tropical Flora & Araceae</div>
           <p class="botanist-bio">
-            Hơn 12 năm nghiên cứu các dòng họ Ráy (Araceae) tại rừng mưa nhiệt đới Đông Nam Á. Cô chuyên sâu về khả năng đón ánh sáng tán xạ của lá xẻ Monstera và Philodendron trong căn hộ.
+            Over 12 years investigating the Araceae family in Southeast Asian equatorial canopies. Specializes in fenestrated leaf adaptations of Monstera and Philodendron in urban interiors.
           </p>
           <div class="botanist-quote">
-            "Mỗi phiến lá xẻ là một kiệt tác tiến hóa để đón trọn vẹn từng giọt nắng sớm mai."
+            "Each leaf fenestration is an evolutionary triumph designed to harvest filtered sunlight."
           </div>
         </div>
       </article>
 
-      <!-- Botanist 2: Alexandre Phạm -->
+      <!-- Botanist 2: Alexandre Pham -->
       <article class="botanist-card">
-        <div class="botanist-avatar-wrap" onclick="openLightbox('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=1200&q=80', 'Alexandre Phạm — Nghiên Cứu Cao Nguyên', 'Chuyên gia sinh thái đang tỉ mỉ kiểm tra cấu trúc gân lá dương xỉ cổ tại vườn thực vật thực địa.')">
-          <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=800&q=80" alt="Alexandre Phạm kiểm tra cấu trúc lá dương xỉ trong nắng mai" class="botanist-img">
+        <div class="botanist-avatar-wrap" onclick="openLightbox('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=1200&q=80', 'Alexandre Pham — Highland Fern Research', 'Ecologist meticulously inspecting frond venation in antique fern cultivars at our alpine research station.')">
+          <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=800&q=80" alt="Alexandre Pham inspecting fern fronds" class="botanist-img">
           <div class="botanist-img-fade"></div>
-          <span class="botanist-sun-badge">☀️ THỰC ĐỊA MAI SỚM</span>
-          <span class="botanist-badge">🌲 Đới Ôn Hòa & Cận Nhiệt</span>
+          <span class="botanist-sun-badge">☀️ HIGHLAND MIST</span>
+          <span class="botanist-badge">🌲 Subtropical Highlands</span>
         </div>
         <div class="botanist-info-body">
-          <h3 class="botanist-name">Alexandre Phạm</h3>
-          <div class="botanist-role">Chuyên Gia Sinh Thái Cao Nguyên & Dương Xỉ</div>
+          <h3 class="botanist-name">Alexandre Pham</h3>
+          <div class="botanist-role">Highland Ecology & Pteridophyte Specialist</div>
           <p class="botanist-bio">
-            Tốt nghiệp Đại học Lâm Nghiệp, phụ trách nghiên cứu thực vật vùng ôn hòa và sương mù. Anh sáng tạo ra các công thức giá thể giữ ẩm thoáng khí giúp dương xỉ sinh trưởng tốt trong phòng điều hòa.
+            Forestry graduate leading cloud-forest botanical inquiries. Pioneered aerated moisture-retentive substrate formulations enabling delicate ferns to thrive within air-conditioned rooms.
           </p>
           <div class="botanist-quote">
-            "Cây đới mát cần sự luân chuyển gió trong lành hơn là những gáo nước đẫm úng."
+            "Highland flora craves dynamic, refreshing airflow far more than heavy saturations."
           </div>
         </div>
       </article>
 
-      <!-- Botanist 3: Kỹ Sư Mai Linh -->
+      <!-- Botanist 3: Eng. Mai Linh -->
       <article class="botanist-card">
-        <div class="botanist-avatar-wrap" onclick="openLightbox('https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80', 'Kỹ Sư Mai Linh — Vườn Ươm Mầm Tươi Sáng', 'Chuyên gia bệnh học cây trồng mỉm cười rạng rỡ bên các khay ươm thực vật sinh thái không hóa chất.')">
-          <img src="https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=800&q=80" alt="Kỹ sư Mai Linh mỉm cười trong phòng ươm mầm ngập nắng sáng" class="botanist-img">
+        <div class="botanist-avatar-wrap" onclick="openLightbox('https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80', 'Eng. Mai Linh — Propagation Facility', 'Plant pathologist examining root development across organic seedling trays free from synthetic biocides.')">
+          <img src="https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=800&q=80" alt="Engineer Mai Linh in nursery facility" class="botanist-img">
           <div class="botanist-img-fade"></div>
-          <span class="botanist-sun-badge">☀️ VƯỜN ƯƠM XANH</span>
-          <span class="botanist-badge">🔬 Bệnh Học Cây Trồng</span>
+          <span class="botanist-sun-badge">☀️ ORGANIC NURSERY</span>
+          <span class="botanist-badge">🔬 Plant Pathology</span>
         </div>
         <div class="botanist-info-body">
-          <h3 class="botanist-name">Kỹ Sư Mai Linh</h3>
-          <div class="botanist-role">Chuyên Gia Bệnh Học Cây Trồng & Giá Thể Hữu Cơ</div>
+          <h3 class="botanist-name">Eng. Mai Linh</h3>
+          <div class="botanist-role">Plant Pathology & Bio-Organic Substrates</div>
           <p class="botanist-bio">
-            Nghiên cứu hệ vi sinh vật vùng rễ (Rhizosphere) và phương pháp kiểm soát nhện đỏ bằng chế phẩm sinh học tự nhiên, bảo đảm an toàn tuyệt đối cho gia đình có trẻ em và thú cưng.
+            Conducts research on rhizosphere microflora and organic pest balance mechanisms, guaranteeing care safety protocols for environments with young children and pets.
           </p>
           <div class="botanist-quote">
-            "Bộ rễ khỏe mạnh quyết định 90% vẻ rực rỡ và sức sống bền bỉ của phiến lá."
+            "A thriving root architecture dictates 90% of foliar vigor and disease resistance."
           </div>
         </div>
       </article>
 
-      <!-- Botanist 4: GS. Daniel Lee -->
+      <!-- Botanist 4: Prof. Daniel Lee -->
       <article class="botanist-card">
-        <div class="botanist-avatar-wrap" onclick="openLightbox('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80', 'GS. Daniel Lee — Phòng Nghiên Cứu Đới Khô Hạn', 'Giáo sư cố vấn đang đo lường chu kỳ trao đổi khí CAM của các giống xương rồng và thực vật mọng nước.')">
-          <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="GS Daniel Lee nghiên cứu thực vật đới khô hạn trong phòng thí nghiệm kính sáng" class="botanist-img">
+        <div class="botanist-avatar-wrap" onclick="openLightbox('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80', 'Prof. Daniel Lee — Xerophyte Laboratory', 'Consulting botanist measuring CAM nocturnal carbon exchange in arid cactus and succulent cultivars.')">
+          <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Prof Daniel Lee in xerophyte lab" class="botanist-img">
           <div class="botanist-img-fade"></div>
-          <span class="botanist-sun-badge">☀️ ĐỚI KHÔ HẠN</span>
-          <span class="botanist-badge">🏜️ Bán Hoang Mạc & Sen Đá</span>
+          <span class="botanist-sun-badge">☀️ ARID DAYLIGHT</span>
+          <span class="botanist-badge">🏜️ Xerophyte & Succulents</span>
         </div>
         <div class="botanist-info-body">
-          <h3 class="botanist-name">GS. Daniel Lee</h3>
-          <div class="botanist-role">Cố Vấn Sinh Học Thực Vật Mọng Nước & Chịu Hạn</div>
+          <h3 class="botanist-name">Prof. Daniel Lee</h3>
+          <div class="botanist-role">Succulent Biology & Drought Adaptation Advisor</div>
           <p class="botanist-bio">
-            Chuyên gia hàng đầu về cơ chế quang hợp CAM ở cây mọng nước và xương rồng. Ông cung cấp phác đồ chiếu sáng quang phổ đầy đủ giúp cây phát triển tại bàn làm việc thiếu nắng.
+            Renowned researcher focusing on Crassulacean Acid Metabolism (CAM) in desert succulents. Develops full-spectrum photoperiod guidelines for desktop succulent cultivation.
           </p>
           <div class="botanist-quote">
-            "Sức sống mãnh liệt của cây sa mạc dạy chúng ta bài học kiên cường giữa khắc nghiệt."
+            "The quiet tenacity of arid flora instructs us on resilience in harsh environments."
           </div>
         </div>
       </article>
@@ -1317,165 +1606,125 @@
     </div>
   </section>
 
-  <!-- Section 3: Bright Lush Flora Showcase (Hình ảnh tươi sáng về cây cối) -->
+  <!-- Section 3: Bright Lush Flora Showcase -->
   <section class="lush-gallery-section">
     <div class="section-header-centered">
       <div class="section-subkicker">
         <span>☀️</span>
         <span>SUNLIT CANOPY & LUSH BOTANICAL SANCTUARY</span>
       </div>
-      <h2 class="section-heading-lg">Thiên Nhiên Tươi Sáng & Cây Cối Rực Rỡ</h2>
+      <h2 class="section-heading-lg">Sunlit Flora & Vibrant Canopies</h2>
       <p class="section-desc-light">
-        Ngắm nhìn sức sống mãnh liệt của thực vật học dưới ánh nắng chan hòa tại các vườn ươm, nhà kính sinh thái và không gian sống xanh đương đại. Nhấp vào bất kỳ ảnh nào để phóng to chi tiết.
+        Experience the vibrant vitality of living botanicals under natural daylight across research greenhouses, private herbariums, and biophilic homes. Click any image to inspect details.
       </p>
     </div>
 
     <!-- Filter Pills for Gallery -->
     <div class="gallery-filter-tabs">
-      <button class="gallery-tab-btn active" onclick="filterMosaic('all', this)">Tất Cả Khung Cảnh (8)</button>
-      <button class="gallery-tab-btn" onclick="filterMosaic('tropical', this)">🌴 Đới Nóng & Lá Rộng</button>
-      <button class="gallery-tab-btn" onclick="filterMosaic('subtropical', this)">🌲 Đới Ôn Hòa & Rừng Mát</button>
-      <button class="gallery-tab-btn" onclick="filterMosaic('arid', this)">🏜️ Đới Khô Hạn & Sen Đá</button>
-      <button class="gallery-tab-btn" onclick="filterMosaic('biophilic', this)">🏡 Không Gian Sống Biophilic</button>
+      <button class="gallery-tab-btn active" onclick="filterMosaic('all', this)">All Perspectives (6)</button>
+      <button class="gallery-tab-btn" onclick="filterMosaic('tropical', this)">🌴 Tropical Broadleaf</button>
+      <button class="gallery-tab-btn" onclick="filterMosaic('subtropical', this)">🌲 Subtropical Cloud Forest</button>
+      <button class="gallery-tab-btn" onclick="filterMosaic('arid', this)">🏜️ Arid & Succulents</button>
+      <button class="gallery-tab-btn" onclick="filterMosaic('biophilic', this)">🏡 Biophilic Living</button>
     </div>
 
     <div class="lush-mosaic-grid" id="mosaicGrid">
       
-      <!-- Item 1 (Wide): Nắng vàng rọi qua tán lá nhiệt đới -->
-      <div class="mosaic-item span-2" data-cat="tropical" onclick="openLightbox('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85', 'Ánh Sáng Tán Xạ Qua Tán Lá Nhiệt Đới', 'Từng giọt nắng sớm chiếu xuyên qua các phiến lá xanh biếc, làm nổi bật đường gân diệp lục và tạo ra nguồn năng lượng quang hợp dồi dào.')">
-        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1000&q=80" alt="Lá xanh mướt nhiệt đới tắm trong nắng ấm ban mai">
+      <!-- Item 1 (Wide): Diffused sunlight through tropical canopy -->
+      <div class="mosaic-item span-2" data-cat="tropical" onclick="openLightbox('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85', 'Diffused Daylight Through Tropical Canopy', 'Morning solar radiation piercing through broadleaf emerald canopies, illuminating chlorophyll structures.')">
+        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1000&q=80" alt="Tropical foliage in morning sunlight">
         <div class="mosaic-overlay">
-          <span class="mosaic-tag">🌴 ĐỚI NÓNG // 28°C • 80% ẨM</span>
-          <h4 class="mosaic-caption">Ánh Sáng Tán Xạ Qua Tán Lá Rộng</h4>
-          <p class="mosaic-subtext">Cường độ 1,500 FC lý tưởng cho quang hợp diệp lục</p>
+          <span class="mosaic-tag">🌴 TROPICAL CANOPY // 28°C • 80% RH</span>
+          <h4 class="mosaic-caption">Diffused Daylight Through Broadleaf Canopy</h4>
+          <p class="mosaic-subtext">Optimal 1,500 FC photosynthetic photon flux density</p>
         </div>
       </div>
 
-      <!-- Item 2: Cây mọng nước dưới nắng ấm rực rỡ -->
-      <div class="mosaic-item" data-cat="arid" onclick="openLightbox('https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=1200&q=85', 'Vườn Sen Đá Đới Khô Hạn Tắm Nắng', 'Các giống mọng nước tích trữ nước trong thân lá dày mọng, rạng rỡ dưới ánh nắng trực tiếp của đới bán hoang mạc.')">
-        <img src="https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=800&q=80" alt="Sen đá tắm nắng ấm rạng ngời">
+      <!-- Item 2: Succulents in warm sunlight -->
+      <div class="mosaic-item" data-cat="arid" onclick="openLightbox('https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=1200&q=85', 'Sunlit Succulent Terraces', 'Drought-tolerant cultivars holding water reserves within thick fleshy tissues under direct arid sun exposure.')">
+        <img src="https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=800&q=80" alt="Succulents in bright sunlight">
         <div class="mosaic-overlay">
-          <span class="mosaic-tag">🏜️ ĐỚI KHÔ HẠN // CAM</span>
-          <h4 class="mosaic-caption">Vườn Sen Đá Đón Nắng</h4>
-          <p class="mosaic-subtext">Giá thể sỏi thoáng khí 100%</p>
+          <span class="mosaic-tag">🏜️ ARID BIOME // NOCTURNAL CAM</span>
+          <h4 class="mosaic-caption">Sunlit Succulent Terraces</h4>
+          <p class="mosaic-subtext">100% porous mineral grit substrate</p>
         </div>
       </div>
 
-      <!-- Item 3: Nhà kính bảo tồn rực rỡ nắng sớm -->
-      <div class="mosaic-item" data-cat="biophilic" onclick="openLightbox('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=1200&q=85', 'Nhà Kính Hoàng Gia Rực Rỡ Nắng', 'Kiến trúc vòm kính đón sáng toàn phần giúp cây cối bốn mùa duy trì nhịp sinh học tươi tốt.')">
-        <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=800&q=80" alt="Nhà kính bảo tồn giống cây quý trong ánh sáng tự nhiên">
+      <!-- Item 3: Royal Conservatory Glass Dome -->
+      <div class="mosaic-item" data-cat="biophilic" onclick="openLightbox('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=1200&q=85', 'Victorian Glasshouse Conservatory', 'Full-spectrum architectural dome maintaining seasonal circadian rhythms for protected germplasm.')">
+        <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=800&q=80" alt="Conservatory glasshouse interior">
         <div class="mosaic-overlay">
-          <span class="mosaic-tag">🏡 NHÀ KÍNH BẢO TỒN</span>
-          <h4 class="mosaic-caption">Vòm Kính Đón Sáng Toàn Phần</h4>
-          <p class="mosaic-subtext">Hệ thống phun sương vi khí hậu tự động</p>
+          <span class="mosaic-tag">🏡 HERITAGE CONSERVATORY</span>
+          <h4 class="mosaic-caption">Full-Spectrum Glass Architecture</h4>
+          <p class="mosaic-subtext">Automated microclimate misting telemetry</p>
         </div>
       </div>
 
-      <!-- Item 4: Không gian nội thất Biophilic tươi sáng -->
-      <div class="mosaic-item" data-cat="biophilic" onclick="openLightbox('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85', 'Phòng Khách Biophilic Ngập Tràn Nắng Ấm', 'Sự kết hợp hài hòa giữa ánh sáng tự nhiên bên cửa sổ lớn và chậu cây nhiệt đới làm bừng sáng cả không gian sống.')">
-        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80" alt="Phòng khách kiến trúc Biophilic ngập tràn ánh nắng và cây xanh">
+      <!-- Item 4: Biophilic Interior Sanctuary -->
+      <div class="mosaic-item" data-cat="biophilic" onclick="openLightbox('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85', 'Biophilic Residential Living Space', 'Harmonious integration of generous window lighting and specimen plants elevating home circadian wellness.')">
+        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80" alt="Biophilic living room with plants">
         <div class="mosaic-overlay">
           <span class="mosaic-tag">🏡 BIOPHILIC LIVING</span>
-          <h4 class="mosaic-caption">Ốc Đảo Xanh Phòng Khách</h4>
-          <p class="mosaic-subtext">Thanh lọc không khí và giảm bức xạ điện từ</p>
+          <h4 class="mosaic-caption">Living Room Urban Oasis</h4>
+          <p class="mosaic-subtext">Active VOC particulate scrubbing & biophilia</p>
         </div>
       </div>
 
-      <!-- Item 5 (Wide): Monstera Deliciosa phiến lá xẻ hoàn mỹ -->
-      <div class="mosaic-item span-2" data-cat="tropical" onclick="openLightbox('https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1400&q=85', 'Tiêu Bản Monstera Deliciosa Thuần Khiết', 'Mẫu lá trầu bà lá xẻ Nam Mỹ đạt độ hoàn thiện cao nhất với các lỗ xẻ đối xứng tự nhiên dưới ánh nắng dịu nhẹ.')">
-        <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1000&q=80" alt="Monstera Deliciosa xẻ tự nhiên dưới ánh nắng vàng">
+      <!-- Item 5 (Wide): Monstera Deliciosa Pure Leaf Fenestration -->
+      <div class="mosaic-item span-2" data-cat="tropical" onclick="openLightbox('https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1400&q=85', 'Monstera Deliciosa Pure Fenestration', 'Specimen leaf demonstrating symmetric natural fenestrations that evolved to permit light penetration.')">
+        <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1000&q=80" alt="Monstera leaf in golden sunlight">
         <div class="mosaic-overlay">
-          <span class="mosaic-tag">🌴 MONSTERA DELICIOSA // HỌ RÁY</span>
-          <h4 class="mosaic-caption">Bản Mẫu Monstera Thuần Khiết</h4>
-          <p class="mosaic-subtext">Các lỗ xẻ đón nắng tầng dưới trong rừng nhiệt đới</p>
+          <span class="mosaic-tag">🌴 MONSTERA DELICIOSA // ARACEAE</span>
+          <h4 class="mosaic-caption">Pure Specimen Fenestrations</h4>
+          <p class="mosaic-subtext">Evolutionary understory light-harvesting adaptations</p>
         </div>
       </div>
 
-      <!-- Item 6: Dương xỉ đới ôn hòa trong sương mai -->
-      <div class="mosaic-item" data-cat="subtropical" onclick="openLightbox('https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=85', 'Thảm Dương Xỉ Đới Ôn Hòa Sương Mai', 'Rừng dương xỉ cao nguyên đón nhận những tia nắng đầu tiên xuyên qua làn sương mờ trong trẻo.')">
-        <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80" alt="Dương xỉ đón nắng sớm trong rừng ôn hòa">
+      <!-- Item 6: Cloud Forest Fern Understory -->
+      <div class="mosaic-item" data-cat="subtropical" onclick="openLightbox('https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=85', 'Cloud Forest Fern Understory', 'Highland fern fronds welcoming early sunlight through delicate alpine morning mist.')">
+        <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80" alt="Fern fronds in misty morning sun">
         <div class="mosaic-overlay">
-          <span class="mosaic-tag">🌲 ĐỚI ÔN HÒA // 18°C</span>
-          <h4 class="mosaic-caption">Thảm Dương Xỉ Sương Mai</h4>
-          <p class="mosaic-subtext">Độ ẩm cao & luân chuyển gió liên tục</p>
+          <span class="mosaic-tag">🌲 SUBTROPICAL // 18°C CLOUD FOREST</span>
+          <h4 class="mosaic-caption">Misty Highland Fern Canopy</h4>
+          <p class="mosaic-subtext">High relative humidity & constant air circulation</p>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- Section 4: Call to Action — Explore Gallery & Connect -->
+  <!-- Section 4: Call to Action -->
   <section class="cta-explore-banner">
     <div class="cta-explore-inner">
       <div style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.18em; color: #86efac; text-transform: uppercase; margin-bottom: 12px;">
-        BƯỚC TIẾP THEO TRONG HÀNH TRÌNH
+        NEXT STEPS IN YOUR JOURNEY
       </div>
-      <h2>Sẵn Sàng Kiến Tạo Không Gian Xanh Của Riêng Bạn?</h2>
+      <h2>Ready to Cultivate Your Living Sanctuary?</h2>
       <p>
-        Khám phá kho thư viện mẫu cây đã được phân loại theo 3 đại đới khí hậu trên trang Gallery, hoặc trở về trang chủ để tìm kiếm cây theo điều kiện phòng của bạn.
+        Explore our curated botanical specimen taxonomy across the 3 primary climatic biomes in the Gallery, or return to Overview to discover specimens tailored to your home conditions.
       </p>
       <div class="cta-btn-group">
-        <a href="gallery.html" class="btn-cta-primary">Khám Phá Thư Viện Gallery →</a>
-        <a href="index.html" class="btn-cta-secondary">Về Trang Chủ Tổng Quan</a>
+        <a href="gallery.html" class="btn-cta-primary">Explore Specimen Gallery →</a>
+        <a href="index.html" class="btn-cta-secondary">Return to Sanctuary Overview</a>
       </div>
     </div>
   </section>
 
-  <!-- Minimal Luxury Footer -->
-  <footer class="site-footer" id="footer">
-    <div class="footer-inner">
-      <div class="footer-grid">
-        <div>
-          <h4 class="footer-title">The Living Canopy</h4>
-          <p class="footer-text">
-            Kho lưu trữ và phân loại bản mẫu thực vật học số dành cho kiến trúc đô thị đương đại. Sứ mệnh mang tri thức thực vật học vào từng ngôi nhà.
-          </p>
-        </div>
 
-        <div>
-          <h4 class="footer-title">About Us</h4>
-          <p class="footer-text">
-            Tìm hiểu mục đích dự án, triết lý Biophilic và các công trình nghiên cứu của đội ngũ Botanist GreenNest.
-          </p>
-        </div>
-
-        <div>
-          <h4 class="footer-title">More Info</h4>
-          <p class="footer-text">
-            Giai đoạn thử nghiệm Prototype MERN Stack. Xem thêm tại <a href="gallery.html" style="color: #86efac; text-decoration: underline;">Thư Viện Gallery ↗</a>
-          </p>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Bản Tin Thực Vật</h4>
-          <p class="footer-text" style="margin-bottom: 14px;">Đăng ký để nhận cẩm nang nuôi dưỡng cây từ chuyên gia.</p>
-          <div style="display: flex; gap: 8px;">
-            <input type="email" placeholder="Email của bạn..." style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-glass); border-radius: 9999px; padding: 8px 16px; color: #fff; font-size: 0.82rem; flex: 1; outline: none;">
-            <button class="btn-back-home" style="padding: 8px 16px; font-size: 0.8rem;" onclick="alert('Cảm ơn bạn! Đã ghi nhận email để gửi cẩm nang thực vật học.');">Gửi</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <div>© 2026 The Living Canopy & GreenNest Consortium. Bảo lưu mọi quyền.</div>
-        <button class="btn-back-home" style="background: rgba(255,255,255,0.06); padding: 6px 14px; font-size: 0.75rem;" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Lên đầu trang ↑</button>
-      </div>
-    </div>
-  </footer>
 
   <!-- Lightbox Modal Component -->
   <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
     <div class="lightbox-content-box" onclick="event.stopPropagation()">
       <button class="lightbox-close-btn" onclick="closeLightbox()">✕</button>
       <div class="lightbox-img-holder">
-        <img id="lightboxImg" src="" alt="Phóng to ảnh">
+        <img id="lightboxImg" src="" alt="Specimen Enlargement">
       </div>
       <div class="lightbox-details">
         <div>
-          <h3 class="lightbox-title" id="lightboxTitle">Tiêu đề ảnh</h3>
-          <p class="lightbox-desc" id="lightboxDesc">Mô tả chi tiết ảnh</p>
+          <h3 class="lightbox-title" id="lightboxTitle">Specimen Caption</h3>
+          <p class="lightbox-desc" id="lightboxDesc">Botanical Description</p>
         </div>
-        <button class="btn-back-home" style="padding: 8px 18px; font-size: 0.82rem;" onclick="closeLightbox()">Đóng</button>
+        <button class="btn-back-home" style="padding: 8px 18px; font-size: 0.82rem;" onclick="closeLightbox()">Close</button>
       </div>
     </div>
   </div>
@@ -1530,11 +1779,76 @@
     if (storedUser && navAuthBtn) {
       try {
         const u = JSON.parse(storedUser);
-        navAuthBtn.innerHTML = `👤 ${u.name || 'Hồ Sơ'}`;
+        navAuthBtn.innerHTML = `👤 ${u.name || 'Member'}`;
         navAuthBtn.href = 'user.html';
         navAuthBtn.style.background = 'rgba(34, 197, 94, 0.2)';
         navAuthBtn.style.borderColor = 'var(--emerald-accent)';
       } catch (err) {}
+    }
+
+    // Notification Bell Toggle & Read State
+    const notifBellBtn = document.getElementById('notifBellBtn');
+    const notifDropdown = document.getElementById('notifDropdown');
+    const notifMarkAllRead = document.getElementById('notifMarkAllRead');
+    const notifBadge = document.getElementById('notifBadge');
+    const notifCountTag = document.getElementById('notifCountTag');
+    const notifItems = document.querySelectorAll('.notif-item');
+
+    if (notifBellBtn && notifDropdown) {
+      notifBellBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = notifDropdown.classList.contains('show');
+        if (isOpen) {
+          notifDropdown.classList.remove('show');
+          notifBellBtn.classList.remove('active');
+          notifBellBtn.setAttribute('aria-expanded', 'false');
+        } else {
+          notifDropdown.classList.add('show');
+          notifBellBtn.classList.add('active');
+          notifBellBtn.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!notifDropdown.contains(e.target) && e.target !== notifBellBtn) {
+          notifDropdown.classList.remove('show');
+          notifBellBtn.classList.remove('active');
+          notifBellBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Handle item click -> navigate
+      notifItems.forEach(item => {
+        item.addEventListener('click', () => {
+          item.classList.remove('unread');
+          updateUnreadCount();
+          const href = item.getAttribute('data-href');
+          if (href) window.location.href = href;
+        });
+      });
+
+      if (notifMarkAllRead) {
+        notifMarkAllRead.addEventListener('click', (e) => {
+          e.stopPropagation();
+          notifItems.forEach(item => item.classList.remove('unread'));
+          updateUnreadCount();
+        });
+      }
+
+      function updateUnreadCount() {
+        const unreadCount = document.querySelectorAll('.notif-item.unread').length;
+        if (notifBadge) {
+          if (unreadCount === 0) {
+            notifBadge.classList.add('hidden');
+          } else {
+            notifBadge.classList.remove('hidden');
+            notifBadge.textContent = unreadCount;
+          }
+        }
+        if (notifCountTag) {
+          notifCountTag.textContent = unreadCount === 0 ? 'All Read' : `${unreadCount} New`;
+        }
+      }
     }
   </script>
 

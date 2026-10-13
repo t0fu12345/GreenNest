@@ -8,38 +8,38 @@ const HomeBiomes = () => {
     {
       id: 'tropical',
       icon: '🌴',
-      badge: 'Đới Nóng & Xích Đạo',
+      badge: 'Tropical & Equatorial',
       title: 'Tropical Canopy',
-      desc: 'Vùng nhiệt độ cao và ổn định quanh năm, là môi trường lý tưởng nhất cho cây ưa nhiệt. Thích hợp cho phòng khách ấm, giếng trời và góc nhiều ánh sáng gián tiếp.',
+      desc: 'Consistent warm temperatures and ambient humidity year-round. An optimal environment for warmth-loving broadleaf species, skylit living rooms, and diffused sunspots.',
       temp: '25°C - 35°C',
       humidity: '> 70%',
-      env: 'Ưa nhiệt ẩm',
-      buttonLabel: 'Lọc Đới Nóng (Nhiệt Đới)',
-      resultTitle: '🌴 Đới Nóng (Rừng Mưa Nhiệt Đới & Xích Đạo)'
+      env: 'Humid & Warm',
+      buttonLabel: 'Filter Tropical Biome',
+      resultTitle: '🌴 Tropical Biome (Rainforest & Equatorial)'
     },
     {
       id: 'subtropical',
       icon: '🌲',
-      badge: 'Ôn Đới & Cận Nhiệt',
+      badge: 'Highland & Cloud Forest',
       title: 'Subtropical Highlands',
-      desc: 'Khí hậu mát mẻ hơn, phù hợp cho các loài cây cận nhiệt và ôn đới (như vùng Trung du & miền núi Bắc Bộ, Đà Lạt). Thích hợp phòng điều hòa và ban công mát.',
+      desc: 'Cooler, dynamic temperate climates ideal for montane species and antique ferns. Thrives in climate-controlled spaces, shaded balconies, and refreshing ambient airflow.',
       temp: '16°C - 24°C',
       humidity: '50% - 65%',
-      env: 'Chịu rét nhẹ',
-      buttonLabel: 'Lọc Đới Cận Nhiệt & Ôn Đới',
-      resultTitle: '🌲 Đới Ôn Hòa & Cận Nhiệt Cao Nguyên'
+      env: 'Cool Temperate',
+      buttonLabel: 'Filter Subtropical Biome',
+      resultTitle: '🌲 Subtropical Highlands & Cloud Forest'
     },
     {
       id: 'arid',
       icon: '🏜️',
-      badge: 'Khô Hạn & Bán Hoang Mạc',
+      badge: 'Arid & Semi-Desert',
       title: 'Arid & Semi-Arid',
-      desc: 'Ánh nắng trực tiếp dồi dào, biên độ nhiệt ngày/đêm lớn. Cây có khả năng tích trữ nước bền bỉ, thích hợp ban công hướng Tây đón nắng gắt và người bận rộn.',
+      desc: 'Abundant direct solar radiation with wide diurnal-nocturnal temperature shifts. Highly resilient water-storing tissues, ideal for west-facing windows and busy curators.',
       temp: '20°C - 38°C',
       humidity: '< 40%',
-      env: 'Chịu hạn cao',
-      buttonLabel: 'Lọc Đới Khô Hạn',
-      resultTitle: '🏜️ Đới Khô Hạn & Bán Hoang Mạc'
+      env: 'Drought Resilient',
+      buttonLabel: 'Filter Arid Biome',
+      resultTitle: '🏜️ Arid & Semi-Desert Succulents'
     }
   ];
 
@@ -47,11 +47,11 @@ const HomeBiomes = () => {
     <main className="archive-section" id="specimens">
       <div className="section-header-row">
         <div className="section-title-wrap">
-          <div className="section-subtitle-kicker">The Tri-Biome Architecture // 3 Đại Đới Sinh Thái</div>
-          <h2 className="section-heading">Khám Phá Cây Theo Đới Khí Hậu</h2>
+          <div className="section-subtitle-kicker">The Tri-Biome Architecture // 3 Global Ecological Biomes</div>
+          <h2 className="section-heading">Explore Flora by Climatic Biome</h2>
         </div>
         <Link to="/gallery" className="btn-cta-pill" style={{ fontSize: '0.85rem' }}>
-          <span>Xem Toàn Bộ Thư Viện (Gallery Page) →</span>
+          <span>Explore Complete Archive (Gallery Page) →</span>
         </Link>
       </div>
 
@@ -67,15 +67,15 @@ const HomeBiomes = () => {
             <p className="biome-desc">{biome.desc}</p>
             <div className="biome-specs-row">
               <div className="biome-spec-item">
-                <span className="biome-spec-label">Nhiệt Độ</span>
+                <span className="biome-spec-label">Temperature</span>
                 <span className="biome-spec-val">{biome.temp}</span>
               </div>
               <div className="biome-spec-item">
-                <span className="biome-spec-label">Độ Ẩm</span>
+                <span className="biome-spec-label">Humidity</span>
                 <span className="biome-spec-val">{biome.humidity}</span>
               </div>
               <div className="biome-spec-item">
-                <span className="biome-spec-label">Môi Trường</span>
+                <span className="biome-spec-label">Environment</span>
                 <span className="biome-spec-val">{biome.env}</span>
               </div>
             </div>
@@ -94,18 +94,18 @@ const HomeBiomes = () => {
         <div className="no-data-icon">
           {activeBiome && biomes.find(b => b.id === activeBiome)?.icon}
         </div>
-        <h3 className="no-data-title">No Data Yet ({activeBiome && biomes.find(b => b.id === activeBiome)?.resultTitle})</h3>
+        <h3 className="no-data-title">Catalog Ingestion in Progress ({activeBiome && biomes.find(b => b.id === activeBiome)?.resultTitle})</h3>
         <p className="no-data-text" id="noDataMessage">
-          Chúng tôi đang biên soạn hồ sơ thực vật học cho nhóm <strong>{activeBiome && biomes.find(b => b.id === activeBiome)?.resultTitle}</strong>. Dữ liệu sẽ sẵn sàng ngay sau khi hoàn thành kết nối cơ sở dữ liệu MongoDB và API.
+          We are currently compiling high-resolution botanical records for <strong>{activeBiome && biomes.find(b => b.id === activeBiome)?.resultTitle}</strong>. Specimen records and live telemetry will become available upon database API connection.
         </p>
         <div className="no-data-badge">
-          <span>⚡ Product Status: No Data Yet (Chưa Hoàn Thành Sản Phẩm)</span>
+          <span>⚡ Product Status: Database Catalog Ingestion Phase</span>
         </div>
       </div>
 
       <div style={{ textAlign: 'center', marginTop: '40px' }}>
         <Link to="/gallery" className="btn-hero-primary" style={{ display: 'inline-flex', padding: '14px 32px', fontSize: '0.95rem', gap: '10px' }}>
-          <span>Chuyển Sang Trang Gallery Riêng (Xem Bộ Lọc) →</span>
+          <span>Switch to Dedicated Gallery Archive →</span>
         </Link>
       </div>
     </main>
