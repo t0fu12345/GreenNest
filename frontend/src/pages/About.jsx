@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import {Link} from 'react-router-dom'
 
 const About = () => {
   const [filter, setFilter] = useState('all');
@@ -378,8 +379,8 @@ const About = () => {
             Explore our curated botanical specimen taxonomy across the 3 primary climatic biomes in the Gallery, or return to Overview to discover specimens tailored to your home conditions.
           </p>
           <div className="cta-btn-group">
-            <a href="gallery.html" className="btn-cta-primary">Explore Specimen Gallery →</a>
-            <a href="index.html" className="btn-cta-secondary">Return to Sanctuary Overview</a>
+            <Link to ="/gallery" className="btn-cta-primary">Explore Specimen Gallery →</Link>
+            <Link to ="/" className="btn-cta-secondary">Return to Sanctuary Overview</Link>
           </div>
         </div>
       </section>
