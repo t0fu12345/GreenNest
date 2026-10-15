@@ -110,7 +110,10 @@ class GardenService {
 
   async updateChecklist(userId, gardenItemId, taskName, completed) {
     const user = await User.findById(userId);
-    const gardenItem = user.garden.id(gardenItemId);
+    let gardenItem = user.garden.id(gardenItemId);
+    if (!gardenItem) {
+      gardenItem = user.garden.find(item => item.plant && item.plant.toString() === gardenItemId.toString());
+    }
 
     if (!gardenItem) {
       const error = new Error('Không tìm thấy mục cây trong vườn');

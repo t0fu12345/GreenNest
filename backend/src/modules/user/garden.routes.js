@@ -12,6 +12,7 @@ router.route('/')
 router.delete('/:gardenItemId', (req, res, next) => gardenController.removeFromGarden(req, res, next));
 router.post('/sync', (req, res, next) => gardenController.syncGarden(req, res, next));
 router.put('/checklist', (req, res, next) => gardenController.updateChecklist(req, res, next));
+router.put('/checklist/:plantId', (req, res, next) => gardenController.updateChecklist(req, res, next));
 router.post('/checklist/reset', (req, res, next) => gardenController.resetChecklist(req, res, next));
 router.post('/bookmarks/toggle', (req, res, next) => gardenController.toggleBookmark(req, res, next));
 

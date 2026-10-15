@@ -54,13 +54,14 @@ class GardenController {
 
   async updateChecklist(req, res, next) {
     try {
-      const { gardenItemId, taskName, completed } = req.body;
+      const { taskName, completed } = req.body;
+      const itemId = req.params.plantId || req.body.gardenItemId || req.body.plantId;
 
-      if (!gardenItemId || !taskName) {
-        return errorResponse(res, 'Vui lòng cung cấp gardenItemId và taskName', 400, 'MISSING_FIELDS');
+      if (!itemId || !taskName) {
+        return errorResponse(res, 'Vui lòng cung cấp plantId (hoặc gardenItemId) và taskName', 400, 'MISSING_FIELDS');
       }
 
-      const checklist = await gardenService.updateChecklist(req.user._id, gardenItemId, taskName, completed);
+      const checklist = await gardenService.updateChecklist(req.user._id, itemId, taskName, completed);
       return successResponse(res, checklist, 'Cập nhật trạng thái chăm sóc thành công');
     } catch (error) {
       if (error.statusCode) {

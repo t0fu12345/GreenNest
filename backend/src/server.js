@@ -47,6 +47,7 @@ app.use('/api/collections', require('./modules/collection/collection.routes'));
 app.use('/api/gallery', require('./modules/gallery/gallery.routes'));
 app.use('/api/contact', require('./modules/contact/contact.routes'));
 app.use('/api/admin', require('./modules/admin/admin.routes'));
+app.use('/api/metadata', require('./modules/metadata/metadata.routes'));
 
 // Middlewares xử lý lỗi tập trung
 app.use(notFound);
