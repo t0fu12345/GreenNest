@@ -14,17 +14,7 @@ const Collection = require('../src/modules/collection/collection.model');
 const Gallery = require('../src/modules/gallery/gallery.model');
 const ContactMessage = require('../src/modules/contact/contact.model');
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/greennest';
-
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(MONGO_URI);
-    console.log(`🌿 [Seeder] Kết nối MongoDB thành công: ${conn.connection.host}/${conn.connection.name}`);
-  } catch (err) {
-    console.error(`❌ [Seeder] Lỗi kết nối MongoDB: ${err.message}`);
-    process.exit(1);
-  }
-};
+const connectDB = require('../src/config/db');
 
 // Đọc dữ liệu từ database/seedData/
 const seedDataPath = path.join(__dirname, '../../database/seedData');

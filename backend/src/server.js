@@ -53,16 +53,20 @@ app.use('/api/metadata', require('./modules/metadata/metadata.routes'));
 app.use(notFound);
 app.use(errorHandler);
 
-// Khởi chạy server
+// Khởi chạy server nếu được gọi trực tiếp
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(`🌿 GreenNest Modular Backend Server is running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
-});
+let server;
 
-// Xử lý các Unhandled Rejections an toàn
-process.on('unhandledRejection', (err) => {
-  console.error(`❌ Unhandled Rejection: ${err.message}`);
-  server.close(() => process.exit(1));
-});
+if (require.main === module) {
+  server = app.listen(PORT, () => {
+    console.log(`🌿 GreenNest Modular Backend Server is running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
+  });
+
+  // Xử lý các Unhandled Rejections an toàn
+  process.on('unhandledRejection', (err) => {
+    console.error(`❌ Unhandled Rejection: ${err.message}`);
+    if (server) server.close(() => process.exit(1));
+  });
+}
 
 module.exports = app;
