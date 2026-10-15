@@ -43,15 +43,15 @@ const Login = () => {
     }, 900);
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (!identifier.trim() || !password.trim()) {
-      showNotification('Vui lòng nhập đầy đủ Nickname và Mật khẩu.', 'error');
+      showNotification('Vui lòng nhập đầy đủ Email (hoặc Nickname) và Mật khẩu.', 'error');
       return;
     }
 
     setSubmitting(true);
-    const result = login(identifier, password, rememberMe);
+    const result = await login(identifier, password, rememberMe);
 
     if (result.success) {
       if (result.isAdmin) {
@@ -72,15 +72,15 @@ const Login = () => {
   };
 
   const fillDemoAccount = () => {
-    setIdentifier('minhthao');
-    setPassword('GreenCanopy2026');
-    showNotification('Đã điền tài khoản mẫu (User): minhthao! Bạn có thể nhấn Đăng nhập.', 'success', 2500);
+    setIdentifier('nam.le@greennest.vn');
+    setPassword('GreenNest@2026');
+    showNotification('Đã điền tài khoản mẫu (Member): nam.le@greennest.vn', 'success', 2500);
   };
 
   const fillAdminAccount = () => {
-    setIdentifier('admin');
-    setPassword('AdminCanopy2026!');
-    showNotification('Đã điền tài khoản Quản trị viên (Admin): admin!', 'success', 2500);
+    setIdentifier('admin@greennest.vn');
+    setPassword('Admin@123456');
+    showNotification('Đã điền tài khoản Quản trị viên: admin@greennest.vn', 'success', 2500);
   };
 
   return (

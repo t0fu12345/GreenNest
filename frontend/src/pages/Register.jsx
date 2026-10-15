@@ -36,7 +36,7 @@ const Register = () => {
     }, 950);
   };
 
-  const handleEmailRegister = (e) => {
+  const handleEmailRegister = async (e) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !password.trim()) {
       showNotification('Vui lòng điền đầy đủ các thông tin bắt buộc.', 'error');
@@ -54,7 +54,7 @@ const Register = () => {
     }
 
     setSubmitting(true);
-    const result = register({
+    const result = await register({
       name,
       nickname,
       email,

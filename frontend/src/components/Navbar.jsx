@@ -63,7 +63,7 @@ const Navbar = () => {
               </NavLink>
             </li>
           )}
-          <li><a href="#footer">Contact</a></li>
+          <li><NavLink to="/contact">Contact ↗</NavLink></li>
         </ul>
 
         {/* Right CTAs with Notification Bell */}
