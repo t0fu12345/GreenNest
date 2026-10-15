@@ -1,51 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth, getCookie } from '../context/AuthContext';
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('minhthao.botany@gmail.com');
-  const [password, setPassword] = useState('GreenCanopy2026');
-  const [toastMessage, setToastMessage] = useState('');
-  const [isToastActive, setIsToastActive] = useState(false);
+  const { login, loginWithGoogle, STORAGE_KEYS } = useAuth();
   const navigate = useNavigate();
 
-  const handleSocialLogin = (provider) => {
-    setToastMessage(`Authenticating via ${provider}... Connected successfully! Redirecting to Overview.`);
+  const [showPassword, setShowPassword] = useState(false);
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success'); // 'success' | 'error'
+  const [isToastActive, setIsToastActive] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  // If user previously checked remember me, prefill remembered nickname (if available)
+  useEffect(() => {
+    try {
+      const remembered = localStorage.getItem(STORAGE_KEYS.REMEMBERED_EMAIL) || getCookie(STORAGE_KEYS.REMEMBERED_EMAIL);
+      if (remembered) {
+        setIdentifier(remembered);
+      }
+    } catch {}
+  }, [STORAGE_KEYS]);
+
+  const showNotification = (message, type = 'success', duration = 3000) => {
+    setToastMessage(message);
+    setToastType(type);
     setIsToastActive(true);
-    const mockUser = {
-      name: "Minh Thao",
-      email: "minhthao.botany@gmail.com",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-      role: "Tropical Botanist",
-      level: "Tier 3",
-      biome: "Tropical Biome",
-      joinDate: "March 2026",
-      loginMethod: provider
-    };
-    localStorage.setItem('livingCanopyUser', JSON.stringify(mockUser));
+    setTimeout(() => {
+      setIsToastActive(false);
+    }, duration);
+  };
+
+  const handleSocialLogin = (provider) => {
+    setSubmitting(true);
+    showNotification(`Đang kết nối qua ${provider}... Đăng nhập thành công!`, 'success');
+    loginWithGoogle();
     setTimeout(() => {
       navigate('/');
     }, 900);
   };
 
-  const handleEmailLogin = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setToastMessage(`Welcome back, ${email.split('@')[0]}! Sign in successful. Redirecting to Overview...`);
-    setIsToastActive(true);
-    const mockUser = {
-      name: "Minh Thao",
-      email: email,
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-      role: "Urban Plant Enthusiast",
-      level: "Tier 1",
-      biome: "Subtropical Biome",
-      joinDate: "March 2026",
-      loginMethod: "Email"
-    };
-    localStorage.setItem('livingCanopyUser', JSON.stringify(mockUser));
-    setTimeout(() => {
-      navigate('/');
-    }, 900);
+    if (!identifier.trim() || !password.trim()) {
+      showNotification('Vui lòng nhập đầy đủ Nickname và Mật khẩu.', 'error');
+      return;
+    }
+
+    setSubmitting(true);
+    const result = login(identifier, password, rememberMe);
+
+    if (result.success) {
+      if (result.isAdmin) {
+        showNotification(`Xác thực thành công! Đã cấp quyền Quản trị viên & Token JWT. Đang vào Admin Portal...`, 'success');
+        setTimeout(() => {
+          navigate('/admin');
+        }, 900);
+      } else {
+        showNotification(`Chào mừng trở lại, ${result.user.name}! Đăng nhập thành công. Đang chuyển hướng...`, 'success');
+        setTimeout(() => {
+          navigate('/');
+        }, 900);
+      }
+    } else {
+      setSubmitting(false);
+      showNotification(result.message, 'error', 4000);
+    }
+  };
+
+  const fillDemoAccount = () => {
+    setIdentifier('minhthao');
+    setPassword('GreenCanopy2026');
+    showNotification('Đã điền tài khoản mẫu (User): minhthao! Bạn có thể nhấn Đăng nhập.', 'success', 2500);
+  };
+
+  const fillAdminAccount = () => {
+    setIdentifier('admin');
+    setPassword('AdminCanopy2026!');
+    showNotification('Đã điền tài khoản Quản trị viên (Admin): admin!', 'success', 2500);
   };
 
   return (
@@ -83,7 +118,13 @@ const Login = () => {
         </div>
 
         {/* Continue with Google / Gmail */}
-        <button type="button" className="btn-google-auth" id="btnGoogleLogin" onClick={() => handleSocialLogin('Google')}>
+        <button 
+          type="button" 
+          className="btn-google-auth" 
+          id="btnGoogleLogin" 
+          onClick={() => handleSocialLogin('Google')}
+          disabled={submitting}
+        >
           <svg className="google-icon-svg" viewBox="0 0 24 24">
             <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
             <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
@@ -94,23 +135,24 @@ const Login = () => {
         </button>
 
         <div className="auth-divider">
-          <span>Or sign in with Email</span>
+          <span>Or continue with Nickname</span>
         </div>
 
-        {/* Email & Password Form */}
-        <form className="auth-form" id="loginForm" onSubmit={handleEmailLogin}>
+        {/* Nickname & Password Form */}
+        <form className="auth-form" id="loginForm" onSubmit={handleLogin}>
           
           <div className="form-group">
-            <label htmlFor="loginEmail" className="form-label">Email Address</label>
+            <label htmlFor="loginNickname" className="form-label">Your Nickname</label>
             <div className="input-wrapper">
               <input 
-                type="email" 
-                id="loginEmail" 
+                type="text" 
+                id="loginNickname" 
                 className="input-field" 
-                placeholder="you@domain.com" 
+                placeholder="e.g. admin or minhthao" 
                 required 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)} 
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)} 
+                autoComplete="username"
               />
             </div>
           </div>
@@ -118,7 +160,7 @@ const Login = () => {
           <div className="form-group">
             <div className="form-label">
               <label htmlFor="loginPassword">Password</label>
-              <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Password reset link will be sent to your email."); }}>Forgot password?</a>
+              <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Hướng dẫn đặt lại mật khẩu đã được gửi đến email của bạn."); }}>Quên mật khẩu?</a>
             </div>
             <div className="input-wrapper">
               <input 
@@ -129,15 +171,16 @@ const Login = () => {
                 required 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} 
+                autoComplete="current-password"
               />
               <button 
                 type="button" 
                 className="input-icon-btn" 
                 onClick={() => setShowPassword(!showPassword)} 
-                title="Show/Hide password"
+                title="Hiện/Ẩn mật khẩu"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
               </button>
@@ -146,27 +189,83 @@ const Login = () => {
 
           <div className="form-options">
             <label className="checkbox-wrap">
-              <input type="checkbox" id="rememberMe" defaultChecked />
-              <span>Remember me on this device</span>
+              <input 
+                type="checkbox" 
+                id="rememberMe" 
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)} 
+              />
+              <span>Ghi nhớ phiên đăng nhập (Cookie)</span>
             </label>
-            <span style={{ fontSize: '0.78rem', color: '#86efac' }}>⚡ Prototype Mode</span>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              <button 
+                type="button" 
+                onClick={fillDemoAccount}
+                style={{
+                  background: 'rgba(34, 197, 94, 0.15)',
+                  border: '1px solid rgba(34, 197, 94, 0.35)',
+                  color: '#86efac',
+                  fontSize: '0.74rem',
+                  borderRadius: 0,
+                  padding: '4px 8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                title="Tài khoản thường: Nickname: minhthao / MK: GreenCanopy2026"
+              >
+                ⚡ User
+              </button>
+
+              <button 
+                type="button" 
+                onClick={fillAdminAccount}
+                style={{
+                  background: 'rgba(234, 179, 8, 0.18)',
+                  border: '1px solid rgba(234, 179, 8, 0.5)',
+                  color: '#fef08a',
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  borderRadius: 0,
+                  padding: '4px 8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                title="Tài khoản Admin độc quyền: Nickname: admin / MK: AdminCanopy2026!"
+              >
+                👑 Admin
+              </button>
+            </div>
           </div>
 
-          <button type="submit" className="btn-auth-submit" id="submitBtn">
-            <span>Sign In to Sanctuary →</span>
+          <button 
+            type="submit" 
+            className="btn-auth-submit" 
+            id="submitBtn"
+            disabled={submitting}
+          >
+            <span>{submitting ? 'Đang xác thực...' : 'Sign In to Sanctuary →'}</span>
           </button>
 
           {/* Toast Feedback */}
-          <div className={`login-status-toast ${isToastActive ? 'active' : ''}`} id="loginToast">
-            <span>🌿</span>
-            <div id="toastMessage">{toastMessage}</div>
+          <div 
+            className={`login-status-toast ${isToastActive ? 'active' : ''}`} 
+            id="loginToast"
+            style={{
+              borderColor: toastType === 'error' ? 'rgba(239, 68, 68, 0.6)' : 'rgba(34, 197, 94, 0.4)',
+              background: toastType === 'error' ? 'rgba(35, 10, 10, 0.95)' : 'rgba(14, 30, 22, 0.95)'
+            }}
+          >
+            <span>{toastType === 'error' ? '⚠️' : '🌿'}</span>
+            <div id="toastMessage" style={{ color: toastType === 'error' ? '#fca5a5' : '#86efac' }}>
+              {toastMessage}
+            </div>
           </div>
 
         </form>
 
         <div className="auth-footer">
-          Don't have a GreenNest account?{' '}
-          <Link to="/register">Create an account now →</Link>
+          Chưa có tài khoản GreenNest?{' '}
+          <Link to="/register">Tạo tài khoản mới ngay →</Link>
         </div>
       </main>
 

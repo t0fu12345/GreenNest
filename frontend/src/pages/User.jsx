@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext';
 
 const User = () => {
+  const { user, isAuthenticated, logout } = useAuth();
   const [modalData, setModalData] = useState({
     isOpen: false,
     title: '',
@@ -59,7 +61,7 @@ const User = () => {
             border: '1px solid rgba(34, 197, 94, 0.35)',
             color: '#86efac',
             padding: '6px 16px',
-            borderRadius: '9999px',
+            borderRadius: 0,
             fontSize: '0.76rem',
             fontWeight: 700,
             letterSpacing: '0.15em',
@@ -85,10 +87,103 @@ const User = () => {
             color: '#cbd5e1',
             fontSize: 'clamp(0.95rem, 1.2vw, 1.08rem)',
             fontWeight: 300,
-            lineHeight: 1.6
+            lineHeight: 1.6,
+            marginBottom: '20px'
           }}>
             Select your portal below. Nurture your personal collection or explore your curated herbarium archives.
           </p>
+
+          {/* User Session Profile Pill Card */}
+          {isAuthenticated && user ? (
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '14px',
+              padding: '12px 22px',
+              background: 'rgba(14, 30, 22, 0.85)',
+              border: '1px solid rgba(34, 197, 94, 0.35)',
+              borderRadius: 0,
+              boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+              backdropFilter: 'blur(12px)'
+            }}>
+              <img 
+                src={user.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"} 
+                alt={user.name}
+                style={{ width: '40px', height: '40px', borderRadius: 0, objectFit: 'cover', border: '2px solid #22c55e' }}
+              />
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontWeight: 700, fontSize: '0.94rem', color: '#f0fdf4' }}>
+                  {user.name} {user.nickname && <span style={{ color: '#86efac', fontFamily: 'monospace', fontSize: '0.8rem' }}>@{user.nickname}</span>} <span style={{ fontSize: '0.78rem', color: '#86efac', fontWeight: 500 }}>({user.role || 'Member'})</span>
+                </div>
+                <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+                  {user.email} • <span style={{ color: '#cbd5e1' }}>{user.biome || 'Tropical Biome'}</span>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto', flexWrap: 'wrap' }}>
+                {user.role === 'admin' && (
+                  <Link
+                    to="/admin"
+                    style={{
+                      background: 'rgba(234, 179, 8, 0.2)',
+                      border: '1px solid rgba(234, 179, 8, 0.5)',
+                      color: '#fef08a',
+                      borderRadius: 0,
+                      padding: '6px 14px',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      textDecoration: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    👑 Admin Portal →
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  onClick={logout}
+                  style={{
+                    background: 'rgba(239, 68, 68, 0.15)',
+                    border: '1px solid rgba(239, 68, 68, 0.4)',
+                    color: '#fca5a5',
+                    borderRadius: 0,
+                    padding: '6px 14px',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Đăng xuất
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 20px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              borderRadius: 0
+            }}>
+              <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Chưa đăng nhập tài khoản.</span>
+              <Link 
+                to="/login"
+                style={{
+                  color: '#86efac',
+                  fontSize: '0.86rem',
+                  fontWeight: 600,
+                  textDecoration: 'none'
+                }}
+              >
+                Đăng nhập ngay →
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* 2 Square Boxes Grid (Sharp corners: borderRadius 0 matching stitch/user.html) */}

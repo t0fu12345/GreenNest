@@ -1318,6 +1318,8 @@
 
       <!-- Right CTAs with Notification Bell -->
       <div class="nav-actions">
+        <a href="user.html" class="btn-nav-outline" title="View My Garden">🌿 My Garden</a>
+
         <!-- Notification Bell with Popover Dropdown -->
         <div class="notif-container" id="notifContainer">
           <button type="button" class="btn-notif-bell" id="notifBellBtn" aria-label="Notifications" aria-expanded="false" title="Notifications">
@@ -1387,7 +1389,6 @@
             </div>
           </div>
         </div>
-
         <a href="login.html" id="navAuthBtn" class="btn-back-home">Sign In</a>
       </div>
     </nav>
@@ -1773,18 +1774,17 @@
       });
     }
 
-    // Check logged-in user session
-    const storedUser = localStorage.getItem('livingCanopyUser');
+    // Check logged-in user session - hide sign in button if signed in
     const navAuthBtn = document.getElementById('navAuthBtn');
-    if (storedUser && navAuthBtn) {
-      try {
+    try {
+      const storedUser = localStorage.getItem('livingCanopyUser');
+      if (storedUser && storedUser !== 'null' && storedUser !== 'undefined') {
         const u = JSON.parse(storedUser);
-        navAuthBtn.innerHTML = `👤 ${u.name || 'Member'}`;
-        navAuthBtn.href = 'user.html';
-        navAuthBtn.style.background = 'rgba(34, 197, 94, 0.2)';
-        navAuthBtn.style.borderColor = 'var(--emerald-accent)';
-      } catch (err) {}
-    }
+        if (u && (u.name || u.email || u.nickname || u.role) && navAuthBtn) {
+          navAuthBtn.style.display = 'none';
+        }
+      }
+    } catch (err) {}
 
     // Notification Bell Toggle & Read State
     const notifBellBtn = document.getElementById('notifBellBtn');

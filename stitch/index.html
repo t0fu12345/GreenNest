@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2045,6 +2045,128 @@
         grid-column: 1 / -1;
       }
     }
+
+    /* ==========================================================================
+       BENTO BOX LAYOUT
+       ========================================================================== */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1.1fr 1.1fr;
+      grid-template-rows: 280px 280px;
+      gap: 16px;
+      width: 100%;
+      margin: 40px auto;
+    }
+    .bento-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
+      background-color: var(--bg-surface-elevated);
+      border: 1px solid var(--border-glass);
+    }
+    .bento-map {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+      background-color: #a3c4c9;
+      color: #1a2a3a;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
+      background-size: 200%;
+      background-position: left center;
+      background-repeat: no-repeat;
+      border: none;
+    }
+    .bento-map h3 {
+      position: absolute;
+      bottom: 40px;
+      left: 30px;
+      font-size: 3.2rem;
+      font-family: var(--font-serif);
+      line-height: 1.1;
+      color: #1a2a3a;
+      font-weight: 400;
+    }
+    .bento-map p {
+      position: absolute;
+      bottom: 135px;
+      left: 35px;
+      font-size: 1.05rem;
+      color: #1a2a3a;
+      opacity: 0.9;
+    }
+    
+    .bento-orange {
+      background-color: #f9a826;
+      border: none;
+      justify-content: center;
+      padding-left: 40px;
+    }
+    .bento-orange .bento-num {
+      font-size: 4.5rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 8px;
+      color: #e55227;
+      font-family: var(--font-sans);
+    }
+    .bento-orange .bento-label {
+      font-size: 1.1rem;
+      color: #e55227;
+      font-weight: 500;
+    }
+    
+    .bento-red {
+      background-color: #e34e2c;
+      border: none;
+      justify-content: center;
+      padding-left: 40px;
+    }
+    .bento-red .bento-num {
+      font-size: 4.5rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 8px;
+      color: white;
+      font-family: var(--font-sans);
+    }
+    .bento-red .bento-label {
+      font-size: 1.1rem;
+      color: white;
+      font-weight: 500;
+    }
+    
+    .bento-img {
+      padding: 0;
+      border: none;
+    }
+    .bento-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 992px) {
+      .bento-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .bento-map {
+        grid-column: 1 / -1;
+        grid-row: 1 / 2;
+        min-height: 350px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-map {
+        grid-column: 1 / -1;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2166,6 +2288,7 @@
         </div>
 
         <a href="login.html" class="btn-cta-pill" id="navAuthBtn">Sign In</a>
+        <button type="button" id="navLogoutBtn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; padding: 7px 16px; font-size: 0.82rem; cursor: pointer; font-weight: 600; border-radius: 9999px; transition: all 0.25s ease;" title="Sign out of account">Sign Out</button>
       </div>
     </nav>
   </header>
@@ -2691,7 +2814,7 @@
           `).join('');
           suggestionsPanel.classList.add("active");
         } else {
-          suggestionsPanel.innerHTML = `<div style="padding: 12px; color: var(--sage-muted); font-size: 0.85rem;">No matching suggestions found</div>`;
+          suggestionsPanel.innerHTML = `<div style="padding: 12px; color: var(--sage-muted); font-size: 0.85rem;">Không có gợi ý trùng khớp</div>`;
           suggestionsPanel.classList.add("active");
         }
       } else {
@@ -2750,13 +2873,13 @@
             <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6; margin-bottom: 24px;">${plant.desc}</p>
             
             <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-glass); border-radius: 16px; padding: 16px; margin-bottom: 24px;">
-              <div style="font-size: 0.8rem; color: var(--sage-muted); margin-bottom: 6px;">RECOMMENDED SUBSTRATE:</div>
+              <div style="font-size: 0.8rem; color: var(--sage-muted); margin-bottom: 6px;">GIÁ THỂ KHUYẾN NGHỊ:</div>
               <div style="font-size: 0.92rem; color: #fff; font-weight: 600;">${plant.soil}</div>
             </div>
 
             <div style="display: flex; gap: 12px; margin-top: auto;">
               <button class="btn-cta-pill" style="flex: 1; justify-content: center;" onclick="toggleSavePlant('${plant.id}'); specimenModal.classList.remove('open');">
-                ${savedGarden.has(plant.id) ? '✓ Saved in Sanctuary' : '+ Add to Sanctuary'}
+                ${savedGarden.has(plant.id) ? '✓ Đã Lưu Trong Vườn' : '+ Lưu Vào Vườn'}
               </button>
             </div>
           </div>
@@ -2765,38 +2888,117 @@
       specimenModal.classList.add("open");
     };
 
-    closeSpecimenModalBtn.addEventListener("click", () => specimenModal.classList.remove("open"));
-    specimenModal.addEventListener("click", (e) => {
-      if (e.target === specimenModal) specimenModal.classList.remove("open");
-    });
-
-    // Comparison Modal
-    openCompBtn.addEventListener("click", () => compModal.classList.add("open"));
-    closeCompBtn.addEventListener("click", () => compModal.classList.remove("open"));
-    compModal.addEventListener("click", (e) => {
-      if (e.target === compModal) compModal.classList.remove("open");
-    });
-
-    // Video Tour Modal
-    openVideoTourBtn.addEventListener("click", () => videoModal.classList.add("open"));
-    closeVideoModalBtn.addEventListener("click", () => videoModal.classList.remove("open"));
-    videoModal.addEventListener("click", (e) => {
-      if (e.target === videoModal) videoModal.classList.remove("open");
-    });
-
-    // Check logged-in user session
-    const storedUser = localStorage.getItem('livingCanopyUser');
-    const navAuthBtn = document.getElementById('navAuthBtn');
-    if (storedUser && navAuthBtn) {
-      try {
-        const u = JSON.parse(storedUser);
-        navAuthBtn.innerHTML = `👤 ${u.name || 'Profile'}`;
-        navAuthBtn.href = 'user.html';
-        navAuthBtn.style.background = 'rgba(34, 197, 94, 0.2)';
-        navAuthBtn.style.borderColor = 'var(--emerald-accent)';
-      } catch (err) {}
+    if (closeSpecimenModalBtn && specimenModal) {
+      closeSpecimenModalBtn.addEventListener("click", () => specimenModal.classList.remove("open"));
+      specimenModal.addEventListener("click", (e) => {
+        if (e.target === specimenModal) specimenModal.classList.remove("open");
+      });
     }
 
+    // Comparison Modal
+    if (openCompBtn && compModal) {
+      openCompBtn.addEventListener("click", () => compModal.classList.add("open"));
+    }
+    if (closeCompBtn && compModal) {
+      closeCompBtn.addEventListener("click", () => compModal.classList.remove("open"));
+      compModal.addEventListener("click", (e) => {
+        if (e.target === compModal) compModal.classList.remove("open");
+      });
+    }
+
+    // Video Tour Modal
+    if (openVideoTourBtn && videoModal) {
+      openVideoTourBtn.addEventListener("click", () => videoModal.classList.add("open"));
+    }
+    if (closeVideoModalBtn && videoModal) {
+      closeVideoModalBtn.addEventListener("click", () => videoModal.classList.remove("open"));
+      videoModal.addEventListener("click", (e) => {
+        if (e.target === videoModal) videoModal.classList.remove("open");
+      });
+    }
+
+    // =========================================================================
+    // USER AUTHENTICATION: SIGN IN BUTTON VISIBILITY
+    // If a user is signed in -> Sign In button disappears.
+    // If not signed in -> Sign In button stays.
+    // =========================================================================
+    function isUserLoggedIn() {
+      try {
+        const local = localStorage.getItem('livingCanopyUser');
+        if (local && local !== 'null' && local !== 'undefined') {
+          const u = JSON.parse(local);
+          if (u && (u.name || u.email || u.nickname || u.role || u.id)) {
+            return true;
+          }
+        }
+      } catch (err) {}
+
+      try {
+        const sess = sessionStorage.getItem('livingCanopyUser');
+        if (sess && sess !== 'null' && sess !== 'undefined') {
+          const u = JSON.parse(sess);
+          if (u && (u.name || u.email || u.nickname || u.role || u.id)) {
+            return true;
+          }
+        }
+      } catch (err) {}
+
+      try {
+        const cookies = document.cookie.split(';');
+        for (let c of cookies) {
+          const [k, v] = c.trim().split('=');
+          if ((k === 'greenNest_session' || k === 'greenNest_jwt' || k === 'livingCanopyUser') && v && v !== 'null') {
+            return true;
+          }
+        }
+      } catch (err) {}
+
+      return false;
+    }
+
+    function syncAuthButton() {
+      const navAuthBtn = document.getElementById('navAuthBtn');
+      const navLogoutBtn = document.getElementById('navLogoutBtn');
+      const loggedIn = isUserLoggedIn();
+
+      if (navAuthBtn) {
+        if (loggedIn) {
+          // If signed in, the Sign In button disappears
+          navAuthBtn.style.display = 'none';
+        } else {
+          // If not signed in, the Sign In button stays
+          navAuthBtn.style.display = 'inline-flex';
+        }
+      }
+
+      if (navLogoutBtn) {
+        navLogoutBtn.style.display = loggedIn ? 'inline-flex' : 'none';
+      }
+    }
+
+    // Run auth check immediately
+    syncAuthButton();
+
+    // Listen for storage changes across tabs/windows or login actions
+    window.addEventListener('storage', syncAuthButton);
+    window.addEventListener('focus', syncAuthButton);
+
+    // Sign Out handler
+    const navLogoutBtn = document.getElementById('navLogoutBtn');
+    if (navLogoutBtn) {
+      navLogoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        try {
+          localStorage.removeItem('livingCanopyUser');
+          localStorage.removeItem('greenNest_jwt_token');
+          sessionStorage.removeItem('livingCanopyUser');
+          document.cookie = 'greenNest_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+          document.cookie = 'greenNest_jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+          document.cookie = 'livingCanopyUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+        } catch (err) {}
+        syncAuthButton();
+      });
+    }
     // =========================================================================
     // NOTIFICATION BELL & DROPDOWN INTERACTION
     // =========================================================================

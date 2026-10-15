@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
+  const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const [notifOpen, setNotifOpen] = useState(false);
   const [unreadItems, setUnreadItems] = useState([1, 2, 3]);
   const notifRef = useRef(null);
@@ -46,7 +48,21 @@ const Navbar = () => {
           <li><NavLink to="/plants">Plants 🌿</NavLink></li>
           <li><NavLink to="/gallery">Gallery ↗</NavLink></li>
           <li><NavLink to="/about">About Us ↗</NavLink></li>
-          <li><NavLink to="/user">My Garden</NavLink></li>
+          <li><NavLink to="/user">My Garden 🌿</NavLink></li>
+          {isAdmin && (
+            <li>
+              <NavLink 
+                to="/admin" 
+                style={{ 
+                  color: '#facc15', 
+                  fontWeight: 700, 
+                  textShadow: '0 0 10px rgba(234, 179, 8, 0.4)' 
+                }}
+              >
+                👑 Admin Portal
+              </NavLink>
+            </li>
+          )}
           <li><a href="#footer">Contact</a></li>
         </ul>
 
@@ -151,9 +167,32 @@ const Navbar = () => {
             </div>
           </div>
 
-          <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem' }}>
-            Sign In
-          </Link>
+          {isAuthenticated && user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <button
+                type="button"
+                onClick={logout}
+                style={{
+                  background: 'rgba(239, 68, 68, 0.15)',
+                  border: '1px solid rgba(239, 68, 68, 0.35)',
+                  color: '#fca5a5',
+                  borderRadius: 0,
+                  padding: '7px 14px',
+                  fontSize: '0.8rem',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  transition: 'all 0.25s ease'
+                }}
+                title={`Logged in as ${user.name}. Click to sign out.`}
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem', borderRadius: 0 }}>
+              Sign In
+            </Link>
+          )}
         </div>
       </nav>
     </header>
