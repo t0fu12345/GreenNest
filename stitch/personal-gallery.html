@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Gallery — The Living Canopy</title>
+  <meta name="description" content="Your private botanical herbarium and curated specimen collection in The Living Canopy.">
+
+  <!-- Google Fonts: Cinzel, Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #07100b;
+      --bg-surface: #0e1e16;
+      --bg-surface-elevated: #152d21;
+      --emerald-accent: #22c55e;
+      --emerald-light: #86efac;
+      --emerald-glow: rgba(34, 197, 94, 0.45);
+      --amber-accent: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.5);
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-accent: rgba(34, 197, 94, 0.35);
+      --glass-pill: rgba(14, 30, 22, 0.92);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        linear-gradient(180deg, rgba(7, 16, 11, 0.88) 0%, rgba(7, 16, 11, 0.7) 40%, rgba(7, 16, 11, 0.92) 80%, #07100b 100%),
+        radial-gradient(circle at 75% 20%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 20% 60%, rgba(245, 158, 11, 0.05) 0%, transparent 40%),
+        url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    /* Fixed Floating Header - matching attached picture */
+    .header-floating-wrap {
+      position: fixed;
+      top: 18px;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+      pointer-events: none;
+    }
+
+    .navbar-pill {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(16px, 2.5vw, 36px);
+      background: var(--glass-pill);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+      border-radius: 9999px;
+      padding: 8px 12px 8px 22px;
+      max-width: 1220px;
+      width: 100%;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .navbar-pill:hover {
+      border-color: rgba(34, 197, 94, 0.45);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), 0 0 35px -5px rgba(34, 197, 94, 0.35);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon-svg {
+      width: 32px;
+      height: 32px;
+      color: var(--emerald-accent);
+      flex-shrink: 0;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #ffffff;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+      margin-top: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+      position: relative;
+      padding: 4px 0;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #ffffff;
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--emerald-accent);
+      border-radius: 9999px;
+      box-shadow: 0 0 10px var(--emerald-accent);
+    }
+
+    .btn-portal-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      border-radius: 9999px;
+      color: #86efac;
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-portal-back:hover {
+      background: var(--emerald-accent);
+      color: #07100b;
+      box-shadow: 0 0 20px var(--emerald-glow);
+      transform: translateY(-1px);
+    }
+
+    /* Page Layout - Header clearance guaranteed (padding-top: 110px prevents header collision) */
+    .page-main-layout {
+      flex: 1;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 110px 24px 70px 24px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    /* Left Sidebar: strictly starts below navbar with safe clearance */
+    .sidebar-panel {
+      position: sticky;
+      top: 100px;
+      background: rgba(14, 30, 22, 0.88);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 24px 20px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-height: calc(100vh - 125px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(34, 197, 94, 0.3) transparent;
+    }
+
+    .sidebar-panel:hover {
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    .sidebar-header-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar-kicker-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+    }
+
+    .sidebar-count-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(34, 197, 94, 0.18);
+      color: #86efac;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    /* Sidebar Search Box */
+    .sidebar-search-wrap {
+      position: relative;
+    }
+
+    .sidebar-search-input {
+      width: 100%;
+      background: rgba(7, 16, 11, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 9px 34px 9px 34px;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      color: #ffffff;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .sidebar-search-input:focus {
+      border-color: var(--emerald-accent);
+      background: rgba(7, 16, 11, 0.95);
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.25);
+    }
+
+    .sidebar-search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      color: var(--text-tertiary);
+      pointer-events: none;
+    }
+
+    .sidebar-search-clear {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: none;
+      line-height: 1;
+    }
+
+    .sidebar-search-clear:hover {
+      color: #ffffff;
+    }
+
+    /* Dynamic Tag Suggestions in Sidebar - only tags present in user's added plants */
+    .sidebar-tags-container {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(7, 16, 11, 0.55);
+      border: 1px dashed rgba(34, 197, 94, 0.25);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .sidebar-tags-container.show {
+      display: flex;
+    }
+
+    .sidebar-tags-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+    }
+
+    .sidebar-tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .sidebar-tag-pill {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #86efac;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .sidebar-tag-pill:hover,
+    .sidebar-tag-pill.active {
+      background: var(--emerald-accent);
+      color: #07100b;
+      box-shadow: 0 0 10px var(--emerald-glow);
+    }
+
+    /* Added Plants List in Sidebar */
+    .sidebar-plants-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-plant-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .sidebar-plant-item:hover,
+    .sidebar-plant-item.active {
+      background: rgba(34, 197, 94, 0.12);
+      border-color: rgba(34, 197, 94, 0.35);
+      transform: translateX(3px);
+    }
+
+    .sidebar-plant-thumb {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-plant-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sidebar-plant-name {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar-plant-sub {
+      font-size: 0.72rem;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar-unstar-btn {
+      background: transparent;
+      border: none;
+      color: #f59e0b;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      transition: var(--transition-smooth);
+      line-height: 1;
+    }
+
+    .sidebar-unstar-btn:hover {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.15);
+      transform: scale(1.15);
+    }
+
+    /* Empty State in Sidebar */
+    .sidebar-empty-box {
+      text-align: center;
+      padding: 24px 12px;
+      background: rgba(7, 16, 11, 0.4);
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+    }
+
+    .sidebar-empty-text {
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Crucial user requirement: "Add Some?" underlined, highlighted on hover, redirects to gallery */
+    .add-some-link {
+      display: inline-block;
+      color: #86efac;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 3px;
+      transition: var(--transition-smooth);
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    .add-some-link:hover {
+      color: #4ade80;
+      text-decoration-color: #22c55e;
+      text-shadow: 0 0 12px rgba(34, 197, 94, 0.85);
+      transform: translateY(-1px);
+    }
+
+    /* Right Main Content Area */
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .content-header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .content-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #86efac;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .content-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.15;
+    }
+
+    .content-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 780px;
+      line-height: 1.6;
+    }
+
+    /* Active filter feedback bar */
+    .gallery-filter-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: rgba(14, 30, 22, 0.65);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .filter-active-term {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .filter-reset-btn {
+      background: none;
+      border: none;
+      color: #86efac;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .filter-reset-btn:hover {
+      color: #4ade80;
+    }
+
+    /* Specimen Cards Grid */
+    .specimen-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .specimen-card {
+      background: rgba(14, 30, 22, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .specimen-card:hover {
+      border-color: rgba(34, 197, 94, 0.45);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(34, 197, 94, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .card-media-wrap {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      background: #07100b;
+    }
+
+    .card-media-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .specimen-card:hover .card-media-img {
+      transform: scale(1.06);
+    }
+
+    /* Star Button on the Upper Right Corner of the Image */
+    .card-star-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(7, 16, 11, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #f59e0b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      transition: var(--transition-smooth);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      z-index: 5;
+    }
+
+    .card-star-btn:hover {
+      background: #f59e0b;
+      color: #07100b;
+      transform: scale(1.12);
+      box-shadow: 0 0 20px var(--amber-glow);
+    }
+
+    .card-star-btn.starred {
+      color: #f59e0b;
+      text-shadow: 0 0 12px rgba(245, 158, 11, 0.8);
+    }
+
+    .card-biome-badge {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(7, 16, 11, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #86efac;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 14px;
+    }
+
+    .card-header-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .card-sci-name {
+      font-style: italic;
+      color: var(--emerald-light);
+      font-size: 0.86rem;
+    }
+
+    /* Tag Cloud */
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .card-tag-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      transition: var(--transition-smooth);
+    }
+
+    .card-tag-pill:hover {
+      color: #86efac;
+      border-color: rgba(34, 197, 94, 0.4);
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .card-desc-snippet {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-action-bar {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-inspect-specimen {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #86efac;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-inspect-specimen:hover {
+      background: var(--emerald-accent);
+      color: #07100b;
+      box-shadow: 0 0 15px var(--emerald-glow);
+    }
+
+    /* Main Area Empty State */
+    .main-empty-state {
+      display: none;
+      text-align: center;
+      padding: 80px 24px;
+      background: rgba(14, 30, 22, 0.7);
+      backdrop-filter: blur(25px);
+      border: 1.5px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .main-empty-state.show {
+      display: block;
+    }
+
+    .empty-icon-circle {
+      width: 72px;
+      height: 72px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin: 0 auto 20px auto;
+    }
+
+    .empty-main-title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .empty-main-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 520px;
+      margin: 0 auto 28px auto;
+      line-height: 1.6;
+    }
+
+    .btn-empty-explore {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--emerald-accent);
+      color: #07100b;
+      padding: 12px 28px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      box-shadow: 0 0 25px var(--emerald-glow);
+    }
+
+    .btn-empty-explore:hover {
+      background: #86efac;
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px var(--emerald-glow);
+    }
+
+    /* Detail Modal Drawer */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 9, 6, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-window {
+      background: rgba(14, 30, 22, 0.98);
+      border: 1px solid var(--border-accent);
+      border-radius: 24px;
+      max-width: 820px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(7, 16, 11, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: var(--transition-smooth);
+    }
+
+    .modal-close-btn:hover {
+      background: #ef4444;
+      border-color: #ef4444;
+      transform: rotate(90deg);
+    }
+
+    .modal-media-header {
+      position: relative;
+      height: 300px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .modal-media-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-media-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(14, 30, 22, 0.1) 0%, rgba(14, 30, 22, 0.95) 100%);
+    }
+
+    .modal-header-titles {
+      position: absolute;
+      bottom: 20px;
+      left: 28px;
+      right: 28px;
+    }
+
+    .modal-body {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .modal-section-card {
+      background: rgba(7, 16, 11, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+
+    .modal-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+      margin-bottom: 8px;
+    }
+
+    .modal-section-text {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    .modal-care-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .care-tile {
+      background: rgba(7, 16, 11, 0.7);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .care-tile-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--emerald-light);
+      margin-bottom: 6px;
+    }
+
+    .care-tile-value {
+      font-size: 0.85rem;
+      color: #ffffff;
+      line-height: 1.5;
+    }
+
+    /* Minimal Luxury Footer */
+    .site-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(4, 9, 6, 0.95);
+      padding: 48px 24px 30px 24px;
+      margin-top: auto;
+    }
+
+    .footer-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1.2fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-title {
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #ffffff;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .footer-text {
+      color: var(--text-tertiary);
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .page-main-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar-panel {
+        position: static;
+        max-height: none;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation - Matches Member Portal Header from picture -->
+  <header class="header-floating-wrap">
+    <nav class="navbar-pill">
+      <a href="index.html" class="brand-logo" title="The Living Canopy Overview">
+        <svg class="brand-icon-svg" viewBox="0 0 32 32" fill="none">
+          <path d="M16 2C9.5 2 4.5 7.5 4.5 14C4.5 20.5 10 26 16 30C22 26 27.5 20.5 27.5 14C27.5 7.5 22.5 2 16 2ZM16 25C12 21.5 8 18 8 14C8 9.5 11.5 6 16 6C20.5 6 24 9.5 24 14C24 18 20 21.5 16 25Z" fill="currentColor" fill-opacity="0.3"/>
+          <path d="M16 8C14 11 11 14 11 17C11 19.8 13.2 22 16 22C18.8 22 21 19.8 21 17C21 14 18 11 16 8Z" fill="currentColor"/>
+          <circle cx="16" cy="17" r="2.5" fill="#ffffff"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-title">The Living Canopy</span>
+          <span class="brand-sub">GreenNest Member Portal</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="garden.html">My Garden</a></li>
+        <li><a href="personal-gallery.html" class="active">Personal Gallery</a></li>
+        <li><a href="gallery.html">Specimens ↗</a></li>
+        <li><a href="about.html">About Us ↗</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="user.html" class="btn-portal-back">← Back to Sanctuary</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Page Layout (Padding top 110px ensures header never sticks into the left sidebar) -->
+  <main class="page-main-layout">
+
+    <!-- Left Sidebar Box -->
+    <aside class="sidebar-panel" id="sidebarPanel">
+      <div class="sidebar-header-kicker">
+        <span class="sidebar-kicker-title">SAVED SPECIMENS</span>
+        <span class="sidebar-count-badge" id="sidebarCount">0</span>
+      </div>
+
+      <!-- Small Search Box at top of sidebar -->
+      <div class="sidebar-search-wrap">
+        <svg class="sidebar-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          type="text" 
+          class="sidebar-search-input" 
+          id="sidebarSearchInput" 
+          placeholder="Filter by name or tag (#)..."
+          autocomplete="off"
+        >
+        <button type="button" class="sidebar-search-clear" id="sidebarSearchClear">✕</button>
+      </div>
+
+      <!-- Dynamic Tag Suggestions: ONLY tags that start with input AND are possessed by currently added plants -->
+      <div class="sidebar-tags-container" id="sidebarTagsContainer">
+        <span class="sidebar-tags-label">Matching Added Tags:</span>
+        <div class="sidebar-tags-list" id="sidebarTagsList">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Added plants list -->
+      <ul class="sidebar-plants-list" id="sidebarPlantsList">
+        <!-- Rendered dynamically -->
+      </ul>
+
+      <!-- Empty state when no specimens added -->
+      <div class="sidebar-empty-box" id="sidebarEmptyBox" style="display: none;">
+        <p class="sidebar-empty-text">
+          No Specimen. <a href="gallery.html" class="add-some-link" id="sidebarAddLink">Add some?</a>
+        </p>
+      </div>
+    </aside>
+
+    <!-- Right Side: Main Content Area -->
+    <section class="content-area">
+      <div class="content-header">
+        <div class="content-kicker">
+          <span>📖 Curated Herbarium</span>
+        </div>
+        <h1 class="content-title">Personal Specimen Gallery.</h1>
+        <p class="content-subtitle">
+          Your private botanical sanctuary. Review cultivation telemetry, origin chronologies, and seasonal hydration guidance for all specimens saved to your collection.
+        </p>
+      </div>
+
+      <!-- Filter status bar when searching -->
+      <div class="gallery-filter-status" id="galleryFilterStatus" style="display: none;">
+        <div>Filtering by: <span class="filter-active-term" id="filterActiveTerm"></span></div>
+        <button type="button" class="filter-reset-btn" id="filterResetBtn">Clear Filter</button>
+      </div>
+
+      <!-- Specimen Cards Grid -->
+      <div class="specimen-cards-grid" id="specimenCardsGrid">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Main Area Empty State -->
+      <div class="main-empty-state" id="mainEmptyState">
+        <div class="empty-icon-circle">🌱</div>
+        <h2 class="empty-main-title">No Specimen In Your Personal Gallery</h2>
+        <p class="empty-main-desc">
+          You haven't saved any plants yet. Browse our comprehensive botanical archive and click the star icon in the upper-right corner of any plant to add it here.
+        </p>
+        <a href="gallery.html" class="btn-empty-explore">
+          <span>Explore Specimen Gallery →</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Plant Detail Modal Window -->
+  <div class="modal-backdrop" id="specimenModal" role="dialog" aria-modal="true">
+    <div class="modal-window">
+      <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">✕</button>
+      
+      <div class="modal-media-header">
+        <img src="" alt="" class="modal-media-img" id="modalImg">
+        <div class="modal-media-gradient"></div>
+        <div class="modal-header-titles">
+          <span class="card-biome-badge" id="modalBiomeBadge">Subtropical Highlands</span>
+          <h2 class="card-title" style="font-size: 2rem; margin-top: 8px;" id="modalTitle">Red Rose</h2>
+          <div class="card-sci-name" id="modalSciName">Rosa damascena</div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Tags -->
+        <div class="card-tags" id="modalTags"></div>
+
+        <!-- Origin -->
+        <div class="modal-section-card">
+          <div class="modal-section-title">
+            <span>🌍</span>
+            <span>Geographic Origin & Natural Habitat</span>
+          </div>
+          <p class="modal-section-text" id="modalOrigin">
+            Temperate highland valleys of Central Asia & Ancient Persia, later naturalized across Mediterranean microclimates.
+          </p>
+        </div>
+
+        <!-- Main Purposes -->
+        <div class="modal-section-card">
+          <div class="modal-section-title">
+            <span>✨</span>
+            <span>Primary Botanical Purposes</span>
+          </div>
+          <p class="modal-section-text" id="modalPurpose">
+            Prized ornamental centerpiece, therapeutic natural aromatherapy, and traditional distillation of rose floral hydrosols.
+          </p>
+        </div>
+
+        <!-- Care Telemetry -->
+        <div class="modal-section-card">
+          <div class="modal-section-title">
+            <span>🌿</span>
+            <span>Cultivation & Tending Directives</span>
+          </div>
+          <div class="modal-care-grid">
+            <div class="care-tile">
+              <div class="care-tile-label">💧 Hydration Cadence</div>
+              <div class="care-tile-value" id="modalWater">Deep watering 1–2 times weekly when top 2 inches dry. Water root zone; keep foliage dry.</div>
+            </div>
+            <div class="care-tile">
+              <div class="care-tile-label">☀️ Light Exposure</div>
+              <div class="care-tile-value" id="modalLight">6+ hours direct daylight daily. Optimal 18°C–26°C with constant fresh air circulation.</div>
+            </div>
+            <div class="care-tile">
+              <div class="care-tile-label">🌱 Soil & Substrate</div>
+              <div class="care-tile-value" id="modalSoil">Rich loamy compost with perlite aeration, maintaining slightly acidic pH 6.0–6.8.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Luxury Minimal Footer -->
+  <footer class="site-footer" id="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <h4 class="footer-title">The Living Canopy</h4>
+          <p class="footer-text">
+            Digital botanical taxonomy and private sanctuary stewardship for modern living architecture.
+          </p>
+        </div>
+        <div>
+          <h4 class="footer-title">Curator Bulletin</h4>
+          <p class="footer-text">
+            Standardized microclimate metrics across Tropical, Subtropical, and Arid global plant biomes.
+          </p>
+        </div>
+        <div>
+          <h4 class="footer-title">Navigation</h4>
+          <p class="footer-text">
+            Return to <a href="index.html" style="color: #86efac; text-decoration: underline;">Overview Sanctuary →</a> or browse <a href="gallery.html" style="color: #86efac; text-decoration: underline;">Specimen Archive →</a>
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 The Living Canopy & GreenNest Consortium. All rights reserved.</div>
+        <div>Member Herbarium System v2.4</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Master Botanical Script -->
+  <script>
+    // Master Botanical Database
+    const BOTANICAL_SPECIMENS = {
+      'specimen-red-rose': {
+        id: 'specimen-red-rose',
+        name: 'Red Rose',
+        scientificName: 'Rosa damascena / Rosa gallica',
+        biome: 'subtropical',
+        biomeLabel: 'Subtropical Highlands',
+        image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80',
+        tags: ['#SubtropicalHighlands', '#TemperateGarden', '#AromaticBloom', '#SunLoving', '#RareCultivar', '#Rosa'],
+        shortDesc: 'A revered classical bloom bearing velvety scarlet petals and an intoxicating heritage aroma. Requires generous sunlight and aerated highland drainage.',
+        origin: 'Temperate highland valleys of Central Asia & Ancient Persia, widely naturalized across the sunlit Mediterranean Basin.',
+        purpose: 'Prized ornamental focal point, therapeutic aromatherapy, extraction of natural essential oils & floral hydrosols, and biophilic mood elevation.',
+        water: 'Deep saturation 1–2 times weekly when the top 2 inches of soil feel dry. Always hydrate at the base; keep leaves dry to prevent fungal mildew.',
+        light: 'Full direct sunlight (6+ hours daily). Thrives between 18°C–26°C with constant, refreshing air circulation.',
+        soil: 'Nutrient-rich, loamy, well-draining organic soil blend enriched with perlite and compost (optimal pH 6.0–6.8).'
+      },
+      'specimen-monstera': {
+        id: 'specimen-monstera',
+        name: 'Monstera Deliciosa',
+        scientificName: 'Monstera deliciosa Liebm.',
+        biome: 'tropical',
+        biomeLabel: 'Tropical Rainforest',
+        image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
+        tags: ['#Araceae', '#TrailingFoliage', '#VelvetLeaf', '#DeepShadeThriving', '#RareCultivar'],
+        shortDesc: 'Iconic Swiss Cheese plant featuring magnificent fenestrated emerald leaves engineered to filter tropical canopy sunlight.',
+        origin: 'Dense rainforests and tropical riverbanks of southern Mexico and Central America.',
+        purpose: 'Indoor air scrubbing, ambient humidity modulation, and dramatic biophilic architectural styling.',
+        water: 'Hydrate every 7–10 days when top 50% of potting mix dries out. Mist aerial roots regularly.',
+        light: 'Dappled, bright indirect sunlight (1,200–2,000 FC). Avoid harsh midday sun on glass.',
+        soil: 'Chunky aroid substrate: orchid bark, pumice, perlite, and coco coir.'
+      },
+      'specimen-aechmea': {
+        id: 'specimen-aechmea',
+        name: 'Silver Vase Bromeliad',
+        scientificName: 'Aechmea fasciata',
+        biome: 'arid',
+        biomeLabel: 'Arid & Semi-Desert',
+        image: 'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80',
+        tags: ['#AridBiome', '#RareCultivar', '#SunLoving', '#PetSafe'],
+        shortDesc: 'Dramatic banded silver-powdered foliage culminating in an extraordinary pink torch inflorescence.',
+        origin: 'Tropical rocky outcrops and high-canopy epiphyte perches in southeastern Brazil.',
+        purpose: 'Slow-growing architectural statement with months of persistent pink flowering displays.',
+        water: 'Keep the central rosette tank filled with clean rainwater. Mist lightly in summer.',
+        light: 'Generous indirect daylight to gentle morning direct sun. Tolerates arid living conditions.',
+        soil: 'Porous epiphyte grit or orchid bark mixture with superior aeration.'
+      },
+      'specimen-boston-fern': {
+        id: 'specimen-boston-fern',
+        name: 'Highland Boston Fern',
+        scientificName: 'Nephrolepis exaltata',
+        biome: 'subtropical',
+        biomeLabel: 'Subtropical Highlands',
+        image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80',
+        tags: ['#SubtropicalHighlands', '#DeepShadeThriving', '#PetSafe', '#AirPurifier'],
+        shortDesc: 'Lush cascading arching fronds with feather-like pinnae that elevate ambient moisture and ground human focus.',
+        origin: 'Misty humid cloud forests, swamp margins, and highland valleys of tropical and subtropical America.',
+        purpose: 'Active volatile organic compound (VOC) scrubbing, natural air purification, and pet-safe green cascading.',
+        water: 'Maintain steady root moisture; never let the root ball completely dry out.',
+        light: 'Soft filtered shade or gentle eastern morning light.',
+        soil: 'Rich peat moss blend with perlite and vermiculite.'
+      }
+    };
+
+    const STORAGE_KEY = 'livingCanopyStarredPlants';
+
+    // Retrieve saved IDs or initialize with Red Rose as default demo specimen
+    function getStarredIds() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored === null) {
+        // First visit: initialize with Red Rose
+        const initial = ['specimen-red-rose'];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+        return initial;
+      }
+      try {
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function setStarredIds(ids) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+      renderPersonalGallery();
+    }
+
+    // Toggle star on a plant
+    window.toggleStarPlant = function(plantId, event) {
+      if (event) event.stopPropagation();
+      let ids = getStarredIds();
+      if (ids.includes(plantId)) {
+        ids = ids.filter(id => id !== plantId);
+      } else {
+        ids.push(plantId);
+      }
+      setStarredIds(ids);
+    };
+
+    // Filter state
+    let activeSearchTerm = '';
+    let activeTagFilter = '';
+
+    // Render the Personal Gallery & Sidebar
+    function renderPersonalGallery() {
+      const starredIds = getStarredIds();
+      const starredPlants = starredIds.map(id => BOTANICAL_SPECIMENS[id]).filter(Boolean);
+
+      // Elements
+      const sidebarCount = document.getElementById('sidebarCount');
+      const sidebarPlantsList = document.getElementById('sidebarPlantsList');
+      const sidebarEmptyBox = document.getElementById('sidebarEmptyBox');
+      const sidebarTagsContainer = document.getElementById('sidebarTagsContainer');
+      const sidebarTagsList = document.getElementById('sidebarTagsList');
+      const specimenCardsGrid = document.getElementById('specimenCardsGrid');
+      const mainEmptyState = document.getElementById('mainEmptyState');
+      const galleryFilterStatus = document.getElementById('galleryFilterStatus');
+      const filterActiveTerm = document.getElementById('filterActiveTerm');
+
+      sidebarCount.textContent = starredPlants.length;
+
+      // Handle complete 0-specimen empty state
+      if (starredPlants.length === 0) {
+        sidebarPlantsList.innerHTML = '';
+        sidebarEmptyBox.style.display = 'block';
+        sidebarTagsContainer.classList.remove('show');
+        specimenCardsGrid.innerHTML = '';
+        mainEmptyState.classList.add('show');
+        galleryFilterStatus.style.display = 'none';
+        return;
+      }
+
+      sidebarEmptyBox.style.display = 'none';
+      mainEmptyState.classList.remove('show');
+
+      // Extract all unique tags present ONLY in user's added plants
+      const addedPlantsTags = new Set();
+      starredPlants.forEach(p => {
+        p.tags.forEach(t => addedPlantsTags.add(t));
+      });
+
+      // Filter tags when user types in search (e.g. typing "R" matches tags starting with "R" that added plants have)
+      const cleanTerm = activeSearchTerm.trim().toLowerCase();
+      let matchingTags = [];
+      if (cleanTerm.length > 0) {
+        matchingTags = Array.from(addedPlantsTags).filter(t => {
+          const rawTag = t.replace('#', '').toLowerCase();
+          return rawTag.startsWith(cleanTerm) || t.toLowerCase().startsWith(cleanTerm);
+        });
+      }
+
+      // Render dynamic tag suggestions if there are matching tags
+      if (cleanTerm.length > 0 && matchingTags.length > 0) {
+        sidebarTagsContainer.classList.add('show');
+        sidebarTagsList.innerHTML = matchingTags.map(tag => `
+          <button type="button" class="sidebar-tag-pill ${activeTagFilter === tag ? 'active' : ''}" onclick="applyTagFilter('${tag}')">
+            ${tag}
+          </button>
+        `).join('');
+      } else {
+        sidebarTagsContainer.classList.remove('show');
+      }
+
+      // Filter plants based on search term & active tag
+      const filteredPlants = starredPlants.filter(p => {
+        let matchesSearch = true;
+        if (cleanTerm.length > 0) {
+          const nameMatch = p.name.toLowerCase().includes(cleanTerm);
+          const sciMatch = p.scientificName.toLowerCase().includes(cleanTerm);
+          const tagMatch = p.tags.some(t => {
+            const rawTag = t.replace('#', '').toLowerCase();
+            return rawTag.startsWith(cleanTerm) || t.toLowerCase().includes(cleanTerm);
+          });
+          matchesSearch = nameMatch || sciMatch || tagMatch;
+        }
+
+        let matchesTag = true;
+        if (activeTagFilter) {
+          matchesTag = p.tags.includes(activeTagFilter);
+        }
+
+        return matchesSearch && matchesTag;
+      });
+
+      // Update Filter Status Feedback Bar
+      if (activeSearchTerm || activeTagFilter) {
+        galleryFilterStatus.style.display = 'flex';
+        const displayLabel = [
+          activeSearchTerm ? `"${activeSearchTerm}"` : null,
+          activeTagFilter ? `tag: ${activeTagFilter}` : null
+        ].filter(Boolean).join(' + ');
+        filterActiveTerm.textContent = `${displayLabel} (${filteredPlants.length} result${filteredPlants.length !== 1 ? 's' : ''})`;
+      } else {
+        galleryFilterStatus.style.display = 'none';
+      }
+
+      // Render Sidebar Plants List
+      sidebarPlantsList.innerHTML = filteredPlants.map(plant => `
+        <li class="sidebar-plant-item" onclick="openSpecimenModal('${plant.id}')" title="Inspect ${plant.name}">
+          <img src="${plant.image}" alt="${plant.name}" class="sidebar-plant-thumb">
+          <div class="sidebar-plant-info">
+            <div class="sidebar-plant-name">${plant.name}</div>
+            <div class="sidebar-plant-sub">${plant.scientificName}</div>
+          </div>
+          <button type="button" class="sidebar-unstar-btn" onclick="toggleStarPlant('${plant.id}', event)" title="Remove from Personal Gallery">
+            ★
+          </button>
+        </li>
+      `).join('');
+
+      // Render Main Content Cards Grid
+      if (filteredPlants.length === 0) {
+        specimenCardsGrid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: rgba(14, 30, 22, 0.4); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.1);">
+            <p style="color: #94a3b8; font-size: 1.05rem; margin-bottom: 12px;">No added specimens matched "${activeSearchTerm || activeTagFilter}".</p>
+            <button type="button" class="btn-inspect-specimen" onclick="resetAllFilters()">Reset Filters</button>
+          </div>
+        `;
+      } else {
+        specimenCardsGrid.innerHTML = filteredPlants.map(plant => `
+          <article class="specimen-card" id="card-${plant.id}">
+            <div class="card-media-wrap" onclick="openSpecimenModal('${plant.id}')" style="cursor: pointer;">
+              <img src="${plant.image}" alt="${plant.name}" class="card-media-img">
+              <span class="card-biome-badge">${plant.biomeLabel}</span>
+              
+              <!-- Star Button on upper right corner of image -->
+              <button 
+                type="button" 
+                class="card-star-btn starred" 
+                onclick="toggleStarPlant('${plant.id}', event)" 
+                title="Saved to Personal Gallery — Click to Remove"
+                aria-label="Starred Specimen"
+              >
+                ★
+              </button>
+            </div>
+
+            <div class="card-body">
+              <div class="card-header-titles">
+                <h3 class="card-title" onclick="openSpecimenModal('${plant.id}')" style="cursor: pointer;" title="Inspect ${plant.name} Dossier">${plant.name}</h3>
+                <span class="card-sci-name">${plant.scientificName}</span>
+              </div>
+
+              <!-- Tags with Regional Themes -->
+              <div class="card-tags">
+                ${plant.tags.map(t => `<span class="card-tag-pill" onclick="applyTagFilter('${t}')" style="cursor: pointer;">${t}</span>`).join('')}
+              </div>
+
+              <p class="card-desc-snippet">${plant.shortDesc}</p>
+
+              <div class="card-action-bar">
+                <button type="button" class="btn-inspect-specimen" onclick="openSpecimenModal('${plant.id}')">
+                  <span>Botanical Care Dossier</span>
+                  <span>→</span>
+                </button>
+                <button type="button" class="sidebar-unstar-btn" onclick="toggleStarPlant('${plant.id}', event)" title="Remove from Personal Gallery">
+                  ★
+                </button>
+              </div>
+            </div>
+          </article>
+        `).join('');
+      }
+    }
+
+    // Navigate directly to dedicated Specimen Dossier Detail Page
+    window.openSpecimenModal = function(plantId) {
+      if (!plantId) return;
+      window.location.href = `specimen-detail.html?id=${encodeURIComponent(plantId)}`;
+    };
+
+    function closeSpecimenModal() {
+      const modal = document.getElementById('specimenModal');
+      if (modal) modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Tag filter click
+    window.applyTagFilter = function(tag) {
+      if (activeTagFilter === tag) {
+        activeTagFilter = '';
+      } else {
+        activeTagFilter = tag;
+      }
+      renderPersonalGallery();
+    };
+
+    window.resetAllFilters = function() {
+      activeSearchTerm = '';
+      activeTagFilter = '';
+      const input = document.getElementById('sidebarSearchInput');
+      if (input) input.value = '';
+      document.getElementById('sidebarSearchClear').style.display = 'none';
+      renderPersonalGallery();
+    };
+
+    // DOM Setup
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPersonalGallery();
+
+      // Search Input Listener
+      const searchInput = document.getElementById('sidebarSearchInput');
+      const clearBtn = document.getElementById('sidebarSearchClear');
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          activeSearchTerm = e.target.value;
+          if (activeSearchTerm.length > 0) {
+            clearBtn.style.display = 'block';
+          } else {
+            clearBtn.style.display = 'none';
+          }
+          renderPersonalGallery();
+        });
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          searchInput.value = '';
+          activeSearchTerm = '';
+          clearBtn.style.display = 'none';
+          renderPersonalGallery();
+          searchInput.focus();
+        });
+      }
+
+      // Filter Reset Button
+      const filterResetBtn = document.getElementById('filterResetBtn');
+      if (filterResetBtn) {
+        filterResetBtn.addEventListener('click', resetAllFilters);
+      }
+
+      // Modal Close Events
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
+      const specimenModal = document.getElementById('specimenModal');
+
+      if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeSpecimenModal);
+      if (specimenModal) {
+        specimenModal.addEventListener('click', (e) => {
+          if (e.target === specimenModal) closeSpecimenModal();
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && specimenModal.classList.contains('active')) {
+          closeSpecimenModal();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

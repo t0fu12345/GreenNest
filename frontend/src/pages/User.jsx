@@ -1,305 +1,428 @@
-
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext';
 
 const User = () => {
+  const { user, isAuthenticated, logout } = useAuth();
+  const [modalData, setModalData] = useState({
+    isOpen: false,
+    title: '',
+    description: '',
+    emoji: '🌿'
+  });
+
+  const closeModal = () => {
+    setModalData(prev => ({ ...prev, isOpen: false }));
+  };
+
   return (
-    <>
-      
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: '#07100b',
+      color: '#f8fafc',
+      fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+      backgroundImage: `
+        linear-gradient(180deg, rgba(7, 16, 11, 0.82) 0%, rgba(7, 16, 11, 0.58) 38%, rgba(7, 16, 11, 0.86) 75%, #07100b 100%),
+        radial-gradient(circle at 50% 30%, rgba(34, 197, 94, 0.08) 0%, transparent 60%),
+        url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1920&q=80')
+      `,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+      backgroundAttachment: 'fixed',
+      position: 'relative'
+    }}>
+      {/* Floating Navigation */}
+      <Navbar />
 
-  {/*  Floating Navigation  */}
-  <Navbar />
-
-  {/*  User Profile Section  */}
-  <section className="user-profile-section">
-    <div className="profile-hero-card">
-      
-      {/*  Avatar  */}
-      <div className="avatar-wrapper">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Avatar người dùng" className="user-avatar-img" id="userAvatar" />
-        <span className="avatar-level-badge" id="userLevelBadge">CẤP 3</span>
-      </div>
-
-      {/*  User Information  */}
-      <div className="profile-info-wrap">
-        <div className="profile-pill-tag">
-          <span>🌱 THÀNH VIÊN SINH THÁI CHÍNH THỨC</span>
-        </div>
-        <h1 className="user-name" id="displayUserName">Hoàng Minh Thảo</h1>
-        <div className="user-email-meta">
-          <span className="meta-item" id="displayUserEmail">minhthao.botany@gmail.com</span>
-          <span className="meta-dot">•</span>
-          <span className="meta-item" id="displayJoinDate">Thành viên từ: Tháng 03, 2026</span>
-          <span className="meta-dot">•</span>
-          <span className="meta-item" id="displayLoginMethod" style={{ color: '#86efac' }}>Đã xác thực qua Google</span>
-        </div>
-
-        <div className="profile-badges-row">
-          <div className="eco-badge">
-            <span>🌴</span>
-            <span id="displayUserBiome">Đới Nóng (Tropical)</span>
-          </div>
-          <div className="eco-badge">
-            <span>🏆</span>
-            <span id="displayUserRole">Nhà Làm Vườn Nhiệt Đới</span>
-          </div>
-          <div className="eco-badge">
-            <span>✨</span>
-            <span>Không Hóa Chất Độc Hại</span>
-          </div>
-        </div>
-      </div>
-
-      {/*  Action Buttons  */}
-      <div className="profile-actions-col">
-        <button className="btn-edit-profile" onClick={() => {}}>
-          <span>✏️ Chỉnh Sửa Hồ Sơ</span>
-        </button>
-        <div style={{ fontSize: '0.78rem', color: '#86efac', textAlign: 'right' }}>
-          <span>⚡ Trạng thái: Đang hoạt động</span>
-        </div>
-      </div>
-
-    </div>
-
-    {/*  Eco Dashboard Bento Metrics  */}
-    <div className="user-metrics-grid">
-      
-      <div className="metric-bento-card">
-        <div className="metric-icon-small">🌿</div>
-        <div className="metric-val" id="totalPlantsCounter">3</div>
-        <div className="metric-label">Cây Đang Chăm Sóc</div>
-        <div className="metric-subhint">100% sinh trưởng ổn định</div>
-      </div>
-
-      <div className="metric-bento-card">
-        <div className="metric-icon-small">💧</div>
-        <div className="metric-val" id="pendingWaterCounter">1 Cây</div>
-        <div className="metric-label">Cần Tưới Chiều Nay</div>
-        <div className="metric-subhint">Monstera Deliciosa (45% ẩm)</div>
-      </div>
-
-      <div className="metric-bento-card">
-        <div className="metric-icon-small">🌬️</div>
-        <div className="metric-val">~450 L</div>
-        <div className="metric-label">O₂ Tạo Ra Ước Tính</div>
-        <div className="metric-subhint">Thanh lọc không khí phòng khách</div>
-      </div>
-
-      <div className="metric-bento-card">
-        <div className="metric-icon-small">☀️</div>
-        <div className="metric-val">1,500 FC</div>
-        <div className="metric-label">Cường Độ Sáng Trung Bình</div>
-        <div className="metric-subhint">Ánh sáng tán xạ tự nhiên hoàn hảo</div>
-      </div>
-
-    </div>
-  </section>
-
-  {/*  My Garden Section (Danh sách cây đã thêm)  */}
-  <section className="my-garden-section">
-    <div className="garden-header-bar">
-      <div className="garden-title-wrap">
-        <h2>Khu Vườn Sinh Thái Của Tôi</h2>
-        <p>Danh sách các bản mẫu thực vật học bạn đã thêm vào khu vườn. Theo dõi độ ẩm và nhịp tưới ráo từng cây.</p>
-      </div>
-
-      <div className="garden-controls">
-        <a href="gallery.html" className="btn-add-plant">
-          <span>+ Khám Phá Thêm Cây Mới (Gallery) →</span>
-        </a>
-      </div>
-    </div>
-
-    {/*  Plants Cards Grid  */}
-    <div className="plants-grid" id="plantsGrid">
-
-      {/*  Plant 1: Monstera Deliciosa  */}
-      <article className="plant-card" id="plant-card-monstera" data-id="monstera">
-        <div className="plant-card-thumb-wrap">
-          <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80" alt="Monstera Deliciosa" className="plant-card-thumb" />
-          <div className="plant-thumb-fade"></div>
-          <span className="plant-biome-badge">🌴 Đới Nóng</span>
-          <span className="plant-health-badge">TƯƠI TỐT</span>
-        </div>
-        <div className="plant-body">
-          <div className="plant-names">
-            <h3 className="plant-common-name">Trầu Bà Lá Xẻ</h3>
-            <p className="plant-botanical-name">Monstera Deliciosa Liebm.</p>
+      {/* Main Portal Area */}
+      <main style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '130px 24px 80px 24px',
+        width: '100%',
+        maxWidth: '1280px',
+        margin: '0 auto',
+        zIndex: 1
+      }}>
+        {/* Header Block */}
+        <div style={{ textAlign: 'center', maxWidth: '680px', marginBottom: '44px' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            background: 'rgba(34, 197, 94, 0.12)',
+            border: '1px solid rgba(34, 197, 94, 0.35)',
+            color: '#86efac',
+            padding: '6px 16px',
+            borderRadius: 0,
+            fontSize: '0.76rem',
+            fontWeight: 700,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            marginBottom: '18px'
+          }}>
+            <span>🌿 Conservatory Gateway</span>
           </div>
 
-          <div className="plant-care-status-box">
-            <div className="care-row">
-              <span className="care-key"><span>☀️</span> Ánh Sáng:</span>
-              <span className="care-val">Tán xạ 1,200 FC</span>
-            </div>
-            <div className="care-row">
-              <span className="care-key"><span>💧</span> Lịch Tưới:</span>
-              <span className="care-val" id="water-status-monstera">Cần tưới chiều nay</span>
-            </div>
-            <div className="soil-meter-wrap">
-              <div className="soil-meter-header">
-                <span>Độ ẩm giá thể:</span>
-                <span id="soil-pct-monstera">45% (Hơi khô)</span>
+          <h1 style={{
+            fontFamily: "'Playfair Display', Georgia, serif",
+            fontSize: 'clamp(2.4rem, 4vw, 3.4rem)',
+            fontWeight: 700,
+            color: '#ffffff',
+            lineHeight: 1.18,
+            marginBottom: '14px',
+            textShadow: '0 4px 24px rgba(0, 0, 0, 0.7)'
+          }}>
+            My Botanical Space
+          </h1>
+
+          <p style={{
+            color: '#cbd5e1',
+            fontSize: 'clamp(0.95rem, 1.2vw, 1.08rem)',
+            fontWeight: 300,
+            lineHeight: 1.6,
+            marginBottom: '20px'
+          }}>
+            Select your portal below. Nurture your personal collection or explore your curated herbarium archives.
+          </p>
+
+          {/* User Session Profile Pill Card */}
+          {isAuthenticated && user ? (
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '14px',
+              padding: '12px 22px',
+              background: 'rgba(14, 30, 22, 0.85)',
+              border: '1px solid rgba(34, 197, 94, 0.35)',
+              borderRadius: 0,
+              boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+              backdropFilter: 'blur(12px)'
+            }}>
+              <img 
+                src={user.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"} 
+                alt={user.name}
+                style={{ width: '40px', height: '40px', borderRadius: 0, objectFit: 'cover', border: '2px solid #22c55e' }}
+              />
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontWeight: 700, fontSize: '0.94rem', color: '#f0fdf4' }}>
+                  {user.name} {user.nickname && <span style={{ color: '#86efac', fontFamily: 'monospace', fontSize: '0.8rem' }}>@{user.nickname}</span>} <span style={{ fontSize: '0.78rem', color: '#86efac', fontWeight: 500 }}>({user.role || 'Member'})</span>
+                </div>
+                <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+                  {user.email} • <span style={{ color: '#cbd5e1' }}>{user.biome || 'Tropical Biome'}</span>
+                </div>
               </div>
-              <div className="soil-bar-track">
-                <div className="soil-bar-fill" id="soil-bar-monstera" style={{ width: '45%' }}></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="plant-card-actions">
-            <button className="btn-action-water" onClick={() => {}}>
-              <span>💧 Tưới Nước Ngay</span>
-            </button>
-            <button className="btn-action-delete" onClick={() => {}} title="Gỡ khỏi vườn">
-              <span>🗑️</span>
-            </button>
-          </div>
-        </div>
-      </article>
-
-      {/*  Plant 2: Ficus Lyrata  */}
-      <article className="plant-card" id="plant-card-ficus" data-id="ficus">
-        <div className="plant-card-thumb-wrap">
-          <img src="https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=800&q=80" alt="Ficus Lyrata" className="plant-card-thumb" />
-          <div className="plant-thumb-fade"></div>
-          <span className="plant-biome-badge">🌴 Đới Nóng</span>
-          <span className="plant-health-badge">ĐÂM CHỒI MỚI</span>
-        </div>
-        <div className="plant-body">
-          <div className="plant-names">
-            <h3 className="plant-common-name">Bàng Singapore</h3>
-            <p className="plant-botanical-name">Ficus Lyrata Warb.</p>
-          </div>
-
-          <div className="plant-care-status-box">
-            <div className="care-row">
-              <span className="care-key"><span>☀️</span> Ánh Sáng:</span>
-              <span className="care-val">Nắng gián tiếp 2,000 FC</span>
-            </div>
-            <div className="care-row">
-              <span className="care-key"><span>💧</span> Lịch Tưới:</span>
-              <span className="care-val" id="water-status-ficus">Đã tưới hôm qua</span>
-            </div>
-            <div className="soil-meter-wrap">
-              <div className="soil-meter-header">
-                <span>Độ ẩm giá thể:</span>
-                <span id="soil-pct-ficus">75% (Tốt)</span>
-              </div>
-              <div className="soil-bar-track">
-                <div className="soil-bar-fill" id="soil-bar-ficus" style={{ width: '75%', background: 'linear-gradient(90deg, #10b981, #34d399)' }}></div>
+              <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto', flexWrap: 'wrap' }}>
+                {user.role === 'admin' && (
+                  <Link
+                    to="/admin"
+                    style={{
+                      background: 'rgba(234, 179, 8, 0.2)',
+                      border: '1px solid rgba(234, 179, 8, 0.5)',
+                      color: '#fef08a',
+                      borderRadius: 0,
+                      padding: '6px 14px',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      textDecoration: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    👑 Admin Portal →
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  onClick={logout}
+                  style={{
+                    background: 'rgba(239, 68, 68, 0.15)',
+                    border: '1px solid rgba(239, 68, 68, 0.4)',
+                    color: '#fca5a5',
+                    borderRadius: 0,
+                    padding: '6px 14px',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Đăng xuất
+                </button>
               </div>
             </div>
-          </div>
-
-          <div className="plant-card-actions">
-            <button className="btn-action-water" onClick={() => {}}>
-              <span>💧 Tưới Phun Sương</span>
-            </button>
-            <button className="btn-action-delete" onClick={() => {}} title="Gỡ khỏi vườn">
-              <span>🗑️</span>
-            </button>
-          </div>
-        </div>
-      </article>
-
-      {/*  Plant 3: Haworthia Fasciata  */}
-      <article className="plant-card" id="plant-card-succulent" data-id="succulent">
-        <div className="plant-card-thumb-wrap">
-          <img src="https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=800&q=80" alt="Sen đá móng rồng" className="plant-card-thumb" />
-          <div className="plant-thumb-fade"></div>
-          <span className="plant-biome-badge">🏜️ Đới Khô Hạn</span>
-          <span className="plant-health-badge">MỌNG NƯỚC</span>
-        </div>
-        <div className="plant-body">
-          <div className="plant-names">
-            <h3 className="plant-common-name">Sen Đá Móng Rồng</h3>
-            <p className="plant-botanical-name">Haworthia Fasciata Haw.</p>
-          </div>
-
-          <div className="plant-care-status-box">
-            <div className="care-row">
-              <span className="care-key"><span>☀️</span> Ánh Sáng:</span>
-              <span className="care-val">Nắng trực tiếp 3,500 FC</span>
+          ) : (
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 20px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              borderRadius: 0
+            }}>
+              <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Chưa đăng nhập tài khoản.</span>
+              <Link 
+                to="/login"
+                style={{
+                  color: '#86efac',
+                  fontSize: '0.86rem',
+                  fontWeight: 600,
+                  textDecoration: 'none'
+                }}
+              >
+                Đăng nhập ngay →
+              </Link>
             </div>
-            <div className="care-row">
-              <span className="care-key"><span>💧</span> Lịch Tưới:</span>
-              <span className="care-val" id="water-status-succulent">Không cần tưới 8 ngày tới</span>
-            </div>
-            <div className="soil-meter-wrap">
-              <div className="soil-meter-header">
-                <span>Độ ẩm giá thể:</span>
-                <span id="soil-pct-succulent">20% (Khô chuẩn CAM)</span>
+          )}
+        </div>
+
+        {/* 2 Square Boxes Grid (Sharp corners: borderRadius 0 matching stitch/user.html) */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 440px))',
+          gap: '48px',
+          width: '100%',
+          maxWidth: '960px',
+          justifyContent: 'center'
+        }}>
+          {/* Left Box: Garden -> Leads to /garden */}
+          <Link
+            to="/garden"
+            style={{
+              textDecoration: 'none',
+              color: 'inherit',
+              position: 'relative',
+              aspectRatio: '1 / 1',
+              borderRadius: 0,
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              background: '#0e1e16',
+              overflow: 'hidden',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              padding: 'clamp(28px, 4vw, 42px)',
+              boxShadow: '0 25px 55px -15px rgba(0, 0, 0, 0.85)',
+              transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
+            }}
+          >
+            {/* Background Image: Subtle Potted Plant */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: "url('https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: 0.34,
+              filter: 'saturate(0.9) contrast(1.05)',
+              pointerEvents: 'none'
+            }} />
+
+            {/* Gradient Overlay */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(180deg, rgba(14, 30, 22, 0.75) 0%, rgba(10, 24, 17, 0.5) 45%, rgba(6, 15, 10, 0.94) 100%)',
+              pointerEvents: 'none'
+            }} />
+
+            {/* Content Layer */}
+            <div style={{
+              position: 'relative',
+              zIndex: 3,
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              pointerEvents: 'none'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700, color: '#86efac' }}>
+                  🌱 Personal Sanctuary
+                </span>
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', background: 'rgba(34, 197, 94, 0.2)', border: '1px solid rgba(34, 197, 94, 0.4)', color: '#86efac', borderRadius: 0 }}>
+                  Enter Sanctuary →
+                </span>
               </div>
-              <div className="soil-bar-track">
-                <div className="soil-bar-fill" id="soil-bar-succulent" style={{ width: '20%', background: 'linear-gradient(90deg, #f59e0b, #fbbf24)' }}></div>
+
+              <div style={{ margin: 'auto 0', padding: '14px 0' }}>
+                <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(2rem, 2.6vw, 2.5rem)', fontWeight: 700, color: '#ffffff', lineHeight: 1.15, marginBottom: '12px' }}>
+                  Garden
+                </h2>
+                <p style={{ color: '#cbd5e1', fontSize: 'clamp(0.88rem, 1.05vw, 0.96rem)', fontWeight: 300, lineHeight: 1.6 }}>
+                  Your secluded private sanctuary. Monitor root zone hydration cadences, light exposure, and nurture living specimens in your personal space.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '18px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem', fontWeight: 600, color: '#ffffff' }}>
+                  <span>Enter Garden</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+                <div style={{ width: '38px', height: '38px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 0 }}>
+                  🌿
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
 
-          <div className="plant-card-actions">
-            <button className="btn-action-water" onClick={() => {}}>
-              <span>💧 Tưới Nhỏ Giọt</span>
+          {/* Right Box: Personal Gallery -> Leads to /personal-gallery */}
+          <Link
+            to="/personal-gallery"
+            style={{
+              textDecoration: 'none',
+              color: 'inherit',
+              position: 'relative',
+              aspectRatio: '1 / 1',
+              borderRadius: 0,
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              background: '#0e1e16',
+              overflow: 'hidden',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              padding: 'clamp(28px, 4vw, 42px)',
+              boxShadow: '0 25px 55px -15px rgba(0, 0, 0, 0.85)',
+              transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
+            }}
+          >
+            {/* Background Image: Subtle Open Book on Desk */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: "url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=900&q=80')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: 0.32,
+              filter: 'blur(0.9px) saturate(0.85) contrast(1.1)',
+              pointerEvents: 'none'
+            }} />
+
+            {/* Gradient Overlay */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(180deg, rgba(14, 30, 22, 0.75) 0%, rgba(10, 24, 17, 0.5) 45%, rgba(6, 15, 10, 0.94) 100%)',
+              pointerEvents: 'none'
+            }} />
+
+            {/* Content Layer */}
+            <div style={{
+              position: 'relative',
+              zIndex: 3,
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              pointerEvents: 'none'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700, color: '#86efac' }}>
+                  📖 Herbarium Archive
+                </span>
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', background: 'rgba(34, 197, 94, 0.2)', border: '1px solid rgba(34, 197, 94, 0.4)', color: '#86efac', borderRadius: 0 }}>
+                  Open Archive →
+                </span>
+              </div>
+
+              <div style={{ margin: 'auto 0', padding: '14px 0' }}>
+                <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(2rem, 2.6vw, 2.5rem)', fontWeight: 700, color: '#ffffff', lineHeight: 1.15, marginBottom: '12px' }}>
+                  Personal Gallery
+                </h2>
+                <p style={{ color: '#cbd5e1', fontSize: 'clamp(0.88rem, 1.05vw, 0.96rem)', fontWeight: 300, lineHeight: 1.6 }}>
+                  Your private botanical herbarium. Curate high-resolution specimen captures, botanical notes, and field illustrations in your personal study.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '18px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem', fontWeight: 600, color: '#ffffff' }}>
+                  <span>Open Personal Gallery</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+                <div style={{ width: '38px', height: '38px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 0 }}>
+                  📖
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </main>
+
+      {/* Modal Dialog */}
+      {modalData.isOpen && (
+        <div
+          onClick={closeModal}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(3, 8, 5, 0.88)',
+            backdropFilter: 'blur(16px)',
+            zIndex: 2500,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'rgba(14, 30, 22, 0.98)',
+              border: '1px solid var(--border-glass)',
+              borderRadius: 0,
+              maxWidth: '520px',
+              width: '100%',
+              padding: '36px',
+              textAlign: 'center',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.85)'
+            }}
+          >
+            <div style={{ fontSize: '3rem', marginBottom: '14px' }}>{modalData.emoji}</div>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '12px' }}>
+              {modalData.title}
+            </h3>
+            <p style={{ color: '#cbd5e1', fontSize: '0.94rem', lineHeight: 1.6, marginBottom: '24px' }}>
+              {modalData.description}
+            </p>
+            <button
+              type="button"
+              onClick={closeModal}
+              style={{
+                background: 'var(--emerald-accent)',
+                color: '#07100b',
+                border: 'none',
+                borderRadius: 0,
+                padding: '10px 24px',
+                fontWeight: 700,
+                fontSize: '0.88rem',
+                cursor: 'pointer'
+              }}
+            >
+              Understood
             </button>
-            <button className="btn-action-delete" onClick={() => {}} title="Gỡ khỏi vườn">
-              <span>🗑️</span>
-            </button>
           </div>
         </div>
-      </article>
+      )}
 
+      <Footer />
     </div>
-
-    {/*  Empty State Container  */}
-    <div className="empty-garden-state" id="emptyGardenBox">
-      <div className="empty-icon">🪴</div>
-      <h3 className="empty-title">Khu Vườn Của Bạn Chưa Có Cây Nào</h3>
-      <p className="empty-text">
-        Hãy ghé thăm kho thư viện bản mẫu để khám phá các dòng cây theo 3 đới khí hậu và thêm cây đầu tiên vào khu vườn của bạn!
-      </p>
-      <a href="gallery.html" className="btn-add-plant">Khám Phá Thư Viện Gallery Ngay →</a>
-    </div>
-
-  </section>
-
-  {/*  Edit Profile Modal  */}
-  <div className="modal-backdrop" id="editModal">
-    <div className="modal-box">
-      <button className="modal-close-btn" onClick={() => {}}>✕</button>
-      <h3 className="modal-title">Cập Nhật Thông Tin</h3>
-      <p className="modal-subtitle">Chỉnh sửa tên hiển thị và đới khí hậu yêu thích của bạn.</p>
-
-      <form onSubmit={(e) => e.preventDefault()}>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ fontSize: '0.85rem', color: '#cbd5e1', display: 'block', marginBottom: '6px' }}>Tên hiển thị:</label>
-          <input type="text" id="editNameInput" style={{ width: '100%', background: 'rgba(5,13,8,0.7)', border: '1px solid var(--border-glass)', borderRadius: '12px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem' }} value="Hoàng Minh Thảo" required />
-        </div>
-
-        <div style={{ marginBottom: '24px' }}>
-          <label style={{ fontSize: '0.85rem', color: '#cbd5e1', display: 'block', marginBottom: '6px' }}>Đới khí hậu bạn ưu tiên:</label>
-          <select id="editBiomeSelect" style={{ width: '100%', background: '#0c1c14', border: '1px solid var(--border-glass)', borderRadius: '12px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem' }}>
-            <option value="Đới Nóng (Tropical)">🌴 Đới Nóng Nhiệt Đới</option>
-            <option value="Đới Ôn Hòa (Subtropical)">🌲 Đới Ôn Hòa & Cận Nhiệt</option>
-            <option value="Đới Khô Hạn (Arid)">🏜️ Đới Khô Hạn & Sen Đá</option>
-          </select>
-        </div>
-
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-          <button type="button" onClick={() => {}} style={{ background: 'transparent', border: '1px solid var(--border-glass)', color: '#cbd5e1', padding: '8px 18px', borderRadius: '9999px', cursor: 'pointer' }}>Hủy</button>
-          <button type="submit" className="btn-add-plant" style={{ border: 'none', cursor: 'pointer' }}>Lưu Thay Đổi</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  {/*  Minimal Footer  */}
-  <Footer />
-
-  
-
-    </>
   );
 };
 
