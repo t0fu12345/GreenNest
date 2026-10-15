@@ -2166,7 +2166,6 @@
         </div>
 
         <a href="login.html" class="btn-cta-pill" id="navAuthBtn">Sign In</a>
-        <button type="button" id="navLogoutBtn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; padding: 7px 16px; font-size: 0.82rem; cursor: pointer; font-weight: 600; border-radius: 9999px; transition: all 0.25s ease;" title="Sign out of account">Sign Out</button>
       </div>
     </nav>
   </header>
@@ -2224,16 +2223,7 @@
         </div>
       </div>
 
-      <!-- INDEX FACETS (Tags directly below central search) -->
-      <div class="facets-hero-wrap">
-        <span class="facet-label">Index Facets:</span>
-        <button class="facet-tag" data-tag="araceae">#Araceae</button>
-        <button class="facet-tag" data-tag="trailingfoliage">#TrailingFoliage</button>
-        <button class="facet-tag" data-tag="petsafe">#PetSafe</button>
-        <button class="facet-tag" data-tag="velvetleaf">#VelvetLeaf</button>
-        <button class="facet-tag" data-tag="rarecultivar">#RareCultivar</button>
-        <button class="facet-tag" data-tag="deepshadethriving">#DeepShadeThriving</button>
-      </div>
+
 
 
 
@@ -2420,82 +2410,7 @@
     </div>
   </footer>
 
-  <!-- ========================================================================
-       FLOATING TRIGGER: VIEW BEFORE & AFTER COMPARISON
-       ======================================================================== -->
-  <button class="comparison-float-btn" id="openCompBtn">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="12" cy="12" r="10"></circle>
-      <path d="M12 16v-4"></path>
-      <path d="M12 8h.01"></path>
-    </svg>
-    <span>Design Comparison (Before vs After)</span>
-  </button>
 
-  <!-- ========================================================================
-       MODAL: DESIGN COMPARISON ANALYSIS (Directly In-Page)
-       ======================================================================== -->
-  <div class="comparison-modal-backdrop" id="compModal">
-    <div class="comparison-modal-window">
-      <button class="close-modal-btn" id="closeCompBtn">✕</button>
-      <h2 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 8px; color: #fff;">
-        Detailed Design Comparison
-      </h2>
-      <p style="color: var(--sage-muted); font-size: 0.9rem; margin-bottom: 24px;">
-        Evaluating inspirations from <strong>Trees for the Future</strong> and how we elevated the botanical exhibition experience.
-      </p>
-
-      <div class="comparison-grid">
-        <!-- Old Version Critique -->
-        <div class="comp-col">
-          <div class="comp-header" style="color: #f87171;">
-            <span>❌ Legacy Version (Cluttered & Flat)</span>
-          </div>
-          <ul class="comp-list">
-            <li>
-              <strong>Flat white backdrop:</strong> Lacked atmospheric botanical depth and visual hierarchy, resembling an unstyled document.
-            </li>
-            <li>
-              <strong>Hidden corner search:</strong> Constrained in the top right corner (`⌘K SEARCH...`) with minimal prominence and poor accessibility.
-            </li>
-            <li>
-              <strong>Fragmented layout:</strong> Redundant isolated `HERBARIUM ACCESSION SEARCH` boxes cluttering the canvas and disrupting visual flow.
-            </li>
-            <li>
-              <strong>No atmospheric transitions:</strong> Abrupt section jumps lacking organic gradient fades and lighting depth.
-            </li>
-            <li>
-              <strong>Rigid button styling:</strong> Monochromatic square outline buttons that failed to convey luxury arboretum aesthetics.
-            </li>
-          </ul>
-        </div>
-
-        <!-- New Redesigned Version -->
-        <div class="comp-col new-version">
-          <div class="comp-header" style="color: #4ade80;">
-            <span>✨ Redesigned Sanctuary (Inspired by Trees for the Future)</span>
-          </div>
-          <ul class="comp-list">
-            <li>
-              <strong>Cinematic gradient fade:</strong> Deep forest atmospheric palette with multi-layered depth and seamless transitions into the archive.
-            </li>
-            <li>
-              <strong>Centralized intelligent search:</strong> Prominently featured as the heart of the Hero section with emerald glow and instant auto-suggestions.
-            </li>
-            <li>
-              <strong>Floating glassmorphic pill navbar:</strong> Rounded frosted glass pill design inspired by high-end editorial nature platforms.
-            </li>
-            <li>
-              <strong>Editorial typography:</strong> Harmonious pairing of classical serif headers with refined modern sans-serif interface text.
-            </li>
-            <li>
-              <strong>Instant interactivity:</strong> Direct virtual conservatory tour, instant taxonomy filter chips (`#Araceae`, `#PetSafe`), and sanctuary bookmarking.
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- ========================================================================
        MODAL: PLANT SPECIMEN INSPECTOR (Lightbox)
@@ -2540,14 +2455,8 @@
     const noDataMessage = document.getElementById("noDataMessage");
     const searchInput = document.getElementById("herbariumSearchInput");
     const suggestionsPanel = document.getElementById("suggestionsPanel");
-    const facetTags = document.querySelectorAll(".facet-tag");
-
-    // Modal elements
-    const compModal = document.getElementById("compModal");
-    const openCompBtn = document.getElementById("openCompBtn");
-    const closeCompBtn = document.getElementById("closeCompBtn");
-
     const videoModal = document.getElementById("videoModal");
+
     const openVideoTourBtn = document.getElementById("openVideoTourBtn");
     const closeVideoModalBtn = document.getElementById("closeVideoModalBtn");
 
@@ -2595,26 +2504,7 @@
       });
     }
 
-    // Facet tags click handling
-    facetTags.forEach(tag => {
-      tag.addEventListener("click", () => {
-        const tagText = tag.textContent;
-        facetTags.forEach(t => t.classList.remove("active"));
-        tag.classList.add("active");
 
-        specimensResults.innerHTML = `
-          <div class="no-data-icon">🏷️</div>
-          <h3 class="no-data-title">No Data Yet (${tagText})</h3>
-          <p class="no-data-text">
-            No botanical accessions are currently linked to tag <strong>${tagText}</strong> while catalog curation is underway.
-          </p>
-          <div class="no-data-badge">
-            <span>⚡ Status: Prototype Catalog (Curation in progress)</span>
-          </div>
-        `;
-        specimensResults.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      });
-    });
 
     document.addEventListener("click", (e) => {
       if (suggestionsPanel && searchInput && !searchInput.contains(e.target) && !suggestionsPanel.contains(e.target)) {
@@ -2630,15 +2520,7 @@
       });
     }
 
-    if (openCompBtn && compModal) {
-      openCompBtn.addEventListener("click", () => compModal.classList.add("open"));
-    }
-    if (closeCompBtn && compModal) {
-      closeCompBtn.addEventListener("click", () => compModal.classList.remove("open"));
-      compModal.addEventListener("click", (e) => {
-        if (e.target === compModal) compModal.classList.remove("open");
-      });
-    }
+
 
     if (openVideoTourBtn && videoModal) {
       openVideoTourBtn.addEventListener("click", () => videoModal.classList.add("open"));
@@ -2691,7 +2573,6 @@
 
     function syncAuthButton() {
       const navAuthBtn = document.getElementById('navAuthBtn');
-      const navLogoutBtn = document.getElementById('navLogoutBtn');
       const loggedIn = isUserLoggedIn();
 
       if (navAuthBtn) {
@@ -2703,10 +2584,6 @@
           navAuthBtn.style.display = 'inline-flex';
         }
       }
-
-      if (navLogoutBtn) {
-        navLogoutBtn.style.display = loggedIn ? 'inline-flex' : 'none';
-      }
     }
 
     // Run auth check immediately
@@ -2715,23 +2592,6 @@
     // Listen for storage changes across tabs/windows or login actions
     window.addEventListener('storage', syncAuthButton);
     window.addEventListener('focus', syncAuthButton);
-
-    // Sign Out handler
-    const navLogoutBtn = document.getElementById('navLogoutBtn');
-    if (navLogoutBtn) {
-      navLogoutBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        try {
-          localStorage.removeItem('livingCanopyUser');
-          localStorage.removeItem('greenNest_jwt_token');
-          sessionStorage.removeItem('livingCanopyUser');
-          document.cookie = 'greenNest_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
-          document.cookie = 'greenNest_jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
-          document.cookie = 'livingCanopyUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
-        } catch (err) {}
-        syncAuthButton();
-      });
-    }
 
     // =========================================================================
     // NOTIFICATION BELL & DROPDOWN INTERACTION

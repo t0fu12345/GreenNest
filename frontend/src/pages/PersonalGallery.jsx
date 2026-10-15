@@ -71,10 +71,30 @@ const PersonalGallery = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Navbar />
+      {/* Standalone Back to Sanctuary Button outside header box */}
+      <div style={{ maxWidth: '1360px', width: '100%', margin: '0 auto', padding: '24px 24px 0', display: 'flex', justifyContent: 'flex-end' }}>
+        <Link
+          to="/user"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 18px',
+            background: 'rgba(34, 197, 94, 0.15)',
+            border: '1px solid var(--border-accent, rgba(34, 197, 94, 0.4))',
+            color: 'var(--emerald-light, #86efac)',
+            fontSize: '0.84rem',
+            fontWeight: 600,
+            textDecoration: 'none',
+            transition: 'all 0.25s ease'
+          }}
+        >
+          ← Back to Sanctuary
+        </Link>
+      </div>
 
       {/* Hero Header */}
-      <header className="gallery-hero-header" style={{ paddingTop: '140px', paddingBottom: '30px', textAlign: 'center', maxWidth: '920px', margin: '0 auto', paddingLeft: '20px', paddingRight: '20px' }}>
+      <header className="gallery-hero-header" style={{ paddingTop: '30px', paddingBottom: '30px', textAlign: 'center', maxWidth: '920px', margin: '0 auto', paddingLeft: '20px', paddingRight: '20px' }}>
         <div className="gallery-kicker" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(14, 30, 22, 0.75)', border: '1px solid rgba(34, 197, 94, 0.25)', borderRadius: '9999px', marginBottom: '18px', fontSize: '0.74rem', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#86efac' }}>
           <span style={{ width: '6px', height: '6px', background: 'var(--emerald-accent)', borderRadius: '50%', boxShadow: '0 0 8px var(--emerald-accent)' }}></span>
           <span>HERBARIUM PRIVATE STUDY // ARCHIVE NO. 01</span>
