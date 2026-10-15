@@ -1,0 +1,372 @@
+{
+  "info": {
+    "name": "GreenNest RESTful API",
+    "_postman_id": "greennest-api-collection-2026",
+    "description": "Postman Collection hoàn chỉnh cho GreenNest Backend (Modular MCS Architecture). Bao gồm đầy đủ 22 endpoints, phân quyền RBAC và kịch bản tự động lưu JWT Token.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Health & Metadata",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Get Metadata Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/metadata/filters",
+              "host": ["{{baseUrl}}"],
+              "path": ["metadata", "filters"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Authentication",
+      "item": [
+        {
+          "name": "Login Admin (Auto save Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('adminToken', json.data.token);",
+                  "  console.log('Saved adminToken:', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@greennest.vn\",\n  \"password\": \"Admin@123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Member (Auto save Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('userToken', json.data.token);",
+                  "  console.log('Saved userToken:', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nam.le@greennest.vn\",\n  \"password\": \"GreenNest@2026\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Trần Hoàng Bảo\",\n  \"email\": \"bao.tran@gmail.com\",\n  \"password\": \"Bao@123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Get Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Plants",
+      "item": [
+        {
+          "name": "Get Plants (Paginated & Filtered)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/plants?page=1&limit=12&biome=tropical",
+              "host": ["{{baseUrl}}"],
+              "path": ["plants"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "12" },
+                { "key": "biome", "value": "tropical" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Plants by Keyword",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/plants?search=Monstera",
+              "host": ["{{baseUrl}}"],
+              "path": ["plants"],
+              "query": [{ "key": "search", "value": "Monstera" }]
+            }
+          }
+        },
+        {
+          "name": "Create Plant (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Calathea Orbifolia (Đuôi Công Lá Tròn)\",\n  \"scientificName\": \"Calathea orbifolia\",\n  \"specimenId\": \"CAL-ORB-021\",\n  \"category\": \"araceae\",\n  \"biome\": \"tropical\",\n  \"light\": \"bright-indirect\",\n  \"watering\": \"weekly\",\n  \"careLevel\": \"medium\",\n  \"description\": \"Loài kiểng lá nhiệt đới với phiến lá tròn lớn và vân bạc cẩm thạch sang trọng.\",\n  \"origin\": \"Bolivia, Nam Mỹ\",\n  \"images\": [\n    {\n      \"url\": \"https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?auto=format&fit=crop&w=800&q=80\",\n      \"alt\": \"Calathea Orbifolia foliage\",\n      \"isPrimary\": true\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/plants",
+              "host": ["{{baseUrl}}"],
+              "path": ["plants"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Gardeners & Collections",
+      "item": [
+        {
+          "name": "Get All Gardeners",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gardeners",
+              "host": ["{{baseUrl}}"],
+              "path": ["gardeners"]
+            }
+          }
+        },
+        {
+          "name": "Get Collections (Season: All)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/collections?season=all",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections"],
+              "query": [{ "key": "season", "value": "all" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Gallery & Likes",
+      "item": [
+        {
+          "name": "Get Gallery (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gallery?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["gallery"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. User Garden & Checklist",
+      "item": [
+        {
+          "name": "Get My Garden",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/garden",
+              "host": ["{{baseUrl}}"],
+              "path": ["garden"]
+            }
+          }
+        },
+        {
+          "name": "Hybrid Sync from LocalStorage",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plantIds\": [\"MON-DEL-001\", \"FIC-LYR-002\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/garden/sync",
+              "host": ["{{baseUrl}}"],
+              "path": ["garden", "sync"]
+            }
+          }
+        },
+        {
+          "name": "Reset Care Checklist",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/garden/checklist/reset",
+              "host": ["{{baseUrl}}"],
+              "path": ["garden", "checklist", "reset"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Contact Messages",
+      "item": [
+        {
+          "name": "Send Contact Message (Public)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Hoàng Gia Huy\",\n  \"email\": \"huy.hoang@gmail.com\",\n  \"subject\": \"Tư vấn chọn cây cho ban công chung cư hướng Tây\",\n  \"message\": \"Nhờ GreenNest tư vấn các loài cây chịu nắng gắt tốt và ít tốn công tưới nước.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contact",
+              "host": ["{{baseUrl}}"],
+              "path": ["contact"]
+            }
+          }
+        },
+        {
+          "name": "Get Contact Inbox (Admin Only)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/contact?status=all",
+              "host": ["{{baseUrl}}"],
+              "path": ["contact"],
+              "query": [{ "key": "status", "value": "all" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Admin Dashboard & RBAC",
+      "item": [
+        {
+          "name": "Get Dashboard Stats (Admin Only)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Test RBAC Forbidden (Call with User Token)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "stats"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
