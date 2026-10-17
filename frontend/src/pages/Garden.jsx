@@ -30,9 +30,29 @@ const Garden = () => {
 
   return (
     <div className="garden-page" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Navbar />
+      {/* Standalone Back to Sanctuary Button outside header box */}
+      <div style={{ maxWidth: '1360px', width: '100%', margin: '0 auto', padding: '24px 24px 0', display: 'flex', justifyContent: 'flex-end' }}>
+        <Link
+          to="/user"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 18px',
+            background: 'rgba(34, 197, 94, 0.15)',
+            border: '1px solid var(--border-accent, rgba(34, 197, 94, 0.4))',
+            color: 'var(--emerald-light, #86efac)',
+            fontSize: '0.84rem',
+            fontWeight: 600,
+            textDecoration: 'none',
+            transition: 'all 0.25s ease'
+          }}
+        >
+          ← Back to Sanctuary
+        </Link>
+      </div>
 
-      <main style={{ flex: 1, padding: '120px 24px 80px', maxWidth: '1360px', width: '100%', margin: '0 auto' }}>
+      <main style={{ flex: 1, padding: '20px 24px 80px', maxWidth: '1360px', width: '100%', margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px', alignItems: 'start' }}>
           
           {/* Left Column: Sidebar with telemetry overview */}

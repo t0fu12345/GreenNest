@@ -192,10 +192,20 @@
       box-shadow: 0 0 20px var(--emerald-glow);
     }
 
+    /* Standalone Back Button Bar */
+    .garden-top-bar {
+      max-width: 1540px;
+      width: 100%;
+      margin: 0 auto;
+      padding: clamp(16px, 3vw, 28px) 24px 0 24px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
     /* Main Garden Layout */
     .garden-main-wrapper {
       flex: 1;
-      padding: 105px 24px 60px 24px;
+      padding: 20px 24px 60px 24px;
       max-width: 1540px;
       width: 100%;
       margin: 0 auto;
@@ -621,34 +631,12 @@
 </head>
 <body>
 
-  <!-- Floating Navigation Pill Header (Unrounded Square Style) -->
-  <header class="header-floating-wrap">
-    <nav class="navbar-pill">
-      <a href="index.html" class="brand-logo">
-        <svg class="brand-icon-svg" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-        </svg>
-        <div class="brand-text">
-          <span class="brand-title">The Living Canopy</span>
-          <span class="brand-sub">GreenNest Member Portal</span>
-        </div>
-      </a>
-
-      <ul class="nav-links">
-        <li><a href="index.html">Overview</a></li>
-        <li><a href="gallery.html">Specimens ↗</a></li>
-        <li><a href="personal-gallery.html">Personal Gallery</a></li>
-        <li><a href="garden.html" class="active">My Garden</a></li>
-        <li><a href="about.html">About Us ↗</a></li>
-      </ul>
-
-      <div class="nav-actions">
-        <a href="user.html" class="btn-portal-back">
-          <span>← Back to Sanctuary</span>
-        </a>
-      </div>
-    </nav>
-  </header>
+  <!-- Standalone Back to Sanctuary Button (Outside Header Box) -->
+  <div class="garden-top-bar">
+    <a href="user.html" class="btn-portal-back">
+      <span>← Back to Sanctuary</span>
+    </a>
+  </div>
 
   <!-- Main Garden Body -->
   <main class="garden-main-wrapper">
