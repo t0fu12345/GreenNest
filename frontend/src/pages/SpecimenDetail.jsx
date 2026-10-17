@@ -8,6 +8,7 @@ import {
   getStarredPlantIds,
   toggleStarredPlant
 } from '../data/botanicalSpecimens';
+import SaveToCollectionModal from '../components/gallery/SaveToCollectionModal';
 
 const SpecimenDetail = () => {
   const [searchParams] = useSearchParams();
@@ -16,12 +17,13 @@ const SpecimenDetail = () => {
 
   const plantId = (requestedId && BOTANICAL_SPECIMENS[requestedId])
     ? requestedId
-    : 'specimen-monstera';
+    : 'monstera-deliciosa';
 
-  const plant = BOTANICAL_SPECIMENS[plantId];
+  const plant = BOTANICAL_SPECIMENS[plantId] || BOTANICAL_SPECIMENS['monstera-deliciosa'];
 
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 
   useEffect(() => {
     setStarredIds(getStarredPlantIds());
@@ -260,6 +262,26 @@ const SpecimenDetail = () => {
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
                 <button
                   type="button"
+                  onClick={() => setIsSaveModalOpen(true)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '12px 24px',
+                    borderRadius: '9999px',
+                    background: 'rgba(34, 197, 94, 0.2)',
+                    border: '1px solid var(--border-accent)',
+                    color: '#86efac',
+                    fontSize: '0.88rem',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <span>📁 Lưu Vào Bộ Sưu Tập</span>
+                </button>
+
+                <button
+                  type="button"
                   onClick={handleToggleStar}
                   style={{
                     display: 'inline-flex',
@@ -267,19 +289,19 @@ const SpecimenDetail = () => {
                     gap: '8px',
                     padding: '12px 24px',
                     borderRadius: '9999px',
-                    background: isStarred ? 'rgba(245, 158, 11, 0.2)' : 'rgba(34, 197, 94, 0.2)',
-                    border: isStarred ? '1px solid #f59e0b' : '1px solid var(--border-accent)',
-                    color: isStarred ? '#fde68a' : '#86efac',
+                    background: isStarred ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255, 255, 255, 0.05)',
+                    border: isStarred ? '1px solid #f59e0b' : '1px solid var(--border-glass)',
+                    color: isStarred ? '#fde68a' : '#cbd5e1',
                     fontSize: '0.88rem',
                     fontWeight: 700,
                     cursor: 'pointer'
                   }}
                 >
-                  <span>{isStarred ? '★ Saved in Personal Gallery' : '★ Add to Personal Gallery'}</span>
+                  <span>{isStarred ? '★ Đã Yêu Thích' : '★ Yêu Thích'}</span>
                 </button>
 
                 <Link
-                  to={`/plant-macro?id=${encodeURIComponent(plant.id)}`}
+                  to={`/plant-macro?id=${encodeURIComponent(plant.slug || plant.id)}`}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -397,6 +419,17 @@ const SpecimenDetail = () => {
           <span>{toastMessage}</span>
         </div>
       )}
+
+      {/* Save To Collection Modal */}
+      <SaveToCollectionModal
+        isOpen={isSaveModalOpen}
+        onClose={() => setIsSaveModalOpen(false)}
+        plantSlug={plant.slug || plantId}
+        onSaved={() => {
+          setToastMessage(`Đã cập nhật bộ sưu tập cho "${plant.name}"!`);
+          setTimeout(() => setToastMessage(''), 3000);
+        }}
+      />
 
       <Footer />
     </div>
