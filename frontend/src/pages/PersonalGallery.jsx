@@ -1,36 +1,119 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext';
+import plantApi from '../services/plantApi';
+import gardenApi from '../services/gardenApi';
 import {
   BOTANICAL_SPECIMENS,
   getStarredPlantIds,
   toggleStarredPlant
 } from '../data/botanicalSpecimens';
 
+const normalizeApiPlant = (p) => ({
+  id: p.specimenId || p._id,
+  _id: p._id,
+  specimenId: p.specimenId,
+  catalogCode: p.specimenId || 'CANOPY-PLANT',
+  name: p.name,
+  scientificName: p.scientificName || 'Botanical specimen',
+  biome: p.biome || 'tropical',
+  biomeLabel: p.biome ? p.biome.toUpperCase() : 'TROPICAL',
+  image: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+  tags: p.tags?.length ? p.tags : [`#${p.category || 'Flora'}`, `#${p.biome || 'Tropical'}`],
+  shortDesc: p.description || p.shortDescription || 'Botanical specimen curated at GreenNest.',
+  traits: [p.light, p.watering, p.careLevel].filter(Boolean),
+});
+
 const PersonalGallery = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [starredIds, setStarredIds] = useState([]);
+  const [allPlantsMap, setAllPlantsMap] = useState({});
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTag, setActiveTag] = useState('');
   const [toastMessage, setToastMessage] = useState('');
-
-  useEffect(() => {
-    setStarredIds(getStarredPlantIds());
-  }, []);
-
-  const starredPlants = starredIds.map(id => BOTANICAL_SPECIMENS[id]).filter(Boolean);
 
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  const handleToggleStar = (plantId, e) => {
+  // Load plants from Atlas and sync with starred IDs
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    const localStarred = getStarredPlantIds();
+    let effectiveStarred = [...localStarred];
+
+    // Build base map from static specimens
+    const plantMap = { ...BOTANICAL_SPECIMENS };
+
+    try {
+      // 1. Fetch live plants from MongoDB Atlas
+      const plantRes = await plantApi.getPlants({ limit: 100 });
+      if (plantRes?.data?.plants && Array.isArray(plantRes.data.plants)) {
+        plantRes.data.plants.forEach(p => {
+          const norm = normalizeApiPlant(p);
+          if (norm.id) plantMap[norm.id] = norm;
+          if (norm._id) plantMap[norm._id] = norm;
+          if (norm.specimenId) plantMap[norm.specimenId] = norm;
+        });
+      }
+
+      // 2. If authenticated, fetch bookmarks from MongoDB Atlas
+      if (isAuthenticated) {
+        try {
+          const gardenRes = await gardenApi.getMyGarden();
+          const savedFromDb = gardenRes?.data?.savedPlants || [];
+          savedFromDb.forEach(sp => {
+            const norm = normalizeApiPlant(sp);
+            const key = norm.id || norm._id;
+            if (key) {
+              plantMap[key] = norm;
+              if (!effectiveStarred.includes(key) && !effectiveStarred.includes(sp._id)) {
+                effectiveStarred.push(key);
+              }
+            }
+          });
+        } catch (dbErr) {
+          console.warn('Could not fetch saved plants from Atlas:', dbErr);
+        }
+      }
+    } catch (err) {
+      console.warn('Using local specimens fallback in PersonalGallery:', err.message);
+    } finally {
+      setAllPlantsMap(plantMap);
+      setStarredIds(Array.from(new Set(effectiveStarred)));
+      setLoading(false);
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  // Map starred IDs to actual plant objects
+  const starredPlants = Array.from(new Set(starredIds))
+    .map(id => allPlantsMap[id] || BOTANICAL_SPECIMENS[id])
+    .filter(Boolean);
+
+  const handleToggleStar = async (plantId, e) => {
     if (e) e.stopPropagation();
     const updated = toggleStarredPlant(plantId);
     setStarredIds(updated);
-    const plant = BOTANICAL_SPECIMENS[plantId];
+    const plant = allPlantsMap[plantId] || BOTANICAL_SPECIMENS[plantId];
+
+    // Sync with MongoDB Atlas if authenticated
+    if (isAuthenticated && plant?._id) {
+      try {
+        await gardenApi.toggleBookmark(plant._id);
+      } catch (err) {
+        console.warn('Atlas bookmark toggle sync failed:', err);
+      }
+    }
+
     if (updated.includes(plantId)) {
       showToast(`⭐ Added "${plant?.name || 'Plant'}" to Personal Gallery!`);
     } else {
@@ -51,8 +134,8 @@ const PersonalGallery = () => {
   const filteredPlants = starredPlants.filter(p => {
     let matchQuery = true;
     if (cleanSearch) {
-      const nameMatch = p.name.toLowerCase().includes(cleanSearch);
-      const sciMatch = p.scientificName.toLowerCase().includes(cleanSearch);
+      const nameMatch = p.name && p.name.toLowerCase().includes(cleanSearch);
+      const sciMatch = p.scientificName && p.scientificName.toLowerCase().includes(cleanSearch);
       const tagMatch = p.tags?.some(t => t.toLowerCase().includes(cleanSearch));
       matchQuery = nameMatch || sciMatch || tagMatch;
     }
@@ -86,6 +169,12 @@ const PersonalGallery = () => {
         <p style={{ color: '#cbd5e1', fontSize: '1.02rem', lineHeight: 1.6, maxWidth: '640px', margin: '0 auto 28px', fontWeight: 300 }}>
           Your private botanical herbarium. Curate high-resolution specimen captures, botanical care telemetry, and field observations in your personal study.
         </p>
+
+        {isAuthenticated && (
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: '#86efac', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '4px 14px', borderRadius: '9999px' }}>
+            <span>☁️ Bookmarks Synced with MongoDB Atlas Cloud</span>
+          </div>
+        )}
       </header>
 
       {/* Main Workspace Layout */}
@@ -165,9 +254,13 @@ const PersonalGallery = () => {
 
             {/* Saved Plants List */}
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '420px', overflowY: 'auto' }}>
-              {starredPlants.length === 0 ? (
+              {loading ? (
+                <li style={{ padding: '24px 12px', textAlign: 'center', color: '#86efac', fontSize: '0.88rem' }}>
+                  Loading saved specimens from Atlas...
+                </li>
+              ) : starredPlants.length === 0 ? (
                 <li style={{ padding: '24px 12px', textAlign: 'center', color: '#94a3b8', fontSize: '0.88rem' }}>
-                  No plants saved yet. Explore the gallery archive to bookmark specimens.
+                  No plants saved yet. Explore the catalog archive to bookmark specimens.
                 </li>
               ) : filteredPlants.length === 0 ? (
                 <li style={{ padding: '20px 12px', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>
@@ -257,15 +350,20 @@ const PersonalGallery = () => {
             )}
 
             {/* Specimen Cards Grid */}
-            {starredPlants.length === 0 ? (
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: '80px 24px', background: 'rgba(14, 30, 22, 0.75)', borderRadius: '24px' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>⏳</div>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: '#fff' }}>Connecting to Herbarium Database...</h3>
+              </div>
+            ) : starredPlants.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '80px 24px', background: 'rgba(14, 30, 22, 0.75)', border: '1.5px dashed rgba(34, 197, 94, 0.3)', borderRadius: '24px' }}>
                 <div style={{ fontSize: '3rem', marginBottom: '14px' }}>🌿</div>
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '10px' }}>Your Personal Gallery is Empty</h3>
                 <p style={{ color: '#cbd5e1', maxWidth: '520px', margin: '0 auto 24px', fontSize: '0.95rem' }}>
-                  Bookmark botanical specimens from the main gallery archive to keep their dossiers, care telemetry, and taxonomy notes here.
+                  Bookmark botanical specimens from the main plant catalog to keep their dossiers, care telemetry, and taxonomy notes here.
                 </p>
                 <Link to="/plants" className="btn-cta-pill" style={{ textDecoration: 'none' }}>
-                  Explore Plants Directory →
+                  Explore Plants Catalog →
                 </Link>
               </div>
             ) : filteredPlants.length === 0 ? (

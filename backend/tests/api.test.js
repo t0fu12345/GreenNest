@@ -2,7 +2,30 @@ const app = require('../src/server');
 
 const BASE_URL = 'http://localhost:5000/api';
 
+let server;
+
+function ensureServerRunning() {
+  return new Promise((resolve) => {
+    fetch(`${BASE_URL}/health`)
+      .then(() => resolve())
+      .catch(() => {
+        try {
+          server = app.listen(5000, () => {
+            console.log('📡 Test runner đã khởi động Express server trên port 5000');
+            setTimeout(resolve, 800);
+          });
+          server.on('error', (err) => {
+            if (err.code === 'EADDRINUSE') resolve();
+          });
+        } catch (e) {
+          resolve();
+        }
+      });
+  });
+}
+
 async function runTests() {
+  await ensureServerRunning();
   console.log('🧪 ========================================================');
   console.log('🧪 BẮT ĐẦU CHẠY BỘ KIỂM THỬ TỰ ĐỘNG GREENNEST RESTFUL API');
   console.log('🧪 ========================================================\n');
@@ -198,9 +221,15 @@ async function runTests() {
     }
     console.log('========================================================\n');
 
+    if (server && server.listening) {
+      server.close();
+    }
     process.exit(failed === 0 ? 0 : 1);
   } catch (error) {
     console.error('💥 Lỗi ngoại lệ trong quá trình chạy test:', error);
+    if (server && server.listening) {
+      server.close();
+    }
     process.exit(1);
   }
 }

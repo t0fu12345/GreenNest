@@ -41,9 +41,8 @@ const SpecimenDetail = () => {
     const fetchDetail = async () => {
       try {
         setLoading(true);
-        const res = await plantApi.getPlantDetail(requestedId);
-        if (res?.data?.plant) {
-          const p = res.data.plant;
+        const p = res?.data?.plant || (res?.data?.name ? res.data : null);
+        if (p) {
           setCurrentPlant({
             id: p.specimenId || p._id,
             catalogCode: p.specimenId || 'CANOPY-001',
