@@ -66,16 +66,7 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* INDEX FACETS */}
-        <div className="facets-hero-wrap">
-          <span className="facet-label">Index Facets:</span>
-          <button className="facet-tag" data-tag="araceae">#Araceae</button>
-          <button className="facet-tag" data-tag="trailingfoliage">#TrailingFoliage</button>
-          <button className="facet-tag" data-tag="petsafe">#PetSafe</button>
-          <button className="facet-tag" data-tag="velvetleaf">#VelvetLeaf</button>
-          <button className="facet-tag" data-tag="rarecultivar">#RareCultivar</button>
-          <button className="facet-tag" data-tag="deepshadethriving">#DeepShadeThriving</button>
-        </div>
+
 
 
 

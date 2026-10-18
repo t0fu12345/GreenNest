@@ -46,6 +46,7 @@ const Navbar = () => {
         <ul className="nav-links">
           <li><NavLink to="/" end>Overview</NavLink></li>
           <li><NavLink to="/plants">Plants 🌿</NavLink></li>
+          <li><NavLink to="/collections">Collections 📁</NavLink></li>
           <li><NavLink to="/gallery">Gallery ↗</NavLink></li>
           <li><NavLink to="/about">About Us ↗</NavLink></li>
           <li><NavLink to="/user">My Garden 🌿</NavLink></li>

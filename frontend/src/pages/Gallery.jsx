@@ -2,10 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import galleryApi from '../services/galleryApi';
+import fallbackGallery from '../data/gallerySeed.json';
 
 const Gallery = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState(fallbackGallery);
+  const [loading, setLoading] = useState(false);
   const [activeLightboxIndex, setActiveLightboxIndex] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
   const [filterQuery, setFilterQuery] = useState('');
@@ -18,13 +19,16 @@ const Gallery = () => {
   // Tải danh sách ảnh từ MongoDB Atlas
   const fetchGallery = useCallback(async () => {
     try {
-      setLoading(true);
       const res = await galleryApi.getGallery({ limit: 50 });
-      if (res?.data?.items && Array.isArray(res.data.items)) {
-        setItems(res.data.items);
+      const galleryList = Array.isArray(res?.data) 
+        ? res.data 
+        : (Array.isArray(res?.data?.items) ? res.data.items : []);
+      if (galleryList.length > 0) {
+        setItems(galleryList);
       }
     } catch (err) {
-      console.warn('Lỗi khi tải Gallery từ MongoDB Atlas:', err.message);
+      console.warn('Lỗi khi tải Gallery từ MongoDB Atlas, dùng dữ liệu dự phòng:', err.message);
+      setItems(fallbackGallery);
     } finally {
       setLoading(false);
     }

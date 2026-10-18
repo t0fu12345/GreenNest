@@ -4,9 +4,11 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import {
   BOTANICAL_SPECIMENS,
+  CANONICAL_PLANT_SLUGS,
   getStarredPlantIds,
   toggleStarredPlant
 } from '../data/botanicalSpecimens';
+import SaveToCollectionModal from '../components/gallery/SaveToCollectionModal';
 
 import plantApi from '../services/plantApi';
 
@@ -44,6 +46,7 @@ const Plants = () => {
   const [inspectPlant, setInspectPlant] = useState(null);
   const [apiPlants, setApiPlants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
 
   useEffect(() => {
     setStarredIds(getStarredPlantIds());
@@ -66,7 +69,10 @@ const Plants = () => {
     fetchPlants();
   }, []);
 
-  const allPlants = apiPlants.length > 0 ? apiPlants : Object.values(BOTANICAL_SPECIMENS);
+  const fallbackPlants = CANONICAL_PLANT_SLUGS?.length
+    ? CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean)
+    : Object.values(BOTANICAL_SPECIMENS);
+  const allPlants = apiPlants.length > 0 ? apiPlants : fallbackPlants;
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -116,16 +122,10 @@ const Plants = () => {
     return true;
   });
 
-  const availableIndexTags = [
-    '#Araceae',
-    '#SubtropicalHighlands',
-    '#TemperateGarden',
-    '#AromaticBloom',
-    '#SunLoving',
-    '#RareCultivar',
-    '#DeepShadeThriving',
-    '#PetSafe'
-  ];
+  // Dynamic index tags extracted from all 20 plants
+  const availableIndexTags = Array.from(
+    new Set(allPlants.flatMap(p => p.tags || []))
+  ).slice(0, 12);
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -216,8 +216,8 @@ const Plants = () => {
             {searchQuery && <span> • matching "{searchQuery}"</span>}
             <span> ({filteredPlants.length} specimen{filteredPlants.length !== 1 ? 's' : ''})</span>
           </div>
-          <Link to="/personal-gallery" style={{ fontSize: '0.82rem', color: '#86efac', textDecoration: 'none', fontWeight: 600 }}>
-            ★ View Personal Gallery ({starredIds.length} saved) →
+          <Link to="/collections" style={{ fontSize: '0.82rem', color: '#86efac', textDecoration: 'none', fontWeight: 600 }}>
+            📁 My Collections ({starredIds.length} starred) →
           </Link>
         </div>
       </section>
@@ -356,23 +356,47 @@ const Plants = () => {
                     </p>
 
                     {/* Action Bar */}
-                    <div style={{ paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <button
-                        type="button"
-                        onClick={() => setInspectPlant(plant)}
-                        style={{
-                          background: 'rgba(255,255,255,0.05)',
-                          border: '1px solid var(--border-glass)',
-                          color: '#cbd5e1',
-                          padding: '7px 12px',
-                          borderRadius: '9999px',
-                          fontSize: '0.78rem',
-                          fontWeight: 500,
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Quick View
-                      </button>
+                    <div style={{ paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+                      <div style={{ display: 'flex', gap: '6px' }}>
+                        <button
+                          type="button"
+                          onClick={() => setTargetSavePlantSlug(plant.slug || plant.id)}
+                          title="Lưu cây vào bộ sưu tập"
+                          style={{
+                            background: 'rgba(34, 197, 94, 0.15)',
+                            border: '1px solid rgba(34, 197, 94, 0.35)',
+                            color: '#86efac',
+                            padding: '6px 10px',
+                            borderRadius: '9999px',
+                            fontSize: '0.74rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}
+                        >
+                          <span>📁</span>
+                          <span>Lưu</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setInspectPlant(plant)}
+                          style={{
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid var(--border-glass)',
+                            color: '#cbd5e1',
+                            padding: '6px 10px',
+                            borderRadius: '9999px',
+                            fontSize: '0.74rem',
+                            fontWeight: 500,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Quick View
+                        </button>
+                      </div>
 
                       <Link
                         to={`/specimen-detail?id=${encodeURIComponent(plant.id)}`}
@@ -540,6 +564,16 @@ const Plants = () => {
           <span>{toastMessage}</span>
         </div>
       )}
+
+      {/* Save To Collection Modal */}
+      <SaveToCollectionModal
+        isOpen={Boolean(targetSavePlantSlug)}
+        onClose={() => setTargetSavePlantSlug(null)}
+        plantSlug={targetSavePlantSlug}
+        onSaved={() => {
+          showToast('Đã cập nhật bộ sưu tập thành công!');
+        }}
+      />
 
       <Footer />
     </div>
