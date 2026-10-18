@@ -12,6 +12,7 @@ import PlantMacro from './pages/PlantMacro';
 import SpecimenDetail from './pages/SpecimenDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Contact from './pages/Contact';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 
@@ -25,9 +26,10 @@ function App() {
           <Route path="/collections" element={<Collections />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/user" element={<User />} />
           <Route path="/garden" element={<Garden />} />
-          <Route path="/personal-gallery" element={<Collections />} />
+          <Route path="/personal-gallery" element={<PersonalGallery />} />
           <Route path="/plant-macro" element={<PlantMacro />} />
           <Route path="/specimen-detail" element={<SpecimenDetail />} />
           <Route path="/login" element={<Login />} />

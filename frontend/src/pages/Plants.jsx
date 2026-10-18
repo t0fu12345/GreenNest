@@ -10,6 +10,32 @@ import {
 } from '../data/botanicalSpecimens';
 import SaveToCollectionModal from '../components/gallery/SaveToCollectionModal';
 
+import plantApi from '../services/plantApi';
+
+const normalizePlant = (p) => ({
+  id: p.specimenId || p._id,
+  _id: p._id,
+  catalogCode: p.specimenId || 'CANOPY-001',
+  name: p.name,
+  scientificName: p.scientificName || p.botanicalName || '',
+  biome: p.biome || 'tropical',
+  biomeLabel: p.biome ? p.biome.toUpperCase() : 'Botanical Cultivar',
+  image: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
+  tags: p.tags?.length ? p.tags : [`#${p.category || 'Foliage'}`, `#${p.biome || 'Indoor'}`],
+  taxonomyTags: [p.category, p.biome, 'Plantae'].filter(Boolean),
+  traits: [p.light, p.watering, p.careLevel].filter(Boolean),
+  shortDesc: p.description || p.shortDesc || '',
+  origin: p.origin || 'Vườn ươm GreenNest Sanctuary',
+  water: p.watering || 'Weekly',
+  light: p.light || 'Bright indirect',
+  soil: p.careGuide?.soil || 'Đất tơi xốp, thoát nước tốt',
+  humidity: p.careGuide?.humidity || '60% - 80%',
+  temp: '20°C – 28°C',
+  growth: p.careLevel || 'Moderate',
+  toxicity: p.toxicity?.isToxicToPets ? 'Pet Caution' : 'Pet Safe',
+  raw: p
+});
+
 const Plants = () => {
   const navigate = useNavigate();
   const [activeBiome, setActiveBiome] = useState('all');
@@ -18,13 +44,35 @@ const Plants = () => {
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [inspectPlant, setInspectPlant] = useState(null);
+  const [apiPlants, setApiPlants] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
 
   useEffect(() => {
     setStarredIds(getStarredPlantIds());
+
+    // Tải dữ liệu cây thực tế từ MongoDB Backend
+    const fetchPlants = async () => {
+      try {
+        setLoading(true);
+        const res = await plantApi.getPlants({ limit: 100 });
+        if (res?.data?.plants && Array.isArray(res.data.plants)) {
+          setApiPlants(res.data.plants.map(normalizePlant));
+        }
+      } catch (err) {
+        console.warn('Không thể kết nối API Plants, sử dụng dữ liệu dự phòng:', err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlants();
   }, []);
 
-  const allPlants = CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean);
+  const fallbackPlants = CANONICAL_PLANT_SLUGS?.length
+    ? CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean)
+    : Object.values(BOTANICAL_SPECIMENS);
+  const allPlants = apiPlants.length > 0 ? apiPlants : fallbackPlants;
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -176,7 +224,12 @@ const Plants = () => {
 
       {/* Specimen Grid */}
       <main style={{ flex: 1, maxWidth: '1360px', width: '100%', margin: '0 auto 100px', padding: '0 24px' }}>
-        {filteredPlants.length === 0 ? (
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '80px 24px', color: '#86efac' }}>
+            <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>🌿</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Đang nạp hồ sơ thực vật từ máy chủ GreenNest...</div>
+          </div>
+        ) : filteredPlants.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '75px 24px', background: 'rgba(14, 30, 22, 0.75)', border: '1.5px dashed rgba(245, 158, 11, 0.45)', borderRadius: '28px', maxWidth: '820px', margin: '0 auto' }}>
             <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🌱</div>
             <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#fff', marginBottom: '12px' }}>

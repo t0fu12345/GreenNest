@@ -1,11 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import {Link} from 'react-router-dom'
+import gardenerApi from '../services/gardenerApi';
+
+const FALLBACK_CURATORS = [
+  {
+    name: 'Dr. Elena Vance',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
+    specialization: 'Lead Curator of Tropical Flora & Araceae',
+    bio: 'Over 12 years investigating the Araceae family in Southeast Asian equatorial canopies. Specializes in fenestrated leaf adaptations of Monstera and Philodendron in urban interiors.',
+    experienceYears: 12,
+    contactEmail: 'elena.vance@greennest.vn',
+    biomeBadge: '🌴 Tropical Rainforest'
+  },
+  {
+    name: 'Marcus Thorne',
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80',
+    specialization: 'Highland Ecology & Pteridophyte Specialist',
+    bio: 'Forestry graduate leading cloud-forest botanical inquiries. Pioneered aerated moisture-retentive substrate formulations enabling delicate ferns to thrive within air-conditioned rooms.',
+    experienceYears: 9,
+    contactEmail: 'marcus.thorne@greennest.vn',
+    biomeBadge: '🌲 Subtropical Highlands'
+  },
+  {
+    name: 'ThS. Nguyễn Thị Mai',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
+    specialization: 'Plant Pathology & Bio-Organic Substrates',
+    bio: 'Conducts research on rhizosphere microflora and organic pest balance mechanisms, guaranteeing care safety protocols for environments with young children and pets.',
+    experienceYears: 8,
+    contactEmail: 'mai.nguyen@greennest.vn',
+    biomeBadge: '🔬 Plant Pathology'
+  },
+  {
+    name: 'David Sterling',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80',
+    specialization: 'Succulent Biology & Drought Adaptation Advisor',
+    bio: 'Renowned researcher focusing on Crassulacean Acid Metabolism (CAM) in desert succulents. Develops full-spectrum photoperiod guidelines for desktop succulent cultivation.',
+    experienceYears: 14,
+    contactEmail: 'david.sterling@greennest.vn',
+    biomeBadge: '🏜️ Xerophyte & Succulents'
+  }
+];
 
 const About = () => {
   const [filter, setFilter] = useState('all');
   const [lightboxData, setLightboxData] = useState(null);
+  const [gardeners, setGardeners] = useState([]);
+  const [loadingGardeners, setLoadingGardeners] = useState(true);
+
+  useEffect(() => {
+    const fetchGardeners = async () => {
+      try {
+        setLoadingGardeners(true);
+        const res = await gardenerApi.getGardeners();
+        const list = Array.isArray(res?.data) ? res.data : (res?.data?.gardeners || []);
+        if (list && list.length > 0) {
+          setGardeners(list);
+        }
+      } catch (err) {
+        console.warn('Không thể tải chuyên gia từ MongoDB Atlas, dùng dữ liệu dự phòng:', err.message);
+      } finally {
+        setLoadingGardeners(false);
+      }
+    };
+    fetchGardeners();
+  }, []);
+
+  const displayGardeners = gardeners.length > 0 ? gardeners : FALLBACK_CURATORS;
 
   const openLightbox = (src, title, desc) => {
     setLightboxData({ src, title, desc });
@@ -149,99 +211,52 @@ const About = () => {
         </div>
 
         <div className="botanists-grid">
-          
-          {/* Botanist 1: Dr. Elena Vu */}
-          <article className="botanist-card">
-            <div 
-              className="botanist-avatar-wrap" 
-              onClick={() => openLightbox('https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=1200&q=80', 'Dr. Elena Vu — Tropical Conservatory', 'Doctor of Botanical Taxonomy examining understory fenestration in Monstera cultivars under diffused natural daylight.')}
-            >
-              <img src="https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=800&q=80" alt="Dr. Elena Vu in sunlit tropical greenhouse" className="botanist-img" />
-              <div className="botanist-img-fade"></div>
-              <span className="botanist-sun-badge">☀️ DIFFUSED CANOPY</span>
-              <span className="botanist-badge">🌴 Tropical Rainforest</span>
-            </div>
-            <div className="botanist-info-body">
-              <h3 className="botanist-name">Dr. Elena Vu</h3>
-              <div className="botanist-role">Lead Curator of Tropical Flora & Araceae</div>
-              <p className="botanist-bio">
-                Over 12 years investigating the Araceae family in Southeast Asian equatorial canopies. Specializes in fenestrated leaf adaptations of Monstera and Philodendron in urban interiors.
-              </p>
-              <div className="botanist-quote">
-                "Each leaf fenestration is an evolutionary triumph designed to harvest filtered sunlight."
-              </div>
-            </div>
-          </article>
-
-          {/* Botanist 2: Alexandre Pham */}
-          <article className="botanist-card">
-            <div 
-              className="botanist-avatar-wrap" 
-              onClick={() => openLightbox('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=1200&q=80', 'Alexandre Pham — Highland Fern Research', 'Ecologist meticulously inspecting frond venation in antique fern cultivars at our alpine research station.')}
-            >
-              <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=800&q=80" alt="Alexandre Pham inspecting fern fronds" className="botanist-img" />
-              <div className="botanist-img-fade"></div>
-              <span className="botanist-sun-badge">☀️ HIGHLAND MIST</span>
-              <span className="botanist-badge">🌲 Subtropical Highlands</span>
-            </div>
-            <div className="botanist-info-body">
-              <h3 className="botanist-name">Alexandre Pham</h3>
-              <div className="botanist-role">Highland Ecology & Pteridophyte Specialist</div>
-              <p className="botanist-bio">
-                Forestry graduate leading cloud-forest botanical inquiries. Pioneered aerated moisture-retentive substrate formulations enabling delicate ferns to thrive within air-conditioned rooms.
-              </p>
-              <div className="botanist-quote">
-                "Highland flora craves dynamic, refreshing airflow far more than heavy saturations."
-              </div>
-            </div>
-          </article>
-
-          {/* Botanist 3: Eng. Mai Linh */}
-          <article className="botanist-card">
-            <div 
-              className="botanist-avatar-wrap" 
-              onClick={() => openLightbox('https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80', 'Eng. Mai Linh — Propagation Facility', 'Plant pathologist examining root development across organic seedling trays free from synthetic biocides.')}
-            >
-              <img src="https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=800&q=80" alt="Engineer Mai Linh in nursery facility" className="botanist-img" />
-              <div className="botanist-img-fade"></div>
-              <span className="botanist-sun-badge">☀️ ORGANIC NURSERY</span>
-              <span className="botanist-badge">🔬 Plant Pathology</span>
-            </div>
-            <div className="botanist-info-body">
-              <h3 className="botanist-name">Eng. Mai Linh</h3>
-              <div className="botanist-role">Plant Pathology & Bio-Organic Substrates</div>
-              <p className="botanist-bio">
-                Conducts research on rhizosphere microflora and organic pest balance mechanisms, guaranteeing care safety protocols for environments with young children and pets.
-              </p>
-              <div className="botanist-quote">
-                "A thriving root architecture dictates 90% of foliar vigor and disease resistance."
-              </div>
-            </div>
-          </article>
-
-          {/* Botanist 4: Prof. Daniel Lee */}
-          <article className="botanist-card">
-            <div 
-              className="botanist-avatar-wrap" 
-              onClick={() => openLightbox('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80', 'Prof. Daniel Lee — Xerophyte Laboratory', 'Consulting botanist measuring CAM nocturnal carbon exchange in arid cactus and succulent cultivars.')}
-            >
-              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Prof Daniel Lee in xerophyte lab" className="botanist-img" />
-              <div className="botanist-img-fade"></div>
-              <span className="botanist-sun-badge">☀️ ARID DAYLIGHT</span>
-              <span className="botanist-badge">🏜️ Xerophyte & Succulents</span>
-            </div>
-            <div className="botanist-info-body">
-              <h3 className="botanist-name">Prof. Daniel Lee</h3>
-              <div className="botanist-role">Succulent Biology & Drought Adaptation Advisor</div>
-              <p className="botanist-bio">
-                Renowned researcher focusing on Crassulacean Acid Metabolism (CAM) in desert succulents. Develops full-spectrum photoperiod guidelines for desktop succulent cultivation.
-              </p>
-              <div className="botanist-quote">
-                "The quiet tenacity of arid flora instructs us on resilience in harsh environments."
-              </div>
-            </div>
-          </article>
-
+          {displayGardeners.map((curator, idx) => {
+            const badges = [
+              { sun: '☀️ DIFFUSED CANOPY', tag: '🌴 Tropical Rainforest' },
+              { sun: '☀️ HIGHLAND MIST', tag: '🌲 Subtropical Highlands' },
+              { sun: '☀️ ORGANIC NURSERY', tag: '🔬 Plant Pathology' },
+              { sun: '☀️ ARID DAYLIGHT', tag: '🏜️ Xerophyte & Succulents' }
+            ];
+            const badge = badges[idx % badges.length];
+            return (
+              <article key={curator._id || curator.name || idx} className="botanist-card">
+                <div 
+                  className="botanist-avatar-wrap" 
+                  onClick={() => openLightbox(
+                    curator.avatar || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80',
+                    `${curator.name} — ${curator.specialization}`,
+                    curator.bio
+                  )}
+                >
+                  <img 
+                    src={curator.avatar || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80'} 
+                    alt={curator.name} 
+                    className="botanist-img" 
+                  />
+                  <div className="botanist-img-fade"></div>
+                  <span className="botanist-sun-badge">
+                    {curator.experienceYears ? `☀️ ${curator.experienceYears} YRS EXP` : badge.sun}
+                  </span>
+                  <span className="botanist-badge">
+                    {curator.biomeBadge || badge.tag}
+                  </span>
+                </div>
+                <div className="botanist-info-body">
+                  <h3 className="botanist-name">{curator.name}</h3>
+                  <div className="botanist-role">{curator.specialization}</div>
+                  <p className="botanist-bio">
+                    {curator.bio}
+                  </p>
+                  {curator.contactEmail && (
+                    <div className="botanist-quote" style={{ fontStyle: 'normal', fontSize: '0.8rem', color: '#86efac' }}>
+                      ✉️ {curator.contactEmail}
+                    </div>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -379,8 +394,8 @@ const About = () => {
             Explore our curated botanical specimen taxonomy across the 3 primary climatic biomes in the Gallery, or return to Overview to discover specimens tailored to your home conditions.
           </p>
           <div className="cta-btn-group">
-            <Link to ="/gallery" className="btn-cta-primary">Explore Specimen Gallery →</Link>
-            <Link to ="/" className="btn-cta-secondary">Return to Sanctuary Overview</Link>
+            <Link to="/plants" className="btn-cta-primary">Explore Specimen Catalog →</Link>
+            <Link to="/" className="btn-cta-secondary">Return to Sanctuary Overview</Link>
           </div>
         </div>
       </section>

@@ -1,745 +1,541 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
-import { BOTANICAL_SPECIMENS } from '../data/botanicalSpecimens';
+import plantApi from '../services/plantApi';
+import gardenApi from '../services/gardenApi';
 import {
-  getUserCollections,
-  createUserCollection,
-  updateUserCollection,
-  deleteUserCollection,
-  togglePlantInCollection
-} from '../services/collectionService';
+  BOTANICAL_SPECIMENS,
+  getStarredPlantIds,
+  toggleStarredPlant
+} from '../data/botanicalSpecimens';
+
+const normalizeApiPlant = (p) => ({
+  id: p.specimenId || p._id,
+  _id: p._id,
+  specimenId: p.specimenId,
+  catalogCode: p.specimenId || 'CANOPY-PLANT',
+  name: p.name,
+  scientificName: p.scientificName || 'Botanical specimen',
+  biome: p.biome || 'tropical',
+  biomeLabel: p.biome ? p.biome.toUpperCase() : 'TROPICAL',
+  image: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+  tags: p.tags?.length ? p.tags : [`#${p.category || 'Flora'}`, `#${p.biome || 'Tropical'}`],
+  shortDesc: p.description || p.shortDescription || 'Botanical specimen curated at GreenNest.',
+  traits: [p.light, p.watering, p.careLevel].filter(Boolean),
+});
 
 const PersonalGallery = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const userEmail = user?.email || 'guest';
-
-  const [collections, setCollections] = useState([]);
-  const [selectedColId, setSelectedColId] = useState(null);
+  const { isAuthenticated } = useAuth();
+  const [starredIds, setStarredIds] = useState([]);
+  const [allPlantsMap, setAllPlantsMap] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTag, setActiveTag] = useState('');
   const [toastMessage, setToastMessage] = useState('');
-
-  // Modal Create / Edit Collection State
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingCol, setEditingCol] = useState(null); // null means creating
-  const [formData, setFormData] = useState({ name: '', description: '' });
-
-  // Filter inside single collection
-  const [innerFilter, setInnerFilter] = useState('');
-
-  const reloadCollections = () => {
-    const list = getUserCollections(userEmail);
-    setCollections(list);
-    return list;
-  };
-
-  useEffect(() => {
-    const list = reloadCollections();
-    if (list.length > 0 && !selectedColId) {
-      // Default view is boards list, or user can click into one
-    }
-  }, [userEmail]);
 
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  const handleOpenCreateModal = () => {
-    setEditingCol(null);
-    setFormData({ name: '', description: '' });
-    setIsModalOpen(true);
-  };
+  // Load plants from Atlas and sync with starred IDs
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    const localStarred = getStarredPlantIds();
+    let effectiveStarred = [...localStarred];
 
-  const handleOpenEditModal = (col, e) => {
-    if (e) e.stopPropagation();
-    setEditingCol(col);
-    setFormData({ name: col.name, description: col.description || '' });
-    setIsModalOpen(true);
-  };
+    // Build base map from static specimens
+    const plantMap = { ...BOTANICAL_SPECIMENS };
 
-  const handleDeleteCollection = (colId, colName, e) => {
-    if (e) e.stopPropagation();
-    if (window.confirm(`Bạn có chắc chắn muốn xóa bộ sưu tập "${colName}"?`)) {
-      deleteUserCollection(userEmail, colId);
-      showToast(`Đã xóa bộ sưu tập "${colName}"`);
-      if (selectedColId === colId) setSelectedColId(null);
-      reloadCollections();
+    try {
+      // 1. Fetch live plants from MongoDB Atlas
+      const plantRes = await plantApi.getPlants({ limit: 100 });
+      if (plantRes?.data?.plants && Array.isArray(plantRes.data.plants)) {
+        plantRes.data.plants.forEach(p => {
+          const norm = normalizeApiPlant(p);
+          if (norm.id) plantMap[norm.id] = norm;
+          if (norm._id) plantMap[norm._id] = norm;
+          if (norm.specimenId) plantMap[norm.specimenId] = norm;
+        });
+      }
+
+      // 2. If authenticated, fetch bookmarks from MongoDB Atlas
+      if (isAuthenticated) {
+        try {
+          const gardenRes = await gardenApi.getMyGarden();
+          const savedFromDb = gardenRes?.data?.savedPlants || [];
+          savedFromDb.forEach(sp => {
+            const norm = normalizeApiPlant(sp);
+            const key = norm.id || norm._id;
+            if (key) {
+              plantMap[key] = norm;
+              if (!effectiveStarred.includes(key) && !effectiveStarred.includes(sp._id)) {
+                effectiveStarred.push(key);
+              }
+            }
+          });
+        } catch (dbErr) {
+          console.warn('Could not fetch saved plants from Atlas:', dbErr);
+        }
+      }
+    } catch (err) {
+      console.warn('Using local specimens fallback in PersonalGallery:', err.message);
+    } finally {
+      setAllPlantsMap(plantMap);
+      setStarredIds(Array.from(new Set(effectiveStarred)));
+      setLoading(false);
     }
-  };
+  }, [isAuthenticated]);
 
-  const handleSaveCollectionForm = (e) => {
-    e.preventDefault();
-    if (!formData.name.trim()) return;
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
-    if (editingCol) {
-      updateUserCollection(userEmail, editingCol.id, {
-        name: formData.name.trim(),
-        description: formData.description.trim()
-      });
-      showToast('Đã cập nhật bộ sưu tập');
+  // Map starred IDs to actual plant objects
+  const starredPlants = Array.from(new Set(starredIds))
+    .map(id => allPlantsMap[id] || BOTANICAL_SPECIMENS[id])
+    .filter(Boolean);
+
+  const handleToggleStar = async (plantId, e) => {
+    if (e) e.stopPropagation();
+    const updated = toggleStarredPlant(plantId);
+    setStarredIds(updated);
+    const plant = allPlantsMap[plantId] || BOTANICAL_SPECIMENS[plantId];
+
+    // Sync with MongoDB Atlas if authenticated
+    if (isAuthenticated && plant?._id) {
+      try {
+        await gardenApi.toggleBookmark(plant._id);
+      } catch (err) {
+        console.warn('Atlas bookmark toggle sync failed:', err);
+      }
+    }
+
+    if (updated.includes(plantId)) {
+      showToast(`⭐ Added "${plant?.name || 'Plant'}" to Personal Gallery!`);
     } else {
-      const created = createUserCollection(userEmail, {
-        name: formData.name.trim(),
-        description: formData.description.trim()
-      });
-      showToast(`Đã tạo bộ sưu tập "${created.name}"`);
+      showToast(`Removed "${plant?.name || 'Plant'}" from Personal Gallery.`);
     }
-
-    setIsModalOpen(false);
-    reloadCollections();
   };
 
-  const handleRemovePlant = (colId, plantSlug, plantName, e) => {
-    if (e) e.stopPropagation();
-    togglePlantInCollection(userEmail, colId, plantSlug);
-    showToast(`Đã xóa "${plantName}" khỏi bộ sưu tập`);
-    reloadCollections();
-  };
+  // Extract all unique tags present ONLY in user's saved plants
+  const availableTags = Array.from(new Set(starredPlants.flatMap(p => p.tags || [])));
 
-  // Find active selected collection if in detail view
-  const currentCollection = collections.find((c) => c.id === selectedColId);
-
-  // Filter plants inside current collection
-  const innerPlants = currentCollection
-    ? (currentCollection.plantSlugs || [])
-        .map((slug) => BOTANICAL_SPECIMENS[slug])
-        .filter(Boolean)
-        .filter((p) => {
-          if (!innerFilter) return true;
-          const q = innerFilter.toLowerCase();
-          return (
-            p.name.toLowerCase().includes(q) ||
-            p.scientificName.toLowerCase().includes(q) ||
-            p.category?.toLowerCase().includes(q)
-          );
-        })
+  // Filter tags when user types in search
+  const cleanSearch = searchTerm.trim().toLowerCase();
+  const matchingTags = cleanSearch.length > 0 
+    ? availableTags.filter(t => t.toLowerCase().includes(cleanSearch) || t.replace('#', '').toLowerCase().startsWith(cleanSearch))
     : [];
 
+  // Filtered plants
+  const filteredPlants = starredPlants.filter(p => {
+    let matchQuery = true;
+    if (cleanSearch) {
+      const nameMatch = p.name && p.name.toLowerCase().includes(cleanSearch);
+      const sciMatch = p.scientificName && p.scientificName.toLowerCase().includes(cleanSearch);
+      const tagMatch = p.tags?.some(t => t.toLowerCase().includes(cleanSearch));
+      matchQuery = nameMatch || sciMatch || tagMatch;
+    }
+
+    let matchTag = true;
+    if (activeTag) {
+      matchTag = p.tags?.includes(activeTag);
+    }
+
+    return matchQuery && matchTag;
+  });
+
+  const handleOpenDossier = (plantId) => {
+    navigate(`/specimen-detail?id=${encodeURIComponent(plantId)}`);
+  };
+
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#07100b', color: '#f0fdf4' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
 
-      {/* Standalone Back to Sanctuary Button */}
-      <div style={{ maxWidth: '1360px', width: '100%', margin: '0 auto', padding: '100px 24px 0', display: 'flex', justifyContent: 'flex-end' }}>
-        <Link
-          to="/user"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 18px',
-            background: 'rgba(34, 197, 94, 0.15)',
-            border: '1px solid var(--border-accent, rgba(34, 197, 94, 0.4))',
-            color: 'var(--emerald-light, #86efac)',
-            fontSize: '0.84rem',
-            fontWeight: 600,
-            textDecoration: 'none',
-            transition: 'all 0.25s ease'
-          }}
-        >
-          ← Back to Sanctuary
-        </Link>
-      </div>
-
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '90px',
-            right: '24px',
-            background: 'rgba(14, 30, 22, 0.95)',
-            border: '1px solid #22c55e',
-            color: '#86efac',
-            padding: '12px 24px',
-            borderRadius: '9999px',
-            fontSize: '0.88rem',
-            fontWeight: 600,
-            boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
-            zIndex: 10000,
-            animation: 'fadeIn 0.3s ease'
-          }}
-        >
-          {toastMessage}
+      {/* Hero Header */}
+      <header className="gallery-hero-header" style={{ paddingTop: '140px', paddingBottom: '30px', textAlign: 'center', maxWidth: '920px', margin: '0 auto', paddingLeft: '20px', paddingRight: '20px' }}>
+        <div className="gallery-kicker" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(14, 30, 22, 0.75)', border: '1px solid rgba(34, 197, 94, 0.25)', borderRadius: '9999px', marginBottom: '18px', fontSize: '0.74rem', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#86efac' }}>
+          <span style={{ width: '6px', height: '6px', background: 'var(--emerald-accent)', borderRadius: '50%', boxShadow: '0 0 8px var(--emerald-accent)' }}></span>
+          <span>HERBARIUM PRIVATE STUDY // ARCHIVE NO. 01</span>
         </div>
-      )}
 
-      <main style={{ flex: 1, padding: '24px 24px 80px', maxWidth: '1360px', width: '100%', margin: '0 auto' }}>
-        
-        {/* VIEW 1: Detail of Single Collection */}
-        {selectedColId && currentCollection ? (
-          <div>
-            {/* Top Breadcrumb & Actions */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
-              <button
-                type="button"
-                onClick={() => setSelectedColId(null)}
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', fontWeight: 700, color: '#ffffff', lineHeight: 1.15, marginBottom: '14px' }}>
+          Personal Gallery.
+        </h1>
+        <p style={{ color: '#cbd5e1', fontSize: '1.02rem', lineHeight: 1.6, maxWidth: '640px', margin: '0 auto 28px', fontWeight: 300 }}>
+          Your private botanical herbarium. Curate high-resolution specimen captures, botanical care telemetry, and field observations in your personal study.
+        </p>
+
+        {isAuthenticated && (
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: '#86efac', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '4px 14px', borderRadius: '9999px' }}>
+            <span>☁️ Bookmarks Synced with MongoDB Atlas Cloud</span>
+          </div>
+        )}
+      </header>
+
+      {/* Main Workspace Layout */}
+      <main style={{ flex: 1, maxWidth: '1360px', width: '100%', margin: '0 auto 100px', padding: '0 24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '36px', alignItems: 'start' }}>
+
+          {/* Left Column: Sidebar with Filter & Saved Specimen List */}
+          <aside style={{ background: 'rgba(14, 30, 22, 0.82)', backdropFilter: 'blur(20px)', border: '1px solid var(--border-glass)', borderRadius: '24px', padding: '28px', display: 'flex', flexDirection: 'column', gap: '22px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <span style={{ fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--emerald-light)', fontWeight: 700 }}>
+                  Curated Collection
+                </span>
+                <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', color: '#fff', marginTop: '2px' }}>
+                  Herbarium Study
+                </h2>
+              </div>
+              <span style={{ background: 'rgba(34, 197, 94, 0.2)', border: '1px solid var(--border-accent)', color: 'var(--emerald-light)', padding: '4px 12px', borderRadius: '9999px', fontSize: '0.78rem', fontWeight: 700 }}>
+                {starredPlants.length} Saved
+              </span>
+            </div>
+
+            {/* Search Input */}
+            <div style={{ position: 'relative' }}>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by name, genus or tag..."
                 style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  color: '#cbd5e1',
-                  padding: '8px 18px',
+                  width: '100%',
+                  background: 'rgba(7, 16, 11, 0.75)',
+                  border: '1px solid var(--border-glass)',
                   borderRadius: '9999px',
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px'
+                  padding: '10px 36px 10px 16px',
+                  color: '#fff',
+                  fontSize: '0.85rem',
+                  outline: 'none'
                 }}
-              >
-                <span>← Quay lại danh sách Bộ sưu tập</span>
-              </button>
-
-              <div style={{ display: 'flex', gap: '10px' }}>
+              />
+              {searchTerm && (
                 <button
                   type="button"
-                  onClick={(e) => handleOpenEditModal(currentCollection, e)}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.06)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    color: '#f0fdf4',
-                    padding: '8px 18px',
-                    borderRadius: '9999px',
-                    fontSize: '0.82rem',
-                    fontWeight: 600,
-                    cursor: 'pointer'
-                  }}
+                  onClick={() => setSearchTerm('')}
+                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '1rem' }}
                 >
-                  ✎ Đổi tên / Mô tả
+                  ✕
                 </button>
-                <Link
-                  to="/plants"
-                  style={{
-                    background: 'rgba(34, 197, 94, 0.15)',
-                    border: '1px solid rgba(34, 197, 94, 0.35)',
-                    color: '#86efac',
-                    padding: '8px 18px',
-                    borderRadius: '9999px',
-                    fontSize: '0.82rem',
-                    fontWeight: 600,
-                    textDecoration: 'none'
-                  }}
-                >
-                  + Thêm cây mới ↗
-                </Link>
-              </div>
+              )}
             </div>
 
-            {/* Collection Header Banner */}
-            <div
+            {/* Dynamic Matching Tag Chips */}
+            {matchingTags.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                <span style={{ fontSize: '0.7rem', color: 'var(--emerald-light)', fontWeight: 700, width: '100%' }}>MATCHING TAGS:</span>
+                {matchingTags.map(tag => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => setActiveTag(activeTag === tag ? '' : tag)}
+                    style={{
+                      background: activeTag === tag ? 'var(--emerald-accent)' : 'rgba(34, 197, 94, 0.15)',
+                      border: '1px solid var(--border-accent)',
+                      color: activeTag === tag ? '#07100b' : '#86efac',
+                      borderRadius: '9999px',
+                      padding: '4px 10px',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Saved Plants List */}
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '420px', overflowY: 'auto' }}>
+              {loading ? (
+                <li style={{ padding: '24px 12px', textAlign: 'center', color: '#86efac', fontSize: '0.88rem' }}>
+                  Loading saved specimens from Atlas...
+                </li>
+              ) : starredPlants.length === 0 ? (
+                <li style={{ padding: '24px 12px', textAlign: 'center', color: '#94a3b8', fontSize: '0.88rem' }}>
+                  No plants saved yet. Explore the catalog archive to bookmark specimens.
+                </li>
+              ) : filteredPlants.length === 0 ? (
+                <li style={{ padding: '20px 12px', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>
+                  No saved specimens match your filter.
+                </li>
+              ) : (
+                filteredPlants.map(plant => (
+                  <li
+                    key={plant.id}
+                    onClick={() => handleOpenDossier(plant.id)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      padding: '10px 14px',
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      borderRadius: '14px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <img
+                      src={plant.image}
+                      alt={plant.name}
+                      style={{ width: '44px', height: '44px', borderRadius: '10px', objectFit: 'cover' }}
+                    />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {plant.name}
+                      </div>
+                      <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontStyle: 'italic', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {plant.scientificName}
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => handleToggleStar(plant.id, e)}
+                      style={{ background: 'transparent', border: 'none', color: '#f59e0b', fontSize: '1.2rem', cursor: 'pointer', padding: '4px' }}
+                      title="Remove from Personal Gallery"
+                    >
+                      ★
+                    </button>
+                  </li>
+                ))
+              )}
+            </ul>
+
+            <Link
+              to="/plants"
               style={{
-                background: 'rgba(14, 30, 22, 0.85)',
-                border: '1px solid var(--border-glass, rgba(255, 255, 255, 0.12))',
-                borderRadius: '24px',
-                padding: '36px 32px',
-                marginBottom: '36px'
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                padding: '11px 18px',
+                background: 'rgba(34, 197, 94, 0.15)',
+                border: '1px solid var(--border-accent)',
+                borderRadius: '9999px',
+                color: 'var(--emerald-light)',
+                textDecoration: 'none',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                textAlign: 'center'
               }}
             >
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#86efac', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '10px' }}>
-                <span>📁 USER COLLECTION</span>
-                <span>•</span>
-                <span>{currentCollection.plantSlugs.length} CÂY CẢNH</span>
-              </div>
-              <h1
-                style={{
-                  fontFamily: "var(--font-serif, 'Playfair Display', serif)",
-                  fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-                  fontWeight: 700,
-                  color: '#fff',
-                  marginBottom: '12px'
-                }}
-              >
-                {currentCollection.name}
-              </h1>
-              <p style={{ color: '#cbd5e1', fontSize: '1rem', lineHeight: 1.6, maxWidth: '800px', fontWeight: 300, marginBottom: '24px' }}>
-                {currentCollection.description || 'Chưa có mô tả cho bộ sưu tập này.'}
-              </p>
+              + Curate More Plants
+            </Link>
+          </aside>
 
-              {/* Inner Search Box */}
-              <div style={{ maxWidth: '450px' }}>
-                <input
-                  type="text"
-                  placeholder="Lọc cây trong bộ sưu tập này..."
-                  value={innerFilter}
-                  onChange={(e) => setInnerFilter(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 16px',
-                    borderRadius: '9999px',
-                    background: 'rgba(0, 0, 0, 0.35)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    color: '#fff',
-                    fontSize: '0.86rem',
-                    outline: 'none'
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Plants Grid Inside Collection */}
-            {innerPlants.length === 0 ? (
-              <div
-                style={{
-                  textAlign: 'center',
-                  padding: '70px 24px',
-                  background: 'rgba(14, 30, 22, 0.5)',
-                  border: '1.5px dashed rgba(255, 255, 255, 0.15)',
-                  borderRadius: '24px'
-                }}
-              >
-                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🌱</div>
-                <h3 style={{ fontFamily: "var(--font-serif, 'Playfair Display', serif)", fontSize: '1.6rem', color: '#fff', marginBottom: '8px' }}>
-                  {innerFilter ? 'Không tìm thấy cây phù hợp' : 'Bộ sưu tập chưa có cây nào'}
-                </h3>
-                <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginBottom: '24px' }}>
-                  {innerFilter ? 'Thử tìm với từ khóa khác' : 'Hãy khám phá danh mục và lưu cây yêu thích vào bộ sưu tập này.'}
-                </p>
-                <Link
-                  to="/plants"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '10px 24px',
-                    borderRadius: '9999px',
-                    background: '#22c55e',
-                    color: '#05140d',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    fontSize: '0.88rem'
-                  }}
+          {/* Right Area: Cards Grid */}
+          <div style={{ gridColumn: 'span 2' }}>
+            {/* Filter Status Bar */}
+            {(searchTerm || activeTag) && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', padding: '10px 18px', background: 'rgba(14, 30, 22, 0.65)', border: '1px solid var(--border-glass)', borderRadius: '12px' }}>
+                <span style={{ fontSize: '0.84rem', color: '#cbd5e1' }}>
+                  Filter: <strong style={{ color: '#86efac' }}>{searchTerm ? `"${searchTerm}"` : ''} {activeTag ? `[${activeTag}]` : ''}</strong> ({filteredPlants.length} results)
+                </span>
+                <button
+                  type="button"
+                  onClick={() => { setSearchTerm(''); setActiveTag(''); }}
+                  style={{ background: 'transparent', border: 'none', color: '#86efac', cursor: 'pointer', fontSize: '0.8rem', textDecoration: 'underline' }}
                 >
-                  Khám phá Danh mục Cây →
+                  Reset
+                </button>
+              </div>
+            )}
+
+            {/* Specimen Cards Grid */}
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: '80px 24px', background: 'rgba(14, 30, 22, 0.75)', borderRadius: '24px' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>⏳</div>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: '#fff' }}>Connecting to Herbarium Database...</h3>
+              </div>
+            ) : starredPlants.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '80px 24px', background: 'rgba(14, 30, 22, 0.75)', border: '1.5px dashed rgba(34, 197, 94, 0.3)', borderRadius: '24px' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '14px' }}>🌿</div>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '10px' }}>Your Personal Gallery is Empty</h3>
+                <p style={{ color: '#cbd5e1', maxWidth: '520px', margin: '0 auto 24px', fontSize: '0.95rem' }}>
+                  Bookmark botanical specimens from the main plant catalog to keep their dossiers, care telemetry, and taxonomy notes here.
+                </p>
+                <Link to="/plants" className="btn-cta-pill" style={{ textDecoration: 'none' }}>
+                  Explore Plants Catalog →
                 </Link>
               </div>
+            ) : filteredPlants.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '60px 20px', background: 'rgba(14, 30, 22, 0.5)', borderRadius: '20px', border: '1px dashed rgba(255,255,255,0.1)' }}>
+                <p style={{ color: '#94a3b8', fontSize: '1rem', marginBottom: '14px' }}>No specimens matched your current filter.</p>
+                <button type="button" className="btn-cta-pill" onClick={() => { setSearchTerm(''); setActiveTag(''); }}>Reset Filter</button>
+              </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
-                {innerPlants.map((plant) => (
-                  <div
-                    key={plant.slug}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '26px' }}>
+                {filteredPlants.map(plant => (
+                  <article
+                    key={plant.id}
+                    className="specimen-card"
                     style={{
                       background: 'rgba(14, 30, 22, 0.85)',
-                      border: '1px solid var(--border-glass, rgba(255, 255, 255, 0.12))',
+                      backdropFilter: 'blur(16px)',
+                      border: '1px solid var(--border-glass)',
                       borderRadius: '20px',
                       overflow: 'hidden',
                       display: 'flex',
                       flexDirection: 'column',
-                      position: 'relative',
-                      boxShadow: '0 12px 30px rgba(0, 0, 0, 0.45)'
+                      boxShadow: '0 16px 36px rgba(0,0,0,0.55)',
+                      transition: 'all 0.3s ease'
                     }}
                   >
                     <div
-                      style={{ height: '200px', cursor: 'pointer', overflow: 'hidden', position: 'relative' }}
-                      onClick={() => navigate(`/specimen-detail?id=${encodeURIComponent(plant.slug)}`)}
+                      style={{ position: 'relative', height: '220px', overflow: 'hidden', cursor: 'pointer' }}
+                      onClick={() => handleOpenDossier(plant.id)}
                     >
                       <img
                         src={plant.image}
                         alt={plant.name}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
+                      <span style={{
+                        position: 'absolute',
+                        top: '12px',
+                        left: '12px',
+                        background: 'rgba(7, 16, 11, 0.85)',
+                        border: '1px solid var(--border-glass)',
+                        borderRadius: '9999px',
+                        padding: '4px 10px',
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        color: 'var(--emerald-light)'
+                      }}>
+                        {plant.biomeLabel}
+                      </span>
                       <button
                         type="button"
-                        onClick={(e) => handleRemovePlant(currentCollection.id, plant.slug, plant.name, e)}
-                        title="Xóa khỏi bộ sưu tập này"
+                        onClick={(e) => handleToggleStar(plant.id, e)}
                         style={{
                           position: 'absolute',
                           top: '12px',
                           right: '12px',
-                          background: 'rgba(239, 68, 68, 0.85)',
-                          border: 'none',
-                          color: '#fff',
-                          width: '32px',
-                          height: '32px',
+                          background: 'rgba(7, 16, 11, 0.85)',
+                          border: '1px solid rgba(245, 158, 11, 0.5)',
+                          color: '#f59e0b',
                           borderRadius: '50%',
+                          width: '34px',
+                          height: '34px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           cursor: 'pointer',
                           fontSize: '1rem'
                         }}
+                        title="Remove from Personal Gallery"
                       >
-                        ✕
+                        ★
                       </button>
                     </div>
 
-                    <div style={{ padding: '18px 20px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
                       <div>
-                        <div style={{ fontSize: '0.74rem', color: '#86efac', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, marginBottom: '4px' }}>
-                          {plant.category}
-                        </div>
-                        <h4
-                          style={{
-                            fontFamily: "var(--font-serif, 'Playfair Display', serif)",
-                            fontSize: '1.25rem',
-                            color: '#fff',
-                            marginBottom: '4px',
-                            cursor: 'pointer'
-                          }}
-                          onClick={() => navigate(`/specimen-detail?id=${encodeURIComponent(plant.slug)}`)}
+                        <h3
+                          onClick={() => handleOpenDossier(plant.id)}
+                          style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: '#fff', cursor: 'pointer', marginBottom: '2px' }}
                         >
                           {plant.name}
-                        </h4>
-                        <div style={{ fontSize: '0.8rem', fontStyle: 'italic', color: '#94a3b8', marginBottom: '12px' }}>
+                        </h3>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--emerald-light)', fontStyle: 'italic' }}>
                           {plant.scientificName}
                         </div>
                       </div>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                        <span style={{ fontSize: '0.74rem', color: '#cbd5e1' }}>
-                          💧 {plant.wateringFrequency || plant.water}
-                        </span>
-                        <Link
-                          to={`/specimen-detail?id=${encodeURIComponent(plant.slug)}`}
-                          style={{ fontSize: '0.8rem', color: '#86efac', textDecoration: 'none', fontWeight: 600 }}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                        {plant.tags?.map(t => (
+                          <span
+                            key={t}
+                            onClick={() => setActiveTag(activeTag === t ? '' : t)}
+                            style={{
+                              background: 'rgba(255,255,255,0.05)',
+                              border: '1px solid rgba(255,255,255,0.1)',
+                              borderRadius: '9999px',
+                              padding: '2px 8px',
+                              fontSize: '0.7rem',
+                              color: '#cbd5e1',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      <p style={{ color: '#94a3b8', fontSize: '0.86rem', lineHeight: 1.55, flex: 1 }}>
+                        {plant.shortDesc}
+                      </p>
+
+                      <div style={{ paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <button
+                          type="button"
+                          onClick={() => handleOpenDossier(plant.id)}
+                          className="btn-inspect-specimen"
+                          style={{
+                            background: 'rgba(34, 197, 94, 0.12)',
+                            border: '1px solid var(--border-accent)',
+                            color: '#86efac',
+                            padding: '7px 14px',
+                            borderRadius: '9999px',
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px'
+                          }}
                         >
-                          Chi tiết →
-                        </Link>
+                          <span>Botanical Dossier</span>
+                          <span>→</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => handleToggleStar(plant.id, e)}
+                          style={{ background: 'transparent', border: 'none', color: '#f59e0b', fontSize: '1.2rem', cursor: 'pointer' }}
+                          title="Remove from Personal Gallery"
+                        >
+                          ★
+                        </button>
                       </div>
                     </div>
-                  </div>
+                  </article>
                 ))}
               </div>
             )}
           </div>
-        ) : (
-          /* VIEW 2: All Collections (Pinterest Boards Overview) */
-          <div>
-            {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '36px' }}>
-              <div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#86efac', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '8px' }}>
-                  <span>🌿 USER BOARDS & CURATION</span>
-                </div>
-                <h1
-                  style={{
-                    fontFamily: "var(--font-serif, 'Playfair Display', serif)",
-                    fontSize: 'clamp(2.4rem, 4.5vw, 3.5rem)',
-                    fontWeight: 700,
-                    color: '#fff',
-                    lineHeight: 1.15
-                  }}
-                >
-                  Bộ Sưu Tập Của Tôi
-                </h1>
-                <p style={{ color: '#cbd5e1', fontSize: '1rem', marginTop: '8px', fontWeight: 300, maxWidth: '640px' }}>
-                  Quản lý các bộ sưu tập cây trồng theo ý thích cá nhân. Phân loại theo góc phòng, độ khó hoặc kế hoạch trang trí không gian sống.
-                </p>
-              </div>
 
-              <button
-                type="button"
-                onClick={handleOpenCreateModal}
-                style={{
-                  background: 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)',
-                  border: 'none',
-                  color: '#fff',
-                  padding: '12px 24px',
-                  borderRadius: '9999px',
-                  fontSize: '0.88rem',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  boxShadow: '0 8px 20px rgba(34, 197, 94, 0.35)'
-                }}
-              >
-                <span>+ Tạo Bộ Sưu Tập Mới</span>
-              </button>
-            </div>
-
-            {/* Boards Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '28px' }}>
-              {collections.map((col) => {
-                // Get up to 3 plant images for collage
-                const previewImages = (col.plantSlugs || [])
-                  .map((slug) => BOTANICAL_SPECIMENS[slug]?.image)
-                  .filter(Boolean)
-                  .slice(0, 3);
-
-                return (
-                  <div
-                    key={col.id}
-                    onClick={() => setSelectedColId(col.id)}
-                    style={{
-                      background: 'rgba(14, 30, 22, 0.85)',
-                      border: '1px solid var(--border-glass, rgba(255, 255, 255, 0.12))',
-                      borderRadius: '24px',
-                      overflow: 'hidden',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      boxShadow: '0 16px 36px rgba(0, 0, 0, 0.5)'
-                    }}
-                  >
-                    {/* Collage Preview Frame (Pinterest Board Style) */}
-                    <div style={{ height: '200px', display: 'flex', gap: '3px', background: 'rgba(0, 0, 0, 0.5)', overflow: 'hidden' }}>
-                      {previewImages.length === 0 ? (
-                        <div
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            background: 'rgba(14, 30, 22, 0.95)',
-                            color: '#94a3b8'
-                          }}
-                        >
-                          <span style={{ fontSize: '2.5rem', marginBottom: '4px' }}>🌿</span>
-                          <span style={{ fontSize: '0.78rem' }}>Chưa có cây nào</span>
-                        </div>
-                      ) : previewImages.length === 1 ? (
-                        <img
-                          src={previewImages[0]}
-                          alt={col.name}
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                      ) : (
-                        <>
-                          <div style={{ flex: '1.2', height: '100%' }}>
-                            <img
-                              src={previewImages[0]}
-                              alt="Collage 1"
-                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            />
-                          </div>
-                          <div style={{ flex: '0.8', display: 'flex', flexDirection: 'column', gap: '3px', height: '100%' }}>
-                            <div style={{ flex: 1, overflow: 'hidden' }}>
-                              <img
-                                src={previewImages[1]}
-                                alt="Collage 2"
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                              />
-                            </div>
-                            {previewImages[2] ? (
-                              <div style={{ flex: 1, overflow: 'hidden' }}>
-                                <img
-                                  src={previewImages[2]}
-                                  alt="Collage 3"
-                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                />
-                              </div>
-                            ) : (
-                              <div style={{ flex: 1, background: 'rgba(34, 197, 94, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#86efac', fontSize: '0.75rem' }}>
-                                + {col.plantSlugs.length - 2 > 0 ? col.plantSlugs.length - 2 : ''}
-                              </div>
-                            )}
-                          </div>
-                        </>
-                      )}
-                    </div>
-
-                    {/* Board Info */}
-                    <div style={{ padding: '22px 24px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                          <h3
-                            style={{
-                              fontFamily: "var(--font-serif, 'Playfair Display', serif)",
-                              fontSize: '1.35rem',
-                              fontWeight: 700,
-                              color: '#fff'
-                            }}
-                          >
-                            {col.name}
-                          </h3>
-                          <span
-                            style={{
-                              fontSize: '0.75rem',
-                              background: 'rgba(34, 197, 94, 0.15)',
-                              color: '#86efac',
-                              padding: '3px 10px',
-                              borderRadius: '9999px',
-                              fontWeight: 600
-                            }}
-                          >
-                            {col.plantSlugs.length} cây
-                          </span>
-                        </div>
-                        <p style={{ color: '#94a3b8', fontSize: '0.86rem', lineHeight: 1.5, marginBottom: '16px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                          {col.description || 'Bộ sưu tập cá nhân hóa.'}
-                        </p>
-                      </div>
-
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                        <span style={{ fontSize: '0.78rem', color: '#86efac', fontWeight: 600 }}>
-                          Xem chi tiết →
-                        </span>
-                        <div style={{ display: 'flex', gap: '6px' }}>
-                          <button
-                            type="button"
-                            onClick={(e) => handleOpenEditModal(col, e)}
-                            title="Chỉnh sửa bộ sưu tập"
-                            style={{
-                              background: 'rgba(255, 255, 255, 0.06)',
-                              border: '1px solid rgba(255, 255, 255, 0.12)',
-                              color: '#cbd5e1',
-                              width: '30px',
-                              height: '30px',
-                              borderRadius: '50%',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              cursor: 'pointer',
-                              fontSize: '0.82rem'
-                            }}
-                          >
-                            ✎
-                          </button>
-                          <button
-                            type="button"
-                            onClick={(e) => handleDeleteCollection(col.id, col.name, e)}
-                            title="Xóa bộ sưu tập"
-                            style={{
-                              background: 'rgba(239, 68, 68, 0.12)',
-                              border: '1px solid rgba(239, 68, 68, 0.3)',
-                              color: '#fca5a5',
-                              width: '30px',
-                              height: '30px',
-                              borderRadius: '50%',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              cursor: 'pointer',
-                              fontSize: '0.82rem'
-                            }}
-                          >
-                            🗑
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        </div>
       </main>
 
-      {/* Modal Create/Edit Collection */}
-      {isModalOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0, 0, 0, 0.75)',
-            backdropFilter: 'blur(8px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 10001,
-            padding: '20px'
-          }}
-          onClick={() => setIsModalOpen(false)}
-        >
-          <div
-            style={{
-              background: 'rgba(14, 30, 22, 0.98)',
-              border: '1px solid var(--border-accent, rgba(34, 197, 94, 0.3))',
-              borderRadius: '24px',
-              padding: '32px',
-              width: '100%',
-              maxWidth: '480px',
-              color: '#f0fdf4'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 style={{ fontFamily: "var(--font-serif, 'Playfair Display', serif)", fontSize: '1.5rem', marginBottom: '8px', color: '#fff' }}>
-              {editingCol ? 'Chỉnh Sửa Bộ Sưu Tập' : 'Tạo Bộ Sưu Tập Mới'}
-            </h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.86rem', marginBottom: '20px' }}>
-              Tạo danh mục riêng để gom nhóm các loài cây theo sở thích và không gian của bạn.
-            </p>
-
-            <form onSubmit={handleSaveCollectionForm} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, marginBottom: '6px' }}>
-                  Tên Bộ Sưu Tập *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="VD: Cây lọc không khí phòng ngủ..."
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    borderRadius: '12px',
-                    background: 'rgba(0, 0, 0, 0.4)',
-                    border: '1px solid rgba(34, 197, 94, 0.3)',
-                    color: '#fff',
-                    fontSize: '0.92rem',
-                    outline: 'none'
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, marginBottom: '6px' }}>
-                  Mô Tả Mục Đích
-                </label>
-                <textarea
-                  rows={3}
-                  placeholder="Giải thích ngắn gọn tiêu chí hoặc vị trí đặt cây..."
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    borderRadius: '12px',
-                    background: 'rgba(0, 0, 0, 0.4)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    color: '#cbd5e1',
-                    fontSize: '0.86rem',
-                    outline: 'none',
-                    resize: 'none'
-                  }}
-                />
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '10px' }}>
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  style={{
-                    padding: '10px 20px',
-                    borderRadius: '9999px',
-                    background: 'transparent',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    color: '#cbd5e1',
-                    cursor: 'pointer',
-                    fontSize: '0.86rem'
-                  }}
-                >
-                  Hủy
-                </button>
-                <button
-                  type="submit"
-                  style={{
-                    padding: '10px 24px',
-                    borderRadius: '9999px',
-                    background: '#22c55e',
-                    border: 'none',
-                    color: '#05140d',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    fontSize: '0.86rem'
-                  }}
-                >
-                  {editingCol ? 'Lưu Thay Đổi' : 'Tạo Ngay'}
-                </button>
-              </div>
-            </form>
-          </div>
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div style={{
+          position: 'fixed',
+          bottom: '30px',
+          right: '30px',
+          background: 'rgba(14, 30, 22, 0.95)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid var(--emerald-accent)',
+          color: '#ffffff',
+          padding: '14px 22px',
+          borderRadius: '9999px',
+          boxShadow: '0 16px 40px rgba(0, 0, 0, 0.8), 0 0 25px var(--emerald-glow)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          fontSize: '0.9rem',
+          fontWeight: 600,
+          zIndex: 3000
+        }}>
+          <span>{toastMessage}</span>
         </div>
       )}
 

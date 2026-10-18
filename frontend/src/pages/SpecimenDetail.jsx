@@ -10,17 +10,19 @@ import {
 } from '../data/botanicalSpecimens';
 import SaveToCollectionModal from '../components/gallery/SaveToCollectionModal';
 
+import plantApi from '../services/plantApi';
+
 const SpecimenDetail = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const requestedId = searchParams.get('id');
 
-  const plantId = (requestedId && BOTANICAL_SPECIMENS[requestedId])
+  const defaultId = (requestedId && BOTANICAL_SPECIMENS[requestedId])
     ? requestedId
     : 'monstera-deliciosa';
 
-  const plant = BOTANICAL_SPECIMENS[plantId] || BOTANICAL_SPECIMENS['monstera-deliciosa'];
-
+  const [currentPlant, setCurrentPlant] = useState(BOTANICAL_SPECIMENS[defaultId]);
+  const [loading, setLoading] = useState(false);
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
@@ -28,6 +30,71 @@ const SpecimenDetail = () => {
   useEffect(() => {
     setStarredIds(getStarredPlantIds());
   }, []);
+
+  useEffect(() => {
+    if (!requestedId) return;
+
+    // Nếu ID có trong BOTANICAL_SPECIMENS thì set trước
+    if (BOTANICAL_SPECIMENS[requestedId]) {
+      setCurrentPlant(BOTANICAL_SPECIMENS[requestedId]);
+    }
+
+    // Sau đó gọi API để lấy dữ liệu mới nhất từ MongoDB
+    const fetchDetail = async () => {
+      try {
+        setLoading(true);
+        const res = await plantApi.getPlant(requestedId);
+        const p = res?.data?.plant || (res?.data?.name ? res.data : null);
+        if (p) {
+          setCurrentPlant({
+            id: p.specimenId || p._id,
+            catalogCode: p.specimenId || 'CANOPY-001',
+            name: p.name,
+            scientificName: p.scientificName || p.botanicalName || '',
+            biome: p.biome || 'tropical',
+            biomeLabel: p.biome ? p.biome.toUpperCase() : 'Tropical Rainforest',
+            image: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
+            tags: p.tags?.length ? p.tags : [`#${p.category || 'Araceae'}`, `#${p.biome || 'Tropical'}`],
+            taxonomyTags: [p.category, p.biome, 'Plantae'].filter(Boolean),
+            traits: [p.light, p.watering, p.careLevel].filter(Boolean),
+            shortDesc: p.description || '',
+            origin: p.origin || 'Vườn ươm GreenNest Sanctuary',
+            water: p.watering || 'Every 7-10 days',
+            light: p.light || 'Dappled indirect sunlight',
+            soil: p.careGuide?.soil || 'Chunky aroid mix',
+            humidity: p.careGuide?.humidity || '65% - 85%',
+            temp: '20°C – 28°C',
+            growth: p.careLevel || 'Moderate',
+            toxicity: p.toxicity?.isToxicToPets ? 'Pet Caution' : 'Pet Safe',
+            waterDaily: '350 ml / 7 Days',
+            waterStatus: 'Balanced',
+            notifMsg: `${p.name} is flourishing under ambient biophilic light.`,
+            waterVal: '350 ml',
+            waterBar: '82%',
+            waterSub: 'Optimal root zone saturation. Next deep hydration scheduled in 4 days.',
+            humidityVal: '68% RH',
+            humidityBar: '88%',
+            humiditySub: 'High foliar turgor. Transpiration balanced under diffused light.',
+            envVal: '1,600 FC',
+            envBar: '95%',
+            envSub: 'Dappled canopy daylight • 22°C ambient conservatory curve.',
+            soilVal: 'Aroid Chunk',
+            soilBar: '90%',
+            soilSub: 'High aeration blend: orchid bark, pumice, and coco coir.'
+          });
+        }
+      } catch (err) {
+        console.warn('Dùng dữ liệu dự phòng cho chi tiết cây:', err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetail();
+  }, [requestedId]);
+
+  const plant = currentPlant || BOTANICAL_SPECIMENS['specimen-monstera'];
+  const plantId = plant.id || defaultId;
 
   const isStarred = starredIds.includes(plantId);
 
