@@ -201,7 +201,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Đăng ký tài khoản mới kết nối API Backend
-  const register = async ({ name, email, password, nickname, preferredBiome }) => {
+  const register = async ({ name, email, password, nickname }) => {
     try {
       const payload = {
         fullName: name,

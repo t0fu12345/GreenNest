@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth, getCookie } from '../context/AuthContext';
 
 const Login = () => {
-  const { login, loginWithGoogle, STORAGE_KEYS } = useAuth();
+  const { login, STORAGE_KEYS } = useAuth();
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -34,14 +34,6 @@ const Login = () => {
     }, duration);
   };
 
-  const handleSocialLogin = (provider) => {
-    setSubmitting(true);
-    showNotification(`Đang kết nối qua ${provider}... Đăng nhập thành công!`, 'success');
-    loginWithGoogle();
-    setTimeout(() => {
-      navigate('/');
-    }, 900);
-  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -71,17 +63,6 @@ const Login = () => {
     }
   };
 
-  const fillDemoAccount = () => {
-    setIdentifier('nam.le@greennest.vn');
-    setPassword('GreenNest@2026');
-    showNotification('Đã điền tài khoản mẫu (Member): nam.le@greennest.vn', 'success', 2500);
-  };
-
-  const fillAdminAccount = () => {
-    setIdentifier('admin@greennest.vn');
-    setPassword('Admin@123456');
-    showNotification('Đã điền tài khoản Quản trị viên: admin@greennest.vn', 'success', 2500);
-  };
 
   return (
     <>
@@ -117,26 +98,6 @@ const Login = () => {
           <p className="auth-subtitle">Sign in to manage your private sanctuary and climate-tailored cultivation guide.</p>
         </div>
 
-        {/* Continue with Google / Gmail */}
-        <button 
-          type="button" 
-          className="btn-google-auth" 
-          id="btnGoogleLogin" 
-          onClick={() => handleSocialLogin('Google')}
-          disabled={submitting}
-        >
-          <svg className="google-icon-svg" viewBox="0 0 24 24">
-            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
-            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
-            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9c-.1-.7-.3-1.5-.3-2.4l.3-3z"/>
-            <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 16.9C3.7 20.6 7.5 23.5 12 23.5z"/>
-          </svg>
-          <span>Continue with Google / Gmail</span>
-        </button>
-
-        <div className="auth-divider">
-          <span>Or continue with Nickname</span>
-        </div>
 
         {/* Nickname & Password Form */}
         <form className="auth-form" id="loginForm" onSubmit={handleLogin}>
@@ -197,44 +158,6 @@ const Login = () => {
               />
               <span>Ghi nhớ phiên đăng nhập (Cookie)</span>
             </label>
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-              <button 
-                type="button" 
-                onClick={fillDemoAccount}
-                style={{
-                  background: 'rgba(34, 197, 94, 0.15)',
-                  border: '1px solid rgba(34, 197, 94, 0.35)',
-                  color: '#86efac',
-                  fontSize: '0.74rem',
-                  borderRadius: 0,
-                  padding: '4px 8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                title="Tài khoản thường: Nickname: minhthao / MK: GreenCanopy2026"
-              >
-                ⚡ User
-              </button>
-
-              <button 
-                type="button" 
-                onClick={fillAdminAccount}
-                style={{
-                  background: 'rgba(234, 179, 8, 0.18)',
-                  border: '1px solid rgba(234, 179, 8, 0.5)',
-                  color: '#fef08a',
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
-                  borderRadius: 0,
-                  padding: '4px 8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                title="Tài khoản Admin độc quyền: Nickname: admin / MK: AdminCanopy2026!"
-              >
-                👑 Admin
-              </button>
-            </div>
           </div>
 
           <button 
