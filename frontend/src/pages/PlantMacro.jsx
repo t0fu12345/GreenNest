@@ -1,22 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext';
+import plantApi from '../services/plantApi';
+import gardenApi from '../services/gardenApi';
 import {
   BOTANICAL_SPECIMENS,
   SPECIMEN_KEYS
 } from '../data/botanicalSpecimens';
 
+const normalizePlantTelemetry = (raw, staticFallback = {}) => {
+  const p = raw || {};
+  const s = staticFallback || {};
+
+  const name = p.name || s.name || 'Botanical Specimen';
+  const biome = p.biome || s.biome || 'tropical';
+
+  return {
+    id: p.specimenId || p._id || s.id || 'specimen-monstera',
+    dbId: p._id,
+    catalogCode: p.specimenId || s.catalogCode || 'CANOPY-MACRO',
+    name,
+    scientificName: p.scientificName || s.scientificName || 'Botanical genus sp.',
+    biome,
+    biomeLabel: biome.toUpperCase(),
+    image: p.images?.[0]?.url || s.image || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
+    notifMsg: s.notifMsg || `${name} telemetry readings are running within nominal baseline parameters on MongoDB Atlas.`,
+    
+    // Macro 1: Water
+    waterVal: s.waterVal || (p.watering?.toLowerCase().includes('daily') ? '150 ml' : '350 ml'),
+    waterBar: s.waterBar || '82%',
+    waterSub: s.waterSub || (p.watering ? `Nominal irrigation cadence: ${p.watering}. Keep substrate aerated.` : 'Optimal root zone saturation balance.'),
+    waterVol: s.waterVol || '350 ml per saturation cycle',
+    waterFreq: s.waterFreq || p.careGuide?.wateringFrequency || p.watering || 'Every 7–10 days when top 50% potting mix dries',
+    
+    // Macro 2: Humidity
+    humidityVal: p.careGuide?.humidity || s.humidityVal || '68% RH',
+    humidityBar: s.humidityBar || '88%',
+    humiditySub: s.humiditySub || 'High foliar turgor. Aerial root transpiration balanced under diffused light.',
+    humidityTarget: p.careGuide?.humidity || s.humidityTarget || '65% – 85% RH (Current: 68%)',
+    mistCadence: s.mistCadence || 'Mist aerial foliage every 48 hours with filtered water',
+    
+    // Macro 3: Light
+    envVal: s.envVal || (p.light?.toLowerCase().includes('direct') ? '2,200 FC' : '1,600 FC'),
+    envBar: s.envBar || '92%',
+    envSub: s.envSub || `${p.light || 'Dappled canopy daylight'} • 22°C ambient conservatory thermal curve.`,
+    light: p.light || s.light || 'Dappled indirect sunlight (1,200–2,000 FC)',
+    tempRange: s.tempRange || '20°C min night / 28°C max day',
+    temp: s.temp || '20°C – 28°C',
+    
+    // Macro 4: Soil
+    soilVal: p.careGuide?.soil?.split(',')[0] || s.soilVal || 'Aroid Chunk',
+    soilBar: s.soilBar || '88%',
+    soilSub: p.careGuide?.soil ? `Substrate: ${p.careGuide.soil}` : (s.soilSub || 'High aeration porous substrate with balanced mineral grit.'),
+    
+    raw: p
+  };
+};
+
 const PlantMacro = () => {
   const [searchParams] = useSearchParams();
   const requestedId = searchParams.get('id');
+  const targetId = requestedId || 'specimen-monstera';
 
-  const plantId = (requestedId && BOTANICAL_SPECIMENS[requestedId])
-    ? requestedId
-    : (SPECIMEN_KEYS[0] || null);
-
-  const plant = plantId ? BOTANICAL_SPECIMENS[plantId] : null;
-
+  const { isAuthenticated } = useAuth();
+  const initialFallback = BOTANICAL_SPECIMENS[targetId] || Object.values(BOTANICAL_SPECIMENS)[0] || null;
+  
+  const [plant, setPlant] = useState(() => normalizePlantTelemetry(null, initialFallback));
+  const [plantCatalog, setPlantCatalog] = useState(SPECIMEN_KEYS);
+  const [loading, setLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
   if (!plant) {
@@ -40,22 +93,76 @@ const PlantMacro = () => {
     setTimeout(() => setToastMessage(''), 3500);
   };
 
-  const handleLogAction = (type) => {
+  // Load Catalog Keys for Pagination
+  useEffect(() => {
+    const fetchCatalog = async () => {
+      try {
+        const res = await plantApi.getPlants({ limit: 100 });
+        if (res?.data?.plants && Array.isArray(res.data.plants)) {
+          const keys = res.data.plants.map(p => p.specimenId || p._id);
+          if (keys.length > 0) {
+            setPlantCatalog(keys);
+          }
+        }
+      } catch (err) {
+        console.warn('Using default pagination catalog:', err.message);
+      }
+    };
+    fetchCatalog();
+  }, []);
+
+  // Fetch Live Plant Telemetry from Atlas
+  const fetchPlantTelemetry = useCallback(async () => {
+    const staticFallback = BOTANICAL_SPECIMENS[targetId] || null;
+    try {
+      setLoading(true);
+      const res = await plantApi.getPlantDetail(targetId);
+      const rawPlant = res?.data?.plant || (res?.data?.name ? res.data : null);
+      if (rawPlant) {
+        setPlant(normalizePlantTelemetry(rawPlant, staticFallback));
+      } else if (staticFallback) {
+        setPlant(normalizePlantTelemetry(null, staticFallback));
+      }
+    } catch (err) {
+      console.warn('Cannot fetch live telemetry from Atlas, using static fallback:', err.message);
+      if (staticFallback) {
+        setPlant(normalizePlantTelemetry(null, staticFallback));
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [targetId]);
+
+  useEffect(() => {
+    fetchPlantTelemetry();
+  }, [fetchPlantTelemetry]);
+
+  const handleLogAction = async (type) => {
     if (type === 'water') {
       showToast(`💧 Logged ${plant.waterVal} hydration for ${plant.name}! Moisture macro updated.`);
+      if (isAuthenticated && plant.dbId) {
+        try {
+          await gardenApi.updateChecklist({ plantId: plant.dbId, taskName: 'water', completed: true });
+        } catch {}
+      }
     } else if (type === 'mist') {
       showToast(`🌫️ Foliage mist logged for ${plant.name}! Ambient humidity stable at ${plant.humidityVal}.`);
+      if (isAuthenticated && plant.dbId) {
+        try {
+          await gardenApi.updateChecklist({ plantId: plant.dbId, taskName: 'mist', completed: true });
+        } catch {}
+      }
     } else {
       showToast(`🌱 Root inspection logged for ${plant.name}! Substrate aeration optimal.`);
     }
   };
 
-  // Pagination
-  const currentIndex = SPECIMEN_KEYS.indexOf(plantId);
-  const prevIndex = (currentIndex - 1 + SPECIMEN_KEYS.length) % SPECIMEN_KEYS.length;
-  const nextIndex = (currentIndex + 1) % SPECIMEN_KEYS.length;
-  const prevId = SPECIMEN_KEYS[prevIndex];
-  const nextId = SPECIMEN_KEYS[nextIndex];
+  // Pagination navigation
+  const currentIndex = plantCatalog.indexOf(targetId) !== -1 ? plantCatalog.indexOf(targetId) : 0;
+  const prevIndex = (currentIndex - 1 + plantCatalog.length) % plantCatalog.length;
+  const nextIndex = (currentIndex + 1) % plantCatalog.length;
+  const prevId = plantCatalog[prevIndex];
+  const nextId = plantCatalog[nextIndex];
 
   return (
     <div className="macro-page" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#07100b', color: '#f0fdf4' }}>
@@ -84,16 +191,16 @@ const PlantMacro = () => {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <Link
-              to={`/plant-macro?id=${prevId}`}
+              to={`/plant-macro?id=${encodeURIComponent(prevId)}`}
               style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.84rem', padding: '6px 14px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-glass)' }}
             >
               ← Prev
             </Link>
             <span style={{ fontSize: '0.84rem', color: '#94a3b8' }}>
-              {currentIndex + 1} of {SPECIMEN_KEYS.length} • <strong style={{ color: '#fff' }}>{plant.name}</strong>
+              {currentIndex + 1} of {plantCatalog.length} • <strong style={{ color: '#fff' }}>{plant.name}</strong>
             </span>
             <Link
-              to={`/plant-macro?id=${nextId}`}
+              to={`/plant-macro?id=${encodeURIComponent(nextId)}`}
               style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.84rem', padding: '6px 14px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-glass)' }}
             >
               Next →
@@ -130,7 +237,7 @@ const PlantMacro = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span style={{ fontSize: '1.4rem' }}>⚡</span>
               <span style={{ fontSize: '0.92rem', color: '#cbd5e1' }}>
-                {plant.notifMsg || `${plant.name} telemetry readings are running within nominal baseline parameters.`}
+                {plant.notifMsg}
               </span>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -152,7 +259,7 @@ const PlantMacro = () => {
           </div>
         </div>
 
-        {/* 4 Botanical Telemetry Macro Cards (Gym-style) */}
+        {/* 4 Botanical Telemetry Macro Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '40px' }}>
           
           {/* Card 1: Water */}
@@ -286,7 +393,7 @@ const PlantMacro = () => {
                 <tbody>
                   <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <td style={{ padding: '10px 0', color: '#94a3b8' }}>Target Humidity (RH)</td>
-                    <td style={{ padding: '10px 0', color: '#fff', textAlign: 'right', fontWeight: 600 }}>{plant.humidityTarget || plant.humidity}</td>
+                    <td style={{ padding: '10px 0', color: '#fff', textAlign: 'right', fontWeight: 600 }}>{plant.humidityTarget || plant.humidityVal}</td>
                   </tr>
                   <tr>
                     <td style={{ padding: '10px 0', color: '#94a3b8' }}>Foliage Misting Cadence</td>

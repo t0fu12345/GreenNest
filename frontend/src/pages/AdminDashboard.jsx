@@ -5,6 +5,9 @@ import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import { BOTANICAL_SPECIMENS } from '../data/botanicalSpecimens';
 import { decodeJwt } from '../utils/jwt';
+import adminApi from '../services/adminApi';
+import plantApi from '../services/plantApi';
+import contactApi from '../services/contactApi';
 
 const AdminDashboard = () => {
   const { user, token, logout, getAllUsers, updateUserRole, deleteUser } = useAuth();
@@ -15,6 +18,7 @@ const AdminDashboard = () => {
   const [specimens, setSpecimens] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [stats, setStats] = useState(null);
 
   // Plant form state
   const [isAddPlantOpen, setIsAddPlantOpen] = useState(false);
@@ -34,24 +38,58 @@ const AdminDashboard = () => {
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  // Load registered users and plants
+  // Load registered users, stats, and plants from MongoDB
   useEffect(() => {
     // Users
-    setUserList(getAllUsers());
-
-    // Plants from default + localStorage custom plants
-    const defaultList = Object.values(BOTANICAL_SPECIMENS);
-    try {
-      const customSaved = localStorage.getItem('greenNest_custom_specimens');
-      if (customSaved) {
-        const parsed = JSON.parse(customSaved);
-        setSpecimens([...defaultList, ...parsed]);
-      } else {
-        setSpecimens(defaultList);
-      }
-    } catch {
-      setSpecimens(defaultList);
+    if (typeof getAllUsers === 'function') {
+      setUserList(getAllUsers());
     }
+
+    // Default fallback list
+    const defaultList = Object.values(BOTANICAL_SPECIMENS);
+
+    const loadBackendData = async () => {
+      // 1. Thống kê Dashboard
+      try {
+        const statsRes = await adminApi.getDashboardStats();
+        if (statsRes?.data) {
+          setStats(statsRes.data);
+        }
+      } catch (err) {
+        console.warn('Chưa lấy được stats từ API:', err.message);
+      }
+
+      // 2. Danh sách cây từ MongoDB
+      try {
+        const plantsRes = await plantApi.getPlants({ limit: 100 });
+        if (plantsRes?.data?.plants && plantsRes.data.plants.length > 0) {
+          const apiList = plantsRes.data.plants.map(p => ({
+            id: p.specimenId || p._id,
+            _id: p._id,
+            catalogCode: p.specimenId || 'CANOPY-001',
+            name: p.name,
+            scientificName: p.scientificName || p.botanicalName || '',
+            biome: p.biome || 'tropical',
+            biomeLabel: p.biome ? p.biome.toUpperCase() : 'Tropical Rainforest',
+            image: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+            water: p.watering || 'Every 7-10 days',
+            light: p.light || 'Dappled indirect sunlight',
+            soil: p.careGuide?.soil || 'Chunky aroid mix',
+            shortDesc: p.description || '',
+            tags: p.tags?.length ? p.tags : ['#DatabaseCatalog']
+          }));
+          setSpecimens(apiList);
+          return;
+        }
+      } catch (err) {
+        console.warn('Dùng dữ liệu dự phòng cho admin plants:', err.message);
+      }
+
+      // Fallback
+      setSpecimens(defaultList);
+    };
+
+    loadBackendData();
   }, [getAllUsers]);
 
   // Decode active JWT token
@@ -85,34 +123,48 @@ const AdminDashboard = () => {
   };
 
   // Handle Add New Plant
-  const handleAddPlant = (e) => {
+  const handleAddPlant = async (e) => {
     e.preventDefault();
     if (!newPlant.name.trim()) return;
 
-    const plantId = `specimen-${Date.now()}`;
-    const plantObj = {
-      id: plantId,
-      catalogCode: `CANOPY-${Math.floor(100 + Math.random() * 900)}`,
+    const plantPayload = {
       name: newPlant.name,
       scientificName: newPlant.scientificName || `${newPlant.name} spp.`,
-      biome: newPlant.biome,
-      biomeLabel: newPlant.biome === 'tropical' ? 'Tropical Rainforest' : (newPlant.biome === 'subtropical' ? 'Subtropical Highlands' : 'Arid & Desert'),
-      image: newPlant.image,
-      water: newPlant.water,
+      specimenId: `CANOPY-${Math.floor(100 + Math.random() * 900)}`,
+      category: 'foliage',
+      biome: newPlant.biome || 'tropical',
       light: newPlant.light,
-      soil: newPlant.soil,
-      shortDesc: newPlant.shortDesc || `Cultivar curated by Master Botanist ${user?.name}.`,
-      tags: ['#NewSpecimen', '#CuratedCollection', '#AdminAdded']
+      watering: newPlant.water,
+      careLevel: 'medium',
+      description: newPlant.shortDesc || `Cultivar curated by Master Botanist ${user?.name}.`,
+      origin: 'GreenNest Botanical Reserve',
+      images: [{
+        url: newPlant.image,
+        alt: newPlant.name,
+        isPrimary: true
+      }]
     };
 
     try {
-      let customList = [];
-      const saved = localStorage.getItem('greenNest_custom_specimens');
-      if (saved) customList = JSON.parse(saved);
-      customList.unshift(plantObj);
-      localStorage.setItem('greenNest_custom_specimens', JSON.stringify(customList));
+      const res = await plantApi.createPlant(plantPayload);
+      const created = res?.data?.plant || res?.data;
+      const normalizedCreated = {
+        id: created?.specimenId || plantPayload.specimenId,
+        _id: created?._id,
+        catalogCode: created?.specimenId || plantPayload.specimenId,
+        name: created?.name || plantPayload.name,
+        scientificName: created?.scientificName || plantPayload.scientificName,
+        biome: created?.biome || plantPayload.biome,
+        biomeLabel: (created?.biome || plantPayload.biome).toUpperCase(),
+        image: plantPayload.images[0].url,
+        water: plantPayload.watering,
+        light: plantPayload.light,
+        soil: newPlant.soil,
+        shortDesc: plantPayload.description,
+        tags: ['#NewSpecimen', '#CuratedCollection', '#AdminAdded']
+      };
 
-      setSpecimens(prev => [plantObj, ...prev]);
+      setSpecimens(prev => [normalizedCreated, ...prev]);
       setIsAddPlantOpen(false);
       setNewPlant({
         name: '',
@@ -124,26 +176,25 @@ const AdminDashboard = () => {
         image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
         shortDesc: ''
       });
-      showToast(`Đã thêm cây trồng mới: ${plantObj.name}`);
+      showToast(`Đã thêm cây trồng mới vào MongoDB: ${plantPayload.name}`);
     } catch (err) {
-      console.error(err);
+      showToast(err.message || 'Lỗi khi thêm cây trồng');
     }
   };
 
   // Handle Delete Plant
-  const handleDeletePlant = (plantId, plantName) => {
+  const handleDeletePlant = async (plantId, plantName) => {
     if (window.confirm(`Xác nhận xóa cây trồng "${plantName}" khỏi hệ thống?`)) {
       try {
-        let customList = [];
-        const saved = localStorage.getItem('greenNest_custom_specimens');
-        if (saved) customList = JSON.parse(saved);
-        const filtered = customList.filter(p => p.id !== plantId);
-        localStorage.setItem('greenNest_custom_specimens', JSON.stringify(filtered));
-
-        setSpecimens(prev => prev.filter(p => p.id !== plantId));
-        showToast(`Đã xóa cây trồng "${plantName}"`);
+        const target = specimens.find(p => p.id === plantId || p._id === plantId);
+        if (target?._id) {
+          await plantApi.deletePlant(target._id);
+        }
+        setSpecimens(prev => prev.filter(p => p.id !== plantId && p._id !== plantId));
+        showToast(`Đã xóa cây trồng "${plantName}" thành công!`);
       } catch (err) {
-        console.error(err);
+        setSpecimens(prev => prev.filter(p => p.id !== plantId));
+        showToast(`Đã xóa khỏi giao diện: ${plantName}`);
       }
     }
   };

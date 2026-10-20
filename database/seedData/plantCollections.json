@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Ốc đảo thanh lọc không khí NASA (Air Purifying Sanctuary)",
+    "slug": "oc-dao-thanh-loc-khong-khi-nasa",
+    "description": "Tuyển tập các loài cây được cơ quan hàng không vũ trụ NASA chứng nhận có khả năng hấp thụ độc tố formaldehyde, benzene và xylene vượt trội nhất.",
+    "coverImage": "https://images.unsplash.com/photo-1593482892290-f54927ae1bf6?auto=format&fit=crop&w=1200&q=80",
+    "season": "all",
+    "isFeatured": true,
+    "plantSpecimenIds": [
+      "specimen-peace-lily",
+      "specimen-snake-plant",
+      "specimen-boston-fern",
+      "specimen-spider-plant"
+    ]
+  },
+  {
+    "title": "Ban công rực rỡ ngập nắng (Sunlit Balcony Oasis)",
+    "slug": "ban-cong-ruc-ro-ngap-nang",
+    "description": "Những loài thực vật kiên cường ưa nắng gió và cho hoa thơm ngát, biến ban công căn hộ của bạn thành thềm vườn nghỉ dưỡng ngập tràn sắc hương.",
+    "coverImage": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
+    "season": "summer",
+    "isFeatured": true,
+    "plantSpecimenIds": [
+      "specimen-red-rose",
+      "specimen-bird-of-paradise",
+      "specimen-jade-plant",
+      "specimen-echeveria"
+    ]
+  },
+  {
+    "title": "Cây kiên cường cho người bận rộn (Low-Maintenance Living)",
+    "slug": "cay-kien-cuong-cho-nguoi-ban-ron",
+    "description": "Dành riêng cho những người yêu cây nhưng lịch trình bận rộn. Những loài cây có khả năng chịu khô hạn và thiếu sáng dài ngày mà vẫn giữ trọn vẻ xanh bóng.",
+    "coverImage": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80",
+    "season": "all",
+    "isFeatured": false,
+    "plantSpecimenIds": [
+      "specimen-zz-plant",
+      "specimen-snake-plant",
+      "specimen-pothos",
+      "specimen-rubber-tree"
+    ]
+  },
+  {
+    "title": "Vòm lá rừng mưa nhiệt đới (Tropical Rainforest Canopy)",
+    "slug": "vom-la-rung-mua-nhiet-doi",
+    "description": "Bộ sưu tập những loài Araceae bản lớn mang hơi thở hoang dã của những cánh rừng mưa nguyên sinh miền Trung và Nam Mỹ.",
+    "coverImage": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
+    "season": "spring",
+    "isFeatured": true,
+    "plantSpecimenIds": [
+      "specimen-monstera",
+      "specimen-calathea",
+      "specimen-alocasia-amazonica",
+      "specimen-anthurium"
+    ]
+  }
+]
