@@ -2475,24 +2475,20 @@ export const STARRED_STORAGE_KEY = 'livingCanopyStarredPlants';
 export const GARDEN_STORAGE_KEY = 'livingCanopyGardenPlants';
 
 export function getStarredPlantIds() {
-  if (typeof window === 'undefined') return ['monstera-deliciosa'];
+  if (typeof window === 'undefined') return [];
   const stored = localStorage.getItem(STARRED_STORAGE_KEY);
-  if (stored === null) {
-    const initial = ['monstera-deliciosa', 'sansevieria-trifasciata'];
-    localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(initial));
-    return initial;
-  }
+  if (!stored) return [];
   try {
     const parsed = JSON.parse(stored);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : ['monstera-deliciosa'];
+    return Array.isArray(parsed) ? parsed : [];
   } catch (e) {
-    return ['monstera-deliciosa'];
+    return [];
   }
 }
 
 export function setStarredPlantIds(ids) {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(ids));
+  localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(ids || []));
 }
 
 export function toggleStarredPlant(plantId) {
@@ -2508,22 +2504,18 @@ export function toggleStarredPlant(plantId) {
 }
 
 export function getGardenPlantIds() {
-  if (typeof window === 'undefined') return ['monstera-deliciosa', 'ficus-lyrata'];
+  if (typeof window === 'undefined') return [];
   const stored = localStorage.getItem(GARDEN_STORAGE_KEY);
-  if (stored === null) {
-    const initial = ['monstera-deliciosa', 'ficus-lyrata'];
-    localStorage.setItem(GARDEN_STORAGE_KEY, JSON.stringify(initial));
-    return initial;
-  }
+  if (!stored) return [];
   try {
     const parsed = JSON.parse(stored);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : ['monstera-deliciosa', 'ficus-lyrata'];
+    return Array.isArray(parsed) ? parsed : [];
   } catch (e) {
-    return ['monstera-deliciosa', 'ficus-lyrata'];
+    return [];
   }
 }
 
 export function setGardenPlantIds(ids) {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(GARDEN_STORAGE_KEY, JSON.stringify(ids));
+  localStorage.setItem(GARDEN_STORAGE_KEY, JSON.stringify(ids || []));
 }

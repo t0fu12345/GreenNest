@@ -5,11 +5,7 @@ import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import plantApi from '../services/plantApi';
 import gardenApi from '../services/gardenApi';
-import {
-  BOTANICAL_SPECIMENS,
-  getStarredPlantIds,
-  toggleStarredPlant
-} from '../data/botanicalSpecimens';
+import { BOTANICAL_SPECIMENS } from '../data/botanicalSpecimens';
 
 const normalizeApiPlant = (p) => ({
   id: p.specimenId || p._id,
@@ -41,17 +37,14 @@ const PersonalGallery = () => {
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  // Load plants from Atlas and sync with starred IDs
+  // Load plants from Atlas and sync with starred IDs from MongoDB
   const loadData = useCallback(async () => {
     setLoading(true);
-    const localStarred = getStarredPlantIds();
-    let effectiveStarred = [...localStarred];
-
-    // Build base map from static specimens
+    let effectiveStarred = [];
     const plantMap = { ...BOTANICAL_SPECIMENS };
 
     try {
-      // 1. Fetch live plants from MongoDB Atlas
+      // 1. Fetch live plants directory from MongoDB Atlas
       const plantRes = await plantApi.getPlants({ limit: 100 });
       if (plantRes?.data?.plants && Array.isArray(plantRes.data.plants)) {
         plantRes.data.plants.forEach(p => {
@@ -62,27 +55,30 @@ const PersonalGallery = () => {
         });
       }
 
-      // 2. If authenticated, fetch bookmarks from MongoDB Atlas
+      // 2. Fetch authenticated user's bookmarks directly from MongoDB Atlas
       if (isAuthenticated) {
         try {
           const gardenRes = await gardenApi.getMyGarden();
           const savedFromDb = gardenRes?.data?.savedPlants || [];
+          const dbStarredIds = [];
           savedFromDb.forEach(sp => {
             const norm = normalizeApiPlant(sp);
             const key = norm.id || norm._id;
             if (key) {
               plantMap[key] = norm;
-              if (!effectiveStarred.includes(key) && !effectiveStarred.includes(sp._id)) {
-                effectiveStarred.push(key);
-              }
+              dbStarredIds.push(key);
             }
           });
+          effectiveStarred = dbStarredIds;
         } catch (dbErr) {
           console.warn('Could not fetch saved plants from Atlas:', dbErr);
+          effectiveStarred = [];
         }
+      } else {
+        effectiveStarred = [];
       }
     } catch (err) {
-      console.warn('Using local specimens fallback in PersonalGallery:', err.message);
+      console.warn('Lỗi khi tải dữ liệu cây:', err.message);
     } finally {
       setAllPlantsMap(plantMap);
       setStarredIds(Array.from(new Set(effectiveStarred)));
@@ -101,23 +97,21 @@ const PersonalGallery = () => {
 
   const handleToggleStar = async (plantId, e) => {
     if (e) e.stopPropagation();
-    const updated = toggleStarredPlant(plantId);
-    setStarredIds(updated);
     const plant = allPlantsMap[plantId] || BOTANICAL_SPECIMENS[plantId];
+    const identifier = plant?._id || plant?.specimenId || plantId;
 
-    // Sync with MongoDB Atlas if authenticated
-    if (isAuthenticated && plant?._id) {
-      try {
-        await gardenApi.toggleBookmark(plant._id);
-      } catch (err) {
-        console.warn('Atlas bookmark toggle sync failed:', err);
+    try {
+      const res = await gardenApi.toggleBookmark(identifier);
+      const isBookmarked = res?.data?.isBookmarked;
+      if (isBookmarked) {
+        setStarredIds(prev => Array.from(new Set([...prev, plantId])));
+        showToast(`⭐ Đã thêm "${plant?.name || 'Cây'}" vào Mục Yêu Thích!`);
+      } else {
+        setStarredIds(prev => prev.filter(id => id !== plantId && id !== identifier));
+        showToast(`Đã xóa "${plant?.name || 'Cây'}" khỏi Mục Yêu Thích.`);
       }
-    }
-
-    if (updated.includes(plantId)) {
-      showToast(`⭐ Added "${plant?.name || 'Plant'}" to Personal Gallery!`);
-    } else {
-      showToast(`Removed "${plant?.name || 'Plant'}" from Personal Gallery.`);
+    } catch (err) {
+      showToast('Lỗi cập nhật yêu thích: ' + err.message);
     }
   };
 

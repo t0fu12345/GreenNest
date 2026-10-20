@@ -4,13 +4,12 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import {
   BOTANICAL_SPECIMENS,
-  CANONICAL_PLANT_SLUGS,
-  getStarredPlantIds,
-  toggleStarredPlant
+  CANONICAL_PLANT_SLUGS
 } from '../data/botanicalSpecimens';
 import SaveToCollectionModal from '../components/gallery/SaveToCollectionModal';
-
+import { useAuth } from '../context/AuthContext';
 import plantApi from '../services/plantApi';
+import gardenApi from '../services/gardenApi';
 
 const normalizePlant = (p) => ({
   id: p.specimenId || p._id,
@@ -38,6 +37,7 @@ const normalizePlant = (p) => ({
 
 const Plants = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [activeBiome, setActiveBiome] = useState('all');
   const [activeTag, setActiveTag] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,8 +49,6 @@ const Plants = () => {
   const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
 
   useEffect(() => {
-    setStarredIds(getStarredPlantIds());
-
     // Tải dữ liệu cây thực tế từ MongoDB Backend
     const fetchPlants = async () => {
       try {
@@ -66,8 +64,24 @@ const Plants = () => {
       }
     };
 
+    const fetchUserSaved = async () => {
+      if (isAuthenticated) {
+        try {
+          const res = await gardenApi.getMyGarden();
+          const saved = res?.data?.savedPlants || [];
+          const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
+          setStarredIds(ids);
+        } catch (e) {
+          console.warn('Không thể tải cây yêu thích từ API:', e);
+        }
+      } else {
+        setStarredIds([]);
+      }
+    };
+
     fetchPlants();
-  }, []);
+    fetchUserSaved();
+  }, [isAuthenticated]);
 
   const fallbackPlants = CANONICAL_PLANT_SLUGS?.length
     ? CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean)
@@ -79,15 +93,29 @@ const Plants = () => {
     setTimeout(() => setToastMessage(''), 3500);
   };
 
-  const handleToggleStar = (plantId, e) => {
+  const handleToggleStar = async (plantId, e) => {
     if (e) e.stopPropagation();
-    const updated = toggleStarredPlant(plantId);
-    setStarredIds(updated);
-    const plant = BOTANICAL_SPECIMENS[plantId];
-    if (updated.includes(plantId)) {
-      showToast(`⭐ Added "${plant?.name || 'Plant'}" to Personal Gallery!`);
-    } else {
-      showToast(`Removed "${plant?.name || 'Plant'}" from Personal Gallery.`);
+    if (!isAuthenticated) {
+      showToast('Vui lòng đăng nhập để lưu cây vào mục yêu thích!');
+      setTimeout(() => navigate('/login'), 1200);
+      return;
+    }
+
+    const plant = allPlants.find(p => p.id === plantId || p._id === plantId) || BOTANICAL_SPECIMENS[plantId];
+    const identifier = plant?._id || plant?.id || plantId;
+
+    try {
+      const res = await gardenApi.toggleBookmark(identifier);
+      const isBookmarked = res?.data?.isBookmarked;
+      if (isBookmarked) {
+        setStarredIds(prev => Array.from(new Set([...prev, plantId])));
+        showToast(`⭐ Đã thêm "${plant?.name || 'Cây'}" vào Mục Yêu Thích!`);
+      } else {
+        setStarredIds(prev => prev.filter(id => id !== plantId && id !== identifier));
+        showToast(`Đã xóa "${plant?.name || 'Cây'}" khỏi Mục Yêu Thích.`);
+      }
+    } catch (err) {
+      showToast('Lỗi cập nhật yêu thích: ' + err.message);
     }
   };
 
@@ -360,7 +388,14 @@ const Plants = () => {
                       <div style={{ display: 'flex', gap: '6px' }}>
                         <button
                           type="button"
-                          onClick={() => setTargetSavePlantSlug(plant.slug || plant.id)}
+                          onClick={() => {
+                            if (!isAuthenticated) {
+                              showToast('Vui lòng đăng nhập để lưu cây vào bộ sưu tập!');
+                              setTimeout(() => navigate('/login'), 1200);
+                              return;
+                            }
+                            setTargetSavePlantSlug(plant.slug || plant.id);
+                          }}
                           title="Lưu cây vào bộ sưu tập"
                           style={{
                             background: 'rgba(34, 197, 94, 0.15)',

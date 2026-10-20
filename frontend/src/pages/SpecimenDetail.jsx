@@ -4,13 +4,12 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import {
   BOTANICAL_SPECIMENS,
-  SPECIMEN_KEYS,
-  getStarredPlantIds,
-  toggleStarredPlant
+  SPECIMEN_KEYS
 } from '../data/botanicalSpecimens';
 import SaveToCollectionModal from '../components/gallery/SaveToCollectionModal';
-
+import { useAuth } from '../context/AuthContext';
 import plantApi from '../services/plantApi';
+import gardenApi from '../services/gardenApi';
 
 const SpecimenDetail = () => {
   const [searchParams] = useSearchParams();
@@ -26,10 +25,25 @@ const SpecimenDetail = () => {
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    setStarredIds(getStarredPlantIds());
-  }, []);
+    const fetchUserSaved = async () => {
+      if (isAuthenticated) {
+        try {
+          const res = await gardenApi.getMyGarden();
+          const saved = res?.data?.savedPlants || [];
+          const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
+          setStarredIds(ids);
+        } catch (e) {
+          console.warn('Không thể tải cây yêu thích:', e);
+        }
+      } else {
+        setStarredIds([]);
+      }
+    };
+    fetchUserSaved();
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (!requestedId) return;
@@ -96,20 +110,33 @@ const SpecimenDetail = () => {
   const plant = currentPlant || BOTANICAL_SPECIMENS['specimen-monstera'];
   const plantId = plant.id || defaultId;
 
-  const isStarred = starredIds.includes(plantId);
+  const isStarred = starredIds.includes(plantId) || (plant._id && starredIds.includes(plant._id));
 
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(''), 3500);
   };
 
-  const handleToggleStar = () => {
-    const updated = toggleStarredPlant(plantId);
-    setStarredIds(updated);
-    if (updated.includes(plantId)) {
-      showToast(`⭐ Added "${plant.name}" to Personal Gallery!`);
-    } else {
-      showToast(`Removed "${plant.name}" from Personal Gallery.`);
+  const handleToggleStar = async () => {
+    if (!isAuthenticated) {
+      showToast('Vui lòng đăng nhập để lưu cây vào mục yêu thích!');
+      setTimeout(() => navigate('/login'), 1200);
+      return;
+    }
+
+    const identifier = plant._id || plant.id || defaultId;
+    try {
+      const res = await gardenApi.toggleBookmark(identifier);
+      const isBookmarked = res?.data?.isBookmarked;
+      if (isBookmarked) {
+        setStarredIds(prev => Array.from(new Set([...prev, plantId])));
+        showToast(`⭐ Đã thêm "${plant.name}" vào Mục Yêu Thích!`);
+      } else {
+        setStarredIds(prev => prev.filter(id => id !== plantId && id !== plant._id));
+        showToast(`Đã xóa "${plant.name}" khỏi Mục Yêu Thích.`);
+      }
+    } catch (err) {
+      showToast('Lỗi cập nhật yêu thích: ' + err.message);
     }
   };
 
@@ -329,7 +356,14 @@ const SpecimenDetail = () => {
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
                 <button
                   type="button"
-                  onClick={() => setIsSaveModalOpen(true)}
+                  onClick={() => {
+                    if (!isAuthenticated) {
+                      showToast('Vui lòng đăng nhập để thêm cây vào bộ sưu tập!');
+                      setTimeout(() => navigate('/login'), 1200);
+                      return;
+                    }
+                    setIsSaveModalOpen(true);
+                  }}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',

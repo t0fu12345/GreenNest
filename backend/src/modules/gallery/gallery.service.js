@@ -1,7 +1,7 @@
 const Gallery = require('./gallery.model');
 
 class GalleryService {
-  async getGallery({ aspectRatio, page = 1, limit = 20 }) {
+  async getGallery({ aspectRatio, page = 1, limit = 20, userId = null }) {
     const query = {};
 
     if (aspectRatio && aspectRatio !== 'all') {
@@ -23,8 +23,16 @@ class GalleryService {
 
     const totalPages = Math.ceil(totalItems / limitNum);
 
+    const formattedGallery = gallery.map(item => {
+      const obj = item.toObject();
+      obj.isLiked = userId
+        ? (item.likedBy || []).some(uId => uId.toString() === userId.toString())
+        : false;
+      return obj;
+    });
+
     return {
-      gallery,
+      gallery: formattedGallery,
       pagination: {
         page: pageNum,
         limit: limitNum,
@@ -34,7 +42,7 @@ class GalleryService {
     };
   }
 
-  async likeImage(id) {
+  async likeImage(id, userId) {
     const image = await Gallery.findById(id);
     if (!image) {
       const error = new Error('Không tìm thấy ảnh');
@@ -43,10 +51,33 @@ class GalleryService {
       throw error;
     }
 
-    image.likesCount = (image.likesCount || 0) + 1;
+    if (!Array.isArray(image.likedBy)) {
+      image.likedBy = [];
+    }
+
+    const existingIndex = image.likedBy.findIndex(
+      uId => uId.toString() === userId.toString()
+    );
+
+    let isLiked = false;
+    if (existingIndex > -1) {
+      // Đã like -> Hủy thả tim (ấn lần 2)
+      image.likedBy.splice(existingIndex, 1);
+      image.likesCount = Math.max(0, (image.likesCount || 1) - 1);
+      isLiked = false;
+    } else {
+      // Chưa like -> Thả tim (chỉ thả 1 lần)
+      image.likedBy.push(userId);
+      image.likesCount = (image.likesCount || 0) + 1;
+      isLiked = true;
+    }
+
     await image.save();
 
-    return { likesCount: image.likesCount };
+    return {
+      liked: isLiked,
+      likesCount: image.likesCount
+    };
   }
 
   async createImage(data) {

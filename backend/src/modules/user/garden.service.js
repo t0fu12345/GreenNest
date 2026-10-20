@@ -13,8 +13,14 @@ class GardenService {
     };
   }
 
-  async addToGarden(userId, plantId, customNickname) {
-    const plant = await Plant.findById(plantId);
+  async addToGarden(userId, plantIdentifier, customNickname) {
+    let plant = null;
+    if (plantIdentifier && typeof plantIdentifier === 'string' && plantIdentifier.match(/^[0-9a-fA-F]{24}$/)) {
+      plant = await Plant.findById(plantIdentifier);
+    }
+    if (!plant) {
+      plant = await Plant.findOne({ specimenId: plantIdentifier });
+    }
     if (!plant) {
       const error = new Error('Không tìm thấy cây trồng này');
       error.statusCode = 404;
@@ -24,7 +30,9 @@ class GardenService {
 
     const user = await User.findById(userId);
 
-    const alreadyInGarden = user.garden.some(item => item.plant.toString() === plantId);
+    const alreadyInGarden = user.garden.some(
+      item => item.plant && item.plant.toString() === plant._id.toString()
+    );
     if (alreadyInGarden) {
       const error = new Error('Cây trồng này đã có trong Vườn của bạn');
       error.statusCode = 400;
@@ -40,7 +48,7 @@ class GardenService {
     ];
 
     user.garden.push({
-      plant: plantId,
+      plant: plant._id,
       customNickname: customNickname || plant.name,
       addedAt: new Date(),
       checklist: defaultChecklist
@@ -150,16 +158,33 @@ class GardenService {
     return true;
   }
 
-  async toggleBookmark(userId, plantId) {
+  async toggleBookmark(userId, plantIdentifier) {
+    let plant = null;
+    if (plantIdentifier && typeof plantIdentifier === 'string' && plantIdentifier.match(/^[0-9a-fA-F]{24}$/)) {
+      plant = await Plant.findById(plantIdentifier);
+    }
+    if (!plant) {
+      plant = await Plant.findOne({ specimenId: plantIdentifier });
+    }
+    if (!plant) {
+      const error = new Error('Không tìm thấy cây trồng này');
+      error.statusCode = 404;
+      error.errorCode = 'PLANT_NOT_FOUND';
+      throw error;
+    }
+
     const user = await User.findById(userId);
-    const index = user.savedPlants.indexOf(plantId);
+    const plantIdStr = plant._id.toString();
+    const index = user.savedPlants.findIndex(
+      id => id && id.toString() === plantIdStr
+    );
 
     let isBookmarked = false;
     if (index > -1) {
       user.savedPlants.splice(index, 1);
       isBookmarked = false;
     } else {
-      user.savedPlants.push(plantId);
+      user.savedPlants.push(plant._id);
       isBookmarked = true;
     }
 

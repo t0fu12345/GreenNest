@@ -131,9 +131,26 @@ async function runTests() {
     assert(resGallery.status === 200 && galleryData.data.length === 10, 'GET /api/gallery phân trang 10 ảnh');
 
     const firstImage = galleryData.data[0];
-    const resLike = await fetch(`${BASE_URL}/gallery/${firstImage._id}/like`, { method: 'POST' });
+
+    // 7.1 Chưa đăng nhập -> Chặn 401
+    const resUnauthLike = await fetch(`${BASE_URL}/gallery/${firstImage._id}/like`, { method: 'POST' });
+    assert(resUnauthLike.status === 401, 'POST /api/gallery/:id/like chặn khách chưa đăng nhập với 401 Unauthorized');
+
+    // 7.2 Đã đăng nhập -> Thả tim lần 1 (+1)
+    const resLike = await fetch(`${BASE_URL}/gallery/${firstImage._id}/like`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${userToken}` }
+    });
     const likeData = await resLike.json();
-    assert(resLike.status === 200 && likeData.data.likesCount > firstImage.likesCount, `POST /api/gallery/:id/like tăng lượt thích (${likeData.data.likesCount})`);
+    assert(resLike.status === 200 && likeData.data.liked === true, `POST /api/gallery/:id/like thả tim thành công (Lượt thích: ${likeData.data.likesCount})`);
+
+    // 7.3 Đã đăng nhập -> Thả tim lần 2 (Hủy thả tim -1)
+    const resUnlike = await fetch(`${BASE_URL}/gallery/${firstImage._id}/like`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${userToken}` }
+    });
+    const unlikeData = await resUnlike.json();
+    assert(resUnlike.status === 200 && unlikeData.data.liked === false, `POST /api/gallery/:id/like ấn lần 2 hủy thả tim thành công (Lượt thích: ${unlikeData.data.likesCount})`);
 
     // 8. User Garden Module - Hybrid Sync & Checklist
     console.log('\n▶ [8/10] Kiểm tra Vườn cá nhân & Hybrid Sync (Garden Module)');

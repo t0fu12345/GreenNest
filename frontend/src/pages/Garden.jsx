@@ -4,11 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import gardenApi from '../services/gardenApi';
-import {
-  BOTANICAL_SPECIMENS,
-  getGardenPlantIds,
-  setGardenPlantIds
-} from '../data/botanicalSpecimens';
+import { BOTANICAL_SPECIMENS } from '../data/botanicalSpecimens';
 
 const Garden = () => {
   const navigate = useNavigate();
@@ -51,65 +47,15 @@ const Garden = () => {
           });
           setPlants(mapped);
         } else {
-          // Nếu vườn trên cloud rỗng, tự động đồng bộ từ local guest nếu có
-          const localIds = getGardenPlantIds();
-          if (localIds.length > 0) {
-            try {
-              await gardenApi.syncGarden(localIds);
-              const retryRes = await gardenApi.getMyGarden();
-              const retryList = retryRes?.data?.garden || [];
-              if (retryList.length > 0) {
-                const mapped = retryList.map(item => {
-                  const p = item.plant || {};
-                  const staticMatch = BOTANICAL_SPECIMENS[p.specimenId] || BOTANICAL_SPECIMENS[p._id];
-                  return {
-                    gardenItemId: item._id,
-                    id: p.specimenId || p._id || item._id,
-                    dbId: p._id,
-                    name: item.customNickname || p.name || staticMatch?.name || 'Cultivated Specimen',
-                    scientificName: p.scientificName || staticMatch?.scientificName || 'Botanical flora',
-                    biome: p.biome || staticMatch?.biome || 'tropical',
-                    image: p.images?.[0]?.url || staticMatch?.image || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
-                    waterStatus: p.watering || 'Nominal Hydration',
-                    isWatered: false,
-                    checklist: item.checklist || [],
-                    rawPlant: p
-                  };
-                });
-                setPlants(mapped);
-                setLoading(false);
-                return;
-              }
-            } catch (syncErr) {
-              console.warn('Sync garden error:', syncErr);
-            }
-          }
+          // Vườn trên MongoDB Atlas chưa có cây: để mảng rỗng để hiển thị Empty State
           setPlants([]);
         }
       } else {
-        // Khách chưa đăng nhập: đọc từ local storage và BOTANICAL_SPECIMENS
-        const localIds = getGardenPlantIds();
-        const mapped = localIds.map(id => {
-          const staticPlant = BOTANICAL_SPECIMENS[id];
-          if (!staticPlant) return null;
-          return {
-            id: staticPlant.id,
-            name: staticPlant.name,
-            scientificName: staticPlant.scientificName,
-            biome: staticPlant.biome,
-            image: staticPlant.image,
-            waterStatus: staticPlant.waterStatus || 'Balanced',
-            isWatered: false,
-            checklist: []
-          };
-        }).filter(Boolean);
-        setPlants(mapped);
+        setPlants([]);
       }
     } catch (err) {
-      console.warn('Không thể tải vườn từ API, sử dụng dữ liệu dự phòng:', err.message);
-      const localIds = getGardenPlantIds();
-      const mapped = localIds.map(id => BOTANICAL_SPECIMENS[id]).filter(Boolean);
-      setPlants(mapped);
+      console.warn('Lỗi khi tải vườn từ MongoDB Atlas:', err.message);
+      setPlants([]);
     } finally {
       setLoading(false);
     }
@@ -132,41 +78,27 @@ const Garden = () => {
 
   const handleToggleWater = async (e, plant) => {
     e.stopPropagation();
-    if (isAuthenticated && plant.gardenItemId) {
-      try {
-        const nextState = !plant.isWatered;
-        await gardenApi.updateChecklist({
-          gardenItemId: plant.gardenItemId,
-          taskName: 'water',
-          completed: nextState
-        });
-        setPlants(prev => prev.map(p => {
-          if (p.gardenItemId === plant.gardenItemId) {
-            return {
-              ...p,
-              isWatered: nextState,
-              waterStatus: nextState ? '💧 Hydrated Today' : (p.rawPlant?.watering || 'Nominal Hydration')
-            };
-          }
-          return p;
-        }));
-        showToast(nextState ? `💧 Recorded hydration for ${plant.name}!` : `Watering reset for ${plant.name}`);
-      } catch (err) {
-        showToast('Error updating status: ' + err.message);
-      }
-    } else {
+    if (!plant.gardenItemId) return;
+    try {
+      const nextState = !plant.isWatered;
+      await gardenApi.updateChecklist({
+        gardenItemId: plant.gardenItemId,
+        taskName: 'water',
+        completed: nextState
+      });
       setPlants(prev => prev.map(p => {
-        if (p.id === plant.id) {
-          const nextState = !p.isWatered;
+        if (p.gardenItemId === plant.gardenItemId) {
           return {
             ...p,
             isWatered: nextState,
-            waterStatus: nextState ? '💧 Hydrated Today' : 'Balanced'
+            waterStatus: nextState ? '💧 Hydrated Today' : (p.rawPlant?.watering || 'Nominal Hydration')
           };
         }
         return p;
       }));
-      showToast(`💧 Hydration logged locally for ${plant.name}!`);
+      showToast(nextState ? `💧 Recorded hydration for ${plant.name}!` : `Watering reset for ${plant.name}`);
+    } catch (err) {
+      showToast('Error updating status: ' + err.message);
     }
   };
 
@@ -174,7 +106,7 @@ const Garden = () => {
     e.stopPropagation();
     if (!window.confirm(`Remove "${plant.name}" from your garden sanctuary?`)) return;
 
-    if (isAuthenticated && plant.gardenItemId) {
+    if (plant.gardenItemId) {
       try {
         await gardenApi.removePlant(plant.gardenItemId);
         setPlants(prev => prev.filter(p => p.gardenItemId !== plant.gardenItemId));
@@ -182,12 +114,6 @@ const Garden = () => {
       } catch (err) {
         showToast('Could not remove plant: ' + err.message);
       }
-    } else {
-      const currentIds = getGardenPlantIds();
-      const nextIds = currentIds.filter(id => id !== plant.id);
-      setGardenPlantIds(nextIds);
-      setPlants(prev => prev.filter(p => p.id !== plant.id));
-      showToast(`🌿 Removed "${plant.name}" from local garden.`);
     }
   };
 
@@ -252,17 +178,15 @@ const Garden = () => {
             <div style={{
               fontSize: '0.76rem',
               padding: '6px 12px',
-              background: isAuthenticated ? 'rgba(34, 197, 94, 0.1)' : 'rgba(234, 179, 8, 0.1)',
-              border: `1px solid ${isAuthenticated ? 'rgba(34, 197, 94, 0.3)' : 'rgba(234, 179, 8, 0.3)'}`,
-              color: isAuthenticated ? '#86efac' : '#fde047',
+              background: 'rgba(34, 197, 94, 0.1)',
+              border: '1px solid rgba(34, 197, 94, 0.3)',
+              color: '#86efac',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between'
             }}>
-              <span>{isAuthenticated ? '☁️ Cloud Synced (MongoDB Atlas)' : '💾 Guest Mode (Local Storage)'}</span>
-              {!isAuthenticated && (
-                <Link to="/login" style={{ color: '#86efac', textDecoration: 'underline', fontWeight: 600 }}>Sign In</Link>
-              )}
+              <span>☁️ Cloud Synced (MongoDB Atlas)</span>
+              <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Live Database</span>
             </div>
 
             {/* Quick Filter */}

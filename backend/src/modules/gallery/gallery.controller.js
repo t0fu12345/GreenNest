@@ -5,7 +5,12 @@ class GalleryController {
   async getGallery(req, res, next) {
     try {
       const { aspectRatio, page, limit } = req.query;
-      const { gallery, pagination } = await galleryService.getGallery({ aspectRatio, page, limit });
+      const { gallery, pagination } = await galleryService.getGallery({
+        aspectRatio,
+        page,
+        limit,
+        userId: req.user?._id
+      });
 
       return successResponse(
         res,
@@ -21,8 +26,9 @@ class GalleryController {
 
   async likeImage(req, res, next) {
     try {
-      const result = await galleryService.likeImage(req.params.id);
-      return successResponse(res, result, 'Đã thích ảnh');
+      const result = await galleryService.likeImage(req.params.id, req.user._id);
+      const msg = result.liked ? 'Đã thả tim cho ảnh' : 'Đã hủy thả tim cho ảnh';
+      return successResponse(res, result, msg);
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);

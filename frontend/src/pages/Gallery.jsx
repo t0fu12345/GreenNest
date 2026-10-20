@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext';
 import galleryApi from '../services/galleryApi';
 import fallbackGallery from '../data/gallerySeed.json';
 
 const Gallery = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [items, setItems] = useState(fallbackGallery);
   const [loading, setLoading] = useState(false);
   const [activeLightboxIndex, setActiveLightboxIndex] = useState(null);
@@ -38,19 +42,26 @@ const Gallery = () => {
     fetchGallery();
   }, [fetchGallery]);
 
-  // Thả tim ảnh (Like API)
+  // Thả tim ảnh (Like API) - yêu cầu đăng nhập, mỗi ảnh chỉ thả tim 1 lần, ấn lần 2 hủy thả tim
   const handleLike = async (e, id) => {
     e.stopPropagation();
+    if (!isAuthenticated) {
+      showToast('Vui lòng đăng nhập để thả tim cho bức ảnh!');
+      setTimeout(() => navigate('/login'), 1200);
+      return;
+    }
     try {
       const res = await galleryApi.likeImage(id);
-      if (res?.data?.likesCount !== undefined) {
+      const isLiked = res?.data?.liked;
+      const count = res?.data?.likesCount;
+      if (count !== undefined) {
         setItems(prev => prev.map(item => 
-          item._id === id ? { ...item, likesCount: res.data.likesCount } : item
+          item._id === id ? { ...item, likesCount: count, isLiked } : item
         ));
-        showToast('❤️ Đã thả tim cho bức ảnh!');
+        showToast(isLiked ? '❤️ Đã thả tim cho bức ảnh!' : '🤍 Đã hủy thả tim!');
       }
     } catch (err) {
-      showToast('Không thể cập nhật lượt thích.');
+      showToast('Không thể cập nhật lượt thích: ' + (err.message || 'Lỗi'));
     }
   };
 
@@ -265,9 +276,9 @@ const Gallery = () => {
                       type="button"
                       onClick={(e) => handleLike(e, item._id)}
                       style={{
-                        background: 'rgba(255, 255, 255, 0.15)',
-                        border: '1px solid rgba(255, 255, 255, 0.25)',
-                        color: '#fff',
+                        background: item.isLiked ? 'rgba(239, 68, 68, 0.25)' : 'rgba(255, 255, 255, 0.15)',
+                        border: item.isLiked ? '1px solid rgba(239, 68, 68, 0.6)' : '1px solid rgba(255, 255, 255, 0.25)',
+                        color: item.isLiked ? '#fca5a5' : '#fff',
                         padding: '6px 12px',
                         borderRadius: '9999px',
                         fontSize: '0.82rem',
@@ -279,8 +290,9 @@ const Gallery = () => {
                         backdropFilter: 'blur(8px)',
                         transition: 'all 0.2s ease'
                       }}
+                      title={item.isLiked ? "Hủy thả tim" : "Thả tim"}
                     >
-                      <span>❤️</span>
+                      <span>{item.isLiked ? '❤️' : '🤍'}</span>
                       <span>{item.likesCount || 0}</span>
                     </button>
                   </div>
@@ -426,8 +438,10 @@ const Gallery = () => {
                 type="button"
                 onClick={(e) => handleLike(e, activeItem._id)}
                 style={{
-                  background: 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)',
-                  color: '#041008',
+                  background: activeItem.isLiked 
+                    ? 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)'
+                    : 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)',
+                  color: activeItem.isLiked ? '#fff' : '#041008',
                   border: 'none',
                   padding: '10px 20px',
                   borderRadius: '9999px',
@@ -439,7 +453,7 @@ const Gallery = () => {
                   gap: '8px'
                 }}
               >
-                <span>❤️ Thả Tim</span>
+                <span>{activeItem.isLiked ? '❤️ Đã Thích' : '🤍 Thả Tim'}</span>
                 <span>({activeItem.likesCount || 0})</span>
               </button>
             </div>

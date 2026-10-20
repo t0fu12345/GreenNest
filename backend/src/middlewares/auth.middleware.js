@@ -29,6 +29,23 @@ const protect = async (req, res, next) => {
   }
 };
 
+const optionalAuth = async (req, res, next) => {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      const token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET || 'greennest_botanical_jwt_secret_key_2026_super_secure'
+      );
+      req.user = await User.findById(decoded.id).select('-password');
+    } catch (e) {
+      // Ignored for optional authentication
+    }
+  }
+  next();
+};
+
 module.exports = {
-  protect
+  protect,
+  optionalAuth
 };
