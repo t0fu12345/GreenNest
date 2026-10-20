@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth, getCookie } from '../context/AuthContext';
 
 const Login = () => {
   const { login, loginWithGoogle, STORAGE_KEYS } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [showPassword, setShowPassword] = useState(false);
   const [identifier, setIdentifier] = useState('');
@@ -43,6 +44,13 @@ const Login = () => {
       setIsToastActive(false);
     }, duration);
   };
+
+  // Check if transferred from a protected page like My Garden
+  useEffect(() => {
+    if (location.state?.message) {
+      showNotification(location.state.message, 'error', 4500);
+    }
+  }, [location.state]);
 
   const handleSocialLogin = (provider) => {
     setSubmitting(true);

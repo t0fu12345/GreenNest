@@ -13,6 +13,7 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
+import UserRoute from './components/UserRoute';
 
 function App() {
   return (
@@ -23,9 +24,30 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/specimen" element={<Gallery />} />
           <Route path="/about" element={<About />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/garden" element={<Garden />} />
-          <Route path="/personal-gallery" element={<PersonalGallery />} />
+          <Route 
+            path="/user" 
+            element={
+              <UserRoute>
+                <User />
+              </UserRoute>
+            } 
+          />
+          <Route 
+            path="/garden" 
+            element={
+              <UserRoute>
+                <Garden />
+              </UserRoute>
+            } 
+          />
+          <Route 
+            path="/personal-gallery" 
+            element={
+              <UserRoute>
+                <PersonalGallery />
+              </UserRoute>
+            } 
+          />
           <Route path="/plant-macro" element={<PlantMacro />} />
           <Route path="/specimen-detail" element={<SpecimenDetail />} />
           <Route path="/login" element={<Login />} />

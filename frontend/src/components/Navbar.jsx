@@ -47,7 +47,7 @@ const Navbar = () => {
           <li><NavLink to="/" end>Home</NavLink></li>
           <li><NavLink to="/gallery">Specimen ↗</NavLink></li>
           <li><NavLink to="/about">About Us ↗</NavLink></li>
-          <li><NavLink to="/user">My Garden 🌿</NavLink></li>
+          <li><NavLink to={isAuthenticated && !isAdmin ? "/user" : "/login"}>My Garden 🌿</NavLink></li>
           {isAdmin && (
             <li>
               <NavLink 
@@ -161,7 +161,7 @@ const Navbar = () => {
               </ul>
 
               <div className="notif-footer">
-                <Link to="/user" className="notif-footer-link">Go to My Garden 🌿</Link>
+                <Link to={isAuthenticated && !isAdmin ? "/user" : "/login"} className="notif-footer-link">Go to My Garden 🌿</Link>
               </div>
             </div>
           </div>
