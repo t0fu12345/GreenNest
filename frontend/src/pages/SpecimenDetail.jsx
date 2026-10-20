@@ -16,9 +16,9 @@ const SpecimenDetail = () => {
 
   const plantId = (requestedId && BOTANICAL_SPECIMENS[requestedId])
     ? requestedId
-    : 'specimen-monstera';
+    : (SPECIMEN_KEYS[0] || null);
 
-  const plant = BOTANICAL_SPECIMENS[plantId];
+  const plant = plantId ? BOTANICAL_SPECIMENS[plantId] : null;
 
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
@@ -26,6 +26,22 @@ const SpecimenDetail = () => {
   useEffect(() => {
     setStarredIds(getStarredPlantIds());
   }, []);
+
+  if (!plant) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#07100b', color: '#f0fdf4' }}>
+        <Navbar />
+        <main style={{ flex: 1, padding: '160px 24px 80px', textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', marginBottom: '16px' }}>No Specimen Data Available</h2>
+          <p style={{ color: '#cbd5e1', marginBottom: '28px', lineHeight: 1.6 }}>The requested botanical specimen has been removed or is no longer in the archive.</p>
+          <Link to="/gallery" className="btn-cta-pill" style={{ textDecoration: 'none', display: 'inline-block' }}>
+            ← Return to Gallery Exhibition
+          </Link>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   const isStarred = starredIds.includes(plantId);
 
@@ -71,10 +87,10 @@ const SpecimenDetail = () => {
           marginBottom: '32px'
         }}>
           <Link
-            to="/plants"
+            to="/gallery"
             style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--emerald-light)', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600 }}
           >
-            <span>← Back to Specimen Archive</span>
+            <span>← Back to Gallery Exhibition</span>
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>

@@ -245,6 +245,40 @@
       transform: rotate(10deg);
     }
 
+    .btn-profile-user {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      color: var(--text-secondary);
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      padding: 0;
+      outline: none;
+      flex-shrink: 0;
+    }
+
+    .btn-profile-user:hover,
+    .btn-profile-user.active {
+      background: rgba(34, 197, 94, 0.16);
+      border-color: rgba(34, 197, 94, 0.45);
+      color: #86efac;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.3);
+      transform: translateY(-1px) scale(1.05);
+    }
+
+    .btn-profile-user svg {
+      width: 19px;
+      height: 19px;
+      transition: transform 0.25s ease;
+    }
+
     .notif-badge-pill {
       position: absolute;
       top: -3px;
@@ -9395,6 +9429,33 @@
   left: 50% !important;
   transform: translateX(-50%) !important;
   width: 100% !important;
+}
+
+/* Center Navbar Links in Pill */
+.navbar-pill {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.navbar-pill .brand-logo {
+  flex: 1 1 0% !important;
+  white-space: nowrap !important;
+}
+
+.navbar-pill .nav-links {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.navbar-pill .nav-actions {
+  flex: 1 1 0% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  white-space: nowrap !important;
 }
 
 /* ==========================================================================

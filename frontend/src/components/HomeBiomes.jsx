@@ -50,8 +50,8 @@ const HomeBiomes = () => {
           <div className="section-subtitle-kicker">The Tri-Biome Architecture // 3 Global Ecological Biomes</div>
           <h2 className="section-heading">Explore Flora by Climatic Biome</h2>
         </div>
-        <Link to="/plants" className="btn-cta-pill" style={{ fontSize: '0.85rem' }}>
-          <span>Explore Complete Archive (Plants Directory) →</span>
+        <Link to="/gallery" className="btn-cta-pill" style={{ fontSize: '0.85rem' }}>
+          <span>Explore Complete Archive (Gallery Page) →</span>
         </Link>
       </div>
 
@@ -104,8 +104,8 @@ const HomeBiomes = () => {
       </div>
 
       <div style={{ textAlign: 'center', marginTop: '40px' }}>
-        <Link to="/plants" className="btn-hero-primary" style={{ display: 'inline-flex', padding: '14px 32px', fontSize: '0.95rem', gap: '10px' }}>
-          <span>Switch to Dedicated Plants Archive →</span>
+        <Link to="/gallery" className="btn-hero-primary" style={{ display: 'inline-flex', padding: '14px 32px', fontSize: '0.95rem', gap: '10px' }}>
+          <span>Switch to Dedicated Gallery Archive →</span>
         </Link>
       </div>
     </main>

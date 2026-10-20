@@ -237,7 +237,7 @@ const PersonalGallery = () => {
             </ul>
 
             <Link
-              to="/plants"
+              to="/gallery"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -254,7 +254,7 @@ const PersonalGallery = () => {
                 textAlign: 'center'
               }}
             >
-              + Curate More Plants
+              + Curate More From Gallery
             </Link>
           </aside>
 
@@ -284,8 +284,8 @@ const PersonalGallery = () => {
                 <p style={{ color: '#cbd5e1', maxWidth: '520px', margin: '0 auto 24px', fontSize: '0.95rem' }}>
                   Bookmark botanical specimens from the main gallery archive to keep their dossiers, care telemetry, and taxonomy notes here.
                 </p>
-                <Link to="/plants" className="btn-cta-pill" style={{ textDecoration: 'none' }}>
-                  Explore Plants Directory →
+                <Link to="/gallery" className="btn-cta-pill" style={{ textDecoration: 'none' }}>
+                  Explore Gallery Archive →
                 </Link>
               </div>
             ) : filteredPlants.length === 0 ? (

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 
 const User = () => {
@@ -149,7 +148,7 @@ const User = () => {
                     background: 'rgba(239, 68, 68, 0.15)',
                     border: '1px solid rgba(239, 68, 68, 0.4)',
                     color: '#fca5a5',
-                    borderRadius: 0,
+                    borderRadius: '9999px',
                     padding: '6px 14px',
                     fontSize: '0.8rem',
                     fontWeight: 600,
@@ -165,10 +164,10 @@ const User = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '12px',
-              padding: '10px 20px',
+              padding: '8px 20px',
               background: 'rgba(255, 255, 255, 0.05)',
               border: '1px solid rgba(255, 255, 255, 0.14)',
-              borderRadius: 0
+              borderRadius: '9999px'
             }}>
               <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Chưa đăng nhập tài khoản.</span>
               <Link 
@@ -180,7 +179,7 @@ const User = () => {
                   textDecoration: 'none'
                 }}
               >
-                Đăng nhập ngay →
+                Sign In →
               </Link>
             </div>
           )}
@@ -420,8 +419,6 @@ const User = () => {
           </div>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 };

@@ -44,9 +44,8 @@ const Navbar = () => {
 
         {/* Menu links in English */}
         <ul className="nav-links">
-          <li><NavLink to="/" end>Overview</NavLink></li>
-          <li><NavLink to="/plants">Plants 🌿</NavLink></li>
-          <li><NavLink to="/gallery">Gallery ↗</NavLink></li>
+          <li><NavLink to="/" end>Home</NavLink></li>
+          <li><NavLink to="/gallery">Specimen ↗</NavLink></li>
           <li><NavLink to="/about">About Us ↗</NavLink></li>
           <li><NavLink to="/user">My Garden 🌿</NavLink></li>
           {isAdmin && (
@@ -128,11 +127,11 @@ const Navbar = () => {
                   className={`notif-item ${unreadItems.includes(2) ? 'unread' : ''}`}
                   onClick={() => handleItemClick(2)}
                 >
-                  <Link to="/plants" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
+                  <Link to="/gallery" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
                     <div className="notif-icon-bubble gallery">🌱</div>
                     <div className="notif-body">
                       <div className="notif-meta">
-                        <span className="notif-source-badge gallery">Gallery</span>
+                        <span className="notif-source-badge gallery">Specimen</span>
                         <span className="notif-time">1h ago</span>
                       </div>
                       <div className="notif-title">3 New Specimens Added</div>
@@ -167,6 +166,20 @@ const Navbar = () => {
             </div>
           </div>
 
+          {/* User Profile Button on the right near the bell */}
+          <Link
+            to="/profile"
+            className="btn-profile-user"
+            id="navProfileBtn"
+            title="User Profile"
+            aria-label="User Profile"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </Link>
+
           {isAuthenticated && user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <button
@@ -176,8 +189,8 @@ const Navbar = () => {
                   background: 'rgba(239, 68, 68, 0.15)',
                   border: '1px solid rgba(239, 68, 68, 0.35)',
                   color: '#fca5a5',
-                  borderRadius: 0,
-                  padding: '7px 14px',
+                  borderRadius: '9999px',
+                  padding: '7px 16px',
                   fontSize: '0.8rem',
                   cursor: 'pointer',
                   fontWeight: 600,
@@ -189,7 +202,7 @@ const Navbar = () => {
               </button>
             </div>
           ) : (
-            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem', borderRadius: 0 }}>
+            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 20px', fontSize: '0.84rem', borderRadius: '9999px' }}>
               Sign In
             </Link>
           )}

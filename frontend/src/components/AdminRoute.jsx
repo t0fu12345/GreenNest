@@ -121,7 +121,7 @@ const AdminRoute = ({ children }) => {
                 fontSize: '0.86rem',
                 fontWeight: 600,
                 textDecoration: 'none',
-                borderRadius: 0
+                borderRadius: '9999px'
               }}
             >
               ← Về trang chủ
@@ -136,7 +136,7 @@ const AdminRoute = ({ children }) => {
                 fontSize: '0.86rem',
                 fontWeight: 700,
                 textDecoration: 'none',
-                borderRadius: 0
+                borderRadius: '9999px'
               }}
             >
               Đăng nhập tài khoản Admin →

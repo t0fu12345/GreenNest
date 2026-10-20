@@ -15,11 +15,21 @@ const Login = () => {
   const [isToastActive, setIsToastActive] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // If user previously checked remember me, prefill remembered nickname (if available)
+  // Secret Admin modal state
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [adminPassInput, setAdminPassInput] = useState('');
+  const [adminError, setAdminError] = useState('');
+  const [adminSubmitting, setAdminSubmitting] = useState(false);
+
+  // If user previously checked remember me, prefill remembered name (exclude admin)
   useEffect(() => {
     try {
       const remembered = localStorage.getItem(STORAGE_KEYS.REMEMBERED_EMAIL) || getCookie(STORAGE_KEYS.REMEMBERED_EMAIL);
-      if (remembered) {
+      if (remembered && remembered.toLowerCase() === 'admin') {
+        localStorage.removeItem(STORAGE_KEYS.REMEMBERED_EMAIL);
+        deleteCookie(STORAGE_KEYS.REMEMBERED_EMAIL);
+        setIdentifier('');
+      } else if (remembered) {
         setIdentifier(remembered);
       }
     } catch {}
@@ -36,7 +46,7 @@ const Login = () => {
 
   const handleSocialLogin = (provider) => {
     setSubmitting(true);
-    showNotification(`Đang kết nối qua ${provider}... Đăng nhập thành công!`, 'success');
+    showNotification(`Connecting via ${provider}... Sign in successful!`, 'success');
     loginWithGoogle();
     setTimeout(() => {
       navigate('/');
@@ -46,7 +56,7 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     if (!identifier.trim() || !password.trim()) {
-      showNotification('Vui lòng nhập đầy đủ Nickname và Mật khẩu.', 'error');
+      showNotification('Please enter both Name and Password.', 'error');
       return;
     }
 
@@ -55,32 +65,47 @@ const Login = () => {
 
     if (result.success) {
       if (result.isAdmin) {
-        showNotification(`Xác thực thành công! Đã cấp quyền Quản trị viên & Token JWT. Đang vào Admin Portal...`, 'success');
+        showNotification(`Authentication successful! Accessing Admin Portal...`, 'success');
         setTimeout(() => {
           navigate('/admin');
         }, 900);
       } else {
-        showNotification(`Chào mừng trở lại, ${result.user.name}! Đăng nhập thành công. Đang chuyển hướng...`, 'success');
+        showNotification(`Welcome back, ${result.user.name}! Redirecting...`, 'success');
         setTimeout(() => {
           navigate('/');
         }, 900);
       }
     } else {
       setSubmitting(false);
-      showNotification(result.message, 'error', 4000);
+      showNotification(result.message || 'Invalid credentials. Please try again.', 'error', 4000);
     }
   };
 
-  const fillDemoAccount = () => {
-    setIdentifier('minhthao');
-    setPassword('GreenCanopy2026');
-    showNotification('Đã điền tài khoản mẫu (User): minhthao! Bạn có thể nhấn Đăng nhập.', 'success', 2500);
-  };
+  const handleAdminQuickLogin = (e) => {
+    e.preventDefault();
+    const cleanPass = adminPassInput.trim();
+    if (!cleanPass) {
+      setAdminError('Vui lòng nhập mật khẩu.');
+      return;
+    }
 
-  const fillAdminAccount = () => {
-    setIdentifier('admin');
-    setPassword('AdminCanopy2026!');
-    showNotification('Đã điền tài khoản Quản trị viên (Admin): admin!', 'success', 2500);
+    if (cleanPass !== 'Tuff' && cleanPass.toLowerCase() !== 'tuff') {
+      setAdminError('Mật khẩu không chính xác. Vui lòng thử lại!');
+      return;
+    }
+
+    setAdminSubmitting(true);
+    const result = login('admin', 'AdminCanopy2026!');
+    if (result.success) {
+      setIsAdminModalOpen(false);
+      showNotification('Đăng nhập Quản trị viên thành công! Đang chuyển tới Admin Portal...', 'success');
+      setTimeout(() => {
+        navigate('/admin');
+      }, 700);
+    } else {
+      setAdminSubmitting(false);
+      setAdminError(result.message || 'Lỗi xác thực quản trị viên.');
+    }
   };
 
   return (
@@ -135,20 +160,20 @@ const Login = () => {
         </button>
 
         <div className="auth-divider">
-          <span>Or continue with Nickname</span>
+          <span>Or continue with Name</span>
         </div>
 
-        {/* Nickname & Password Form */}
+        {/* Name & Password Form */}
         <form className="auth-form" id="loginForm" onSubmit={handleLogin}>
           
           <div className="form-group">
-            <label htmlFor="loginNickname" className="form-label">Your Nickname</label>
+            <label htmlFor="loginNickname" className="form-label">Name</label>
             <div className="input-wrapper">
               <input 
                 type="text" 
                 id="loginNickname" 
                 className="input-field" 
-                placeholder="e.g. admin or minhthao" 
+                placeholder="e.g. Alex Morgan or user" 
                 required 
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)} 
@@ -160,7 +185,7 @@ const Login = () => {
           <div className="form-group">
             <div className="form-label">
               <label htmlFor="loginPassword">Password</label>
-              <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Hướng dẫn đặt lại mật khẩu đã được gửi đến email của bạn."); }}>Quên mật khẩu?</a>
+              <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Password reset instructions have been sent to your email."); }}>Forgot password?</a>
             </div>
             <div className="input-wrapper">
               <input 
@@ -177,7 +202,7 @@ const Login = () => {
                 type="button" 
                 className="input-icon-btn" 
                 onClick={() => setShowPassword(!showPassword)} 
-                title="Hiện/Ẩn mật khẩu"
+                title="Toggle password visibility"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
@@ -195,46 +220,8 @@ const Login = () => {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)} 
               />
-              <span>Ghi nhớ phiên đăng nhập (Cookie)</span>
+              <span>Remember me (Cookie)</span>
             </label>
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-              <button 
-                type="button" 
-                onClick={fillDemoAccount}
-                style={{
-                  background: 'rgba(34, 197, 94, 0.15)',
-                  border: '1px solid rgba(34, 197, 94, 0.35)',
-                  color: '#86efac',
-                  fontSize: '0.74rem',
-                  borderRadius: 0,
-                  padding: '4px 8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                title="Tài khoản thường: Nickname: minhthao / MK: GreenCanopy2026"
-              >
-                ⚡ User
-              </button>
-
-              <button 
-                type="button" 
-                onClick={fillAdminAccount}
-                style={{
-                  background: 'rgba(234, 179, 8, 0.18)',
-                  border: '1px solid rgba(234, 179, 8, 0.5)',
-                  color: '#fef08a',
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
-                  borderRadius: 0,
-                  padding: '4px 8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                title="Tài khoản Admin độc quyền: Nickname: admin / MK: AdminCanopy2026!"
-              >
-                👑 Admin
-              </button>
-            </div>
           </div>
 
           <button 
@@ -243,7 +230,7 @@ const Login = () => {
             id="submitBtn"
             disabled={submitting}
           >
-            <span>{submitting ? 'Đang xác thực...' : 'Sign In to Sanctuary →'}</span>
+            <span>{submitting ? 'Authenticating...' : 'Sign In to Sanctuary →'}</span>
           </button>
 
           {/* Toast Feedback */}
@@ -264,14 +251,202 @@ const Login = () => {
         </form>
 
         <div className="auth-footer">
-          Chưa có tài khoản GreenNest?{' '}
-          <Link to="/register">Tạo tài khoản mới ngay →</Link>
+          Don't have a GreenNest account?{' '}
+          <Link to="/register">Create an account now →</Link>
         </div>
       </main>
 
       <div className="auth-page-credits">
         © 2026 The Living Canopy & GreenNest Consortium. All rights reserved.
       </div>
+
+      {/* Dimmed Secret Admin Button in Corner */}
+      <button
+        type="button"
+        onClick={() => {
+          setIsAdminModalOpen(true);
+          setAdminPassInput('');
+          setAdminError('');
+        }}
+        title="Admin Portal Access"
+        aria-label="Admin Access"
+        style={{
+          position: 'fixed',
+          bottom: '18px',
+          right: '18px',
+          zIndex: 99,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '6px',
+          padding: '6px 12px',
+          background: 'rgba(14, 30, 22, 0.55)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '9999px',
+          color: 'rgba(255, 255, 255, 0.45)',
+          fontSize: '0.74rem',
+          fontWeight: 600,
+          opacity: 0.2,
+          cursor: 'pointer',
+          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.opacity = '0.95';
+          e.currentTarget.style.color = '#fef08a';
+          e.currentTarget.style.borderColor = 'rgba(234, 179, 8, 0.5)';
+          e.currentTarget.style.background = 'rgba(14, 30, 22, 0.95)';
+          e.currentTarget.style.transform = 'translateY(-2px)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.opacity = '0.2';
+          e.currentTarget.style.color = 'rgba(255, 255, 255, 0.45)';
+          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+          e.currentTarget.style.background = 'rgba(14, 30, 22, 0.55)';
+          e.currentTarget.style.transform = 'translateY(0)';
+        }}
+      >
+        <span>🔒</span>
+        <span>Admin</span>
+      </button>
+
+      {/* Secret Admin Password Modal */}
+      {isAdminModalOpen && (
+        <div
+          onClick={() => setIsAdminModalOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            backgroundColor: 'rgba(3, 8, 5, 0.85)',
+            backdropFilter: 'blur(12px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'rgba(14, 30, 22, 0.98)',
+              border: '1px solid rgba(234, 179, 8, 0.4)',
+              borderRadius: '20px',
+              maxWidth: '380px',
+              width: '100%',
+              padding: '28px 24px',
+              boxShadow: '0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(234, 179, 8, 0.15)',
+              position: 'relative'
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setIsAdminModalOpen(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'rgba(255, 255, 255, 0.08)',
+                border: 'none',
+                color: '#94a3b8',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
+              aria-label="Đóng"
+            >
+              ✕
+            </button>
+
+            <div style={{ textAlign: 'center', marginBottom: '22px' }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '52px',
+                height: '52px',
+                borderRadius: '50%',
+                background: 'rgba(234, 179, 8, 0.15)',
+                border: '1px solid rgba(234, 179, 8, 0.35)',
+                fontSize: '1.5rem',
+                marginBottom: '12px'
+              }}>
+                👑
+              </div>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: '#ffffff', margin: 0 }}>
+                Admin Portal
+              </h3>
+              <p style={{ color: '#94a3b8', fontSize: '0.84rem', marginTop: '6px' }}>
+                Nhập mật khẩu quản trị viên để tiếp tục
+              </p>
+            </div>
+
+            <form onSubmit={handleAdminQuickLogin}>
+              <div style={{ marginBottom: '18px' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', color: '#cbd5e1', marginBottom: '8px', fontWeight: 600 }}>
+                  Password
+                </label>
+                <input
+                  type="password"
+                  autoFocus
+                  value={adminPassInput}
+                  onChange={(e) => {
+                    setAdminPassInput(e.target.value);
+                    setAdminError('');
+                  }}
+                  placeholder="Nhập mật khẩu Admin..."
+                  style={{
+                    width: '100%',
+                    padding: '12px 14px',
+                    background: 'rgba(7, 16, 11, 0.85)',
+                    border: adminError ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.15)',
+                    borderRadius: '10px',
+                    color: '#ffffff',
+                    fontSize: '0.95rem',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    transition: 'border-color 0.2s ease'
+                  }}
+                />
+                {adminError && (
+                  <div style={{ color: '#fca5a5', fontSize: '0.8rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span>⚠️</span>
+                    <span>{adminError}</span>
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={adminSubmitting}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  background: 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)',
+                  border: 'none',
+                  borderRadius: '10px',
+                  color: '#07100b',
+                  fontWeight: 700,
+                  fontSize: '0.92rem',
+                  cursor: 'pointer',
+                  boxShadow: '0 8px 20px rgba(234, 179, 8, 0.25)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                {adminSubmitting ? 'Đang xác thực...' : 'Đăng nhập Admin →'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 };

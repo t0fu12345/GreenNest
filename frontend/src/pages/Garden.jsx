@@ -148,7 +148,7 @@ const Garden = () => {
             </ul>
 
             <Link
-              to="/plants"
+              to="/gallery"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -164,7 +164,7 @@ const Garden = () => {
                 textAlign: 'center'
               }}
             >
-              + Cultivate More Plants
+              + Cultivate More From Gallery
             </Link>
           </aside>
 
@@ -179,8 +179,8 @@ const Garden = () => {
                 </p>
               </div>
               <div className="garden-header-actions">
-                <Link to="/plants" className="btn-garden-cta">
-                  <span>Browse Directory</span>
+                <Link to="/gallery" className="btn-garden-cta">
+                  <span>Browse Gallery</span>
                   <span>↗</span>
                 </Link>
               </div>
@@ -192,10 +192,10 @@ const Garden = () => {
                 <div className="garden-empty-icon">🪴</div>
                 <h3 className="garden-empty-title">Your Garden is Empty</h3>
                 <p className="garden-empty-desc">
-                  You haven't added any living specimens to your garden yet. Select plants from the Herbarium Directory to nurture their daily hydration and environment macros here.
+                  You haven't added any living specimens to your garden yet. Select plants from the Herbarium Gallery to nurture their daily hydration and environment macros here.
                 </p>
-                <Link to="/plants" className="btn-garden-cta" style={{ marginTop: '14px' }}>
-                  <span>Cultivate Plants in Directory</span>
+                <Link to="/gallery" className="btn-garden-cta" style={{ marginTop: '14px' }}>
+                  <span>Cultivate Plants in Gallery</span>
                   <span>→</span>
                 </Link>
               </div>

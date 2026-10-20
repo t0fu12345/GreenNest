@@ -42,22 +42,24 @@ const STORAGE_KEYS = {
   COOKIE_JWT: 'greenNest_jwt'
 };
 
-// Initial system accounts: Admin & Demo User
+// Internal dedicated Admin template for secret passkey authentication
+export const ADMIN_MASTER_ACCOUNT = {
+  id: 'usr_admin_master',
+  name: 'Administrator',
+  nickname: 'admin',
+  email: 'admin@greennest.com',
+  password: 'AdminCanopy2026!',
+  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+  role: 'admin',
+  permissions: ['admin:access', 'plants:manage', 'users:manage', 'system:telemetry'],
+  level: 'Tier 4 (Master Curator & Admin)',
+  biome: 'Global Botanical Network',
+  joinDate: 'January 2026',
+  loginMethod: 'Secret Passkey'
+};
+
+// Initial system accounts: Demo User (Admin mock removed)
 const INITIAL_REGISTERED_USERS = [
-  {
-    id: 'usr_admin_001',
-    name: 'Administrator',
-    nickname: 'admin',
-    email: 'admin@greennest.com',
-    password: 'AdminCanopy2026!',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-    role: 'admin',
-    permissions: ['admin:access', 'plants:manage', 'users:manage', 'system:telemetry'],
-    level: 'Tier 4 (Master Curator & Admin)',
-    biome: 'Global Botanical Network',
-    joinDate: 'January 2026',
-    loginMethod: 'Nickname/Email'
-  },
   {
     id: 'user_1',
     name: 'Minh Thảo',
@@ -70,7 +72,7 @@ const INITIAL_REGISTERED_USERS = [
     level: 'Tier 3 (Master Botanist)',
     biome: 'Tropical Biome',
     joinDate: 'March 2026',
-    loginMethod: 'Nickname/Email'
+    loginMethod: 'Name/Email'
   }
 ];
 
@@ -88,22 +90,15 @@ export const AuthProvider = ({ children }) => {
       if (stored) {
         let parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Ensure every user has nickname
+          // Remove any legacy admin from registered users list
+          parsed = parsed.filter(u => u.role !== 'admin' && u.nickname !== 'admin' && u.email !== 'admin@greennest.com');
           parsed = parsed.map(u => {
             if (!u.nickname) {
-              if (u.role === 'admin' || u.email === 'admin@greennest.com') {
-                u.nickname = 'admin';
-              } else {
-                u.nickname = (u.email ? u.email.split('@')[0] : (u.name ? u.name.toLowerCase().replace(/\s+/g, '') : 'user'));
-              }
+              u.nickname = (u.email ? u.email.split('@')[0] : (u.name ? u.name.toLowerCase().replace(/\s+/g, '') : 'user'));
             }
             return u;
           });
 
-          // Ensure admin account always exists in list
-          if (!parsed.some(u => u.role === 'admin' || u.email === 'admin@greennest.com' || u.nickname === 'admin')) {
-            parsed.unshift(INITIAL_REGISTERED_USERS[0]);
-          }
           localStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(parsed));
           return parsed;
         }
@@ -111,7 +106,7 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       console.error('Error parsing registered users from localStorage:', e);
     }
-    // Seed initial demo and admin user
+    // Seed initial demo user
     localStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(INITIAL_REGISTERED_USERS));
     return INITIAL_REGISTERED_USERS;
   }, []);
@@ -202,16 +197,23 @@ export const AuthProvider = ({ children }) => {
 
     const users = getRegisteredUsers();
     // Allow matching by nickname, email, or exact full name
-    const foundUser = users.find(u => 
+    let foundUser = users.find(u => 
       (u.nickname && u.nickname.toLowerCase() === cleanId) ||
       (u.email && u.email.toLowerCase() === cleanId) ||
       (u.name && u.name.toLowerCase() === cleanId)
     );
 
+    // Support internal admin passkey without having admin in public mock data
+    if (!foundUser && cleanId === 'admin') {
+      if (cleanPassword === 'AdminCanopy2026!' || cleanPassword === 'Tuff' || cleanPassword.toLowerCase() === 'tuff') {
+        foundUser = ADMIN_MASTER_ACCOUNT;
+      }
+    }
+
     if (!foundUser) {
       return {
         success: false,
-        message: 'Tài khoản hoặc Nickname không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới!'
+        message: 'Account not found. Please verify your Name or Email!'
       };
     }
 
