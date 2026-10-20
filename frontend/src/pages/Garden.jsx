@@ -119,8 +119,10 @@ const Garden = () => {
 
   return (
     <div className="garden-page" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Navbar />
+
       {/* Standalone Back to Sanctuary Button outside header box */}
-      <div style={{ maxWidth: '1360px', width: '100%', margin: '0 auto', padding: '24px 24px 0', display: 'flex', justifyContent: 'flex-end' }}>
+      <div style={{ maxWidth: '1360px', width: '100%', margin: '0 auto', padding: '110px 24px 0', display: 'flex', justifyContent: 'flex-end' }}>
         <Link
           to="/user"
           style={{
@@ -133,6 +135,7 @@ const Garden = () => {
             color: 'var(--emerald-light, #86efac)',
             fontSize: '0.84rem',
             fontWeight: 600,
+            borderRadius: '9999px',
             textDecoration: 'none',
             transition: 'all 0.25s ease'
           }}
@@ -147,7 +150,9 @@ const Garden = () => {
           {/* Left Column: Sidebar with telemetry overview */}
           <aside style={{
             background: 'rgba(14, 30, 22, 0.85)',
+            backdropFilter: 'blur(14px)',
             border: '1px solid var(--border-glass)',
+            borderRadius: '18px',
             padding: '24px',
             display: 'flex',
             flexDirection: 'column',
@@ -166,7 +171,8 @@ const Garden = () => {
                 background: 'rgba(34, 197, 94, 0.2)',
                 border: '1px solid var(--border-accent)',
                 color: 'var(--emerald-light)',
-                padding: '4px 10px',
+                borderRadius: '9999px',
+                padding: '4px 12px',
                 fontSize: '0.75rem',
                 fontWeight: 700
               }}>
@@ -180,6 +186,7 @@ const Garden = () => {
               padding: '6px 12px',
               background: 'rgba(34, 197, 94, 0.1)',
               border: '1px solid rgba(34, 197, 94, 0.3)',
+              borderRadius: '8px',
               color: '#86efac',
               display: 'flex',
               alignItems: 'center',
@@ -200,6 +207,7 @@ const Garden = () => {
                   width: '100%',
                   background: 'rgba(0,0,0,0.4)',
                   border: '1px solid var(--border-glass)',
+                  borderRadius: '10px',
                   padding: '10px 14px',
                   color: '#fff',
                   fontSize: '0.85rem',
@@ -232,6 +240,7 @@ const Garden = () => {
                       padding: '10px 12px',
                       background: 'rgba(255,255,255,0.03)',
                       border: '1px solid rgba(255,255,255,0.08)',
+                      borderRadius: '12px',
                       cursor: 'pointer',
                       transition: 'all 0.2s ease'
                     }}
@@ -239,7 +248,7 @@ const Garden = () => {
                     <img
                       src={p.image}
                       alt={p.name}
-                      style={{ width: '42px', height: '42px', objectFit: 'cover' }}
+                      style={{ width: '42px', height: '42px', objectFit: 'cover', borderRadius: '8px' }}
                     />
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: '0.86rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -255,8 +264,9 @@ const Garden = () => {
                       style={{
                         background: p.isWatered ? 'rgba(34, 197, 94, 0.25)' : 'rgba(255,255,255,0.06)',
                         border: '1px solid rgba(255,255,255,0.15)',
+                        borderRadius: '8px',
                         color: p.isWatered ? '#86efac' : '#94a3b8',
-                        padding: '4px 6px',
+                        padding: '4px 8px',
                         fontSize: '0.75rem',
                         cursor: 'pointer'
                       }}
@@ -294,6 +304,7 @@ const Garden = () => {
                 padding: '10px 16px',
                 background: 'rgba(34, 197, 94, 0.15)',
                 border: '1px solid var(--border-accent)',
+                borderRadius: '9999px',
                 color: 'var(--emerald-light)',
                 textDecoration: 'none',
                 fontSize: '0.84rem',

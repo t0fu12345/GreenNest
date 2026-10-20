@@ -61,7 +61,7 @@ const User = () => {
             border: '1px solid rgba(34, 197, 94, 0.35)',
             color: '#86efac',
             padding: '6px 16px',
-            borderRadius: 0,
+            borderRadius: '9999px',
             fontSize: '0.76rem',
             fontWeight: 700,
             letterSpacing: '0.15em',
@@ -104,14 +104,14 @@ const User = () => {
               padding: '12px 22px',
               background: 'rgba(14, 30, 22, 0.85)',
               border: '1px solid rgba(34, 197, 94, 0.35)',
-              borderRadius: 0,
+              borderRadius: '16px',
               boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
               backdropFilter: 'blur(12px)'
             }}>
               <img 
                 src={user.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"} 
                 alt={user.name}
-                style={{ width: '40px', height: '40px', borderRadius: 0, objectFit: 'cover', border: '2px solid #22c55e' }}
+                style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #22c55e' }}
               />
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontWeight: 700, fontSize: '0.94rem', color: '#f0fdf4' }}>
@@ -129,7 +129,7 @@ const User = () => {
                       background: 'rgba(234, 179, 8, 0.2)',
                       border: '1px solid rgba(234, 179, 8, 0.5)',
                       color: '#fef08a',
-                      borderRadius: 0,
+                      borderRadius: '9999px',
                       padding: '6px 14px',
                       fontSize: '0.8rem',
                       fontWeight: 700,
@@ -149,7 +149,7 @@ const User = () => {
                     background: 'rgba(239, 68, 68, 0.15)',
                     border: '1px solid rgba(239, 68, 68, 0.4)',
                     color: '#fca5a5',
-                    borderRadius: 0,
+                    borderRadius: '9999px',
                     padding: '6px 14px',
                     fontSize: '0.8rem',
                     fontWeight: 600,
@@ -168,7 +168,7 @@ const User = () => {
               padding: '10px 20px',
               background: 'rgba(255, 255, 255, 0.05)',
               border: '1px solid rgba(255, 255, 255, 0.14)',
-              borderRadius: 0
+              borderRadius: '9999px'
             }}>
               <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Chưa đăng nhập tài khoản.</span>
               <Link 
@@ -186,7 +186,7 @@ const User = () => {
           )}
         </div>
 
-        {/* Single Centered Sanctuary Portal Box (Sharp corners: borderRadius 0 matching stitch/user.html) */}
+        {/* Single Centered Sanctuary Portal Box */}
         <div style={{
           width: '100%',
           maxWidth: '560px',
@@ -200,7 +200,7 @@ const User = () => {
               color: 'inherit',
               position: 'relative',
               aspectRatio: '1.2 / 1',
-              borderRadius: 0,
+              borderRadius: '24px',
               border: '1px solid rgba(255, 255, 255, 0.14)',
               background: '#0e1e16',
               overflow: 'hidden',
@@ -247,7 +247,7 @@ const User = () => {
                 <span style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700, color: '#86efac' }}>
                   🌱 Personal Sanctuary
                 </span>
-                <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', background: 'rgba(34, 197, 94, 0.2)', border: '1px solid rgba(34, 197, 94, 0.4)', color: '#86efac', borderRadius: 0 }}>
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 12px', background: 'rgba(34, 197, 94, 0.2)', border: '1px solid rgba(34, 197, 94, 0.4)', color: '#86efac', borderRadius: '9999px' }}>
                   Enter Sanctuary →
                 </span>
               </div>
@@ -269,7 +269,7 @@ const User = () => {
                     <polyline points="12 5 19 12 12 19"></polyline>
                   </svg>
                 </span>
-                <div style={{ width: '42px', height: '42px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 0, fontSize: '1.2rem' }}>
+                <div style={{ width: '42px', height: '42px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', fontSize: '1.2rem' }}>
                   🌿
                 </div>
               </div>
@@ -299,7 +299,7 @@ const User = () => {
             style={{
               background: 'rgba(14, 30, 22, 0.98)',
               border: '1px solid var(--border-glass)',
-              borderRadius: 0,
+              borderRadius: '20px',
               maxWidth: '520px',
               width: '100%',
               padding: '36px',
@@ -321,7 +321,7 @@ const User = () => {
                 background: 'var(--emerald-accent)',
                 color: '#07100b',
                 border: 'none',
-                borderRadius: 0,
+                borderRadius: '9999px',
                 padding: '10px 24px',
                 fontWeight: 700,
                 fontSize: '0.88rem',

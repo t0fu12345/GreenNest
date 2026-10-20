@@ -162,8 +162,10 @@ const PlantMacro = () => {
           flexWrap: 'wrap',
           gap: '16px',
           padding: '16px 24px',
-          background: 'rgba(14, 30, 22, 0.9)',
+          background: 'rgba(14, 30, 22, 0.85)',
+          backdropFilter: 'blur(16px)',
           border: '1px solid var(--border-glass)',
+          borderRadius: '16px',
           marginBottom: '36px'
         }}>
           <Link
@@ -176,7 +178,7 @@ const PlantMacro = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <Link
               to={`/plant-macro?id=${encodeURIComponent(prevId)}`}
-              style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.84rem', padding: '6px 14px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-glass)' }}
+              style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.84rem', padding: '6px 16px', background: 'rgba(255,255,255,0.05)', borderRadius: '9999px', border: '1px solid var(--border-glass)', transition: 'all 0.2s ease' }}
             >
               ← Prev
             </Link>
@@ -185,7 +187,7 @@ const PlantMacro = () => {
             </span>
             <Link
               to={`/plant-macro?id=${encodeURIComponent(nextId)}`}
-              style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.84rem', padding: '6px 14px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-glass)' }}
+              style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.84rem', padding: '6px 16px', background: 'rgba(255,255,255,0.05)', borderRadius: '9999px', border: '1px solid var(--border-glass)', transition: 'all 0.2s ease' }}
             >
               Next →
             </Link>
@@ -194,7 +196,7 @@ const PlantMacro = () => {
 
         {/* Hero Title & Telemetry Status Banner */}
         <div style={{ marginBottom: '36px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(34, 197, 94, 0.15)', border: '1px solid var(--border-accent)', color: 'var(--emerald-light)', padding: '6px 14px', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '14px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(34, 197, 94, 0.15)', border: '1px solid var(--border-accent)', color: 'var(--emerald-light)', padding: '6px 16px', borderRadius: '9999px', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '14px' }}>
             <span>🌿 {plant.biomeLabel}</span>
           </div>
 
@@ -211,6 +213,7 @@ const PlantMacro = () => {
             background: 'rgba(14, 30, 22, 0.95)',
             border: '1px solid var(--border-glass)',
             borderLeft: '4px solid var(--emerald-accent)',
+            borderRadius: '16px',
             padding: '16px 20px',
             display: 'flex',
             alignItems: 'center',
@@ -228,14 +231,14 @@ const PlantMacro = () => {
               <button
                 type="button"
                 onClick={() => handleLogAction('water')}
-                style={{ background: 'rgba(34, 197, 94, 0.2)', border: '1px solid var(--border-accent)', color: '#86efac', padding: '6px 12px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer' }}
+                style={{ background: 'rgba(34, 197, 94, 0.2)', border: '1px solid var(--border-accent)', color: '#86efac', padding: '6px 14px', borderRadius: '9999px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s ease' }}
               >
                 💧 Log Hydration
               </button>
               <button
                 type="button"
                 onClick={() => handleLogAction('mist')}
-                style={{ background: 'rgba(56, 189, 248, 0.2)', border: '1px solid rgba(56, 189, 248, 0.4)', color: '#7dd3fc', padding: '6px 12px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer' }}
+                style={{ background: 'rgba(56, 189, 248, 0.2)', border: '1px solid rgba(56, 189, 248, 0.4)', color: '#7dd3fc', padding: '6px 14px', borderRadius: '9999px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s ease' }}
               >
                 🌫️ Log Mist
               </button>
@@ -247,14 +250,14 @@ const PlantMacro = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '40px' }}>
           
           {/* Card 1: Water */}
-          <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', borderRadius: '18px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#94a3b8', fontWeight: 700 }}>Water Macro</span>
               <span style={{ fontSize: '1.2rem' }}>💧</span>
             </div>
             <div style={{ fontSize: '2rem', fontWeight: 700, color: '#fff' }}>{plant.waterVal}</div>
-            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
-              <div style={{ width: plant.waterBar || '80%', height: '100%', background: 'linear-gradient(90deg, #3b82f6, #60a5fa)' }}></div>
+            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '9999px', overflow: 'hidden' }}>
+              <div style={{ width: plant.waterBar || '80%', height: '100%', borderRadius: '9999px', background: 'linear-gradient(90deg, #3b82f6, #60a5fa)' }}></div>
             </div>
             <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.5, margin: 0 }}>
               {plant.waterSub}
@@ -262,14 +265,14 @@ const PlantMacro = () => {
           </div>
 
           {/* Card 2: Humidity */}
-          <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', borderRadius: '18px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#94a3b8', fontWeight: 700 }}>Ambient Humidity</span>
               <span style={{ fontSize: '1.2rem' }}>🌫️</span>
             </div>
             <div style={{ fontSize: '2rem', fontWeight: 700, color: '#fff' }}>{plant.humidityVal}</div>
-            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
-              <div style={{ width: plant.humidityBar || '85%', height: '100%', background: 'linear-gradient(90deg, #22c55e, #86efac)' }}></div>
+            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '9999px', overflow: 'hidden' }}>
+              <div style={{ width: plant.humidityBar || '85%', height: '100%', borderRadius: '9999px', background: 'linear-gradient(90deg, #22c55e, #86efac)' }}></div>
             </div>
             <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.5, margin: 0 }}>
               {plant.humiditySub}
@@ -277,14 +280,14 @@ const PlantMacro = () => {
           </div>
 
           {/* Card 3: Light */}
-          <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', borderRadius: '18px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#94a3b8', fontWeight: 700 }}>Environment Solar</span>
               <span style={{ fontSize: '1.2rem' }}>☀️</span>
             </div>
             <div style={{ fontSize: '2rem', fontWeight: 700, color: '#fff' }}>{plant.envVal}</div>
-            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
-              <div style={{ width: plant.envBar || '90%', height: '100%', background: 'linear-gradient(90deg, #eab308, #fde047)' }}></div>
+            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '9999px', overflow: 'hidden' }}>
+              <div style={{ width: plant.envBar || '90%', height: '100%', borderRadius: '9999px', background: 'linear-gradient(90deg, #eab308, #fde047)' }}></div>
             </div>
             <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.5, margin: 0 }}>
               {plant.envSub}
@@ -292,14 +295,14 @@ const PlantMacro = () => {
           </div>
 
           {/* Card 4: Soil */}
-          <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', borderRadius: '18px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#94a3b8', fontWeight: 700 }}>Substrate Aeration</span>
               <span style={{ fontSize: '1.2rem' }}>🌱</span>
             </div>
             <div style={{ fontSize: '2rem', fontWeight: 700, color: '#fff' }}>{plant.soilVal}</div>
-            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
-              <div style={{ width: plant.soilBar || '88%', height: '100%', background: 'linear-gradient(90deg, #10b981, #34d399)' }}></div>
+            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '9999px', overflow: 'hidden' }}>
+              <div style={{ width: plant.soilBar || '88%', height: '100%', borderRadius: '9999px', background: 'linear-gradient(90deg, #10b981, #34d399)' }}></div>
             </div>
             <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.5, margin: 0 }}>
               {plant.soilSub}
@@ -312,7 +315,7 @@ const PlantMacro = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '36px', alignItems: 'start' }}>
           
           {/* Photo Box */}
-          <div style={{ position: 'relative', overflow: 'hidden', border: '1px solid var(--border-glass)', background: '#0e1e16' }}>
+          <div style={{ position: 'relative', overflow: 'hidden', border: '1px solid var(--border-glass)', borderRadius: '20px', background: '#0e1e16', boxShadow: '0 20px 50px rgba(0,0,0,0.6)' }}>
             <img
               src={plant.image}
               alt={plant.name}
@@ -325,6 +328,8 @@ const PlantMacro = () => {
               right: 0,
               padding: '16px 20px',
               background: 'linear-gradient(180deg, transparent 0%, rgba(7, 16, 11, 0.95) 100%)',
+              borderBottomLeftRadius: '20px',
+              borderBottomRightRadius: '20px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
@@ -346,7 +351,7 @@ const PlantMacro = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             
             {/* Table 1: Environment Needed to Grow */}
-            <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', padding: '24px' }}>
+            <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', borderRadius: '18px', padding: '24px' }}>
               <h3 style={{ fontSize: '0.88rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--emerald-light)', fontWeight: 700, marginBottom: '16px' }}>
                 Environmental Parameters
               </h3>
@@ -369,7 +374,7 @@ const PlantMacro = () => {
             </div>
 
             {/* Table 2: Humidity Telemetry */}
-            <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', padding: '24px' }}>
+            <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', borderRadius: '18px', padding: '24px' }}>
               <h3 style={{ fontSize: '0.88rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--emerald-light)', fontWeight: 700, marginBottom: '16px' }}>
                 Humidity & Transpiration Telemetry
               </h3>
@@ -388,7 +393,7 @@ const PlantMacro = () => {
             </div>
 
             {/* Table 3: Water Telemetry */}
-            <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', padding: '24px' }}>
+            <div style={{ background: 'rgba(14, 30, 22, 0.88)', border: '1px solid var(--border-glass)', borderRadius: '18px', padding: '24px' }}>
               <h3 style={{ fontSize: '0.88rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--emerald-light)', fontWeight: 700, marginBottom: '16px' }}>
                 Root Zone Hydration Schedule
               </h3>
@@ -421,6 +426,7 @@ const PlantMacro = () => {
           background: 'rgba(14, 30, 22, 0.95)',
           backdropFilter: 'blur(20px)',
           border: '1px solid var(--emerald-accent)',
+          borderRadius: '12px',
           color: '#ffffff',
           padding: '14px 22px',
           boxShadow: '0 16px 40px rgba(0, 0, 0, 0.8), 0 0 25px var(--emerald-glow)',
