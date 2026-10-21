@@ -5,7 +5,7 @@ class CollectionController {
   async getCollections(req, res, next) {
     try {
       const collections = await collectionService.getCollections(req.query.season);
-      return successResponse(res, collections, 'Lấy danh sách bộ sưu tập thành công');
+      return successResponse(res, collections, 'Curated collections retrieved successfully');
     } catch (error) {
       next(error);
     }
@@ -14,7 +14,7 @@ class CollectionController {
   async getCollectionById(req, res, next) {
     try {
       const collection = await collectionService.getCollectionById(req.params.id);
-      return successResponse(res, collection, 'Lấy chi tiết bộ sưu tập thành công');
+      return successResponse(res, collection, 'Curated collection details retrieved successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);
@@ -28,11 +28,11 @@ class CollectionController {
       const { title, description, coverImage } = req.body;
 
       if (!title || !description || !coverImage) {
-        return errorResponse(res, 'Vui lòng cung cấp tiêu đề, mô tả và ảnh bìa cho bộ sưu tập', 400, 'MISSING_FIELDS');
+        return errorResponse(res, 'Please provide title, description, and cover image for the collection', 400, 'MISSING_FIELDS');
       }
 
       const collection = await collectionService.createCollection(req.body);
-      return successResponse(res, collection, 'Tạo bộ sưu tập thành công', 201);
+      return successResponse(res, collection, 'Curated collection created successfully', 201);
     } catch (error) {
       next(error);
     }
@@ -41,7 +41,7 @@ class CollectionController {
   async updateCollection(req, res, next) {
     try {
       const updated = await collectionService.updateCollection(req.params.id, req.body);
-      return successResponse(res, updated, 'Cập nhật bộ sưu tập thành công');
+      return successResponse(res, updated, 'Curated collection updated successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);
@@ -53,7 +53,7 @@ class CollectionController {
   async deleteCollection(req, res, next) {
     try {
       await collectionService.deleteCollection(req.params.id);
-      return successResponse(res, null, 'Xóa bộ sưu tập thành công');
+      return successResponse(res, null, 'Curated collection deleted successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);

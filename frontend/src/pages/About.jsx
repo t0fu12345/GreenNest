@@ -24,7 +24,7 @@ const FALLBACK_CURATORS = [
     biomeBadge: '🌲 Subtropical Highlands'
   },
   {
-    name: 'ThS. Nguyễn Thị Mai',
+    name: 'M.Sc. Mai Nguyen',
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
     specialization: 'Plant Pathology & Bio-Organic Substrates',
     bio: 'Conducts research on rhizosphere microflora and organic pest balance mechanisms, guaranteeing care safety protocols for environments with young children and pets.',
@@ -59,7 +59,7 @@ const About = () => {
           setGardeners(list);
         }
       } catch (err) {
-        console.warn('Không thể tải chuyên gia từ MongoDB Atlas, dùng dữ liệu dự phòng:', err.message);
+        console.warn('Unable to load botanists from MongoDB Atlas, using fallback data:', err.message);
       } finally {
         setLoadingGardeners(false);
       }

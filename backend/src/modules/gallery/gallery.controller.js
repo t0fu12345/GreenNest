@@ -15,7 +15,7 @@ class GalleryController {
       return successResponse(
         res,
         gallery,
-        'Lấy danh sách ảnh thư viện thành công',
+        'Gallery images retrieved successfully',
         200,
         pagination
       );
@@ -27,7 +27,7 @@ class GalleryController {
   async likeImage(req, res, next) {
     try {
       const result = await galleryService.likeImage(req.params.id, req.user._id);
-      const msg = result.liked ? 'Đã thả tim cho ảnh' : 'Đã hủy thả tim cho ảnh';
+      const msg = result.liked ? 'Specimen image favorited' : 'Specimen image unfavorited';
       return successResponse(res, result, msg);
     } catch (error) {
       if (error.statusCode) {
@@ -42,11 +42,11 @@ class GalleryController {
       const { imageUrl, alt, caption } = req.body;
 
       if (!imageUrl || !alt || !caption) {
-        return errorResponse(res, 'Vui lòng cung cấp URL ảnh, thẻ alt và caption', 400, 'MISSING_FIELDS');
+        return errorResponse(res, 'Please provide image URL, alt text, and caption', 400, 'MISSING_FIELDS');
       }
 
       const newImage = await galleryService.createImage(req.body);
-      return successResponse(res, newImage, 'Thêm ảnh vào gallery thành công', 201);
+      return successResponse(res, newImage, 'Image added to gallery successfully', 201);
     } catch (error) {
       next(error);
     }
@@ -55,7 +55,7 @@ class GalleryController {
   async updateImage(req, res, next) {
     try {
       const updated = await galleryService.updateImage(req.params.id, req.body);
-      return successResponse(res, updated, 'Cập nhật ảnh thành công');
+      return successResponse(res, updated, 'Gallery image updated successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);
@@ -67,7 +67,7 @@ class GalleryController {
   async deleteImage(req, res, next) {
     try {
       await galleryService.deleteImage(req.params.id);
-      return successResponse(res, null, 'Xóa ảnh thành công');
+      return successResponse(res, null, 'Gallery image deleted successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);

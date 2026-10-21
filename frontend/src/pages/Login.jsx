@@ -38,7 +38,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!identifier.trim() || !password.trim()) {
-      showNotification('Vui lòng nhập đầy đủ Email (hoặc Nickname) và Mật khẩu.', 'error');
+      showNotification('Please enter your Email (or Nickname) and Password.', 'error');
       return;
     }
 
@@ -47,12 +47,12 @@ const Login = () => {
 
     if (result.success) {
       if (result.isAdmin) {
-        showNotification(`Xác thực thành công! Đã cấp quyền Quản trị viên & Token JWT. Đang vào Admin Portal...`, 'success');
+        showNotification(`Authentication successful! Granted Administrator credentials & JWT. Entering Admin Portal...`, 'success');
         setTimeout(() => {
           navigate('/admin');
         }, 900);
       } else {
-        showNotification(`Chào mừng trở lại, ${result.user.name}! Đăng nhập thành công. Đang chuyển hướng...`, 'success');
+        showNotification(`Welcome back, ${result.user.name}! Signed in successfully. Redirecting...`, 'success');
         setTimeout(() => {
           navigate('/');
         }, 900);
@@ -121,7 +121,7 @@ const Login = () => {
           <div className="form-group">
             <div className="form-label">
               <label htmlFor="loginPassword">Password</label>
-              <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Hướng dẫn đặt lại mật khẩu đã được gửi đến email của bạn."); }}>Quên mật khẩu?</a>
+              <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Password reset instructions have been dispatched to your email address."); }}>Forgot Password?</a>
             </div>
             <div className="input-wrapper">
               <input 
@@ -138,7 +138,7 @@ const Login = () => {
                 type="button" 
                 className="input-icon-btn" 
                 onClick={() => setShowPassword(!showPassword)} 
-                title="Hiện/Ẩn mật khẩu"
+                title="Toggle password visibility"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M1 12s4-8 11-8 11 8 11 8 -4 8 -11 8 -11-8z"></path>
@@ -156,7 +156,7 @@ const Login = () => {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)} 
               />
-              <span>Ghi nhớ phiên đăng nhập (Cookie)</span>
+              <span>Remember session (Secure Cookie)</span>
             </label>
           </div>
 
@@ -166,7 +166,7 @@ const Login = () => {
             id="submitBtn"
             disabled={submitting}
           >
-            <span>{submitting ? 'Đang xác thực...' : 'Sign In to Sanctuary →'}</span>
+            <span>{submitting ? 'Authenticating...' : 'Sign In to Sanctuary →'}</span>
           </button>
 
           {/* Toast Feedback */}
@@ -187,8 +187,8 @@ const Login = () => {
         </form>
 
         <div className="auth-footer">
-          Chưa có tài khoản GreenNest?{' '}
-          <Link to="/register">Tạo tài khoản mới ngay →</Link>
+          Don't have a GreenNest account?{' '}
+          <Link to="/register">Create an account now →</Link>
         </div>
       </main>
 

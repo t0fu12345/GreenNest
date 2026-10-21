@@ -3,19 +3,19 @@ const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 
-// Nạp cấu hình biến môi trường
+// Load environment variables
 dotenv.config();
 
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middlewares/errorHandler.middleware');
 
-// Khởi tạo Express App
+// Initialize Express App
 const app = express();
 
-// Kết nối cơ sở dữ liệu MongoDB
+// Connect to MongoDB Database
 connectDB();
 
-// Thiết lập Middlewares nền tảng
+// Core Middleware Configuration
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true
@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Tuyến đường kiểm tra sức khỏe server (Health Check)
+// System Health Check Route
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'UP',
@@ -38,7 +38,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Gắn kết (Mount) các API Modules theo kiến trúc Modular
+// Mount Modular API Routes
 app.use('/api/auth', require('./modules/auth/auth.routes'));
 app.use('/api/plants', require('./modules/plant/plant.routes'));
 app.use('/api/garden', require('./modules/user/garden.routes'));
@@ -49,11 +49,11 @@ app.use('/api/contact', require('./modules/contact/contact.routes'));
 app.use('/api/admin', require('./modules/admin/admin.routes'));
 app.use('/api/metadata', require('./modules/metadata/metadata.routes'));
 
-// Middlewares xử lý lỗi tập trung
+// Centralized Error Handling Middlewares
 app.use(notFound);
 app.use(errorHandler);
 
-// Khởi chạy server nếu được gọi trực tiếp
+// Start server if executed directly
 const PORT = process.env.PORT || 5000;
 let server;
 
@@ -62,7 +62,7 @@ if (require.main === module) {
     console.log(`🌿 GreenNest Modular Backend Server is running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
   });
 
-  // Xử lý các Unhandled Rejections an toàn
+  // Handle Unhandled Rejections safely
   process.on('unhandledRejection', (err) => {
     console.error(`❌ Unhandled Rejection: ${err.message}`);
     if (server) server.close(() => process.exit(1));

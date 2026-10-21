@@ -20,7 +20,7 @@ const Gallery = () => {
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  // Tải danh sách ảnh từ MongoDB Atlas
+  // Fetch gallery list from MongoDB Atlas
   const fetchGallery = useCallback(async () => {
     try {
       const res = await galleryApi.getGallery({ limit: 50 });
@@ -31,7 +31,7 @@ const Gallery = () => {
         setItems(galleryList);
       }
     } catch (err) {
-      console.warn('Lỗi khi tải Gallery từ MongoDB Atlas, dùng dữ liệu dự phòng:', err.message);
+      console.warn('Error loading gallery from MongoDB Atlas, using fallback data:', err.message);
       setItems(fallbackGallery);
     } finally {
       setLoading(false);
@@ -42,11 +42,11 @@ const Gallery = () => {
     fetchGallery();
   }, [fetchGallery]);
 
-  // Thả tim ảnh (Like API) - yêu cầu đăng nhập, mỗi ảnh chỉ thả tim 1 lần, ấn lần 2 hủy thả tim
+  // Like photo API - requires login, 1 like per photo toggle
   const handleLike = async (e, id) => {
     e.stopPropagation();
     if (!isAuthenticated) {
-      showToast('Vui lòng đăng nhập để thả tim cho bức ảnh!');
+      showToast('Please sign in to like this photograph!');
       setTimeout(() => navigate('/login'), 1200);
       return;
     }
@@ -58,14 +58,14 @@ const Gallery = () => {
         setItems(prev => prev.map(item => 
           item._id === id ? { ...item, likesCount: count, isLiked } : item
         ));
-        showToast(isLiked ? '❤️ Đã thả tim cho bức ảnh!' : '🤍 Đã hủy thả tim!');
+        showToast(isLiked ? '❤️ Added to liked gallery!' : '🤍 Removed from liked gallery.');
       }
     } catch (err) {
-      showToast('Không thể cập nhật lượt thích: ' + (err.message || 'Lỗi'));
+      showToast('Unable to update like status: ' + (err.message || 'Error'));
     }
   };
 
-  // Điều khiển phím bàn phím khi mở Lightbox (ESC, ArrowLeft, ArrowRight)
+  // Keyboard navigation for Lightbox (ESC, ArrowLeft, ArrowRight)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (activeLightboxIndex === null) return;
@@ -150,7 +150,7 @@ const Gallery = () => {
           </h1>
 
           <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '680px', margin: '0 auto 28px', lineHeight: 1.65 }}>
-            Bộ sưu tập nhiếp ảnh kiểng lá nhiệt đới và không gian sống sinh thái được đồng bộ trực tiếp từ cơ sở dữ liệu MongoDB Atlas. Click vào ảnh để mở chế độ Lightbox toàn màn hình.
+            A curated photographic exhibition of tropical foliage and biophilic interiors synchronized live with MongoDB Atlas. Click any photograph to launch the full-screen Lightbox view.
           </p>
 
           {/* Quick Search in Gallery */}
@@ -159,7 +159,7 @@ const Gallery = () => {
               type="text"
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
-              placeholder="Tìm kiếm ảnh theo tên cây, chú thích..."
+              placeholder="Search photographs by plant name, caption..."
               style={{
                 width: '100%',
                 background: 'rgba(14, 30, 22, 0.8)',
@@ -179,11 +179,11 @@ const Gallery = () => {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '100px 24px', color: '#86efac' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>🖼️</div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Đang nạp 20 tác phẩm từ MongoDB Atlas...</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading 20 botanical photographs from MongoDB Atlas...</div>
           </div>
         ) : filteredItems.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: '#94a3b8' }}>
-            <p>Không tìm thấy hình ảnh phù hợp với "{filterQuery}".</p>
+            <p>No photographs found matching "{filterQuery}".</p>
             <button
               type="button"
               onClick={() => setFilterQuery('')}
@@ -197,7 +197,7 @@ const Gallery = () => {
                 cursor: 'pointer'
               }}
             >
-              Xem tất cả ảnh
+              View All Photographs
             </button>
           </div>
         ) : (
@@ -269,7 +269,7 @@ const Gallery = () => {
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '0.74rem', color: '#86efac', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                      Nguồn: {item.credit || 'Pinterest'}
+                      Credit: {item.credit || 'Pinterest'}
                     </span>
 
                     <button
@@ -290,7 +290,7 @@ const Gallery = () => {
                         backdropFilter: 'blur(8px)',
                         transition: 'all 0.2s ease'
                       }}
-                      title={item.isLiked ? "Hủy thả tim" : "Thả tim"}
+                      title={item.isLiked ? "Unlike" : "Like"}
                     >
                       <span>{item.isLiked ? '❤️' : '🤍'}</span>
                       <span>{item.likesCount || 0}</span>
@@ -430,7 +430,7 @@ const Gallery = () => {
                   {activeItem.caption || activeItem.alt}
                 </p>
                 <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                  Nguồn tác giả: <span style={{ color: '#86efac' }}>{activeItem.credit || 'GreenNest Sanctuary'}</span> • Bức {activeLightboxIndex + 1} / {filteredItems.length}
+                  Curator Credit: <span style={{ color: '#86efac' }}>{activeItem.credit || 'GreenNest Sanctuary'}</span> • Photo {activeLightboxIndex + 1} of {filteredItems.length}
                 </div>
               </div>
 
@@ -453,7 +453,7 @@ const Gallery = () => {
                   gap: '8px'
                 }}
               >
-                <span>{activeItem.isLiked ? '❤️ Đã Thích' : '🤍 Thả Tim'}</span>
+                <span>{activeItem.isLiked ? '❤️ Liked' : '🤍 Like'}</span>
                 <span>({activeItem.likesCount || 0})</span>
               </button>
             </div>

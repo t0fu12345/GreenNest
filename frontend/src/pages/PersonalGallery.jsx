@@ -78,7 +78,7 @@ const PersonalGallery = () => {
         effectiveStarred = [];
       }
     } catch (err) {
-      console.warn('Lỗi khi tải dữ liệu cây:', err.message);
+      console.warn('Error loading plant data:', err.message);
     } finally {
       setAllPlantsMap(plantMap);
       setStarredIds(Array.from(new Set(effectiveStarred)));
@@ -105,13 +105,13 @@ const PersonalGallery = () => {
       const isBookmarked = res?.data?.isBookmarked;
       if (isBookmarked) {
         setStarredIds(prev => Array.from(new Set([...prev, plantId])));
-        showToast(`⭐ Đã thêm "${plant?.name || 'Cây'}" vào Mục Yêu Thích!`);
+        showToast(`⭐ Added "${plant?.name || 'Specimen'}" to Sanctuary Favorites!`);
       } else {
         setStarredIds(prev => prev.filter(id => id !== plantId && id !== identifier));
-        showToast(`Đã xóa "${plant?.name || 'Cây'}" khỏi Mục Yêu Thích.`);
+        showToast(`Removed "${plant?.name || 'Specimen'}" from Sanctuary Favorites.`);
       }
     } catch (err) {
-      showToast('Lỗi cập nhật yêu thích: ' + err.message);
+      showToast('Error updating favorites: ' + err.message);
     }
   };
 

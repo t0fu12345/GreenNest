@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const CollectionSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, 'Tiêu đề bộ sưu tập là bắt buộc'],
+    required: [true, 'Collection title is required'],
     trim: true
   },
   slug: {
@@ -12,11 +12,11 @@ const CollectionSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: [true, 'Mô tả bộ sưu tập là bắt buộc']
+    required: [true, 'Collection description is required']
   },
   coverImage: {
     type: String,
-    required: [true, 'Ảnh bìa bộ sưu tập là bắt buộc']
+    required: [true, 'Collection cover image URL is required']
   },
   season: {
     type: String,

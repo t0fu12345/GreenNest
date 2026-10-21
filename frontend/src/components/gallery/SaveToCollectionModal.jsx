@@ -33,9 +33,9 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
     const updated = togglePlantInCollection(userEmail, colId, plantSlug);
     const isNowIn = updated.plantSlugs.includes(plantSlug);
     if (isNowIn) {
-      showToast(`Đã thêm "${plant.name}" vào "${colName}"`);
+      showToast(`Added "${plant.name}" to "${colName}"`);
     } else {
-      showToast(`Đã xóa khỏi "${colName}"`);
+      showToast(`Removed from "${colName}"`);
     }
     if (onSaved) onSaved();
   };
@@ -43,7 +43,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
   const handleCreateAndSave = (e) => {
     e.preventDefault();
     if (!newColName.trim()) {
-      setErrorMsg('Vui lòng nhập tên bộ sưu tập');
+      setErrorMsg('Please enter a collection title');
       return;
     }
     setErrorMsg('');
@@ -54,7 +54,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
       initialPlantSlug: plantSlug
     });
 
-    showToast(`Đã tạo "${newCol.name}" và lưu cây!`);
+    showToast(`Created "${newCol.name}" and saved specimen!`);
     setNewColName('');
     setNewColDesc('');
     setIsCreatingNew(false);
@@ -111,7 +111,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
                 fontWeight: 700
               }}
             >
-              SAVE SPECIMEN // BỘ SƯU TẬP
+              SAVE SPECIMEN // LIVING CANOPY
             </span>
             <h3
               style={{
@@ -121,7 +121,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
                 marginTop: '4px'
               }}
             >
-              Lưu vào Bộ Sưu Tập
+              Curate to Collection
             </h3>
           </div>
           <button
@@ -200,7 +200,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
         {/* Collections List */}
         <div style={{ padding: '20px 28px', maxHeight: '280px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <div style={{ fontSize: '0.8rem', color: '#cbd5e1', fontWeight: 600, marginBottom: '4px' }}>
-            Chọn bộ sưu tập ({collections.length}):
+            Select Collection ({collections.length}):
           </div>
 
           {collections.map((col) => {
@@ -242,7 +242,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
                       {col.name}
                     </div>
                     <div style={{ fontSize: '0.74rem', color: '#94a3b8' }}>
-                      {col.plantSlugs.length} cây cảnh
+                      {col.plantSlugs.length} specimens
                     </div>
                   </div>
                 </div>
@@ -261,7 +261,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  {isSaved ? '✓ Đã lưu' : '+ Lưu'}
+                  {isSaved ? '✓ Saved' : '+ Curate'}
                 </button>
               </div>
             );
@@ -291,16 +291,16 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
                 gap: '8px'
               }}
             >
-              <span>+ Tạo Bộ Sưu Tập Mới</span>
+              <span>+ Create New Collection</span>
             </button>
           ) : (
             <form onSubmit={handleCreateAndSave} style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#86efac' }}>
-                Tạo bộ sưu tập mới và lưu cây:
+                Create a new collection and save specimen:
               </div>
               <input
                 type="text"
-                placeholder="Tên bộ sưu tập (VD: Cây để bàn làm việc)..."
+                placeholder="Collection title (e.g., Desktop Workstation Greenery)..."
                 value={newColName}
                 onChange={(e) => setNewColName(e.target.value)}
                 maxLength={60}
@@ -316,7 +316,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
                 autoFocus
               />
               <textarea
-                placeholder="Mô tả mục đích bộ sưu tập (tùy chọn)..."
+                placeholder="Collection purpose or placement notes (optional)..."
                 value={newColDesc}
                 onChange={(e) => setNewColDesc(e.target.value)}
                 maxLength={250}
@@ -347,7 +347,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
                     cursor: 'pointer'
                   }}
                 >
-                  Hủy
+                  Cancel
                 </button>
                 <button
                   type="submit"
@@ -362,7 +362,7 @@ const SaveToCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
                     cursor: 'pointer'
                   }}
                 >
-                  Tạo & Lưu
+                  Create & Save
                 </button>
               </div>
             </form>

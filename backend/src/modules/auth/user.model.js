@@ -37,21 +37,21 @@ const GardenItemSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   fullName: {
     type: String,
-    required: [true, 'Họ và tên là bắt buộc'],
+    required: [true, 'Full name is required'],
     trim: true
   },
   email: {
     type: String,
-    required: [true, 'Email là bắt buộc'],
+    required: [true, 'Email is required'],
     unique: true,
     lowercase: true,
     trim: true,
-    match: [/^\S+@\S+\.\S+$/, 'Email không đúng định dạng']
+    match: [/^\S+@\S+\.\S+$/, 'Invalid email address format']
   },
   password: {
     type: String,
-    required: [true, 'Mật khẩu là bắt buộc'],
-    minlength: [6, 'Mật khẩu phải có tối thiểu 6 ký tự'],
+    required: [true, 'Password is required'],
+    minlength: [6, 'Password must be at least 6 characters'],
     select: false
   },
   role: {
@@ -72,7 +72,7 @@ const UserSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Pre-save Hook: Tự động băm mật khẩu bằng bcryptjs trước khi lưu
+// Pre-save Hook: Hash password using bcryptjs before saving
 UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
     return next();
@@ -82,7 +82,7 @@ UserSchema.pre('save', async function(next) {
   next();
 });
 
-// Instance Method: So sánh mật khẩu đầu vào với mật khẩu đã băm
+// Instance Method: Compare input password with stored hash
 UserSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

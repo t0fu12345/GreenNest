@@ -5,22 +5,22 @@ import { PLANT_COLLECTIONS, BOTANICAL_SPECIMENS } from '../data/botanicalSpecime
 const SEASON_META = {
   spring: {
     icon: '🌸',
-    label: 'Mùa Xuân',
+    label: 'Spring',
     english: 'Spring Equinox'
   },
   summer: {
     icon: '☀️',
-    label: 'Mùa Hạ',
+    label: 'Summer',
     english: 'Summer Solstice'
   },
   autumn: {
     icon: '🍂',
-    label: 'Mùa Thu',
+    label: 'Autumn',
     english: 'Autumn Equinox'
   },
   winter: {
     icon: '❄️',
-    label: 'Mùa Đông',
+    label: 'Winter',
     english: 'Winter Solstice'
   }
 };
@@ -103,7 +103,7 @@ const SeasonalCollections = () => {
             margin: 0
           }}
         >
-          Bộ Sưu Tập Theo Mùa
+          Seasonal Curated Collections
         </h2>
 
         <p
@@ -116,7 +116,7 @@ const SeasonalCollections = () => {
             margin: 0
           }}
         >
-          Khám phá chu kỳ sinh trưởng của hệ thực vật qua bốn mùa xuân, hạ, thu, đông. Mỗi bộ sưu tập được tuyển chọn kỹ lưỡng phù hợp với nhịp điệu ánh sáng, nhiệt độ và điều kiện thời tiết đặc trưng.
+          Explore the vegetative rhythms of botanical life through four seasons. Each seasonal collection is intentionally curated to align with solar exposure, ambient humidity, and natural dormancy cycles.
         </p>
       </div>
 
@@ -189,7 +189,7 @@ const SeasonalCollections = () => {
                   fontWeight: 600
                 }}
               >
-                {collection.plantSlugs.length} loài
+                {collection.plantSlugs.length} species
               </span>
             </button>
           );
@@ -438,7 +438,7 @@ const SeasonalCollections = () => {
                       transform: isCardHovered ? 'translateX(4px)' : 'translateX(0)'
                     }}
                   >
-                    <span>→ Xem chi tiết</span>
+                    <span>→ View Specimen</span>
                   </Link>
                 </div>
               </div>

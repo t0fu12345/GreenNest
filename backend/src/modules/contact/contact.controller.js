@@ -7,14 +7,14 @@ class ContactController {
       const { fullName, email, subject, message } = req.body;
 
       if (!fullName || !email || !subject || !message) {
-        return errorResponse(res, 'Vui lòng điền đầy đủ họ tên, email, chủ đề và nội dung tin nhắn', 400, 'MISSING_FIELDS');
+        return errorResponse(res, 'Please provide full name, email, subject, and message content', 400, 'MISSING_FIELDS');
       }
 
       const newMessage = await contactService.sendMessage(req.body);
       return successResponse(
         res,
         newMessage,
-        'Tin nhắn của bạn đã được gửi thành công. Đội ngũ GreenNest sẽ phản hồi sớm!',
+        'Your message has been sent successfully. The GreenNest team will be in touch soon!',
         201
       );
     } catch (error) {
@@ -30,7 +30,7 @@ class ContactController {
       return successResponse(
         res,
         messages,
-        'Lấy danh sách tin nhắn liên hệ thành công',
+        'Contact messages retrieved successfully',
         200,
         pagination
       );
@@ -45,7 +45,7 @@ class ContactController {
       const { status } = req.body;
 
       const updated = await contactService.updateMessageStatus(id, status);
-      return successResponse(res, updated, `Trạng thái tin nhắn đã được cập nhật thành: ${status}`);
+      return successResponse(res, updated, `Message status updated to: ${status}`);
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);

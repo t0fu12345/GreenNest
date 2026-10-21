@@ -3,10 +3,10 @@ const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-// Nạp biến môi trường
+// Load environment variables
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-// Nạp Models theo kiến trúc Modular
+// Load models
 const User = require('../src/modules/auth/user.model');
 const Plant = require('../src/modules/plant/plant.model');
 const Gardener = require('../src/modules/gardener/gardener.model');
@@ -16,7 +16,7 @@ const ContactMessage = require('../src/modules/contact/contact.model');
 
 const connectDB = require('../src/config/db');
 
-// Đọc dữ liệu từ database/seedData/
+// Read data from database/seedData/
 const seedDataPath = path.join(__dirname, '../../database/seedData');
 
 const usersData = JSON.parse(fs.readFileSync(path.join(seedDataPath, 'users.json'), 'utf-8'));
@@ -25,12 +25,12 @@ const plantsData = JSON.parse(fs.readFileSync(path.join(seedDataPath, 'plants.js
 const collectionsData = JSON.parse(fs.readFileSync(path.join(seedDataPath, 'plantCollections.json'), 'utf-8'));
 const galleryData = JSON.parse(fs.readFileSync(path.join(seedDataPath, 'gallery.json'), 'utf-8'));
 
-// Hàm nạp dữ liệu mẫu
+// Import seed dataset
 const importData = async () => {
   try {
     await connectDB();
 
-    console.log('🧹 Đang làm sạch cơ sở dữ liệu cũ...');
+    console.log('🧹 Purging existing database collections...');
     await User.deleteMany();
     await Plant.deleteMany();
     await Gardener.deleteMany();
@@ -38,21 +38,20 @@ const importData = async () => {
     await Gallery.deleteMany();
     await ContactMessage.deleteMany();
 
-    console.log('👤 Đang nạp tài khoản người dùng (tự động hash mật khẩu bằng bcrypt)...');
+    console.log('👤 Seeding user accounts (auto-hashing passwords via bcrypt)...');
     const createdUsers = [];
     for (const u of usersData) {
       const userDoc = new User(u);
-      await userDoc.save(); // Kích hoạt pre-save hook băm mật khẩu
+      await userDoc.save();
       createdUsers.push(userDoc);
     }
-    console.log(`   -> Đã nạp ${createdUsers.length} người dùng (gồm tài khoản Admin: admin@greennest.vn / Admin@123456)`);
+    console.log(`   -> Seeded ${createdUsers.length} users (including Admin: admin@greennest.vn / Admin@123456)`);
 
-    console.log('🧑‍🌾 Đang nạp hồ sơ chuyên gia thực vật...');
+    console.log('🧑‍🌾 Seeding botanist & curator profiles...');
     const createdGardeners = await Gardener.insertMany(gardenersData);
-    console.log(`   -> Đã nạp ${createdGardeners.length} chuyên gia`);
+    console.log(`   -> Seeded ${createdGardeners.length} botanists`);
 
-    console.log('🌿 Đang nạp danh mục 20 cây trồng mẫu & vi khí hậu telemetry...');
-    // Gán ngẫu nhiên chuyên gia bảo trợ cho từng cây
+    console.log('🌿 Seeding 20 core botanical specimens & microclimate telemetry...');
     const plantsToInsert = plantsData.map((plant, index) => {
       const gardener = createdGardeners[index % createdGardeners.length];
       return {
@@ -61,18 +60,17 @@ const importData = async () => {
       };
     });
     const createdPlants = await Plant.insertMany(plantsToInsert);
-    console.log(`   -> Đã nạp ${createdPlants.length} cây trồng`);
+    console.log(`   -> Seeded ${createdPlants.length} plant specimens`);
 
-    // Cập nhật mảng associatedPlants cho các chuyên gia
+    // Link associated plants to botanists
     for (const gardener of createdGardeners) {
       const associated = createdPlants.filter(p => p.gardener.toString() === gardener._id.toString());
       gardener.associatedPlants = associated.map(p => p._id);
       await gardener.save();
     }
 
-    console.log('📚 Đang nạp các bộ sưu tập thực vật theo mùa...');
+    console.log('📚 Seeding seasonal curated collections...');
     for (const col of collectionsData) {
-      // Map từ plantSpecimenIds sang ObjectIds của plants đã tạo
       const matchedPlantIds = createdPlants
         .filter(p => col.plantSpecimenIds && col.plantSpecimenIds.includes(p.specimenId))
         .map(p => p._id);
@@ -87,9 +85,9 @@ const importData = async () => {
         plants: matchedPlantIds
       });
     }
-    console.log(`   -> Đã nạp ${collectionsData.length} bộ sưu tập theo mùa`);
+    console.log(`   -> Seeded ${collectionsData.length} curated seasonal collections`);
 
-    console.log('🖼️ Đang nạp Thư viện ảnh tương tác Lightbox (Pinterest verified)...');
+    console.log('🖼️ Seeding interactive Lightbox gallery items...');
     const galleryToInsert = galleryData.map((item, index) => {
       const linkedPlant = createdPlants[index % createdPlants.length];
       return {
@@ -98,35 +96,35 @@ const importData = async () => {
       };
     });
     const createdGalleries = await Gallery.insertMany(galleryToInsert);
-    console.log(`   -> Đã nạp ${createdGalleries.length} ảnh thư viện`);
+    console.log(`   -> Seeded ${createdGalleries.length} gallery images`);
 
-    console.log('💌 Đang nạp tin nhắn liên hệ mẫu...');
+    console.log('💌 Seeding sample inquiries...');
     await ContactMessage.create([
       {
-        fullName: 'Trần Minh Quân',
+        fullName: 'Quan Tran',
         email: 'quan.tran@gmail.com',
-        subject: 'Tư vấn cây cho văn phòng thiếu sáng',
-        message: 'Chào GreenNest, tôi muốn xin tư vấn một số loài cây lọc không khí tốt đặt trong phòng kín ít ánh sáng tự nhiên.',
+        subject: 'Consultation for low-light office sanctuary',
+        message: 'Hello GreenNest team, I would like to request advice on air-purifying indoor species that thrive under low natural light environments.',
         status: 'pending'
       },
       {
-        fullName: 'Nguyễn Thị Thu Hằng',
-        email: 'hang.nguyen@company.vn',
-        subject: 'Hợp tác thiết kế giếng trời sinh học',
-        message: 'Chúng tôi muốn liên hệ với Dr. Elena Vance để thảo luận về việc tư vấn hệ sinh thái vòm kính cho dự án tòa nhà mới.',
+        fullName: 'Elena Rostova',
+        email: 'elena.rostova@botanic.org',
+        subject: 'Biosphere skylight curation partnership',
+        message: 'We would love to connect with Dr. Elena Vance to discuss bioclimatic dome consultation for our new conservatory project.',
         status: 'resolved'
       }
     ]);
-    console.log('   -> Đã nạp 2 tin nhắn liên hệ mẫu');
+    console.log('   -> Seeded 2 sample inquiries');
 
-    // Nạp thêm dữ liệu Vườn cá nhân mẫu cho user thường (Lê Hoàng Nam)
+    // Seed personal garden for standard user
     const normalUser = createdUsers.find(u => u.role === 'user');
     if (normalUser && createdPlants.length >= 2) {
       normalUser.savedPlants = [createdPlants[0]._id, createdPlants[1]._id];
       normalUser.garden = [
         {
           plant: createdPlants[0]._id,
-          customNickname: 'Monstera phòng khách',
+          customNickname: 'Living Room Monstera',
           addedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
           checklist: [
             { taskName: 'water', completed: true, lastCompletedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) },
@@ -137,7 +135,7 @@ const importData = async () => {
         },
         {
           plant: createdPlants[1]._id,
-          customNickname: 'Hồng nhung ban công',
+          customNickname: 'Balcony Velvet Rose',
           addedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
           checklist: [
             { taskName: 'water', completed: true, lastCompletedAt: new Date() },
@@ -148,33 +146,33 @@ const importData = async () => {
         }
       ];
       await normalUser.save();
-      console.log('🪴 Đã khởi tạo dữ liệu Vườn & Care Checklist mẫu cho thành viên Lê Hoàng Nam');
+      console.log('🪴 Seeded sample Living Sanctuary & Care Checklist for member Nam Le');
     }
 
-    console.log('\n🎉 NẠP DỮ LIỆU SEED VÀO MONGODB HOÀN TẤT THÀNH CÔNG RỰC RỠ!');
+    console.log('\n🎉 BOTANICAL SEED DATA INGESTION COMPLETED SUCCESSFULLY!');
     process.exit(0);
   } catch (error) {
-    console.error(`❌ [Seeder] Lỗi khi nạp dữ liệu: ${error.message}`);
+    console.error(`❌ [Seeder] Error seeding database: ${error.message}`);
     console.error(error);
     process.exit(1);
   }
 };
 
-// Hàm xóa sạch dữ liệu
+// Purge all data
 const destroyData = async () => {
   try {
     await connectDB();
-    console.log('🧹 Đang xóa sạch toàn bộ dữ liệu khỏi MongoDB...');
+    console.log('🧹 Purging all collections from MongoDB...');
     await User.deleteMany();
     await Plant.deleteMany();
     await Gardener.deleteMany();
     await Collection.deleteMany();
     await Gallery.deleteMany();
     await ContactMessage.deleteMany();
-    console.log('✅ Đã xóa sạch dữ liệu thành công.');
+    console.log('✅ Successfully purged all data.');
     process.exit(0);
   } catch (error) {
-    console.error(`❌ [Seeder] Lỗi khi xóa dữ liệu: ${error.message}`);
+    console.error(`❌ [Seeder] Error purging database: ${error.message}`);
     process.exit(1);
   }
 };

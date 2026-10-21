@@ -5,7 +5,7 @@ class AdminController {
   async getDashboardStats(req, res, next) {
     try {
       const stats = await adminService.getDashboardStats();
-      return successResponse(res, stats, 'Lấy số liệu thống kê Dashboard thành công');
+      return successResponse(res, stats, 'Dashboard metrics and telemetry stats retrieved successfully');
     } catch (error) {
       next(error);
     }

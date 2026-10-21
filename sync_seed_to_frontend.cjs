@@ -9,108 +9,126 @@ const plants = JSON.parse(fs.readFileSync(plantsPath, 'utf8'));
 const cols = JSON.parse(fs.readFileSync(colsPath, 'utf8'));
 
 const biomeMap = {
-  'foliage': { biome: 'tropical', label: 'Tropical Biome' },
-  'tree': { biome: 'tropical', label: 'Tropical Rainforest' },
-  'succulent': { biome: 'arid', label: 'Arid & Desert' },
-  'herb': { biome: 'subtropical', label: 'Subtropical Highlands' },
-  'flower': { biome: 'subtropical', label: 'Subtropical Highlands' }
+  'Aroid': { biome: 'tropical', label: 'Tropical Rainforest' },
+  'Rose': { biome: 'temperate', label: 'Temperate Garden' },
+  'Bromeliad': { biome: 'tropical', label: 'Tropical Canopy' },
+  'Fern': { biome: 'subtropical', label: 'Humid Understory' },
+  'Sansevieria': { biome: 'arid', label: 'Arid & Desert' },
+  'Succulent': { biome: 'arid', label: 'Arid & Desert' },
+  'Ficus': { biome: 'tropical', label: 'Tropical Forest' },
+  'Spathiphyllum': { biome: 'tropical', label: 'Understory Rainforest' },
+  'Epipremnum': { biome: 'tropical', label: 'Tropical Rainforest' },
+  'Calathea': { biome: 'tropical', label: 'Tropical Floor' },
+  'Alocasia': { biome: 'tropical', label: 'Tropical Rainforest' },
+  'Chlorophytum': { biome: 'subtropical', label: 'Subtropical Grassland' },
+  'Strelitzia': { biome: 'tropical', label: 'Subtropical Coast' },
+  'Anthurium': { biome: 'tropical', label: 'Tropical Lithophyte' },
+  'Philodendron': { biome: 'tropical', label: 'Tropical Rainforest' },
+  'Crassula': { biome: 'arid', label: 'Arid Karoo' },
+  'Hedera': { biome: 'temperate', label: 'Temperate Woodland' },
+  'Echeveria': { biome: 'arid', label: 'Arid Semi-Desert' }
 };
 
 const transformed = {};
 
 plants.forEach((p, idx) => {
   const num = String(idx + 1).padStart(3, '0');
-  const catalogCode = 'CANOPY-' + num;
-  const bInfo = biomeMap[p.category] || { biome: 'tropical', label: 'Tropical Biome' };
+  const catalogCode = p.catalogCode || ('CANOPY-' + num);
+  const bInfo = biomeMap[p.category] || { biome: p.biome || 'tropical', label: p.biomeLabel || 'Tropical Biome' };
   
   let toxicityText = 'Non-Toxic (Pet Safe)';
-  if (p.guide?.toxicityCaution?.pets === 'toxic') {
-    toxicityText = 'Pet Caution (' + (p.guide.toxicityCaution.humans === 'irritant' ? 'Toxic to Pets / Irritant' : 'Toxic to Pets') + ')';
-  } else if (p.guide?.toxicityCaution?.pets === 'caution') {
-    toxicityText = 'Mild Caution';
+  if (p.toxicity) {
+    if (typeof p.toxicity === 'string') {
+      toxicityText = p.toxicity;
+    } else if (p.toxicity.isToxicToPets) {
+      toxicityText = 'Pet Caution (' + (p.toxicity.details || 'Contains oxalates') + ')';
+    }
   }
 
-  const primaryImg = p.images?.find(img => img.isPrimary)?.url || p.images?.[0]?.url || '';
-  
+  const primaryImg = p.images?.hero || (Array.isArray(p.images) ? p.images.find(img => img.isPrimary)?.url || p.images[0]?.url : '') || '';
+  const galleryImgs = Array.isArray(p.images?.gallery) ? p.images.gallery : (Array.isArray(p.images) ? p.images.map(img => typeof img === 'string' ? img : img.url) : []);
+
   const tags = (p.tags || []).map(t => t.startsWith('#') ? t : '#' + t.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(''));
   if (p.category && !tags.includes('#' + p.category)) {
     tags.push('#' + p.category.charAt(0).toUpperCase() + p.category.slice(1));
   }
-
-  const waterDailyMap = {
-    'low': '150 ml / 14 Days',
-    'moderate': '350 ml / 7 Days',
-    'high': '500 ml / 3 Days'
-  };
 
   const item = {
     id: p.slug,
     slug: p.slug,
     catalogCode,
     name: p.name,
-    scientificName: p.botanicalName,
+    scientificName: p.scientificName || p.botanicalName || '',
     category: p.category,
     biome: bInfo.biome,
     biomeLabel: bInfo.label,
     image: primaryImg,
-    images: p.images || [],
+    images: galleryImgs.length > 0 ? galleryImgs : [primaryImg],
     tags,
-    taxonomyTags: [p.category, p.botanicalName.split(' ')[0], 'Plantae'],
-    traits: [
-      p.difficulty ? p.difficulty.toUpperCase() + ' Maintenance' : 'Adaptive',
-      p.light ? p.light.replace('-', ' ').toUpperCase() : 'Indirect Sun',
-      p.guide?.growthHabit ? p.guide.growthHabit.split('.')[0] : 'Perennial'
-    ].slice(0, 4),
-    shortDesc: p.description,
-    origin: p.regions ? 'Vùng sinh trưởng: ' + p.regions.join(', ') : 'Vùng nhiệt đới và cận nhiệt đới',
-    purpose: p.guide?.growthHabit || 'Lọc sạch không khí nội thất, phong cách trang trí Biophilic hiện đại.',
-    water: p.guide?.watering || 'Tưới nước điều độ khi lớp đất mặt đã se khô.',
-    light: 'Ánh sáng: ' + p.light + '. ' + (p.light === 'bright-indirect' ? 'Ánh sáng tán xạ gián tiếp dồi dào.' : p.light === 'low' ? 'Chịu bóng tốt, sống khỏe trong góc tối.' : 'Ưa sáng mạnh và nắng trực tiếp.'),
-    soil: p.guide?.soil || 'Giá thể thoát nước tốt, tơi xốp giàu dinh dưỡng.',
-    humidity: p.water === 'high' ? '70% – 90%' : p.water === 'moderate' ? '50% – 70%' : '30% – 50%',
-    temp: '18°C – 28°C',
-    growth: p.difficulty === 'easy' ? 'Phát triển khỏe / Dễ trồng' : 'Trung bình',
+    taxonomyTags: p.taxonomyTags || [p.category, (p.scientificName || '').split(' ')[0], 'Plantae'],
+    traits: p.traits || [
+      p.careLevel ? p.careLevel.toUpperCase() + ' Maintenance' : 'Adaptive',
+      'Filtered Sunlight',
+      'Evergreen Perennial'
+    ],
+    shortDesc: p.shortDesc || p.description,
+    description: p.description,
+    origin: p.origin || 'Tropical and Subtropical Regions',
+    purpose: p.purpose || 'Purifies indoor air and anchors modern biophilic interiors.',
+    water: p.watering || 'Water thoroughly when topsoil dries.',
+    light: p.light || 'Abundant filtered indirect sunlight.',
+    soil: p.soil || 'Well-draining, nutrient-rich aerated substrate.',
+    humidity: p.humidity || '55% – 75%',
+    temp: p.temp || '18°C – 28°C',
+    growth: p.growth || 'Moderate Growth',
+    careLevel: p.careLevel || 'Moderate',
     toxicity: toxicityText,
-    waterDaily: waterDailyMap[p.water] || '350 ml / 7 Days',
-    waterStatus: p.water === 'low' ? 'Chịu hạn tốt' : 'Độ ẩm tối ưu',
-    notifMsg: p.name + ' đang hấp thụ ánh sáng và trao đổi chất ổn định.',
-    waterVal: p.water === 'low' ? '150 ml' : p.water === 'high' ? '500 ml' : '350 ml',
-    waterBar: p.water === 'low' ? '45%' : p.water === 'high' ? '92%' : '75%',
-    waterSub: p.guide?.watering || 'Độ ẩm tầng rễ cân bằng tốt.',
-    waterVol: p.water === 'low' ? '150 ml' : '350 ml',
-    waterFreq: p.guide?.watering || 'Khoảng 7-10 ngày một lần',
-    humidityVal: p.water === 'high' ? '78% RH' : '62% RH',
-    humidityBar: p.water === 'high' ? '85%' : '68%',
-    humiditySub: 'Độ thoát hơi nước qua lá duy trì ổn định.',
-    humidityTarget: '55% – 80% RH',
-    mistCadence: p.category === 'succulent' ? 'Không cần phun sương' : 'Phun sương lá 3-4 ngày/lần',
-    envVal: p.light === 'full-sun' ? '3,000 FC' : p.light === 'bright-indirect' ? '1,500 FC' : '800 FC',
-    envBar: p.light === 'full-sun' ? '95%' : '80%',
-    envSub: 'Cường độ quang phổ chuẩn cho ' + p.light,
-    tempRange: '18°C tối thiểu ban đêm / 28°C tối đa ban ngày',
-    soilVal: p.guide?.soil ? p.guide.soil.split(',')[0].slice(0, 20) : 'Đất mùn tơi xốp',
-    soilBar: '85%',
-    soilSub: p.guide?.container || 'Chậu có lỗ thoát nước tốt.',
-    guide: p.guide,
-    seasons: p.seasons || [],
-    lightRequirement: p.light,
-    wateringFrequency: p.water,
-    difficulty: p.difficulty,
-    regions: p.regions || [],
-    similarPlantSlugs: p.similarPlantSlugs || []
+    waterDaily: p.telemetry?.waterDaily || '350 ml / 7 Days',
+    waterStatus: p.telemetry?.waterStatus || 'Balanced',
+    notifMsg: p.name + ' is maintaining optimal hydration and metabolic vitality.',
+    waterVal: p.telemetry?.waterVal || '350 ml',
+    waterBar: p.telemetry?.waterBar || '80%',
+    waterSub: p.telemetry?.waterSub || 'Balanced root zone hydration.',
+    waterVol: p.telemetry?.waterVal || '350 ml',
+    waterFreq: p.telemetry?.waterFreq || 'Every 7-10 days',
+    humidityVal: p.telemetry?.humidityVal || '65% RH',
+    humidityBar: p.telemetry?.humidityBar || '80%',
+    humiditySub: p.telemetry?.humiditySub || 'Leaf transpiration rate maintaining natural equilibrium.',
+    humidityTarget: p.telemetry?.humidityTarget || '60% – 80% RH',
+    mistCadence: p.telemetry?.mistCadence || 'Foliage misting every 3-4 days',
+    envVal: p.telemetry?.envVal || '1,500 FC',
+    envBar: p.telemetry?.envBar || '85%',
+    envSub: p.telemetry?.envSub || 'Calibrated lighting spectrum.',
+    tempRange: p.telemetry?.tempRange || '18°C min night / 28°C max day',
+    soilVal: p.telemetry?.soilVal || 'Airy Aroid Blend',
+    soilBar: p.telemetry?.soilBar || '85%',
+    soilSub: p.telemetry?.soilSub || 'Pot equipped with adequate drainage hole.',
+    status: p.status || 'published'
   };
 
   transformed[p.slug] = item;
 });
 
-// Legacy aliases for backward compatibility with old mock IDs
+// Backward-compatibility legacy aliases
 transformed['specimen-monstera'] = transformed['monstera-deliciosa'];
-transformed['specimen-red-rose'] = transformed['monstera-deliciosa'];
-transformed['specimen-snake-plant'] = transformed['sansevieria-trifasciata'];
-transformed['specimen-fiddle-leaf'] = transformed['ficus-lyrata'];
+transformed['specimen-red-rose'] = transformed['red-heritage-rose'] || transformed['monstera-deliciosa'];
+transformed['specimen-snake-plant'] = transformed['snake-plant-laurentii'] || transformed['monstera-deliciosa'];
+transformed['specimen-fiddle-leaf'] = transformed['fiddle-leaf-fig'] || transformed['monstera-deliciosa'];
+transformed['specimen-peace-lily'] = transformed['peace-lily-spathiphyllum'] || transformed['monstera-deliciosa'];
+transformed['specimen-boston-fern'] = transformed['boston-fern'] || transformed['monstera-deliciosa'];
+transformed['specimen-spider-plant'] = transformed['spider-plant-variegated'] || transformed['monstera-deliciosa'];
+transformed['specimen-zz-plant'] = transformed['zz-plant-zamioculcas'] || transformed['monstera-deliciosa'];
+transformed['specimen-pothos'] = transformed['golden-pothos'] || transformed['monstera-deliciosa'];
+transformed['specimen-rubber-tree'] = transformed['rubber-tree-burgundy'] || transformed['monstera-deliciosa'];
+transformed['specimen-calathea'] = transformed['calathea-orbifolia'] || transformed['monstera-deliciosa'];
+transformed['specimen-alocasia-amazonica'] = transformed['alocasia-amazonica'] || transformed['monstera-deliciosa'];
+transformed['specimen-anthurium'] = transformed['anthurium-clarinervium'] || transformed['monstera-deliciosa'];
+transformed['specimen-bird-of-paradise'] = transformed['bird-of-paradise-strelitzia'] || transformed['monstera-deliciosa'];
+transformed['specimen-jade-plant'] = transformed['jade-plant-crassula-ovata'] || transformed['monstera-deliciosa'];
+transformed['specimen-echeveria'] = transformed['echeveria-elegans'] || transformed['monstera-deliciosa'];
 
 const fileContent = `// Comprehensive Botanical Specimens Seed Data from MongoDB Dataset
-// Contains all 20 standardized botanical specimens + 4 seasonal curated collections
+// Contains all 20 standardized botanical specimens + 4 curated living collections
 
 export const PLANT_COLLECTIONS = ${JSON.stringify(cols, null, 2)};
 
@@ -129,7 +147,7 @@ export function getStarredPlantIds() {
   if (typeof window === 'undefined') return ['monstera-deliciosa'];
   const stored = localStorage.getItem(STARRED_STORAGE_KEY);
   if (stored === null) {
-    const initial = ['monstera-deliciosa', 'sansevieria-trifasciata'];
+    const initial = ['monstera-deliciosa', 'snake-plant-laurentii'];
     localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(initial));
     return initial;
   }
@@ -159,18 +177,18 @@ export function toggleStarredPlant(plantId) {
 }
 
 export function getGardenPlantIds() {
-  if (typeof window === 'undefined') return ['monstera-deliciosa', 'ficus-lyrata'];
+  if (typeof window === 'undefined') return ['monstera-deliciosa', 'fiddle-leaf-fig'];
   const stored = localStorage.getItem(GARDEN_STORAGE_KEY);
   if (stored === null) {
-    const initial = ['monstera-deliciosa', 'ficus-lyrata'];
+    const initial = ['monstera-deliciosa', 'fiddle-leaf-fig'];
     localStorage.setItem(GARDEN_STORAGE_KEY, JSON.stringify(initial));
     return initial;
   }
   try {
     const parsed = JSON.parse(stored);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : ['monstera-deliciosa', 'ficus-lyrata'];
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : ['monstera-deliciosa', 'fiddle-leaf-fig'];
   } catch (e) {
-    return ['monstera-deliciosa', 'ficus-lyrata'];
+    return ['monstera-deliciosa', 'fiddle-leaf-fig'];
   }
 }
 

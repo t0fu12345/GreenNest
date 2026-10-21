@@ -3,24 +3,24 @@ const mongoose = require('mongoose');
 const ContactMessageSchema = new mongoose.Schema({
   fullName: {
     type: String,
-    required: [true, 'Họ và tên là bắt buộc'],
+    required: [true, 'Full name is required'],
     trim: true
   },
   email: {
     type: String,
-    required: [true, 'Email là bắt buộc'],
+    required: [true, 'Email is required'],
     trim: true,
     lowercase: true,
-    match: [/^\S+@\S+\.\S+$/, 'Email không đúng định dạng']
+    match: [/^\S+@\S+\.\S+$/, 'Invalid email address format']
   },
   subject: {
     type: String,
-    required: [true, 'Chủ đề liên hệ là bắt buộc'],
+    required: [true, 'Message subject is required'],
     trim: true
   },
   message: {
     type: String,
-    required: [true, 'Nội dung tin nhắn là bắt buộc'],
+    required: [true, 'Message content is required'],
     trim: true
   },
   status: {

@@ -5,7 +5,7 @@ class AuthService {
   async register({ fullName, email, password }) {
     const userExists = await User.findOne({ email });
     if (userExists) {
-      const error = new Error('Email này đã được sử dụng trong hệ thống');
+      const error = new Error('This email address is already registered in the system');
       error.statusCode = 409;
       error.errorCode = 'EMAIL_EXISTS';
       throw error;
@@ -34,7 +34,7 @@ class AuthService {
   async login({ email, password }) {
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-      const error = new Error('Email hoặc mật khẩu không chính xác');
+      const error = new Error('Invalid email or password');
       error.statusCode = 401;
       error.errorCode = 'INVALID_CREDENTIALS';
       throw error;
@@ -42,7 +42,7 @@ class AuthService {
 
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
-      const error = new Error('Email hoặc mật khẩu không chính xác');
+      const error = new Error('Invalid email or password');
       error.statusCode = 401;
       error.errorCode = 'INVALID_CREDENTIALS';
       throw error;
@@ -65,7 +65,7 @@ class AuthService {
   async getProfile(userId) {
     const user = await User.findById(userId);
     if (!user) {
-      const error = new Error('Không tìm thấy người dùng');
+      const error = new Error('User not found');
       error.statusCode = 404;
       throw error;
     }
@@ -83,7 +83,7 @@ class AuthService {
 
   async changePassword(userId, currentPassword, newPassword) {
     if (newPassword.length < 6) {
-      const error = new Error('Mật khẩu mới phải có tối thiểu 6 ký tự');
+      const error = new Error('New password must be at least 6 characters');
       error.statusCode = 400;
       throw error;
     }
@@ -91,7 +91,7 @@ class AuthService {
     const user = await User.findById(userId).select('+password');
     const isMatch = await user.matchPassword(currentPassword);
     if (!isMatch) {
-      const error = new Error('Mật khẩu hiện tại không chính xác');
+      const error = new Error('Current password is incorrect');
       error.statusCode = 400;
       error.errorCode = 'INCORRECT_CURRENT_PASSWORD';
       throw error;

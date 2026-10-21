@@ -156,7 +156,7 @@ const User = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  Đăng xuất
+                  Sign Out
                 </button>
               </div>
             </div>
@@ -170,7 +170,7 @@ const User = () => {
               border: '1px solid rgba(255, 255, 255, 0.14)',
               borderRadius: '9999px'
             }}>
-              <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Chưa đăng nhập tài khoản.</span>
+              <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Not currently signed in.</span>
               <Link 
                 to="/login"
                 style={{
@@ -180,7 +180,7 @@ const User = () => {
                   textDecoration: 'none'
                 }}
               >
-                Đăng nhập ngay →
+                Sign In Now →
               </Link>
             </div>
           )}

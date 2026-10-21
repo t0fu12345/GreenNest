@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Lưu phiên đăng nhập vào LocalStorage & Cookie
+  // Save session to LocalStorage & Cookie
   const saveSession = useCallback((userObj, jwtToken, rememberMe = true) => {
     setUser(userObj);
     setToken(jwtToken);
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Xóa sạch phiên đăng nhập
+  // Clear session
   const clearSession = useCallback(() => {
     setUser(null);
     setToken(null);
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }) => {
     deleteCookie(STORAGE_KEYS.COOKIE_SESSION);
   }, []);
 
-  // Tự động kích hoạt Hybrid Sync khi đăng nhập (Đồng bộ cây từ localStorage lên MongoDB)
+  // Trigger Hybrid Sync on login (Sync plants from localStorage to MongoDB)
   const triggerHybridSync = useCallback(async () => {
     try {
       const guestPlants = [];
@@ -99,16 +99,16 @@ export const AuthProvider = ({ children }) => {
       const uniqueIds = Array.from(new Set(guestPlants.filter(Boolean)));
       if (uniqueIds.length > 0) {
         await gardenApi.syncGarden(uniqueIds);
-        // Sau khi sync thành công lên MongoDB, dọn dẹp localStorage
+        // Clean up localStorage after successful MongoDB sync
         localStorage.removeItem(STORAGE_KEYS.GUEST_GARDEN);
         localStorage.removeItem(STORAGE_KEYS.LEGACY_STARRED);
       }
     } catch (err) {
-      console.warn('Lỗi đồng bộ hybrid sync vườn cây:', err);
+      console.warn('Hybrid sync error:', err);
     }
   }, []);
 
-  // Khôi phục phiên làm việc khi reload ứng dụng
+  // Restore session on app reload
   useEffect(() => {
     const restoreSession = async () => {
       try {
@@ -118,7 +118,7 @@ export const AuthProvider = ({ children }) => {
 
         if (savedToken) {
           setToken(savedToken);
-          // Gọi API /auth/me để xác thực token và lấy thông tin mới nhất từ database
+          // Verify token via /auth/me and fetch latest database profile
           const res = await authApi.getMe();
           if (res && res.data && res.data.user) {
             const userData = res.data.user;
@@ -133,7 +133,7 @@ export const AuthProvider = ({ children }) => {
           }
         }
       } catch (err) {
-        console.warn('Phiên đăng nhập đã hết hạn hoặc không hợp lệ:', err.message);
+        console.warn('Session expired or invalid:', err.message);
         clearSession();
       } finally {
         setLoading(false);
@@ -142,7 +142,7 @@ export const AuthProvider = ({ children }) => {
 
     restoreSession();
 
-    // Lắng nghe sự kiện token hết hạn từ apiClient
+    // Listen for token expiration event from apiClient
     const handleAuthExpired = () => {
       clearSession();
     };
@@ -150,17 +150,17 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('auth:expired', handleAuthExpired);
   }, [clearSession]);
 
-  // Đăng nhập kết nối API Backend thực tế
+  // Sign in via Backend API
   const login = async (identifier, password, rememberMe = true) => {
     try {
       let emailInput = (identifier || '').trim().toLowerCase();
       const passwordInput = (password || '').trim();
 
       if (!emailInput || !passwordInput) {
-        return { success: false, message: 'Vui lòng nhập đầy đủ Email và Mật khẩu.' };
+        return { success: false, message: 'Please enter both email and password.' };
       }
 
-      // Hỗ trợ alias đăng nhập nhanh
+      // Quick login aliases
       if (emailInput === 'admin') emailInput = 'admin@greennest.vn';
       if (emailInput === 'nam.le' || emailInput === 'minhthao') emailInput = 'nam.le@greennest.vn';
 
@@ -180,27 +180,27 @@ export const AuthProvider = ({ children }) => {
 
         saveSession(normalizedUser, tokenVal, rememberMe);
 
-        // Kích hoạt đồng bộ Vườn cây
+        // Trigger Garden sync
         triggerHybridSync();
 
         return {
           success: true,
           isAdmin: normalizedUser.role === 'admin',
           user: normalizedUser,
-          message: 'Đăng nhập thành công!'
+          message: 'Signed in successfully!'
         };
       }
 
-      return { success: false, message: res.message || 'Đăng nhập không thành công.' };
+      return { success: false, message: res.message || 'Sign in unsuccessful.' };
     } catch (err) {
       return {
         success: false,
-        message: err.message || 'Email hoặc mật khẩu không chính xác. Vui lòng thử lại!'
+        message: err.message || 'Invalid email or password. Please try again.'
       };
     }
   };
 
-  // Đăng ký tài khoản mới kết nối API Backend
+  // Register new account via Backend API
   const register = async ({ name, email, password, nickname }) => {
     try {
       const payload = {
@@ -228,25 +228,25 @@ export const AuthProvider = ({ children }) => {
         return {
           success: true,
           user: normalizedUser,
-          message: 'Đăng ký tài khoản thành công!'
+          message: 'Account registered successfully!'
         };
       }
 
-      return { success: false, message: res.message || 'Đăng ký không thành công.' };
+      return { success: false, message: res.message || 'Registration unsuccessful.' };
     } catch (err) {
       return {
         success: false,
-        message: err.message || 'Không thể tạo tài khoản. Email có thể đã được sử dụng.'
+        message: err.message || 'Could not create account. Email may already be in use.'
       };
     }
   };
 
-  // Đăng xuất
+  // Sign out
   const logout = () => {
     clearSession();
   };
 
-  // Mô phỏng Google Login cho tài khoản mẫu
+  // Demo quick login helper
   const loginWithGoogle = async () => {
     return login('nam.le@greennest.vn', 'GreenNest@2026', true);
   };
@@ -257,8 +257,8 @@ export const AuthProvider = ({ children }) => {
       if (stored) return JSON.parse(stored);
     } catch {}
     return [
-      { id: '1', name: 'Quản Trị Viên GreenNest', email: 'admin@greennest.vn', role: 'admin', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80', biome: 'Global Botanical Network' },
-      { id: '2', name: 'Lê Hoàng Nam', email: 'nam.le@greennest.vn', role: 'user', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80', biome: 'Tropical Biome' }
+      { id: '1', name: 'GreenNest Administrator', email: 'admin@greennest.vn', role: 'admin', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80', biome: 'Global Botanical Network' },
+      { id: '2', name: 'Nam Le', email: 'nam.le@greennest.vn', role: 'user', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80', biome: 'Tropical Biome' }
     ];
   }, []);
 

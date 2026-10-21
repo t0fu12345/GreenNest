@@ -49,17 +49,17 @@ const AdminDashboard = () => {
     const defaultList = Object.values(BOTANICAL_SPECIMENS);
 
     const loadBackendData = async () => {
-      // 1. Thống kê Dashboard
+      // 1. Dashboard Statistics
       try {
         const statsRes = await adminApi.getDashboardStats();
         if (statsRes?.data) {
           setStats(statsRes.data);
         }
       } catch (err) {
-        console.warn('Chưa lấy được stats từ API:', err.message);
+        console.warn('Unable to fetch stats from API:', err.message);
       }
 
-      // 2. Danh sách cây từ MongoDB
+      // 2. Specimen catalog from MongoDB
       try {
         const plantsRes = await plantApi.getPlants({ limit: 100 });
         if (plantsRes?.data?.plants && plantsRes.data.plants.length > 0) {
@@ -82,7 +82,7 @@ const AdminDashboard = () => {
           return;
         }
       } catch (err) {
-        console.warn('Dùng dữ liệu dự phòng cho admin plants:', err.message);
+        console.warn('Using fallback data for admin plants:', err.message);
       }
 
       // Fallback
@@ -101,7 +101,7 @@ const AdminDashboard = () => {
     const res = updateUserRole(userId, nextRole);
     if (res.success) {
       setUserList(res.users);
-      showToast(`Đã cập nhật vai trò người dùng thành: ${nextRole.toUpperCase()}`);
+      showToast(`User role updated to: ${nextRole.toUpperCase()}`);
     } else {
       showToast(res.message);
     }
@@ -110,14 +110,14 @@ const AdminDashboard = () => {
   // Handle Delete User
   const handleDeleteUser = (userId, email) => {
     if (email === user?.email) {
-      alert('Không thể xóa tài khoản Admin đang đăng nhập hiện tại.');
+      alert('Cannot delete the currently logged-in Admin account.');
       return;
     }
-    if (window.confirm(`Bạn có chắc chắn muốn xóa tài khoản ${email}?`)) {
+    if (window.confirm(`Are you sure you want to remove account ${email}?`)) {
       const res = deleteUser(userId);
       if (res.success) {
         setUserList(res.users);
-        showToast(`Đã xóa thành công người dùng: ${email}`);
+        showToast(`Successfully removed user: ${email}`);
       }
     }
   };
@@ -176,25 +176,25 @@ const AdminDashboard = () => {
         image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
         shortDesc: ''
       });
-      showToast(`Đã thêm cây trồng mới vào MongoDB: ${plantPayload.name}`);
+      showToast(`New specimen added to MongoDB: ${plantPayload.name}`);
     } catch (err) {
-      showToast(err.message || 'Lỗi khi thêm cây trồng');
+      showToast(err.message || 'Error adding specimen');
     }
   };
 
   // Handle Delete Plant
   const handleDeletePlant = async (plantId, plantName) => {
-    if (window.confirm(`Xác nhận xóa cây trồng "${plantName}" khỏi hệ thống?`)) {
+    if (window.confirm(`Confirm removal of specimen "${plantName}" from system?`)) {
       try {
         const target = specimens.find(p => p.id === plantId || p._id === plantId);
         if (target?._id) {
           await plantApi.deletePlant(target._id);
         }
         setSpecimens(prev => prev.filter(p => p.id !== plantId && p._id !== plantId));
-        showToast(`Đã xóa cây trồng "${plantName}" thành công!`);
+        showToast(`Successfully deleted specimen "${plantName}"!`);
       } catch (err) {
         setSpecimens(prev => prev.filter(p => p.id !== plantId));
-        showToast(`Đã xóa khỏi giao diện: ${plantName}`);
+        showToast(`Removed from interface: ${plantName}`);
       }
     }
   };
@@ -267,7 +267,7 @@ const AdminDashboard = () => {
             </h1>
 
             <p style={{ color: '#cbd5e1', fontSize: '0.92rem' }}>
-              Xác thực JWT: <span style={{ color: '#86efac', fontFamily: 'monospace' }}>HS256 Verified</span> • Quản trị viên: <strong>{user?.name}</strong> ({user?.email})
+              JWT Verification: <span style={{ color: '#86efac', fontFamily: 'monospace' }}>HS256 Verified</span> • Administrator: <strong>{user?.name}</strong> ({user?.email})
             </p>
           </div>
 
@@ -276,7 +276,7 @@ const AdminDashboard = () => {
               type="button"
               onClick={() => {
                 navigator.clipboard.writeText(token || '');
-                showToast('Đã sao chép chuỗi mã JWT Token vào bộ nhớ tạm!');
+                showToast('JWT Token string copied to clipboard!');
               }}
               style={{
                 background: 'rgba(34, 197, 94, 0.15)',
@@ -308,7 +308,7 @@ const AdminDashboard = () => {
                 transition: 'all 0.2s ease'
               }}
             >
-              Thoát quyền Admin
+              Sign Out Admin
             </button>
           </div>
         </div>
@@ -420,7 +420,7 @@ const AdminDashboard = () => {
               transition: 'all 0.2s ease'
             }}
           >
-            🌿 Quản lý Cây trồng ({specimens.length})
+            🌿 Botanical Specimens ({specimens.length})
           </button>
 
           <button
@@ -439,7 +439,7 @@ const AdminDashboard = () => {
               transition: 'all 0.2s ease'
             }}
           >
-            👥 Người dùng & Phân quyền ({userList.length})
+            👥 Users & Access Control ({userList.length})
           </button>
 
           <button
@@ -458,7 +458,7 @@ const AdminDashboard = () => {
               transition: 'all 0.2s ease'
             }}
           >
-            🔐 Cơ chế JWT Token & Claims
+            🔐 JWT Security & Claims
           </button>
         </div>
 
@@ -475,7 +475,7 @@ const AdminDashboard = () => {
             }}>
               <input
                 type="text"
-                placeholder="🔍 Tìm kiếm cây theo tên hoặc chi..."
+                placeholder="🔍 Search specimens by common or scientific name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{
@@ -507,7 +507,7 @@ const AdminDashboard = () => {
                   gap: '8px'
                 }}
               >
-                <span>➕ Thêm cây trồng mới</span>
+                <span>➕ Add New Specimen</span>
               </button>
             </div>
 
@@ -521,12 +521,12 @@ const AdminDashboard = () => {
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
                 <thead>
                   <tr style={{ background: 'rgba(0, 0, 0, 0.4)', borderBottom: '1px solid rgba(255, 255, 255, 0.12)' }}>
-                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Ảnh</th>
-                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Mã & Tên cây</th>
-                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Tên khoa học</th>
-                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Hệ sinh thái</th>
-                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Ánh sáng & Nước</th>
-                    <th style={{ padding: '14px 18px', color: '#94a3b8', textAlign: 'right' }}>Thao tác</th>
+                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Image</th>
+                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Code & Common Name</th>
+                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Scientific Name</th>
+                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Biome</th>
+                    <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Light & Watering</th>
+                    <th style={{ padding: '14px 18px', color: '#94a3b8', textAlign: 'right' }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -597,7 +597,7 @@ const AdminDashboard = () => {
                               fontSize: '0.78rem'
                             }}
                           >
-                            Xóa
+                            Delete
                           </button>
                         </div>
                       </td>
@@ -620,12 +620,12 @@ const AdminDashboard = () => {
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
               <thead>
                 <tr style={{ background: 'rgba(0, 0, 0, 0.4)', borderBottom: '1px solid rgba(255, 255, 255, 0.12)' }}>
-                  <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Người dùng</th>
+                  <th style={{ padding: '14px 18px', color: '#94a3b8' }}>User</th>
                   <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Email</th>
-                  <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Vai trò & Quyền</th>
-                  <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Hệ sinh thái</th>
-                  <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Ngày tham gia</th>
-                  <th style={{ padding: '14px 18px', color: '#94a3b8', textAlign: 'right' }}>Thao tác phân quyền</th>
+                  <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Role & Access</th>
+                  <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Biome Focus</th>
+                  <th style={{ padding: '14px 18px', color: '#94a3b8' }}>Joined Date</th>
+                  <th style={{ padding: '14px 18px', color: '#94a3b8', textAlign: 'right' }}>Role Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -693,7 +693,7 @@ const AdminDashboard = () => {
                               cursor: 'pointer'
                             }}
                           >
-                            {isCurrentAdmin ? 'Hạ cấp User' : 'Nâng cấp Admin'}
+                            {isCurrentAdmin ? 'Demote to User' : 'Promote to Admin'}
                           </button>
 
                           <button
@@ -709,7 +709,7 @@ const AdminDashboard = () => {
                               cursor: 'pointer'
                             }}
                           >
-                            Xóa
+                            Delete
                           </button>
                         </div>
                       </td>
@@ -733,7 +733,7 @@ const AdminDashboard = () => {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <h3 style={{ color: '#fff', fontSize: '1.1rem', margin: 0 }}>
-                  Chuỗi mã JWT Token (RFC 7519) hiện hành
+                  Active JWT Token (RFC 7519) String
                 </h3>
                 <span style={{ fontSize: '0.78rem', color: '#86efac', background: 'rgba(34, 197, 94, 0.15)', padding: '3px 8px', borderRadius: 0 }}>
                   Bearer Token Active
@@ -866,7 +866,7 @@ const AdminDashboard = () => {
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: '#fff', margin: 0 }}>
-                Thêm Thực Vật Vào Danh Mục
+                Add Botanical Specimen to Catalog
               </h3>
               <button
                 type="button"
@@ -879,7 +879,7 @@ const AdminDashboard = () => {
 
             <form onSubmit={handleAddPlant} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>Tên Cây (Common Name)</label>
+                <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>Common Name</label>
                 <input
                   type="text"
                   required
@@ -891,7 +891,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>Tên Khoa Học (Scientific Name)</label>
+                <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>Scientific Name</label>
                 <input
                   type="text"
                   placeholder="e.g. Alocasia × amazonica"
@@ -903,7 +903,7 @@ const AdminDashboard = () => {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>Hệ Sinh Thái (Biome)</label>
+                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>Biome</label>
                   <select
                     value={newPlant.biome}
                     onChange={(e) => setNewPlant({ ...newPlant, biome: e.target.value })}
@@ -916,7 +916,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>Nhu Cầu Tưới (Water)</label>
+                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>Watering Schedule</label>
                   <input
                     type="text"
                     value={newPlant.water}
@@ -927,7 +927,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>URL Hình Ảnh (Unsplash / Online Image)</label>
+                <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px' }}>Image URL (Unsplash / Online Image)</label>
                 <input
                   type="url"
                   value={newPlant.image}
@@ -942,13 +942,13 @@ const AdminDashboard = () => {
                   onClick={() => setIsAddPlantOpen(false)}
                   style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#cbd5e1', padding: '10px 20px', borderRadius: 0, cursor: 'pointer' }}
                 >
-                  Hủy
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   style={{ background: 'var(--emerald-accent)', border: 'none', color: '#07100b', fontWeight: 700, padding: '10px 24px', borderRadius: 0, cursor: 'pointer' }}
                 >
-                  Lưu Cây Mới
+                  Save Specimen
                 </button>
               </div>
             </form>

@@ -1,11 +1,11 @@
 const dns = require('dns');
 const mongoose = require('mongoose');
 
-// Tự động định tuyến DNS qua Google/Cloudflare DNS để giải quyết lỗi querySrv ECONNREFUSED trên mạng Windows/ISP
+// Route DNS queries through Google/Cloudflare DNS to prevent querySrv ECONNREFUSED on Windows/ISP networks
 try {
   dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
 } catch (e) {
-  // Bỏ qua nếu môi trường không cho phép override DNS
+  // Ignore if environment does not allow DNS override
 }
 
 const connectDB = async () => {
@@ -24,35 +24,35 @@ const connectDB = async () => {
     const dbName = conn.connection.name;
 
     if (isAtlas) {
-      console.log(`🍃 [MongoDB Atlas] Kết nối Cloud thành công: ${host}/${dbName}`);
+      console.log(`🍃 [MongoDB Atlas] Connected successfully to Cloud Cluster: ${host}/${dbName}`);
     } else {
-      console.log(`🌿 [MongoDB Local] Kết nối cục bộ thành công: ${host}/${dbName}`);
+      console.log(`🌿 [MongoDB Local] Connected successfully to local database: ${host}/${dbName}`);
     }
   } catch (error) {
-    console.error(`❌ [MongoDB] Lỗi kết nối: ${error.message}`);
+    console.error(`❌ [MongoDB] Connection error: ${error.message}`);
     if (isAtlas && (error.message.includes('whitelist') || error.message.includes('timed out') || error.message.includes('buffering'))) {
-      console.error('💡 [Gợi ý Atlas]: Vui lòng kiểm tra mục "Network Access" trên MongoDB Atlas và chắc chắn IP của bạn đã được thêm (hoặc Allow from anywhere: 0.0.0.0/0).');
+      console.error('💡 [Atlas Tip]: Please verify "Network Access" in MongoDB Atlas and ensure your IP is allowed (or Allow from anywhere: 0.0.0.0/0).');
     }
     process.exit(1);
   }
 };
 
-// Đăng ký các sự kiện kết nối Mongoose
+// Register Mongoose connection event listeners
 mongoose.connection.on('disconnected', () => {
-  console.warn('⚠️ [MongoDB] Mất kết nối database. Đang cố gắng kết nối lại...');
+  console.warn('⚠️ [MongoDB] Database connection lost. Attempting to reconnect...');
 });
 
 mongoose.connection.on('error', (err) => {
   console.error(`❌ [MongoDB Error]: ${err.message}`);
 });
 
-// Xử lý đóng kết nối an toàn (Graceful Shutdown)
+// Graceful Shutdown handling
 const handleGracefulShutdown = async (signal) => {
   try {
     await mongoose.connection.close();
-    console.log(`🛑 [MongoDB] Đã đóng kết nối an toàn sau tín hiệu ${signal}`);
+    console.log(`🛑 [MongoDB] Connection closed gracefully after signal ${signal}`);
   } catch (err) {
-    console.error(`Lỗi khi đóng kết nối MongoDB: ${err.message}`);
+    console.error(`Error closing MongoDB connection: ${err.message}`);
   }
 };
 

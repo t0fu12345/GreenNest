@@ -36,7 +36,7 @@ const SpecimenDetail = () => {
           const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
           setStarredIds(ids);
         } catch (e) {
-          console.warn('Không thể tải cây yêu thích:', e);
+          console.warn('Unable to load saved favorites:', e);
         }
       } else {
         setStarredIds([]);
@@ -48,12 +48,12 @@ const SpecimenDetail = () => {
   useEffect(() => {
     if (!requestedId) return;
 
-    // Nếu ID có trong BOTANICAL_SPECIMENS thì set trước
+    // Populate from BOTANICAL_SPECIMENS if available
     if (BOTANICAL_SPECIMENS[requestedId]) {
       setCurrentPlant(BOTANICAL_SPECIMENS[requestedId]);
     }
 
-    // Sau đó gọi API để lấy dữ liệu mới nhất từ MongoDB
+    // Fetch latest live record from MongoDB API
     const fetchDetail = async () => {
       try {
         setLoading(true);
@@ -72,7 +72,7 @@ const SpecimenDetail = () => {
             taxonomyTags: [p.category, p.biome, 'Plantae'].filter(Boolean),
             traits: [p.light, p.watering, p.careLevel].filter(Boolean),
             shortDesc: p.description || '',
-            origin: p.origin || 'Vườn ươm GreenNest Sanctuary',
+            origin: p.origin || 'GreenNest Sanctuary Nursery',
             water: p.watering || 'Every 7-10 days',
             light: p.light || 'Dappled indirect sunlight',
             soil: p.careGuide?.soil || 'Chunky aroid mix',
@@ -98,7 +98,7 @@ const SpecimenDetail = () => {
           });
         }
       } catch (err) {
-        console.warn('Dùng dữ liệu dự phòng cho chi tiết cây:', err.message);
+        console.warn('Using fallback data for specimen detail:', err.message);
       } finally {
         setLoading(false);
       }
@@ -119,7 +119,7 @@ const SpecimenDetail = () => {
 
   const handleToggleStar = async () => {
     if (!isAuthenticated) {
-      showToast('Vui lòng đăng nhập để lưu cây vào mục yêu thích!');
+      showToast('Please sign in to save specimens to your favorites!');
       setTimeout(() => navigate('/login'), 1200);
       return;
     }
@@ -130,13 +130,13 @@ const SpecimenDetail = () => {
       const isBookmarked = res?.data?.isBookmarked;
       if (isBookmarked) {
         setStarredIds(prev => Array.from(new Set([...prev, plantId])));
-        showToast(`⭐ Đã thêm "${plant.name}" vào Mục Yêu Thích!`);
+        showToast(`⭐ Added "${plant.name}" to Sanctuary Favorites!`);
       } else {
         setStarredIds(prev => prev.filter(id => id !== plantId && id !== plant._id));
-        showToast(`Đã xóa "${plant.name}" khỏi Mục Yêu Thích.`);
+        showToast(`Removed "${plant.name}" from Sanctuary Favorites.`);
       }
     } catch (err) {
-      showToast('Lỗi cập nhật yêu thích: ' + err.message);
+      showToast('Error updating favorites: ' + err.message);
     }
   };
 
@@ -358,7 +358,7 @@ const SpecimenDetail = () => {
                   type="button"
                   onClick={() => {
                     if (!isAuthenticated) {
-                      showToast('Vui lòng đăng nhập để thêm cây vào bộ sưu tập!');
+                      showToast('Please sign in to add this specimen to your collection!');
                       setTimeout(() => navigate('/login'), 1200);
                       return;
                     }
@@ -378,7 +378,7 @@ const SpecimenDetail = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  <span>📁 Lưu Vào Bộ Sưu Tập</span>
+                  <span>📁 Save to Collection</span>
                 </button>
 
                 <button
@@ -398,7 +398,7 @@ const SpecimenDetail = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  <span>{isStarred ? '★ Đã Yêu Thích' : '★ Yêu Thích'}</span>
+                  <span>{isStarred ? '★ Favorited' : '★ Add to Favorites'}</span>
                 </button>
 
                 <Link
@@ -527,7 +527,7 @@ const SpecimenDetail = () => {
         onClose={() => setIsSaveModalOpen(false)}
         plantSlug={plant.slug || plantId}
         onSaved={() => {
-          setToastMessage(`Đã cập nhật bộ sưu tập cho "${plant.name}"!`);
+          setToastMessage(`Updated collection for "${plant.name}"!`);
           setTimeout(() => setToastMessage(''), 3000);
         }}
       />

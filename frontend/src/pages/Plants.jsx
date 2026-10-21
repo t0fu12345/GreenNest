@@ -24,10 +24,10 @@ const normalizePlant = (p) => ({
   taxonomyTags: [p.category, p.biome, 'Plantae'].filter(Boolean),
   traits: [p.light, p.watering, p.careLevel].filter(Boolean),
   shortDesc: p.description || p.shortDesc || '',
-  origin: p.origin || 'Vườn ươm GreenNest Sanctuary',
+  origin: p.origin || 'GreenNest Sanctuary Nursery',
   water: p.watering || 'Weekly',
   light: p.light || 'Bright indirect',
-  soil: p.careGuide?.soil || 'Đất tơi xốp, thoát nước tốt',
+  soil: p.careGuide?.soil || 'Loose, well-draining aerated soil',
   humidity: p.careGuide?.humidity || '60% - 80%',
   temp: '20°C – 28°C',
   growth: p.careLevel || 'Moderate',
@@ -49,7 +49,7 @@ const Plants = () => {
   const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
 
   useEffect(() => {
-    // Tải dữ liệu cây thực tế từ MongoDB Backend
+    // Fetch live botanical specimen records from MongoDB Backend
     const fetchPlants = async () => {
       try {
         setLoading(true);
@@ -58,7 +58,7 @@ const Plants = () => {
           setApiPlants(res.data.plants.map(normalizePlant));
         }
       } catch (err) {
-        console.warn('Không thể kết nối API Plants, sử dụng dữ liệu dự phòng:', err.message);
+        console.warn('Unable to connect to Plants API, using fallback data:', err.message);
       } finally {
         setLoading(false);
       }
@@ -72,7 +72,7 @@ const Plants = () => {
           const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
           setStarredIds(ids);
         } catch (e) {
-          console.warn('Không thể tải cây yêu thích từ API:', e);
+          console.warn('Unable to load saved plants from API:', e);
         }
       } else {
         setStarredIds([]);
@@ -96,7 +96,7 @@ const Plants = () => {
   const handleToggleStar = async (plantId, e) => {
     if (e) e.stopPropagation();
     if (!isAuthenticated) {
-      showToast('Vui lòng đăng nhập để lưu cây vào mục yêu thích!');
+      showToast('Please sign in to save specimens to your favorites!');
       setTimeout(() => navigate('/login'), 1200);
       return;
     }
@@ -109,13 +109,13 @@ const Plants = () => {
       const isBookmarked = res?.data?.isBookmarked;
       if (isBookmarked) {
         setStarredIds(prev => Array.from(new Set([...prev, plantId])));
-        showToast(`⭐ Đã thêm "${plant?.name || 'Cây'}" vào Mục Yêu Thích!`);
+        showToast(`⭐ Added "${plant?.name || 'Specimen'}" to Sanctuary Favorites!`);
       } else {
         setStarredIds(prev => prev.filter(id => id !== plantId && id !== identifier));
-        showToast(`Đã xóa "${plant?.name || 'Cây'}" khỏi Mục Yêu Thích.`);
+        showToast(`Removed "${plant?.name || 'Specimen'}" from Sanctuary Favorites.`);
       }
     } catch (err) {
-      showToast('Lỗi cập nhật yêu thích: ' + err.message);
+      showToast('Error updating favorites: ' + err.message);
     }
   };
 
@@ -255,7 +255,7 @@ const Plants = () => {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 24px', color: '#86efac' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>🌿</div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Đang nạp hồ sơ thực vật từ máy chủ GreenNest...</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading botanical specimen profiles from GreenNest server...</div>
           </div>
         ) : filteredPlants.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '75px 24px', background: 'rgba(14, 30, 22, 0.75)', border: '1.5px dashed rgba(245, 158, 11, 0.45)', borderRadius: '28px', maxWidth: '820px', margin: '0 auto' }}>
@@ -390,13 +390,13 @@ const Plants = () => {
                           type="button"
                           onClick={() => {
                             if (!isAuthenticated) {
-                              showToast('Vui lòng đăng nhập để lưu cây vào bộ sưu tập!');
+                              showToast('Please sign in to save specimens to your collections!');
                               setTimeout(() => navigate('/login'), 1200);
                               return;
                             }
                             setTargetSavePlantSlug(plant.slug || plant.id);
                           }}
-                          title="Lưu cây vào bộ sưu tập"
+                          title="Save specimen to collection"
                           style={{
                             background: 'rgba(34, 197, 94, 0.15)',
                             border: '1px solid rgba(34, 197, 94, 0.35)',
@@ -412,7 +412,7 @@ const Plants = () => {
                           }}
                         >
                           <span>📁</span>
-                          <span>Lưu</span>
+                          <span>Save</span>
                         </button>
 
                         <button
@@ -606,7 +606,7 @@ const Plants = () => {
         onClose={() => setTargetSavePlantSlug(null)}
         plantSlug={targetSavePlantSlug}
         onSaved={() => {
-          showToast('Đã cập nhật bộ sưu tập thành công!');
+          showToast('Updated collection successfully!');
         }}
       />
 

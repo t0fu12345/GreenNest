@@ -22,7 +22,7 @@ class CollectionService {
     }
 
     if (!collection) {
-      const error = new Error('Không tìm thấy bộ sưu tập');
+      const error = new Error('Curated collection not found');
       error.statusCode = 404;
       error.errorCode = 'COLLECTION_NOT_FOUND';
       throw error;
@@ -42,7 +42,7 @@ class CollectionService {
   async updateCollection(id, updateData) {
     const collection = await Collection.findById(id);
     if (!collection) {
-      const error = new Error('Không tìm thấy bộ sưu tập cần cập nhật');
+      const error = new Error('Collection to update not found');
       error.statusCode = 404;
       error.errorCode = 'COLLECTION_NOT_FOUND';
       throw error;
@@ -57,7 +57,7 @@ class CollectionService {
   async deleteCollection(id) {
     const collection = await Collection.findById(id);
     if (!collection) {
-      const error = new Error('Không tìm thấy bộ sưu tập cần xóa');
+      const error = new Error('Collection to delete not found');
       error.statusCode = 404;
       error.errorCode = 'COLLECTION_NOT_FOUND';
       throw error;

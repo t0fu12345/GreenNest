@@ -45,7 +45,7 @@ class ContactService {
 
   async updateMessageStatus(id, status) {
     if (!['pending', 'resolved'].includes(status)) {
-      const error = new Error('Trạng thái chỉ có thể là pending hoặc resolved');
+      const error = new Error('Status can only be pending or resolved');
       error.statusCode = 400;
       error.errorCode = 'INVALID_STATUS';
       throw error;
@@ -53,7 +53,7 @@ class ContactService {
 
     const msg = await ContactMessage.findById(id);
     if (!msg) {
-      const error = new Error('Không tìm thấy tin nhắn liên hệ');
+      const error = new Error('Contact message not found');
       error.statusCode = 404;
       error.errorCode = 'MESSAGE_NOT_FOUND';
       throw error;

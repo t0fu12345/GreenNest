@@ -5,7 +5,7 @@ class GardenerController {
   async getGardeners(req, res, next) {
     try {
       const gardeners = await gardenerService.getGardeners();
-      return successResponse(res, gardeners, 'Lấy danh sách chuyên gia thành công');
+      return successResponse(res, gardeners, 'Botanists and curators retrieved successfully');
     } catch (error) {
       next(error);
     }
@@ -14,7 +14,7 @@ class GardenerController {
   async getGardenerById(req, res, next) {
     try {
       const gardener = await gardenerService.getGardenerById(req.params.id);
-      return successResponse(res, gardener, 'Lấy chi tiết chuyên gia thành công');
+      return successResponse(res, gardener, 'Botanist profile retrieved successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);
@@ -28,11 +28,11 @@ class GardenerController {
       const { name, specialization, contactEmail } = req.body;
 
       if (!name || !specialization || !contactEmail) {
-        return errorResponse(res, 'Vui lòng cung cấp tên, chuyên môn và email của chuyên gia', 400, 'MISSING_FIELDS');
+        return errorResponse(res, 'Please provide botanist name, specialization, and contact email', 400, 'MISSING_FIELDS');
       }
 
       const gardener = await gardenerService.createGardener(req.body);
-      return successResponse(res, gardener, 'Tạo hồ sơ chuyên gia thành công', 201);
+      return successResponse(res, gardener, 'Botanist profile created successfully', 201);
     } catch (error) {
       next(error);
     }
@@ -41,7 +41,7 @@ class GardenerController {
   async updateGardener(req, res, next) {
     try {
       const updated = await gardenerService.updateGardener(req.params.id, req.body);
-      return successResponse(res, updated, 'Cập nhật hồ sơ chuyên gia thành công');
+      return successResponse(res, updated, 'Botanist profile updated successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);
@@ -53,7 +53,7 @@ class GardenerController {
   async deleteGardener(req, res, next) {
     try {
       await gardenerService.deleteGardener(req.params.id);
-      return successResponse(res, null, 'Xóa hồ sơ chuyên gia thành công');
+      return successResponse(res, null, 'Botanist profile deleted successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);

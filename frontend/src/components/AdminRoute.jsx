@@ -83,7 +83,7 @@ const AdminRoute = ({ children }) => {
             color: '#ffffff',
             marginBottom: '12px'
           }}>
-            Khu vực độc quyền Quản trị viên
+            Administrator Protected Access
           </h2>
 
           <p style={{
@@ -92,8 +92,8 @@ const AdminRoute = ({ children }) => {
             lineHeight: 1.6,
             marginBottom: '20px'
           }}>
-            Tài khoản hiện tại của bạn (<strong>{user?.email}</strong>) chỉ có quyền <code>{user?.role || 'user'}</code>.
-            Mã JWT Token của bạn không chứa quyền hạn <code>admin:access</code> để truy cập bảng điều khiển độc quyền.
+            Your current account (<strong>{user?.email}</strong>) is assigned the role <code>{user?.role || 'user'}</code>.
+            Your session token does not hold <code>admin:access</code> privileges to enter the Sanctuary Admin Portal.
           </p>
 
           <div style={{
@@ -124,7 +124,7 @@ const AdminRoute = ({ children }) => {
                 borderRadius: 0
               }}
             >
-              ← Về trang chủ
+              ← Return to Home
             </Link>
 
             <Link
@@ -139,7 +139,7 @@ const AdminRoute = ({ children }) => {
                 borderRadius: 0
               }}
             >
-              Đăng nhập tài khoản Admin →
+              Sign In as Administrator →
             </Link>
           </div>
         </div>

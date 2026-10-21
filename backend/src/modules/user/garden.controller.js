@@ -5,7 +5,7 @@ class GardenController {
   async getGarden(req, res, next) {
     try {
       const data = await gardenService.getGarden(req.user._id);
-      return successResponse(res, data, 'Lấy danh sách Vườn của tôi thành công');
+      return successResponse(res, data, 'Living garden retrieved successfully');
     } catch (error) {
       next(error);
     }
@@ -16,11 +16,11 @@ class GardenController {
       const { plantId, customNickname } = req.body;
 
       if (!plantId) {
-        return errorResponse(res, 'Vui lòng cung cấp ID cây trồng', 400, 'MISSING_PLANT_ID');
+        return errorResponse(res, 'Please provide plantId', 400, 'MISSING_PLANT_ID');
       }
 
       const garden = await gardenService.addToGarden(req.user._id, plantId, customNickname);
-      return successResponse(res, garden, 'Đã thêm cây vào Vườn cá nhân thành công', 201);
+      return successResponse(res, garden, 'Specimen successfully added to personal sanctuary', 201);
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);
@@ -32,7 +32,7 @@ class GardenController {
   async removeFromGarden(req, res, next) {
     try {
       const garden = await gardenService.removeFromGarden(req.user._id, req.params.gardenItemId);
-      return successResponse(res, garden, 'Đã xóa cây khỏi Vườn của bạn');
+      return successResponse(res, garden, 'Specimen removed from living garden');
     } catch (error) {
       next(error);
     }
@@ -45,7 +45,7 @@ class GardenController {
       return successResponse(
         res,
         result,
-        `Đồng bộ thành công ${result.syncedCount || 0} cây vào tài khoản của bạn`
+        `Successfully synchronized ${result.syncedCount || 0} specimens to your account`
       );
     } catch (error) {
       next(error);
@@ -58,11 +58,11 @@ class GardenController {
       const itemId = req.params.plantId || req.body.gardenItemId || req.body.plantId;
 
       if (!itemId || !taskName) {
-        return errorResponse(res, 'Vui lòng cung cấp plantId (hoặc gardenItemId) và taskName', 400, 'MISSING_FIELDS');
+        return errorResponse(res, 'Please provide plantId (or gardenItemId) and taskName', 400, 'MISSING_FIELDS');
       }
 
       const checklist = await gardenService.updateChecklist(req.user._id, itemId, taskName, completed);
-      return successResponse(res, checklist, 'Cập nhật trạng thái chăm sóc thành công');
+      return successResponse(res, checklist, 'Care schedule updated successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);
@@ -74,7 +74,7 @@ class GardenController {
   async resetChecklist(req, res, next) {
     try {
       await gardenService.resetChecklist(req.user._id);
-      return successResponse(res, null, 'Đã làm mới (reset) toàn bộ danh sách công việc chăm sóc');
+      return successResponse(res, null, 'Care maintenance schedule reset successfully');
     } catch (error) {
       next(error);
     }
@@ -85,14 +85,14 @@ class GardenController {
       const { plantId } = req.body;
 
       if (!plantId) {
-        return errorResponse(res, 'Vui lòng cung cấp plantId', 400, 'MISSING_PLANT_ID');
+        return errorResponse(res, 'Please provide plantId', 400, 'MISSING_PLANT_ID');
       }
 
       const result = await gardenService.toggleBookmark(req.user._id, plantId);
       return successResponse(
         res,
         result,
-        result.isBookmarked ? 'Đã lưu cây vào danh sách yêu thích' : 'Đã bỏ lưu cây khỏi danh sách yêu thích'
+        result.isBookmarked ? 'Specimen added to saved favorites' : 'Specimen removed from saved favorites'
       );
     } catch (error) {
       next(error);
