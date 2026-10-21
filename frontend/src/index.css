@@ -6217,12 +6217,10 @@
       --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .garden-page, .garden-page *, .garden-page *::before, .garden-page *::after { 
+    .garden-page { 
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      /* STRICTLY NO ROUNDED CORNERS ACROSS GARDEN SITE */
-      border-radius: 0 !important;
      }
 
     html {
@@ -6274,6 +6272,7 @@
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--border-glass);
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+      border-radius: 9999px;
       padding: 10px 16px 10px 22px;
       max-width: 1260px;
       width: 100%;
@@ -6599,6 +6598,7 @@
       background: rgba(14, 30, 22, 0.85);
       backdrop-filter: blur(14px);
       border: 1px solid var(--border-glass);
+      border-radius: 16px;
       padding: 24px 28px;
       display: flex;
       align-items: center;
@@ -6651,6 +6651,7 @@
       font-size: 0.85rem;
       font-weight: 600;
       padding: 10px 20px;
+      border-radius: 9999px;
       border: none;
       text-decoration: none;
       cursor: pointer;
@@ -6681,6 +6682,7 @@
       width: 100%;
       background: #000000;
       border: 1px solid var(--border-glass);
+      border-radius: 16px;
       overflow: hidden;
       cursor: pointer;
       box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
@@ -7832,12 +7834,10 @@
       --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .macro-page, .macro-page *, .macro-page *::before, .macro-page *::after { 
+    .macro-page { 
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      /* STRICTLY NO ROUNDED CORNERS ACROSS MACRO SITE */
-      border-radius: 0 !important;
      }
 
     html {
@@ -7883,6 +7883,7 @@
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--border-glass);
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+      border-radius: 9999px;
       padding: 10px 16px 10px 22px;
       max-width: 1320px;
       width: 100%;
@@ -9601,4 +9602,24 @@
 .login-status-toast,
 .biome-radio-label {
   border-radius: 0px !important;
+}
+
+/* ==========================================================================
+   GLOBAL HEADER ROUNDED PILL ENFORCEMENT (Always rounded across all pages)
+   ========================================================================== */
+.header-floating-wrap .navbar-pill,
+.navbar-pill {
+  border-radius: 9999px !important;
+}
+
+.btn-cta-pill {
+  border-radius: 9999px !important;
+}
+
+.btn-notif-bell {
+  border-radius: 50% !important;
+}
+
+.notif-badge-pill {
+  border-radius: 9999px !important;
 }

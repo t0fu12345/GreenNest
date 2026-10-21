@@ -5,7 +5,9 @@ export const PLANT_COLLECTIONS = [
   {
     "slug": "spring-collection",
     "seasonKey": "spring",
+    "season": "spring",
     "name": "Spring Awakening Collection",
+    "title": "Spring Awakening Collection",
     "description": "The golden period for propagation and fresh growth. Living specimens sprout vibrant new shoots and enter their peak active cycle.",
     "plantSlugs": [
       "monstera-deliciosa",
@@ -14,13 +16,24 @@ export const PLANT_COLLECTIONS = [
       "calathea-orbifolia",
       "lavandula-angustifolia"
     ],
+    "plantSpecimenIds": [
+      "specimen-monstera",
+      "specimen-snake-plant",
+      "specimen-ficus-lyrata",
+      "specimen-calathea",
+      "specimen-lavender"
+    ],
     "image": "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=1200&q=80",
+    "coverImage": "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=1200&q=80",
+    "isFeatured": true,
     "status": "published"
   },
   {
     "slug": "summer-collection",
     "seasonKey": "summer",
+    "season": "summer",
     "name": "Summer Canopy Collection",
+    "title": "Summer Canopy Collection",
     "description": "Vibrant sunlit vitality with abundant ambient light, ideal for tropical jungle cultivars to unfurl their largest dramatic foliage.",
     "plantSlugs": [
       "monstera-deliciosa",
@@ -29,30 +42,54 @@ export const PLANT_COLLECTIONS = [
       "calathea-orbifolia",
       "lavandula-angustifolia"
     ],
+    "plantSpecimenIds": [
+      "specimen-monstera",
+      "specimen-snake-plant",
+      "specimen-ficus-lyrata",
+      "specimen-calathea",
+      "specimen-lavender"
+    ],
     "image": "https://images.unsplash.com/photo-1542317148-8b4bdccb33ea?auto=format&fit=crop&w=1200&q=80",
+    "coverImage": "https://images.unsplash.com/photo-1542317148-8b4bdccb33ea?auto=format&fit=crop&w=1200&q=80",
+    "isFeatured": true,
     "status": "published"
   },
   {
     "slug": "autumn-collection",
     "seasonKey": "autumn",
+    "season": "autumn",
     "name": "Autumn Serenity Collection",
+    "title": "Autumn Serenity Collection",
     "description": "Temperate, mild weather. The ideal time to introduce moisture-loving and subtropical forest foliage into your living sanctuary.",
     "plantSlugs": [
       "sansevieria-trifasciata",
       "calathea-orbifolia"
     ],
+    "plantSpecimenIds": [
+      "specimen-snake-plant",
+      "specimen-calathea"
+    ],
     "image": "https://images.unsplash.com/photo-1507371341162-763b5e419408?auto=format&fit=crop&w=1200&q=80",
+    "coverImage": "https://images.unsplash.com/photo-1507371341162-763b5e419408?auto=format&fit=crop&w=1200&q=80",
+    "isFeatured": true,
     "status": "published"
   },
   {
     "slug": "winter-collection",
     "seasonKey": "winter",
+    "season": "winter",
     "name": "Winter Resilience Collection",
+    "title": "Winter Resilience Collection",
     "description": "Curated cold-hardy, drought-tolerant specimens that maintain lush vitality and clean indoor air throughout low-sunlight months.",
     "plantSlugs": [
       "sansevieria-trifasciata"
     ],
+    "plantSpecimenIds": [
+      "specimen-snake-plant"
+    ],
     "image": "https://images.unsplash.com/photo-1483664852095-d6cc6870702d?auto=format&fit=crop&w=1200&q=80",
+    "coverImage": "https://images.unsplash.com/photo-1483664852095-d6cc6870702d?auto=format&fit=crop&w=1200&q=80",
+    "isFeatured": true,
     "status": "published"
   }
 ];
@@ -71,12 +108,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
-        "alt": "Monstera deliciosa leaf close-up in biophilic living room",
+        "alt": "Swiss Cheese Plant (Monstera)",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
+        "alt": "Swiss Cheese Plant (Monstera) view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/dc/4e/18/dc4e1817fd8e15ec0bb73b91b8dd5f33.jpg",
-        "alt": "Fenestrated split-leaf Monstera flourishing in soft ambient morning light",
+        "alt": "Swiss Cheese Plant (Monstera) view 2",
         "isPrimary": false
       }
     ],
@@ -85,6 +127,7 @@ export const BOTANICAL_SPECIMENS = {
       "#EasyCare",
       "#AirPurifying",
       "#Tropical",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -93,19 +136,19 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Climbing vine with deeply perforated leaves at maturity; benefits from a moss pole"
     ],
     "shortDesc": "Iconic indoor specimen famous for its dramatic fenestrated foliage. A quintessential centerpiece for biophilic interior spaces.",
-    "origin": "Growth Regions: North, South, Central",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Climbing vine with deeply perforated leaves at maturity; benefits from a moss pole.",
     "water": "Water once every 7-10 days. Allow top 3-5cm of soil to dry before watering thoroughly.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Rich, well-draining potting medium blended with peat moss, perlite, and orchid bark.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
     "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Optimal Hydration",
@@ -120,9 +163,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Rich",
     "soilBar": "85%",
@@ -145,22 +188,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA Animal Poison Control"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "moderate",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "south",
-      "central"
-    ],
-    "similarPlantSlugs": [
-      "pothos-gold",
-      "philodendron-birkin"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water once every 7-10 days. Allow top 3-5cm of soil to dry before watering thoroughly.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "sansevieria-trifasciata": {
@@ -176,12 +208,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=800&q=80",
-        "alt": "Golden Snake Plant upright sword-shaped leaves",
+        "alt": "Snake Plant",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=800&q=80",
+        "alt": "Snake Plant view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/8f/c9/b5/8fc9b5b7ed77061c826fc8956245a739.jpg",
-        "alt": "Architectural upright blades of Sansevieria",
+        "alt": "Snake Plant view 2",
         "isPrimary": false
       }
     ],
@@ -190,6 +227,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Bedroom",
       "#AirPurifying",
       "#LowLight",
+      "#Succulent",
       "#Succulent"
     ],
     "taxonomyTags": [
@@ -198,27 +236,27 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "LOW",
+      "Adaptive",
+      "LIGHT: LOW. TOLERATES LOW LIGHT AND SHADED INDOOR SPACES.",
       "Upright, rosette clustering of rigid sword-shaped architectural leaves"
     ],
     "shortDesc": "Remarkably resilient architectural succulent featuring upright sword-like leaves with vivid yellow-green margins. Renowned for nocturnal air purification.",
-    "origin": "Growth Regions: North, Central, South, Highlands",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Upright, rosette clustering of rigid sword-shaped architectural leaves.",
     "water": "Water sparingly every 2-3 weeks; allow soil to dry completely between waterings.",
-    "light": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "light": "Light: Light: low. Tolerates low light and shaded indoor spaces.. Requires direct or high-intensity sunlight.",
     "soil": "Fast-draining cactus and succulent mix with pumice or perlite.",
     "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
-    "waterDaily": "150 ml / 14 Days",
-    "waterStatus": "Drought-tolerant",
+    "waterDaily": "350 ml / 7 Days",
+    "waterStatus": "Optimal Hydration",
     "notifMsg": "Snake Plant is actively transpiring with stable metabolic balance.",
-    "waterVal": "150 ml",
-    "waterBar": "45%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Water sparingly every 2-3 weeks; allow soil to dry completely between waterings.",
-    "waterVol": "150 ml",
+    "waterVol": "350 ml",
     "waterFreq": "Water sparingly every 2-3 weeks; allow soil to dry completely between waterings.",
     "humidityVal": "62% RH",
     "humidityBar": "68%",
@@ -227,7 +265,7 @@ export const BOTANICAL_SPECIMENS = {
     "mistCadence": "No misting needed",
     "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for low",
+    "envSub": "Standard spectrum intensity for Light: low. Tolerates low light and shaded indoor spaces.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Fast-draining cactus and",
     "soilBar": "85%",
@@ -250,25 +288,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA Animal Poison Control"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn",
-      "winter"
-    ],
-    "lightRequirement": "low",
-    "wateringFrequency": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south",
-      "highlands"
-    ],
-    "similarPlantSlugs": [
-      "zz-plant",
-      "aloe-vera"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "wateringFrequency": "Water sparingly every 2-3 weeks; allow soil to dry completely between waterings.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "ficus-lyrata": {
@@ -284,18 +308,24 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=800&q=80",
-        "alt": "Mature Fiddle Leaf Fig tree in interior setting",
+        "alt": "Fiddle-Leaf Fig",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=800&q=80",
+        "alt": "Fiddle-Leaf Fig view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/09/85/1c/09851c0d8f2e39cc22ac3181b2002967.jpg",
-        "alt": "Grand violin-shaped foliage of Ficus lyrata",
+        "alt": "Fiddle-Leaf Fig view 2",
         "isPrimary": false
       }
     ],
     "tags": [
       "#Indoor",
       "#StatementPlant",
+      "#Tree",
       "#Tree",
       "#Tree"
     ],
@@ -305,17 +335,17 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "MEDIUM Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Upright tree habit with substantial architectural leaves on a woody trunk"
     ],
     "shortDesc": "Magnificent statement indoor tree featuring large, glossy violin-shaped foliage with pronounced sculptural veining.",
-    "origin": "Growth Regions: North, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Upright tree habit with substantial architectural leaves on a woody trunk.",
     "water": "Water when top 5cm is dry, roughly every 7-10 days. Avoid waterlogging roots.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Rich, well-aerated potting mix with compost and orchid bark.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
     "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
@@ -332,9 +362,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Rich",
     "soilBar": "85%",
@@ -357,21 +387,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "Pet Poison Helpline"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "ficus-elastica",
-      "pachira-aquatica"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water when top 5cm is dry, roughly every 7-10 days. Avoid waterlogging roots.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "calathea-orbifolia": {
@@ -387,12 +407,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1616690710400-a16d146927c5?auto=format&fit=crop&w=800&q=80",
-        "alt": "Calathea orbifolia wide round leaves with silver stripes",
+        "alt": "Calathea Orbifolia",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1616690710400-a16d146927c5?auto=format&fit=crop&w=800&q=80",
+        "alt": "Calathea Orbifolia view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/09/dd/5b/09dd5bf913224e66fcc96eb65df90b15.jpg",
-        "alt": "Hypnotic silver brushstrokes on broad round prayer plant foliage",
+        "alt": "Calathea Orbifolia view 2",
         "isPrimary": false
       }
     ],
@@ -400,6 +425,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Indoor",
       "#PatternedLeaves",
       "#HumidityLoving",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -408,36 +434,36 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "HARD Maintenance",
-      "MEDIUM",
+      "Adaptive",
+      "LIGHT: MEDIUM. REQUIRES DIRECT OR HIGH INTENSITY SUNLIGHT.",
       "Clumping herbaceous perennial with diurnal nyctinastic leaf movement"
     ],
     "shortDesc": "Exquisite prayer plant showcasing large, rounded foliage marked with delicate metallic silver and emerald brushstrokes.",
-    "origin": "Growth Regions: Central, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Clumping herbaceous perennial with diurnal nyctinastic leaf movement.",
     "water": "Keep substrate evenly moist using filtered or rainwater. Water every 5-7 days.",
-    "light": "Light: medium. Requires direct or high-intensity sunlight.",
+    "light": "Light: Light: medium. Requires direct or high-intensity sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Moisture-retentive, loose substrate with peat moss and perlite.",
-    "humidity": "70% – 90%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Demanding Care",
+    "growth": "Moderate Care",
     "toxicity": "Non-Toxic (Pet Safe)",
-    "waterDaily": "500 ml / 3 Days",
+    "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Optimal Hydration",
     "notifMsg": "Calathea Orbifolia is actively transpiring with stable metabolic balance.",
-    "waterVal": "500 ml",
-    "waterBar": "92%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Keep substrate evenly moist using filtered or rainwater. Water every 5-7 days.",
     "waterVol": "350 ml",
     "waterFreq": "Keep substrate evenly moist using filtered or rainwater. Water every 5-7 days.",
-    "humidityVal": "78% RH",
-    "humidityBar": "85%",
+    "humidityVal": "62% RH",
+    "humidityBar": "68%",
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
     "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for medium",
+    "envSub": "Standard spectrum intensity for Light: medium. Requires direct or high-intensity sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Moisture-retentive",
     "soilBar": "85%",
@@ -460,22 +486,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "lightRequirement": "medium",
-    "wateringFrequency": "high",
-    "difficulty": "hard",
-    "regions": [
-      "central",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "calathea-makoyana",
-      "maranta-leuconeura"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: medium. Requires direct or high-intensity sunlight.",
+    "wateringFrequency": "Keep substrate evenly moist using filtered or rainwater. Water every 5-7 days.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "lavandula-angustifolia": {
@@ -491,14 +506,20 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=800&q=80",
-        "alt": "Fragrant purple English Lavender flowers in bloom",
+        "alt": "English Lavender",
         "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=800&q=80",
+        "alt": "English Lavender view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
       "#Outdoor",
       "#Aromatic",
       "#Flower",
+      "#Herb",
       "#Herb",
       "#Herb"
     ],
@@ -508,36 +529,36 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "HARD Maintenance",
-      "FULL SUN",
+      "Adaptive",
+      "LIGHT: FULL SUN. REQUIRES DIRECT OR HIGH-INTENSITY SUNLIGHT.",
       "Bushy compact subshrub with fragrant blooms"
     ],
     "shortDesc": "Aromatic perennial shrub with silver-green foliage and calming fragrant purple flower spikes, thriving in airy sunny environments.",
-    "origin": "Growth Regions: Highlands",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Bushy compact subshrub with fragrant blooms.",
     "water": "Water deeply when soil is completely dry. Avoid waterlogging roots.",
-    "light": "Light: full-sun. Requires direct or high-intensity sunlight.",
+    "light": "Light: Light: full-sun. Requires direct or high-intensity sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Gritty, lean, well-draining alkaline soil mix.",
     "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Demanding Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets)",
-    "waterDaily": "150 ml / 14 Days",
-    "waterStatus": "Drought-tolerant",
+    "waterDaily": "350 ml / 7 Days",
+    "waterStatus": "Optimal Hydration",
     "notifMsg": "English Lavender is actively transpiring with stable metabolic balance.",
-    "waterVal": "150 ml",
-    "waterBar": "45%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Water deeply when soil is completely dry. Avoid waterlogging roots.",
-    "waterVol": "150 ml",
+    "waterVol": "350 ml",
     "waterFreq": "Water deeply when soil is completely dry. Avoid waterlogging roots.",
     "humidityVal": "62% RH",
     "humidityBar": "68%",
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "3,000 FC",
-    "envBar": "95%",
-    "envSub": "Standard spectrum intensity for full-sun",
+    "envVal": "800 FC",
+    "envBar": "80%",
+    "envSub": "Standard spectrum intensity for Light: full-sun. Requires direct or high-intensity sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Gritty",
     "soilBar": "85%",
@@ -560,20 +581,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "full-sun",
-    "wateringFrequency": "low",
-    "difficulty": "hard",
-    "regions": [
-      "highlands"
-    ],
-    "similarPlantSlugs": [
-      "rosemary",
-      "thyme"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: full-sun. Requires direct or high-intensity sunlight.",
+    "wateringFrequency": "Water deeply when soil is completely dry. Avoid waterlogging roots.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "epipremnum-aureum": {
@@ -589,12 +601,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=800&q=80",
-        "alt": "Golden Pothos trailing heart-shaped foliage",
+        "alt": "Golden Pothos",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=800&q=80",
+        "alt": "Golden Pothos view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/52/e9/f5/52e9f55be3f9ff605a658b71c07e1b8e.jpg",
-        "alt": "Marbled ivory and jade trailing foliage",
+        "alt": "Golden Pothos view 2",
         "isPrimary": false
       }
     ],
@@ -603,6 +620,7 @@ export const BOTANICAL_SPECIMENS = {
       "#EasyCare",
       "#Trailing",
       "#LowLight",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -611,19 +629,19 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "LOW",
+      "Adaptive",
+      "LIGHT: LOW. TOLERATES LOW LIGHT AND SHADED INDOOR SPACES.",
       "Cascading or climbing vine with aerial rootlets"
     ],
     "shortDesc": "Versatile and forgiving trailing vine adorned with heart-shaped leaves variegated in golden-yellow and emerald green.",
-    "origin": "Growth Regions: North, Central, South, Highlands",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Cascading or climbing vine with aerial rootlets.",
     "water": "Allow top half of soil to dry before watering, typically every 7 days.",
-    "light": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "light": "Light: Light: low. Tolerates low light and shaded indoor spaces.. Requires direct or high-intensity sunlight.",
     "soil": "Standard all-purpose potting soil with perlite.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
     "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Optimal Hydration",
@@ -640,7 +658,7 @@ export const BOTANICAL_SPECIMENS = {
     "mistCadence": "Mist foliage every 3-4 days",
     "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for low",
+    "envSub": "Standard spectrum intensity for Light: low. Tolerates low light and shaded indoor spaces.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Standard all-purpose pot",
     "soilBar": "85%",
@@ -663,25 +681,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn",
-      "winter"
-    ],
-    "lightRequirement": "low",
-    "wateringFrequency": "moderate",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south",
-      "highlands"
-    ],
-    "similarPlantSlugs": [
-      "philodendron-hederaceum",
-      "monstera-deliciosa"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "wateringFrequency": "Allow top half of soil to dry before watering, typically every 7 days.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "zamioculcas-zamiifolia": {
@@ -697,12 +701,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=800&q=80",
-        "alt": "Glossy green ZZ Plant stems in minimalist neutral interior",
+        "alt": "ZZ Plant",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=800&q=80",
+        "alt": "ZZ Plant view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/37/c3/cc/37c3cca8114b900db96863b218504d73.jpg",
-        "alt": "Resilient Zamioculcas zamiifolia foliage",
+        "alt": "ZZ Plant view 2",
         "isPrimary": false
       }
     ],
@@ -711,6 +720,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Office",
       "#Indestructible",
       "#LowLight",
+      "#Succulent",
       "#Succulent"
     ],
     "taxonomyTags": [
@@ -719,27 +729,27 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "LOW",
+      "Adaptive",
+      "LIGHT: LOW. TOLERATES LOW LIGHT AND SHADED INDOOR SPACES.",
       "Upright arching stems emerging from thick tuberous rhizomes"
     ],
     "shortDesc": "Extremely durable low-light champion with feather-like stems and glossy, waxy deep green leaflets rising from underground rhizomes.",
-    "origin": "Growth Regions: North, Central, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Upright arching stems emerging from thick tuberous rhizomes.",
     "water": "Water thoroughly every 2-3 weeks; highly tolerant of neglect and drought.",
-    "light": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "light": "Light: Light: low. Tolerates low light and shaded indoor spaces.. Requires direct or high-intensity sunlight.",
     "soil": "Well-draining, porous potting medium with coarse sand.",
     "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
-    "waterDaily": "150 ml / 14 Days",
-    "waterStatus": "Drought-tolerant",
+    "waterDaily": "350 ml / 7 Days",
+    "waterStatus": "Optimal Hydration",
     "notifMsg": "ZZ Plant is actively transpiring with stable metabolic balance.",
-    "waterVal": "150 ml",
-    "waterBar": "45%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Water thoroughly every 2-3 weeks; highly tolerant of neglect and drought.",
-    "waterVol": "150 ml",
+    "waterVol": "350 ml",
     "waterFreq": "Water thoroughly every 2-3 weeks; highly tolerant of neglect and drought.",
     "humidityVal": "62% RH",
     "humidityBar": "68%",
@@ -748,7 +758,7 @@ export const BOTANICAL_SPECIMENS = {
     "mistCadence": "No misting needed",
     "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for low",
+    "envSub": "Standard spectrum intensity for Light: low. Tolerates low light and shaded indoor spaces.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Well-draining",
     "soilBar": "85%",
@@ -771,22 +781,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "low",
-    "wateringFrequency": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "sansevieria-trifasciata",
-      "cast-iron-plant"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "wateringFrequency": "Water thoroughly every 2-3 weeks; highly tolerant of neglect and drought.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "spathiphyllum": {
@@ -802,14 +801,20 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://i.pinimg.com/736x/76/35/d3/7635d392b9976b1e49ff6391db6a710e.jpg",
-        "alt": "Peace Lily white spathe flowering amidst deep dark green leaves",
+        "alt": "Peace Lily",
         "isPrimary": true
+      },
+      {
+        "url": "https://i.pinimg.com/736x/76/35/d3/7635d392b9976b1e49ff6391db6a710e.jpg",
+        "alt": "Peace Lily view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
       "#Indoor",
       "#Flowering",
       "#AirPurifying",
+      "#Flower",
       "#Flower"
     ],
     "taxonomyTags": [
@@ -818,36 +823,36 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "MEDIUM",
+      "Adaptive",
+      "LIGHT: MEDIUM. REQUIRES DIRECT OR HIGH INTENSITY SUNLIGHT.",
       "Clump-forming evergreen perennial producing erect flower stalks"
     ],
     "shortDesc": "Graceful shade-loving plant with lustrous dark green foliage and long-lasting pristine white flower spathes. Natural air purifier.",
-    "origin": "Growth Regions: North, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Clump-forming evergreen perennial producing erect flower stalks.",
     "water": "Water when topsoil feels barely dry; plant visibly droops when thirsty.",
-    "light": "Light: medium. Requires direct or high-intensity sunlight.",
+    "light": "Light: Light: medium. Requires direct or high-intensity sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Peat-based potting soil rich in organic matter.",
-    "humidity": "70% – 90%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
-    "waterDaily": "500 ml / 3 Days",
+    "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Optimal Hydration",
     "notifMsg": "Peace Lily is actively transpiring with stable metabolic balance.",
-    "waterVal": "500 ml",
-    "waterBar": "92%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Water when topsoil feels barely dry; plant visibly droops when thirsty.",
     "waterVol": "350 ml",
     "waterFreq": "Water when topsoil feels barely dry; plant visibly droops when thirsty.",
-    "humidityVal": "78% RH",
-    "humidityBar": "85%",
+    "humidityVal": "62% RH",
+    "humidityBar": "68%",
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
     "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for medium",
+    "envSub": "Standard spectrum intensity for Light: medium. Requires direct or high-intensity sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Peat-based potting soil ",
     "soilBar": "85%",
@@ -870,22 +875,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "lightRequirement": "medium",
-    "wateringFrequency": "high",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "anthurium-andraeanum",
-      "aglaonema"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: medium. Requires direct or high-intensity sunlight.",
+    "wateringFrequency": "Water when topsoil feels barely dry; plant visibly droops when thirsty.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "chlorophytum-comosum": {
@@ -901,12 +895,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://i.pinimg.com/736x/8a/59/74/8a5974fab2e2b80fe526d2c5c064d02a.jpg",
-        "alt": "Curated variegated Spider Plant foliage with arching leaves",
+        "alt": "Spider Plant",
         "isPrimary": true
       },
       {
+        "url": "https://i.pinimg.com/736x/8a/59/74/8a5974fab2e2b80fe526d2c5c064d02a.jpg",
+        "alt": "Spider Plant view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/03/7b/ca/037bca59efd69485b36a8e1db4129b0a.jpg",
-        "alt": "Spider Plant runners and delicate foliage",
+        "alt": "Spider Plant view 2",
         "isPrimary": false
       }
     ],
@@ -915,6 +914,7 @@ export const BOTANICAL_SPECIMENS = {
       "#PetSafe",
       "#Hanging",
       "#AirPurifying",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -923,19 +923,19 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Rosette of arching slender foliage producing spiderettes"
     ],
     "shortDesc": "Classic and prolific indoor plant with arching ribbon-like variegated leaves and miniature plantlets cascading on long stolons.",
-    "origin": "Growth Regions: North, Central, South, Highlands",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Rosette of arching slender foliage producing spiderettes.",
     "water": "Water moderately once weekly during the growing season.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Standard well-draining potting soil.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Optimal Hydration",
@@ -950,9 +950,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Standard well-draining p",
     "soilBar": "85%",
@@ -975,24 +975,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "moderate",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south",
-      "highlands"
-    ],
-    "similarPlantSlugs": [
-      "epipremnum-aureum",
-      "boston-fern"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water moderately once weekly during the growing season.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "ficus-elastica": {
@@ -1008,12 +995,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?auto=format&fit=crop&w=800&q=80",
-        "alt": "Rubber Tree plant with bold sculptural foliage",
+        "alt": "Rubber Tree",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?auto=format&fit=crop&w=800&q=80",
+        "alt": "Rubber Tree view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/89/19/92/8919929faecbe659698eee0bb0debf8d.jpg",
-        "alt": "Variegated Rubber Tree plant foliage catching sunlight",
+        "alt": "Rubber Tree view 2",
         "isPrimary": false
       }
     ],
@@ -1021,6 +1013,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Indoor",
       "#Tree",
       "#BoldFoliage",
+      "#Tree",
       "#Tree"
     ],
     "taxonomyTags": [
@@ -1029,17 +1022,17 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "MEDIUM Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Tree form with thick upright woody stem and large oval leaves"
     ],
     "shortDesc": "Striking sculptural specimen with thick, leathery broad leaves in rich burgundy-green tones, exuding modern botanical elegance.",
-    "origin": "Growth Regions: North, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Tree form with thick upright woody stem and large oval leaves.",
     "water": "Water when top 3-4cm is dry to the touch.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Well-draining potting mix rich in organic compost.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
     "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
@@ -1056,9 +1049,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Well-draining potting mi",
     "soilBar": "85%",
@@ -1081,21 +1074,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "ficus-lyrata",
-      "ficus-benjamina"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water when top 3-4cm is dry to the touch.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "philodendron-birkin": {
@@ -1111,14 +1094,20 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
-        "alt": "Philodendron Birkin glossy dark foliage with creamy pinstripes",
+        "alt": "Philodendron Birkin",
         "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
+        "alt": "Philodendron Birkin view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
       "#Indoor",
       "#Variegated",
       "#Compact",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -1127,17 +1116,17 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "MEDIUM Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Self-heading compact rosette habit, does not require climbing pole"
     ],
     "shortDesc": "Compact collector favourite boasting dramatic pinstripe variegation of creamy white lines across glossy dark emerald leaves.",
-    "origin": "Growth Regions: North, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Self-heading compact rosette habit, does not require climbing pole.",
     "water": "Water when top half of soil dries, roughly every 7-9 days.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Chunky aroid mix with bark, perlite, and coco coir.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
     "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
@@ -1154,9 +1143,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Chunky aroid mix with ba",
     "soilBar": "85%",
@@ -1179,21 +1168,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "monstera-deliciosa",
-      "aglaonema"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water when top half of soil dries, roughly every 7-9 days.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "alocasia-amazonica": {
@@ -1209,14 +1188,20 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=800&q=80",
-        "alt": "Alocasia Amazonica with striking white leaf veins",
+        "alt": "African Mask Plant",
         "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=800&q=80",
+        "alt": "African Mask Plant view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
       "#Indoor",
       "#BoldFoliage",
       "#HumidityLoving",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -1225,36 +1210,36 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "HARD Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Rhizomatous perennial producing arrow-shaped leaves on long petioles"
     ],
     "shortDesc": "Dramatically sculpted arrow-shaped foliage with wavy margins and bold silvery-white venation against near-black emerald leaf surfaces.",
-    "origin": "Growth Regions: Central, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Rhizomatous perennial producing arrow-shaped leaves on long petioles.",
     "water": "Keep moist but never waterlogged; water every 5-7 days.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Airy, well-aerated chunky aroid substrate.",
-    "humidity": "70% – 90%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Demanding Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets)",
-    "waterDaily": "500 ml / 3 Days",
+    "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Optimal Hydration",
     "notifMsg": "African Mask Plant is actively transpiring with stable metabolic balance.",
-    "waterVal": "500 ml",
-    "waterBar": "92%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Keep moist but never waterlogged; water every 5-7 days.",
     "waterVol": "350 ml",
     "waterFreq": "Keep moist but never waterlogged; water every 5-7 days.",
-    "humidityVal": "78% RH",
-    "humidityBar": "85%",
+    "humidityVal": "62% RH",
+    "humidityBar": "68%",
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Airy",
     "soilBar": "85%",
@@ -1277,21 +1262,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "high",
-    "difficulty": "hard",
-    "regions": [
-      "central",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "calathea-orbifolia",
-      "colocasia-esculenta"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Keep moist but never waterlogged; water every 5-7 days.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "crassula-ovata": {
@@ -1307,8 +1282,13 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://i.pinimg.com/736x/7c/93/88/7c9388432c687afc5493f010e2b9f5e7.jpg",
-        "alt": "Minimalist desktop Jade Plant arrangement in stone bowl",
+        "alt": "Jade Plant",
         "isPrimary": true
+      },
+      {
+        "url": "https://i.pinimg.com/736x/7c/93/88/7c9388432c687afc5493f010e2b9f5e7.jpg",
+        "alt": "Jade Plant view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
@@ -1316,6 +1296,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Outdoor",
       "#Succulent",
       "#BonsaiPotential",
+      "#Succulent",
       "#Succulent"
     ],
     "taxonomyTags": [
@@ -1324,36 +1305,36 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "FULL SUN",
+      "Adaptive",
+      "LIGHT: FULL SUN. REQUIRES DIRECT OR HIGH-INTENSITY SUNLIGHT.",
       "Branching succulent shrub with thick fleshy leaves"
     ],
     "shortDesc": "Beloved succulent bonsai-like plant with thick woody stems and plump oval jade-green leaves, symbolizing good fortune and abundance.",
-    "origin": "Growth Regions: North, Highlands, Central, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Branching succulent shrub with thick fleshy leaves.",
     "water": "Water thoroughly only when soil is completely dry.",
-    "light": "Light: full-sun. Requires direct or high-intensity sunlight.",
+    "light": "Light: Light: full-sun. Requires direct or high-intensity sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Cactus and succulent potting mix with perlite or pumice.",
     "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets)",
-    "waterDaily": "150 ml / 14 Days",
-    "waterStatus": "Drought-tolerant",
+    "waterDaily": "350 ml / 7 Days",
+    "waterStatus": "Optimal Hydration",
     "notifMsg": "Jade Plant is actively transpiring with stable metabolic balance.",
-    "waterVal": "150 ml",
-    "waterBar": "45%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Water thoroughly only when soil is completely dry.",
-    "waterVol": "150 ml",
+    "waterVol": "350 ml",
     "waterFreq": "Water thoroughly only when soil is completely dry.",
     "humidityVal": "62% RH",
     "humidityBar": "68%",
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "No misting needed",
-    "envVal": "3,000 FC",
-    "envBar": "95%",
-    "envSub": "Standard spectrum intensity for full-sun",
+    "envVal": "800 FC",
+    "envBar": "80%",
+    "envSub": "Standard spectrum intensity for Light: full-sun. Requires direct or high-intensity sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Cactus and succulent pot",
     "soilBar": "85%",
@@ -1376,25 +1357,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn",
-      "winter"
-    ],
-    "lightRequirement": "full-sun",
-    "wateringFrequency": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "highlands",
-      "central",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "sansevieria-trifasciata",
-      "aloe-vera"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: full-sun. Requires direct or high-intensity sunlight.",
+    "wateringFrequency": "Water thoroughly only when soil is completely dry.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "strelitzia-reginae": {
@@ -1410,14 +1377,20 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1551893478-d726eaf0442c?auto=format&fit=crop&w=800&q=80",
-        "alt": "Exotic orange and blue Bird of Paradise flower",
+        "alt": "Bird of Paradise",
         "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1551893478-d726eaf0442c?auto=format&fit=crop&w=800&q=80",
+        "alt": "Bird of Paradise view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
       "#Outdoor",
       "#StatementPlant",
       "#Flowering",
+      "#Flower",
       "#Flower"
     ],
     "taxonomyTags": [
@@ -1426,17 +1399,17 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "MEDIUM Maintenance",
-      "FULL SUN",
+      "Adaptive",
+      "LIGHT: FULL SUN. REQUIRES DIRECT OR HIGH-INTENSITY SUNLIGHT.",
       "Clumping erect perennial with broad paddle-shaped leaves"
     ],
     "shortDesc": "Regal tropical plant featuring grand banana-like paddles and exotic crane-shaped blooms in brilliant orange and azure blue.",
-    "origin": "Growth Regions: Central, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Clumping erect perennial with broad paddle-shaped leaves.",
     "water": "Water regularly in spring/summer, allowing topsoil to dry between sessions.",
-    "light": "Light: full-sun. Requires direct or high-intensity sunlight.",
+    "light": "Light: Light: full-sun. Requires direct or high-intensity sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Rich loam substrate with excellent moisture retention and drainage.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
     "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets)",
@@ -1453,9 +1426,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "3,000 FC",
-    "envBar": "95%",
-    "envSub": "Standard spectrum intensity for full-sun",
+    "envVal": "800 FC",
+    "envBar": "80%",
+    "envSub": "Standard spectrum intensity for Light: full-sun. Requires direct or high-intensity sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Rich loam substrate with",
     "soilBar": "85%",
@@ -1478,21 +1451,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "full-sun",
-    "wateringFrequency": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "central",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "ficus-lyrata",
-      "musa-acuminata"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: full-sun. Requires direct or high-intensity sunlight.",
+    "wateringFrequency": "Water regularly in spring/summer, allowing topsoil to dry between sessions.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "nephrolepis-exaltata": {
@@ -1508,8 +1471,13 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://i.pinimg.com/736x/3e/3f/9a/3e3f9a309c76c20e41f5a0d6d4121235.jpg",
-        "alt": "Cascading Boston Fern fronds in architectural ceramic planter",
+        "alt": "Boston Fern",
         "isPrimary": true
+      },
+      {
+        "url": "https://i.pinimg.com/736x/3e/3f/9a/3e3f9a309c76c20e41f5a0d6d4121235.jpg",
+        "alt": "Boston Fern view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
@@ -1517,6 +1485,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Hanging",
       "#PetSafe",
       "#HumidityLoving",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -1525,36 +1494,36 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "MEDIUM Maintenance",
-      "MEDIUM",
+      "Adaptive",
+      "LIGHT: MEDIUM. REQUIRES DIRECT OR HIGH INTENSITY SUNLIGHT.",
       "Clumping perennial with graceful arching pinnate fronds"
     ],
     "shortDesc": "Lush cascading fern with arching feathery fronds that naturally humidifies ambient air and softens interior architectural contours.",
-    "origin": "Growth Regions: North, Highlands, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Clumping perennial with graceful arching pinnate fronds.",
     "water": "Maintain consistent moisture; never let root ball dry out completely.",
-    "light": "Light: medium. Requires direct or high-intensity sunlight.",
+    "light": "Light: Light: medium. Requires direct or high-intensity sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Rich, porous potting mix with peat moss and vermiculite.",
-    "humidity": "70% – 90%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
     "growth": "Moderate Care",
     "toxicity": "Non-Toxic (Pet Safe)",
-    "waterDaily": "500 ml / 3 Days",
+    "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Optimal Hydration",
     "notifMsg": "Boston Fern is actively transpiring with stable metabolic balance.",
-    "waterVal": "500 ml",
-    "waterBar": "92%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Maintain consistent moisture; never let root ball dry out completely.",
     "waterVol": "350 ml",
     "waterFreq": "Maintain consistent moisture; never let root ball dry out completely.",
-    "humidityVal": "78% RH",
-    "humidityBar": "85%",
+    "humidityVal": "62% RH",
+    "humidityBar": "68%",
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
     "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for medium",
+    "envSub": "Standard spectrum intensity for Light: medium. Requires direct or high-intensity sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Rich",
     "soilBar": "85%",
@@ -1577,23 +1546,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "lightRequirement": "medium",
-    "wateringFrequency": "high",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "highlands",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "chlorophytum-comosum",
-      "calathea-orbifolia"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: medium. Requires direct or high-intensity sunlight.",
+    "wateringFrequency": "Maintain consistent moisture; never let root ball dry out completely.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "senecio-rowleyanus": {
@@ -1609,14 +1566,20 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=800&q=80",
-        "alt": "Trailing String of Pearls succulent beads cascading gently",
+        "alt": "String of Pearls",
         "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=800&q=80",
+        "alt": "String of Pearls view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
       "#Indoor",
       "#Succulent",
       "#Trailing",
+      "#Succulent",
       "#Succulent"
     ],
     "taxonomyTags": [
@@ -1625,36 +1588,36 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "HARD Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Pendant trailing succulent stems cascading up to 1 meter"
     ],
     "shortDesc": "Whimsical trailing succulent with slender thread-like stems draped in spherical pea-like green bead foliage.",
-    "origin": "Growth Regions: Highlands, Central",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Pendant trailing succulent stems cascading up to 1 meter.",
     "water": "Water when pearl spheres soften slightly; roughly every 10-14 days.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Fast-draining gritty succulent mix.",
     "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Demanding Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
-    "waterDaily": "150 ml / 14 Days",
-    "waterStatus": "Drought-tolerant",
+    "waterDaily": "350 ml / 7 Days",
+    "waterStatus": "Optimal Hydration",
     "notifMsg": "String of Pearls is actively transpiring with stable metabolic balance.",
-    "waterVal": "150 ml",
-    "waterBar": "45%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Water when pearl spheres soften slightly; roughly every 10-14 days.",
-    "waterVol": "150 ml",
+    "waterVol": "350 ml",
     "waterFreq": "Water when pearl spheres soften slightly; roughly every 10-14 days.",
     "humidityVal": "62% RH",
     "humidityBar": "68%",
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "No misting needed",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Fast-draining gritty suc",
     "soilBar": "85%",
@@ -1677,21 +1640,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "autumn"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "low",
-    "difficulty": "hard",
-    "regions": [
-      "highlands",
-      "central"
-    ],
-    "similarPlantSlugs": [
-      "crassula-ovata",
-      "ceropegia-woodii"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water when pearl spheres soften slightly; roughly every 10-14 days.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "hedera-helix": {
@@ -1707,8 +1660,13 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80",
-        "alt": "Lush green English Ivy climbing with distinctive lobed leaves",
+        "alt": "English Ivy",
         "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80",
+        "alt": "English Ivy view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
@@ -1716,6 +1674,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Outdoor",
       "#Trailing",
       "#ColdTolerant",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -1724,17 +1683,17 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "MEDIUM Maintenance",
-      "MEDIUM",
+      "Adaptive",
+      "LIGHT: MEDIUM. REQUIRES DIRECT OR HIGH INTENSITY SUNLIGHT.",
       "Vigorous climbing and trailing woody evergreen vine"
     ],
     "shortDesc": "Vigorous evergreen trailing climber with classic lobed leaves, ideal for hanging baskets or climbing decorative trellises.",
-    "origin": "Growth Regions: North, Highlands",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Vigorous climbing and trailing woody evergreen vine.",
     "water": "Water when top 2cm feels dry; avoid standing in water.",
-    "light": "Light: medium. Requires direct or high-intensity sunlight.",
+    "light": "Light: Light: medium. Requires direct or high-intensity sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Standard moist, fertile, well-drained potting compost.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
     "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
@@ -1753,7 +1712,7 @@ export const BOTANICAL_SPECIMENS = {
     "mistCadence": "Mist foliage every 3-4 days",
     "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for medium",
+    "envSub": "Standard spectrum intensity for Light: medium. Requires direct or high-intensity sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Standard moist",
     "soilBar": "85%",
@@ -1776,22 +1735,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "autumn",
-      "winter",
-      "spring"
-    ],
-    "lightRequirement": "medium",
-    "wateringFrequency": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "highlands"
-    ],
-    "similarPlantSlugs": [
-      "epipremnum-aureum",
-      "chlorophytum-comosum"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: medium. Requires direct or high-intensity sunlight.",
+    "wateringFrequency": "Water when top 2cm feels dry; avoid standing in water.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "aspidistra-elatior": {
@@ -1807,8 +1755,13 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=800&q=80",
-        "alt": "Resilient Cast-Iron Plant broad dark green foliage",
+        "alt": "Cast-Iron Plant",
         "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=800&q=80",
+        "alt": "Cast-Iron Plant view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
@@ -1816,6 +1769,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Indestructible",
       "#PetSafe",
       "#LowLight",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -1824,27 +1778,27 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "LOW",
+      "Adaptive",
+      "LIGHT: LOW. TOLERATES LOW LIGHT AND SHADED INDOOR SPACES.",
       "Clumping upright foliage growing directly from underground rhizomes"
     ],
     "shortDesc": "Renowned for its indestructible stamina, with broad dark green lance-shaped leaves thriving in low-light, low-humidity spaces.",
-    "origin": "Growth Regions: North, Central, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Clumping upright foliage growing directly from underground rhizomes.",
     "water": "Water moderately when top 5cm of soil is dry.",
-    "light": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "light": "Light: Light: low. Tolerates low light and shaded indoor spaces.. Requires direct or high-intensity sunlight.",
     "soil": "Standard well-draining indoor potting mix.",
     "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Non-Toxic (Pet Safe)",
-    "waterDaily": "150 ml / 14 Days",
-    "waterStatus": "Drought-tolerant",
+    "waterDaily": "350 ml / 7 Days",
+    "waterStatus": "Optimal Hydration",
     "notifMsg": "Cast-Iron Plant is actively transpiring with stable metabolic balance.",
-    "waterVal": "150 ml",
-    "waterBar": "45%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Water moderately when top 5cm of soil is dry.",
-    "waterVol": "150 ml",
+    "waterVol": "350 ml",
     "waterFreq": "Water moderately when top 5cm of soil is dry.",
     "humidityVal": "62% RH",
     "humidityBar": "68%",
@@ -1853,7 +1807,7 @@ export const BOTANICAL_SPECIMENS = {
     "mistCadence": "Mist foliage every 3-4 days",
     "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for low",
+    "envSub": "Standard spectrum intensity for Light: low. Tolerates low light and shaded indoor spaces.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Standard well-draining i",
     "soilBar": "85%",
@@ -1876,24 +1830,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn",
-      "winter"
-    ],
-    "lightRequirement": "low",
-    "wateringFrequency": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "sansevieria-trifasciata",
-      "zamioculcas-zamiifolia"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "wateringFrequency": "Water moderately when top 5cm of soil is dry.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "anthurium-andraeanum": {
@@ -1909,14 +1850,20 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://i.pinimg.com/736x/e6/87/6c/e6876c9a7dd702a114b74b7eaa39b334.jpg",
-        "alt": "Vibrant scarlet Anthurium bloom with yellow spadix",
+        "alt": "Flamingo Flower",
         "isPrimary": true
+      },
+      {
+        "url": "https://i.pinimg.com/736x/e6/87/6c/e6876c9a7dd702a114b74b7eaa39b334.jpg",
+        "alt": "Flamingo Flower view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
       "#Indoor",
       "#Flowering",
       "#BoldFoliage",
+      "#Flower",
       "#Flower"
     ],
     "taxonomyTags": [
@@ -1925,17 +1872,17 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "MEDIUM Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Epiphytic clumping perennial with heart-shaped leaves and showy spathes"
     ],
     "shortDesc": "Dazzling tropical beauty featuring glossy heart-shaped foliage crowned with long-lasting waxy scarlet spathes and yellow spadices.",
-    "origin": "Growth Regions: North, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Epiphytic clumping perennial with heart-shaped leaves and showy spathes.",
     "water": "Water when top 3cm of soil dries; do not leave water in the saucer.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Coarse, well-aerated orchid and aroid potting mix.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
     "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
@@ -1952,9 +1899,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Coarse",
     "soilBar": "85%",
@@ -1977,22 +1924,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "spathiphyllum",
-      "philodendron-birkin"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water when top 3cm of soil dries; do not leave water in the saucer.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "aloe-vera": {
@@ -2008,8 +1944,13 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1567689265664-1c48de61db0b?auto=format&fit=crop&w=800&q=80",
-        "alt": "Fresh Aloe Vera succulent with thick fleshy gel leaves",
+        "alt": "Aloe Vera",
         "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1567689265664-1c48de61db0b?auto=format&fit=crop&w=800&q=80",
+        "alt": "Aloe Vera view 1",
+        "isPrimary": false
       }
     ],
     "tags": [
@@ -2017,6 +1958,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Outdoor",
       "#Succulent",
       "#Medicinal",
+      "#Succulent",
       "#Succulent"
     ],
     "taxonomyTags": [
@@ -2025,36 +1967,36 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "FULL SUN",
+      "Adaptive",
+      "LIGHT: FULL SUN. REQUIRES DIRECT OR HIGH-INTENSITY SUNLIGHT.",
       "Stemless rosette of thick fleshy erect leaves"
     ],
     "shortDesc": "Timeless succulent revered for its soothing gel-filled lanceolate leaves adorned with soft serrated edges. Thrives in sunlit corners.",
-    "origin": "Growth Regions: North, Central, South, Highlands",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Stemless rosette of thick fleshy erect leaves.",
     "water": "Soak thoroughly and allow soil to dry out completely before next watering.",
-    "light": "Light: full-sun. Requires direct or high-intensity sunlight.",
+    "light": "Light: Light: full-sun. Requires direct or high-intensity sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Porous cactus or succulent soil with sand and perlite.",
     "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets)",
-    "waterDaily": "150 ml / 14 Days",
-    "waterStatus": "Drought-tolerant",
+    "waterDaily": "350 ml / 7 Days",
+    "waterStatus": "Optimal Hydration",
     "notifMsg": "Aloe Vera is actively transpiring with stable metabolic balance.",
-    "waterVal": "150 ml",
-    "waterBar": "45%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Soak thoroughly and allow soil to dry out completely before next watering.",
-    "waterVol": "150 ml",
+    "waterVol": "350 ml",
     "waterFreq": "Soak thoroughly and allow soil to dry out completely before next watering.",
     "humidityVal": "62% RH",
     "humidityBar": "68%",
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "No misting needed",
-    "envVal": "3,000 FC",
-    "envBar": "95%",
-    "envSub": "Standard spectrum intensity for full-sun",
+    "envVal": "800 FC",
+    "envBar": "80%",
+    "envSub": "Standard spectrum intensity for Light: full-sun. Requires direct or high-intensity sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Porous cactus or succule",
     "soilBar": "85%",
@@ -2077,23 +2019,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "full-sun",
-    "wateringFrequency": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south",
-      "highlands"
-    ],
-    "similarPlantSlugs": [
-      "sansevieria-trifasciata",
-      "crassula-ovata"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: full-sun. Requires direct or high-intensity sunlight.",
+    "wateringFrequency": "Soak thoroughly and allow soil to dry out completely before next watering.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-monstera": {
@@ -2109,12 +2039,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
-        "alt": "Monstera deliciosa leaf close-up in biophilic living room",
+        "alt": "Swiss Cheese Plant (Monstera)",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
+        "alt": "Swiss Cheese Plant (Monstera) view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/dc/4e/18/dc4e1817fd8e15ec0bb73b91b8dd5f33.jpg",
-        "alt": "Fenestrated split-leaf Monstera flourishing in soft ambient morning light",
+        "alt": "Swiss Cheese Plant (Monstera) view 2",
         "isPrimary": false
       }
     ],
@@ -2123,6 +2058,7 @@ export const BOTANICAL_SPECIMENS = {
       "#EasyCare",
       "#AirPurifying",
       "#Tropical",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -2131,19 +2067,19 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Climbing vine with deeply perforated leaves at maturity; benefits from a moss pole"
     ],
     "shortDesc": "Iconic indoor specimen famous for its dramatic fenestrated foliage. A quintessential centerpiece for biophilic interior spaces.",
-    "origin": "Growth Regions: North, South, Central",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Climbing vine with deeply perforated leaves at maturity; benefits from a moss pole.",
     "water": "Water once every 7-10 days. Allow top 3-5cm of soil to dry before watering thoroughly.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Rich, well-draining potting medium blended with peat moss, perlite, and orchid bark.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
     "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Optimal Hydration",
@@ -2158,9 +2094,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Rich",
     "soilBar": "85%",
@@ -2183,22 +2119,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA Animal Poison Control"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "moderate",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "south",
-      "central"
-    ],
-    "similarPlantSlugs": [
-      "pothos-gold",
-      "philodendron-birkin"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water once every 7-10 days. Allow top 3-5cm of soil to dry before watering thoroughly.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-red-rose": {
@@ -2214,12 +2139,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
-        "alt": "Monstera deliciosa leaf close-up in biophilic living room",
+        "alt": "Swiss Cheese Plant (Monstera)",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
+        "alt": "Swiss Cheese Plant (Monstera) view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/dc/4e/18/dc4e1817fd8e15ec0bb73b91b8dd5f33.jpg",
-        "alt": "Fenestrated split-leaf Monstera flourishing in soft ambient morning light",
+        "alt": "Swiss Cheese Plant (Monstera) view 2",
         "isPrimary": false
       }
     ],
@@ -2228,6 +2158,7 @@ export const BOTANICAL_SPECIMENS = {
       "#EasyCare",
       "#AirPurifying",
       "#Tropical",
+      "#Foliage",
       "#Foliage"
     ],
     "taxonomyTags": [
@@ -2236,19 +2167,19 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Climbing vine with deeply perforated leaves at maturity; benefits from a moss pole"
     ],
     "shortDesc": "Iconic indoor specimen famous for its dramatic fenestrated foliage. A quintessential centerpiece for biophilic interior spaces.",
-    "origin": "Growth Regions: North, South, Central",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Climbing vine with deeply perforated leaves at maturity; benefits from a moss pole.",
     "water": "Water once every 7-10 days. Allow top 3-5cm of soil to dry before watering thoroughly.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Rich, well-draining potting medium blended with peat moss, perlite, and orchid bark.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
     "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Optimal Hydration",
@@ -2263,9 +2194,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Rich",
     "soilBar": "85%",
@@ -2288,22 +2219,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA Animal Poison Control"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "moderate",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "south",
-      "central"
-    ],
-    "similarPlantSlugs": [
-      "pothos-gold",
-      "philodendron-birkin"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water once every 7-10 days. Allow top 3-5cm of soil to dry before watering thoroughly.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-snake-plant": {
@@ -2319,12 +2239,17 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=800&q=80",
-        "alt": "Golden Snake Plant upright sword-shaped leaves",
+        "alt": "Snake Plant",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=800&q=80",
+        "alt": "Snake Plant view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/8f/c9/b5/8fc9b5b7ed77061c826fc8956245a739.jpg",
-        "alt": "Architectural upright blades of Sansevieria",
+        "alt": "Snake Plant view 2",
         "isPrimary": false
       }
     ],
@@ -2333,6 +2258,7 @@ export const BOTANICAL_SPECIMENS = {
       "#Bedroom",
       "#AirPurifying",
       "#LowLight",
+      "#Succulent",
       "#Succulent"
     ],
     "taxonomyTags": [
@@ -2341,27 +2267,27 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "EASY Maintenance",
-      "LOW",
+      "Adaptive",
+      "LIGHT: LOW. TOLERATES LOW LIGHT AND SHADED INDOOR SPACES.",
       "Upright, rosette clustering of rigid sword-shaped architectural leaves"
     ],
     "shortDesc": "Remarkably resilient architectural succulent featuring upright sword-like leaves with vivid yellow-green margins. Renowned for nocturnal air purification.",
-    "origin": "Growth Regions: North, Central, South, Highlands",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Upright, rosette clustering of rigid sword-shaped architectural leaves.",
     "water": "Water sparingly every 2-3 weeks; allow soil to dry completely between waterings.",
-    "light": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "light": "Light: Light: low. Tolerates low light and shaded indoor spaces.. Requires direct or high-intensity sunlight.",
     "soil": "Fast-draining cactus and succulent mix with pumice or perlite.",
     "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
-    "growth": "Vigorous / Easy Care",
+    "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
-    "waterDaily": "150 ml / 14 Days",
-    "waterStatus": "Drought-tolerant",
+    "waterDaily": "350 ml / 7 Days",
+    "waterStatus": "Optimal Hydration",
     "notifMsg": "Snake Plant is actively transpiring with stable metabolic balance.",
-    "waterVal": "150 ml",
-    "waterBar": "45%",
+    "waterVal": "350 ml",
+    "waterBar": "75%",
     "waterSub": "Water sparingly every 2-3 weeks; allow soil to dry completely between waterings.",
-    "waterVol": "150 ml",
+    "waterVol": "350 ml",
     "waterFreq": "Water sparingly every 2-3 weeks; allow soil to dry completely between waterings.",
     "humidityVal": "62% RH",
     "humidityBar": "68%",
@@ -2370,7 +2296,7 @@ export const BOTANICAL_SPECIMENS = {
     "mistCadence": "No misting needed",
     "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for low",
+    "envSub": "Standard spectrum intensity for Light: low. Tolerates low light and shaded indoor spaces.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Fast-draining cactus and",
     "soilBar": "85%",
@@ -2393,25 +2319,11 @@ export const BOTANICAL_SPECIMENS = {
         "source": "ASPCA Animal Poison Control"
       }
     },
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn",
-      "winter"
-    ],
-    "lightRequirement": "low",
-    "wateringFrequency": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south",
-      "highlands"
-    ],
-    "similarPlantSlugs": [
-      "zz-plant",
-      "aloe-vera"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: low. Tolerates low light and shaded indoor spaces.",
+    "wateringFrequency": "Water sparingly every 2-3 weeks; allow soil to dry completely between waterings.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-fiddle-leaf": {
@@ -2427,18 +2339,24 @@ export const BOTANICAL_SPECIMENS = {
     "images": [
       {
         "url": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=800&q=80",
-        "alt": "Mature Fiddle Leaf Fig tree in interior setting",
+        "alt": "Fiddle-Leaf Fig",
         "isPrimary": true
       },
       {
+        "url": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=800&q=80",
+        "alt": "Fiddle-Leaf Fig view 1",
+        "isPrimary": false
+      },
+      {
         "url": "https://i.pinimg.com/736x/09/85/1c/09851c0d8f2e39cc22ac3181b2002967.jpg",
-        "alt": "Grand violin-shaped foliage of Ficus lyrata",
+        "alt": "Fiddle-Leaf Fig view 2",
         "isPrimary": false
       }
     ],
     "tags": [
       "#Indoor",
       "#StatementPlant",
+      "#Tree",
       "#Tree",
       "#Tree"
     ],
@@ -2448,17 +2366,17 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "MEDIUM Maintenance",
-      "BRIGHT INDIRECT",
+      "Adaptive",
+      "LIGHT: BRIGHT INDIRECT. THRIVES IN ABUNDANT BRIGHT INDIRECT SUNLIGHT.",
       "Upright tree habit with substantial architectural leaves on a woody trunk"
     ],
     "shortDesc": "Magnificent statement indoor tree featuring large, glossy violin-shaped foliage with pronounced sculptural veining.",
-    "origin": "Growth Regions: North, South",
+    "origin": "Tropical & Subtropical Biomes",
     "purpose": "Upright tree habit with substantial architectural leaves on a woody trunk.",
     "water": "Water when top 5cm is dry, roughly every 7-10 days. Avoid waterlogging roots.",
-    "light": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "light": "Light: Light: bright-indirect. Thrives in abundant bright indirect sunlight.. Requires direct or high-intensity sunlight.",
     "soil": "Rich, well-aerated potting mix with compost and orchid bark.",
-    "humidity": "50% – 70%",
+    "humidity": "30% – 50%",
     "temp": "18°C – 28°C",
     "growth": "Moderate Care",
     "toxicity": "Pet Caution (Toxic to Pets / Irritant)",
@@ -2475,9 +2393,9 @@ export const BOTANICAL_SPECIMENS = {
     "humiditySub": "Steady foliar transpiration rate.",
     "humidityTarget": "55% – 80% RH",
     "mistCadence": "Mist foliage every 3-4 days",
-    "envVal": "1,500 FC",
+    "envVal": "800 FC",
     "envBar": "80%",
-    "envSub": "Standard spectrum intensity for bright-indirect",
+    "envSub": "Standard spectrum intensity for Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
     "tempRange": "18°C minimum night / 28°C maximum day",
     "soilVal": "Rich",
     "soilBar": "85%",
@@ -2500,32 +2418,24 @@ export const BOTANICAL_SPECIMENS = {
         "source": "Pet Poison Helpline"
       }
     },
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "lightRequirement": "bright-indirect",
-    "wateringFrequency": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "similarPlantSlugs": [
-      "ficus-elastica",
-      "pachira-aquatica"
-    ],
+    "seasons": [],
+    "lightRequirement": "Light: bright-indirect. Thrives in abundant bright indirect sunlight.",
+    "wateringFrequency": "Water when top 5cm is dry, roughly every 7-10 days. Avoid waterlogging roots.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   }
 };
 
 export const DATABASE_USERS = [
   {
-    "email": "admin@greennest.com",
-    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "fullName": "Elena Vu (Master Admin)",
-    "avatar": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80",
+    "email": "admin@greennest.com",
+    "password": "AdminCanopy2026!",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "role": "admin",
+    "avatar": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80",
     "savedGardenSlugs": [
       "monstera-deliciosa",
       "calathea-orbifolia",
@@ -2534,11 +2444,27 @@ export const DATABASE_USERS = [
     "status": "active"
   },
   {
-    "email": "alex.pham@example.com",
+    "fullName": "Admin GreenNest",
+    "email": "admin@greennest.vn",
+    "password": "Admin@123456",
     "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+    "role": "admin",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "savedGardenSlugs": [
+      "monstera-deliciosa",
+      "calathea-orbifolia"
+    ],
+    "status": "active"
+  },
+  {
     "fullName": "Alexandre Pham",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "email": "alex.pham@example.com",
+    "password": "GreenCanopy2026",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "role": "user",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
     "savedGardenSlugs": [
       "sansevieria-trifasciata",
       "lavandula-angustifolia"
@@ -2546,13 +2472,28 @@ export const DATABASE_USERS = [
     "status": "active"
   },
   {
-    "email": "user@demo.com",
-    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "fullName": "Demo Member",
-    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
+    "email": "user@demo.com",
+    "password": "GreenCanopy2026",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "role": "user",
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
     "savedGardenSlugs": [
       "ficus-lyrata",
+      "monstera-deliciosa"
+    ],
+    "status": "active"
+  },
+  {
+    "fullName": "Lê Hoàng Nam",
+    "email": "nam.le@greennest.vn",
+    "password": "GreenNest@2026",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+    "role": "user",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "savedGardenSlugs": [
       "monstera-deliciosa"
     ],
     "status": "active"

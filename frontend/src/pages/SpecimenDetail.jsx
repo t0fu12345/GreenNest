@@ -4,45 +4,139 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import {
   BOTANICAL_SPECIMENS,
-  SPECIMEN_KEYS,
-  getStarredPlantIds,
-  toggleStarredPlant
+  SPECIMEN_KEYS
 } from '../data/botanicalSpecimens';
 import SaveToCollectionModal from '../components/gallery/SaveToCollectionModal';
+import { useAuth } from '../context/AuthContext';
+import plantApi from '../services/plantApi';
+import gardenApi from '../services/gardenApi';
 
 const SpecimenDetail = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const requestedId = searchParams.get('id');
 
-  const plantId = (requestedId && BOTANICAL_SPECIMENS[requestedId])
+  const defaultId = (requestedId && BOTANICAL_SPECIMENS[requestedId])
     ? requestedId
     : 'monstera-deliciosa';
 
-  const plant = BOTANICAL_SPECIMENS[plantId] || BOTANICAL_SPECIMENS['monstera-deliciosa'];
-
+  const [currentPlant, setCurrentPlant] = useState(BOTANICAL_SPECIMENS[defaultId]);
+  const [loading, setLoading] = useState(false);
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    setStarredIds(getStarredPlantIds());
-  }, []);
+    const fetchUserSaved = async () => {
+      if (isAuthenticated) {
+        try {
+          const res = await gardenApi.getMyGarden();
+          const saved = res?.data?.savedPlants || [];
+          const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
+          setStarredIds(ids);
+        } catch (e) {
+          console.warn('Không thể tải cây yêu thích:', e);
+        }
+      } else {
+        setStarredIds([]);
+      }
+    };
+    fetchUserSaved();
+  }, [isAuthenticated]);
 
-  const isStarred = starredIds.includes(plantId);
+  useEffect(() => {
+    if (!requestedId) return;
+
+    // Nếu ID có trong BOTANICAL_SPECIMENS thì set trước
+    if (BOTANICAL_SPECIMENS[requestedId]) {
+      setCurrentPlant(BOTANICAL_SPECIMENS[requestedId]);
+    }
+
+    // Sau đó gọi API để lấy dữ liệu mới nhất từ MongoDB
+    const fetchDetail = async () => {
+      try {
+        setLoading(true);
+        const res = await plantApi.getPlant(requestedId);
+        const p = res?.data?.plant || (res?.data?.name ? res.data : null);
+        if (p) {
+          setCurrentPlant({
+            id: p.specimenId || p._id,
+            catalogCode: p.specimenId || 'CANOPY-001',
+            name: p.name,
+            scientificName: p.scientificName || p.botanicalName || '',
+            biome: p.biome || 'tropical',
+            biomeLabel: p.biome ? p.biome.toUpperCase() : 'Tropical Rainforest',
+            image: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
+            tags: p.tags?.length ? p.tags : [`#${p.category || 'Araceae'}`, `#${p.biome || 'Tropical'}`],
+            taxonomyTags: [p.category, p.biome, 'Plantae'].filter(Boolean),
+            traits: [p.light, p.watering, p.careLevel].filter(Boolean),
+            shortDesc: p.description || '',
+            origin: p.origin || 'Vườn ươm GreenNest Sanctuary',
+            water: p.watering || 'Every 7-10 days',
+            light: p.light || 'Dappled indirect sunlight',
+            soil: p.careGuide?.soil || 'Chunky aroid mix',
+            humidity: p.careGuide?.humidity || '65% - 85%',
+            temp: '20°C – 28°C',
+            growth: p.careLevel || 'Moderate',
+            toxicity: p.toxicity?.isToxicToPets ? 'Pet Caution' : 'Pet Safe',
+            waterDaily: '350 ml / 7 Days',
+            waterStatus: 'Balanced',
+            notifMsg: `${p.name} is flourishing under ambient biophilic light.`,
+            waterVal: '350 ml',
+            waterBar: '82%',
+            waterSub: 'Optimal root zone saturation. Next deep hydration scheduled in 4 days.',
+            humidityVal: '68% RH',
+            humidityBar: '88%',
+            humiditySub: 'High foliar turgor. Transpiration balanced under diffused light.',
+            envVal: '1,600 FC',
+            envBar: '95%',
+            envSub: 'Dappled canopy daylight • 22°C ambient conservatory curve.',
+            soilVal: 'Aroid Chunk',
+            soilBar: '90%',
+            soilSub: 'High aeration blend: orchid bark, pumice, and coco coir.'
+          });
+        }
+      } catch (err) {
+        console.warn('Dùng dữ liệu dự phòng cho chi tiết cây:', err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetail();
+  }, [requestedId]);
+
+  const plant = currentPlant || BOTANICAL_SPECIMENS['specimen-monstera'];
+  const plantId = plant.id || defaultId;
+
+  const isStarred = starredIds.includes(plantId) || (plant._id && starredIds.includes(plant._id));
 
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(''), 3500);
   };
 
-  const handleToggleStar = () => {
-    const updated = toggleStarredPlant(plantId);
-    setStarredIds(updated);
-    if (updated.includes(plantId)) {
-      showToast(`⭐ Added "${plant.name}" to Personal Gallery!`);
-    } else {
-      showToast(`Removed "${plant.name}" from Personal Gallery.`);
+  const handleToggleStar = async () => {
+    if (!isAuthenticated) {
+      showToast('Vui lòng đăng nhập để lưu cây vào mục yêu thích!');
+      setTimeout(() => navigate('/login'), 1200);
+      return;
+    }
+
+    const identifier = plant._id || plant.id || defaultId;
+    try {
+      const res = await gardenApi.toggleBookmark(identifier);
+      const isBookmarked = res?.data?.isBookmarked;
+      if (isBookmarked) {
+        setStarredIds(prev => Array.from(new Set([...prev, plantId])));
+        showToast(`⭐ Đã thêm "${plant.name}" vào Mục Yêu Thích!`);
+      } else {
+        setStarredIds(prev => prev.filter(id => id !== plantId && id !== plant._id));
+        showToast(`Đã xóa "${plant.name}" khỏi Mục Yêu Thích.`);
+      }
+    } catch (err) {
+      showToast('Lỗi cập nhật yêu thích: ' + err.message);
     }
   };
 
@@ -266,7 +360,14 @@ const SpecimenDetail = () => {
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
                 <button
                   type="button"
-                  onClick={() => setIsSaveModalOpen(true)}
+                  onClick={() => {
+                    if (!isAuthenticated) {
+                      showToast('Vui lòng đăng nhập để thêm cây vào bộ sưu tập!');
+                      setTimeout(() => navigate('/login'), 1200);
+                      return;
+                    }
+                    setIsSaveModalOpen(true);
+                  }}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',

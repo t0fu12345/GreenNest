@@ -1,1140 +1,1427 @@
 [
   {
+    "specimenId": "specimen-monstera",
+    "catalogCode": "CANOPY-001",
+    "name": "Monstera Deliciosa (Trầu Bà Nam Mỹ)",
+    "scientificName": "Monstera deliciosa Liebm.",
     "slug": "monstera-deliciosa",
-    "name": "Swiss Cheese Plant (Monstera)",
-    "botanicalName": "Monstera deliciosa",
-    "category": "foliage",
-    "description": "Iconic indoor specimen famous for its dramatic fenestrated foliage. A quintessential centerpiece for biophilic interior spaces.",
-    "light": "bright-indirect",
-    "water": "moderate",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "south",
-      "central"
-    ],
-    "seasons": [
-      "spring",
-      "summer"
+    "category": "Aroid",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Rainforest",
+    "shortDesc": "Loài thực vật biểu tượng của thiết kế nội thất hiện đại với những chiếc xẻ lá ngoạn mục thích ứng tán rừng mưa nhiệt đới.",
+    "description": "Monstera Deliciosa là loài cây leo nhiệt đới thường xanh thuộc họ Ráy (Araceae). Phiên bản tự nhiên phát triển rễ khí sinh bám vào thân gỗ lớn, trong khi các lỗ xẻ tự nhiên trên phiến lá giúp tán lá chống chịu gió bão nhiệt đới và tối ưu lượng ánh sáng khuếch tán.",
+    "origin": "Rừng mưa nhiệt đới miền nam Mexico và Trung Mỹ.",
+    "purpose": "Thanh lọc không khí, duy trì độ ẩm vi khí hậu phòng và tạo điểm nhấn kiến trúc Biophilic.",
+    "light": "Ánh sáng khuếch tán gián tiếp (1,200 – 2,000 FC). Tránh ánh nắng gắt trực tiếp buổi trưa.",
+    "watering": "Tưới đẫm mỗi 7–10 ngày khi bề mặt giá thể khô khoảng 50%.",
+    "soil": "Hỗn hợp giá thể thoáng khí Aroid Chunk: vỏ thông, đá pumice, perlite và xơ dừa.",
+    "temp": "20°C – 28°C",
+    "humidity": "65% – 85%",
+    "growth": "Sinh trưởng nhanh",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa tinh thể Canxi Oxalat không hòa tan, có thể gây kích ứng niêm mạc nếu chó mèo nhai phải."
+    },
+    "telemetry": {
+      "waterDaily": "350 ml / 7 Days",
+      "waterBar": "82%",
+      "waterVal": "350 ml",
+      "waterStatus": "Balanced",
+      "waterSub": "Độ ẩm vùng rễ đạt mức cân bằng tối ưu.",
+      "waterFreq": "7-10 ngày / lần",
+      "humidityVal": "68% RH",
+      "humidityBar": "88%",
+      "humiditySub": "Độ căng tế bào biểu bì lá đạt chuẩn quang hợp.",
+      "humidityTarget": "65% – 85% RH",
+      "mistCadence": "Phun sương rễ khí sinh mỗi 48 giờ",
+      "envVal": "1,600 FC",
+      "envBar": "95%",
+      "envSub": "Ánh sáng tán cây khuếch tán dịu nhẹ.",
+      "tempRange": "20°C - 28°C",
+      "soilVal": "Aroid Chunk",
+      "soilBar": "90%",
+      "soilSub": "Hỗn hợp xốp thoáng pH 6.0"
+    },
+    "traits": [
+      "Xẻ lá tự nhiên",
+      "Rễ khí sinh khỏe",
+      "Cây leo thường xanh",
+      "Lọc bụi mịn"
     ],
     "tags": [
-      "indoor",
-      "easy-care",
-      "air-purifying",
-      "tropical"
+      "#Araceae",
+      "#TrailingFoliage",
+      "#VelvetLeaf",
+      "#DeepShadeThriving",
+      "#RareCultivar"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
-        "alt": "Monstera deliciosa leaf close-up in biophilic living room",
-        "isPrimary": true
-      },
-      {
-        "url": "https://i.pinimg.com/736x/dc/4e/18/dc4e1817fd8e15ec0bb73b91b8dd5f33.jpg",
-        "alt": "Fenestrated split-leaf Monstera flourishing in soft ambient morning light",
-        "isPrimary": false
-      }
+    "taxonomyTags": [
+      "Araceae",
+      "Monstera",
+      "Alismatales",
+      "Angiosperms",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "balcony"
-      ],
-      "growthHabit": "Climbing vine with deeply perforated leaves at maturity; benefits from a moss pole.",
-      "soil": "Rich, well-draining potting medium blended with peat moss, perlite, and orchid bark.",
-      "container": "Terracotta or ceramic pot with drainage holes, minimum 25cm diameter.",
-      "watering": "Water once every 7-10 days. Allow top 3-5cm of soil to dry before watering thoroughly.",
-      "routineCare": "Apply balanced liquid fertilizer monthly in spring/summer. Wipe leaves regularly with a damp cloth.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Contains insoluble calcium oxalate crystals which can cause oral swelling and nausea in dogs and cats.",
-        "source": "ASPCA Animal Poison Control"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1596724809804-814e44383a15?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1617173944883-6ffbd35d584d?auto=format&fit=crop&w=800&q=80"
+      ]
     },
-    "similarPlantSlugs": [
-      "pothos-gold",
-      "philodendron-birkin"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "sansevieria-trifasciata",
-    "name": "Snake Plant",
-    "botanicalName": "Dracaena trifasciata",
-    "category": "succulent",
-    "description": "Remarkably resilient architectural succulent featuring upright sword-like leaves with vivid yellow-green margins. Renowned for nocturnal air purification.",
-    "light": "low",
-    "water": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south",
-      "highlands"
-    ],
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn",
-      "winter"
+    "specimenId": "specimen-red-rose",
+    "catalogCode": "CANOPY-002",
+    "name": "Red Heritage Rose (Hoa Hồng Nhung Cổ)",
+    "scientificName": "Rosa damascena / Rosa gallica",
+    "slug": "red-heritage-rose",
+    "category": "Flowering",
+    "biome": "subtropical",
+    "biomeLabel": "Subtropical Highlands",
+    "shortDesc": "Giống hoa hồng cổ điển với cánh hoa đỏ thẫm như nhung và hương thơm tinh dầu quyến rũ nồng nàn.",
+    "description": "Được mệnh danh là nữ hoàng của các loài hoa cảnh ban công, giống hồng cổ này yêu cầu sự thông thoáng và nguồn năng lượng mặt trời dồi dào để tổng hợp anthocyanin cho sắc đỏ rực rỡ.",
+    "origin": "Thung lũng ôn đới vùng Trung Á và khu vực Địa Trung Hải.",
+    "purpose": "Trang trí cảnh quan ban công ngập nắng, liệu pháp mùi hương giảm căng thẳng thần kinh.",
+    "light": "Ánh nắng trực tiếp tối thiểu 6 giờ mỗi ngày (18°C – 26°C).",
+    "watering": "Tưới đẫm tại gốc 1–2 lần mỗi tuần khi lớp đất mặt sâu 5cm khô ráo.",
+    "soil": "Đất thịt nhẹ giàu mùn hữu cơ, trộn đá perlite và phân trùn quế thoát nước tốt.",
+    "temp": "18°C – 26°C",
+    "humidity": "40% – 60%",
+    "growth": "Theo mùa vụ",
+    "careLevel": "Moderate",
+    "toxicity": {
+      "isToxicToPets": false,
+      "details": "Hoàn toàn an toàn cho thú cưng và con người."
+    },
+    "telemetry": {
+      "waterDaily": "500 ml / 4 Days",
+      "waterBar": "90%",
+      "waterVal": "500 ml",
+      "waterStatus": "Fully Saturated",
+      "waterSub": "Đã hoàn thành chu kỳ tưới gốc sâu.",
+      "waterFreq": "4-5 ngày / lần",
+      "humidityVal": "55% RH",
+      "humidityBar": "72%",
+      "humiditySub": "Độ ẩm không khí duy trì khô thoáng ngừa nấm mốc.",
+      "humidityTarget": "40% – 60% RH",
+      "mistCadence": "Tránh phun sương trực tiếp lên cánh hoa",
+      "envVal": "4,500 FC",
+      "envBar": "98%",
+      "envSub": "Cung cấp quang phổ ánh sáng mặt trời tự nhiên dồi dào.",
+      "tempRange": "18°C - 26°C",
+      "soilVal": "Rich Organic Loam",
+      "soilBar": "88%",
+      "soilSub": "Đất giàu dinh dưỡng pH 6.5"
+    },
+    "traits": [
+      "Hương thơm nồng nàn",
+      "Cánh nhung dày",
+      "Thân gai bảo vệ",
+      "Nở hoa liên tục"
     ],
     "tags": [
-      "indoor",
-      "bedroom",
-      "air-purifying",
-      "low-light"
+      "#SubtropicalHighlands",
+      "#TemperateGarden",
+      "#AromaticBloom",
+      "#SunLoving",
+      "#Rosa"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=800&q=80",
-        "alt": "Golden Snake Plant upright sword-shaped leaves",
-        "isPrimary": true
-      },
-      {
-        "url": "https://i.pinimg.com/736x/8f/c9/b5/8fc9b5b7ed77061c826fc8956245a739.jpg",
-        "alt": "Architectural upright blades of Sansevieria",
-        "isPrimary": false
-      }
+    "taxonomyTags": [
+      "Rosaceae",
+      "Rosa",
+      "Rosales",
+      "Eudicots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "bedroom"
-      ],
-      "growthHabit": "Upright, rosette clustering of rigid sword-shaped architectural leaves.",
-      "soil": "Fast-draining cactus and succulent mix with pumice or perlite.",
-      "container": "Heavy ceramic or terracotta container with reliable drainage.",
-      "watering": "Water sparingly every 2-3 weeks; allow soil to dry completely between waterings.",
-      "routineCare": "Minimal feeding needed; once in spring. Wipe foliage occasionally to remove dust.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Contains saponins that cause nausea or gastrointestinal discomfort in pets if ingested.",
-        "source": "ASPCA Animal Poison Control"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=800&q=80"
+      ]
     },
-    "similarPlantSlugs": [
-      "zz-plant",
-      "aloe-vera"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "ficus-lyrata",
-    "name": "Fiddle-Leaf Fig",
-    "botanicalName": "Ficus lyrata",
-    "category": "tree",
-    "description": "Magnificent statement indoor tree featuring large, glossy violin-shaped foliage with pronounced sculptural veining.",
-    "light": "bright-indirect",
-    "water": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer"
+    "specimenId": "specimen-aechmea",
+    "catalogCode": "CANOPY-003",
+    "name": "Aechmea Fasciata (Dứa Cảnh Bình Bạc)",
+    "scientificName": "Aechmea fasciata (Lindl.) Baker",
+    "slug": "aechmea-fasciata",
+    "category": "Foliage",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Conservatory",
+    "shortDesc": "Loài dứa phụ sinh nhiệt đới ngoạn mục với lá vằn phấn bạc và cụm hoa hồng phấn bền bỉ kéo dài nhiều tháng.",
+    "description": "Aechmea Fasciata thuộc họ Dứa (Bromeliaceae), sinh trưởng tự nhiên trên các hốc cây rừng mưa Brazil. Cấu trúc lá xếp hoa thị tạo thành một 'bình chứa nước' tự nhiên ở tâm giúp cây tự tích trữ nước mưa và hấp thụ chất dinh dưỡng.",
+    "origin": "Rừng mưa nhiệt đới ven biển Rio de Janeiro, Brazil.",
+    "purpose": "Kiến trúc hoa nhiệt đới nội thất, hấp thụ CO2 ban đêm (quang hợp CAM).",
+    "light": "Ánh sáng gián tiếp sáng rõ, chịu được một chút nắng nhẹ buổi sáng sớm.",
+    "watering": "Đổ nước sạch vào tâm bình lá mỗi 1–2 tuần; chỉ làm ẩm nhẹ giá thể quanh rễ.",
+    "soil": "Giá thể xơ dừa thô, vỏ thông nhỏ và than củi thông thoáng.",
+    "temp": "18°C – 28°C",
+    "humidity": "60% – 80%",
+    "growth": "Chậm / Trung bình",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": false,
+      "details": "Không độc hại đối với mèo, chó và trẻ nhỏ."
+    },
+    "telemetry": {
+      "waterDaily": "200 ml / 10 Days",
+      "waterBar": "75%",
+      "waterVal": "200 ml",
+      "waterStatus": "Central Well Full",
+      "waterSub": "Bình nước trung tâm được duy trì mức 80%.",
+      "waterFreq": "10-14 ngày / lần",
+      "humidityVal": "72% RH",
+      "humidityBar": "85%",
+      "humiditySub": "Độ ẩm biểu bì phấn bạc phản xạ ánh sáng tốt.",
+      "humidityTarget": "60% – 80% RH",
+      "mistCadence": "Thay nước bình tâm mỗi 2 tuần tránh đọng cặn",
+      "envVal": "2,200 FC",
+      "envBar": "90%",
+      "envSub": "Ánh sáng tán kính khuếch tán.",
+      "tempRange": "18°C - 28°C",
+      "soilVal": "Epiphyte Orchid Bark",
+      "soilBar": "85%",
+      "soilSub": "Giá thể phụ sinh xốp nhẹ pH 5.8"
+    },
+    "traits": [
+      "Bình nước trung tâm",
+      "Lá phủ phấn bạc",
+      "Hoa hồng bền 4 tháng",
+      "Quang hợp CAM ban đêm"
     ],
     "tags": [
-      "indoor",
-      "statement-plant",
-      "tree"
+      "#Bromeliad",
+      "#Epiphyte",
+      "#SilverFoliage",
+      "#TropicalShowstopper",
+      "#PinkBloom"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=800&q=80",
-        "alt": "Mature Fiddle Leaf Fig tree in interior setting",
-        "isPrimary": true
-      },
-      {
-        "url": "https://i.pinimg.com/736x/09/85/1c/09851c0d8f2e39cc22ac3181b2002967.jpg",
-        "alt": "Grand violin-shaped foliage of Ficus lyrata",
-        "isPrimary": false
-      }
+    "taxonomyTags": [
+      "Bromeliaceae",
+      "Aechmea",
+      "Poales",
+      "Commelinids",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "living-room"
-      ],
-      "growthHabit": "Upright tree habit with substantial architectural leaves on a woody trunk.",
-      "soil": "Rich, well-aerated potting mix with compost and orchid bark.",
-      "container": "Substantial planter with drainage; avoid frequent repotting.",
-      "watering": "Water when top 5cm is dry, roughly every 7-10 days. Avoid waterlogging roots.",
-      "routineCare": "Requires consistent bright indirect light; rotate weekly for symmetrical growth.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Milky sap contains ficin and furocoumarins that can irritate skin and mouth.",
-        "source": "Pet Poison Helpline"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "ficus-elastica",
-      "pachira-aquatica"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
   },
   {
+    "specimenId": "specimen-boston-fern",
+    "catalogCode": "CANOPY-004",
+    "name": "Boston Fern (Dương Xỉ Kiếm Boston)",
+    "scientificName": "Nephrolepis exaltata 'Bostoniensis'",
+    "slug": "boston-fern",
+    "category": "Fern",
+    "biome": "tropical",
+    "biomeLabel": "Humid Understory",
+    "shortDesc": "Những vòm lá buông rủ xanh mướt như thác đổ, mang đến cảm giác thư thái và khả năng bù ẩm tự nhiên vượt trội.",
+    "description": "Boston Fern là loài dương xỉ kinh điển được giới thực vật học tôn vinh là máy tạo độ ẩm sinh học và cỗ máy lọc độc tố formaldehyde hàng đầu trong không gian sống kín.",
+    "origin": "Vùng đầm lầy và rừng rậm nhiệt đới ẩm châu Mỹ và Tây Ấn.",
+    "purpose": "Hấp thụ formaldehyde, bù ẩm tự nhiên cho phòng máy lạnh, trang trí chậu treo giếng trời.",
+    "light": "Bóng râm một phần hoặc ánh sáng tán xạ dịu nhẹ.",
+    "watering": "Giữ ẩm đất liên tục, không để bầu rễ bị khô hoàn toàn.",
+    "soil": "Đất phối trộn rêu than bùn peat moss, trấu hun và perlite giữ ẩm cao.",
+    "temp": "16°C – 24°C",
+    "humidity": "70% – 90%",
+    "growth": "Nhanh",
+    "careLevel": "Moderate",
+    "toxicity": {
+      "isToxicToPets": false,
+      "details": "Tuyệt đối an toàn cho động vật nuôi."
+    },
+    "telemetry": {
+      "waterDaily": "250 ml / 3 Days",
+      "waterBar": "85%",
+      "waterVal": "250 ml",
+      "waterStatus": "Evenly Moist",
+      "waterSub": "Giá thể giữ ẩm ổn định.",
+      "waterFreq": "2-3 ngày / lần",
+      "humidityVal": "80% RH",
+      "humidityBar": "92%",
+      "humiditySub": "Độ ẩm không khí tối ưu cho phiến lá non.",
+      "humidityTarget": "70% – 90% RH",
+      "mistCadence": "Phun sương mịn hàng ngày vào buổi sáng",
+      "envVal": "1,100 FC",
+      "envBar": "80%",
+      "envSub": "Ánh sáng dịu mát tầng dưới rừng.",
+      "tempRange": "16°C - 24°C",
+      "soilVal": "Peat Moss Blend",
+      "soilBar": "88%",
+      "soilSub": "Giá thể giữ ẩm tơi xốp pH 5.5"
+    },
+    "traits": [
+      "Vòm lá rủ mềm mại",
+      "Máy tạo ẩm sinh học",
+      "Hấp thụ Formaldehyde",
+      "Thích nghi bóng râm"
+    ],
+    "tags": [
+      "#FernFamily",
+      "#AirPurifying",
+      "#HangingBasket",
+      "#MoistureLover",
+      "#PetSafe"
+    ],
+    "taxonomyTags": [
+      "Nephrolepidaceae",
+      "Nephrolepis",
+      "Polypodiales",
+      "Polypodiopsida",
+      "Plantae"
+    ],
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
+    },
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "specimenId": "specimen-snake-plant",
+    "catalogCode": "CANOPY-005",
+    "name": "Snake Plant (Lưỡi Hổ Viền Vàng)",
+    "scientificName": "Sansevieria trifasciata 'Laurentii'",
+    "slug": "snake-plant-laurentii",
+    "category": "Succulent",
+    "biome": "arid",
+    "biomeLabel": "Semi-Arid Savanna",
+    "shortDesc": "Loài cây bất tử của không gian hiện đại với phiến lá dựng đứng mạnh mẽ cùng viền vàng kiêu hãnh.",
+    "description": "Lưỡi Hổ là một trong những loài thực vật kiên cường nhất hành tinh, có khả năng sống sót trong điều kiện ánh sáng cực thấp và thiếu nước dài ngày. Cây thực hiện chu trình CAM nhả oxy tinh khiết vào ban đêm.",
+    "origin": "Tây Phi nhiệt đới từ Nigeria đến Cộng hòa Dân chủ Congo.",
+    "purpose": "Nhả oxy ban đêm trong phòng ngủ, thanh lọc benzene, xylene và trichloroethylene.",
+    "light": "Thích nghi từ ánh sáng yếu trong góc phòng đến ánh nắng bán phần.",
+    "watering": "Tưới 2-3 tuần một lần khi đất khô kiệt hoàn toàn. Không tưới đọng nước vào nách lá.",
+    "soil": "Đất xương rồng sỏi đá thoát nước nhanh, không ngậm nước.",
+    "temp": "15°C – 32°C",
+    "humidity": "30% – 50%",
+    "growth": "Chậm",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa saponin có thể gây buồn nôn nếu động vật nuốt phải."
+    },
+    "telemetry": {
+      "waterDaily": "150 ml / 18 Days",
+      "waterBar": "40%",
+      "waterVal": "150 ml",
+      "waterStatus": "Drought Stress Resistant",
+      "waterSub": "Tế bào mọng nước tích trữ đủ năng lượng.",
+      "waterFreq": "14-21 ngày / lần",
+      "humidityVal": "42% RH",
+      "humidityBar": "50%",
+      "humiditySub": "Khí hậu khô thoáng lý tưởng.",
+      "humidityTarget": "30% – 50% RH",
+      "mistCadence": "Không cần phun sương",
+      "envVal": "800 - 3,000 FC",
+      "envBar": "85%",
+      "envSub": "Biên độ thích nghi ánh sáng rộng.",
+      "tempRange": "15°C - 32°C",
+      "soilVal": "Cactus Gravel Mix",
+      "soilBar": "95%",
+      "soilSub": "Thoát nước tức thì pH 7.0"
+    },
+    "traits": [
+      "Cực kỳ dễ sống",
+      "Nhả Oxy ban đêm",
+      "Chịu hạn xuất sắc",
+      "Lá cứng thẳng đứng"
+    ],
+    "tags": [
+      "#AirPurifying",
+      "#NightOxygen",
+      "#LowMaintenance",
+      "#BedroomSafe",
+      "#Succulent"
+    ],
+    "taxonomyTags": [
+      "Asparagaceae",
+      "Dracaena",
+      "Asparagales",
+      "Monocots",
+      "Plantae"
+    ],
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
+    },
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "specimenId": "specimen-zz-plant",
+    "catalogCode": "CANOPY-006",
+    "name": "ZZ Plant (Kim Tiền Lá Bóng)",
+    "scientificName": "Zamioculcas zamiifolia",
+    "slug": "zz-plant-zamioculcas",
+    "category": "Foliage",
+    "biome": "arid",
+    "biomeLabel": "Eastern African Plains",
+    "shortDesc": "Những cành lá bóng bẩy xanh mướt như phủ sáp, biểu tượng của sự thịnh vượng và bền bỉ trong văn phòng làm việc.",
+    "description": "ZZ Plant phát triển củ rễ lớn hình củ khoai tây dưới lòng đất để giữ nước, cho phép cây tồn tại qua nhiều tháng hạn hán khốc liệt.",
+    "origin": "Đông Phi từ miền nam Kenya đến đông bắc Nam Phi.",
+    "purpose": "Cây phong thủy tài lộc, thanh lọc toluene và các hợp chất hữu cơ dễ bay hơi.",
+    "light": "Chịu bóng râm xuất sắc, phát triển tốt dưới ánh đèn huỳnh quang văn phòng.",
+    "watering": "Tưới mỗi 2–3 tuần một lần; tốt nhất là để đất khô hoàn toàn trước khi tưới lại.",
+    "soil": "Hỗn hợp xốp giàu perlite và cát hạt lớn.",
+    "temp": "18°C – 30°C",
+    "humidity": "40% – 60%",
+    "growth": "Chậm",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa canxi oxalat gây kích ứng nếu cắn phải."
+    },
+    "telemetry": {
+      "waterDaily": "200 ml / 14 Days",
+      "waterBar": "55%",
+      "waterVal": "200 ml",
+      "waterStatus": "Tuber Reserve Full",
+      "waterSub": "Củ rễ ngậm nước đạt trạng thái no nước.",
+      "waterFreq": "14 ngày / lần",
+      "humidityVal": "45% RH",
+      "humidityBar": "60%",
+      "humiditySub": "Lớp sáp tự nhiên bảo vệ phiến lá.",
+      "humidityTarget": "40% – 60% RH",
+      "mistCadence": "Lau bụi mặt lá 1 lần/tháng",
+      "envVal": "600 - 1,500 FC",
+      "envBar": "80%",
+      "envSub": "Phù hợp góc làm việc trong nhà.",
+      "tempRange": "18°C - 30°C",
+      "soilVal": "Porous Succulent Soil",
+      "soilBar": "90%",
+      "soilSub": "Thoát nước nhanh chóng pH 6.5"
+    },
+    "traits": [
+      "Lá bóng tự nhiên",
+      "Củ trữ nước ngầm",
+      "Không tốn công chăm",
+      "Phong thủy tài lộc"
+    ],
+    "tags": [
+      "#OfficePlants",
+      "#LowLightTolerant",
+      "#GlossyLeaves",
+      "#Indestructible",
+      "#Araceae"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Zamioculcas",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
+    ],
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
+    },
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "specimenId": "specimen-fiddle-leaf",
+    "catalogCode": "CANOPY-007",
+    "name": "Fiddle Leaf Fig (Bàng Singapore Lá Đàn)",
+    "scientificName": "Ficus lyrata Warb.",
+    "slug": "fiddle-leaf-fig",
+    "category": "Foliage",
+    "biome": "tropical",
+    "biomeLabel": "Lowland Tropical Forest",
+    "shortDesc": "Những phiến lá to bản hình cây vĩ cầm đầy quyền lực, điểm nhấn thị giác hàng đầu cho phong cách Scandinavian hiện đại.",
+    "description": "Ficus lyrata là loài thực vật thuộc họ Dâu tằm (Moraceae). Trong tự nhiên, cây bắt đầu đời sống như một loài phụ sinh trên ngọn cây cao rồi phát triển bộ rễ vững chắc vươn thẳng đứng.",
+    "origin": "Vùng đất thấp rừng mưa nhiệt đới Tây Phi từ Cameroon đến Sierra Leone.",
+    "purpose": "Cây nội thất ấn tượng cho phòng khách lớn, sảnh đón tiếp tòa nhà cao cấp.",
+    "light": "Ánh sáng tự nhiên dồi dào, tốt nhất là gần cửa sổ hướng Đông hoặc Nam có rèm lọc.",
+    "watering": "Tưới đẫm mỗi tuần 1 lần khi 5cm lớp đất trên mặt khô ráo.",
+    "soil": "Đất thịt màu mỡ phối trộn xơ dừa, perlite và vỏ trấu hun.",
+    "temp": "18°C – 27°C",
+    "humidity": "50% – 70%",
+    "growth": "Trung bình",
+    "careLevel": "Moderate",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Mủ trắng chứa enzyme ficin có thể gây kích ứng da và tiêu hóa ở thú nuôi."
+    },
+    "telemetry": {
+      "waterDaily": "600 ml / 7 Days",
+      "waterBar": "80%",
+      "waterVal": "600 ml",
+      "waterStatus": "Optimal Drainage",
+      "waterSub": "Chu kỳ thoát nước đạt chuẩn đáy chậu.",
+      "waterFreq": "7 ngày / lần",
+      "humidityVal": "62% RH",
+      "humidityBar": "75%",
+      "humiditySub": "Phiến lá lớn xòe rộng hấp thụ ánh sáng.",
+      "humidityTarget": "50% – 70% RH",
+      "mistCadence": "Lau sạch bụi bề mặt lá 2 tuần/lần",
+      "envVal": "2,500 FC",
+      "envBar": "92%",
+      "envSub": "Ánh sáng tự nhiên cạnh cửa sổ lớn.",
+      "tempRange": "18°C - 27°C",
+      "soilVal": "Rich Tropical Mix",
+      "soilBar": "85%",
+      "soilSub": "Hỗn hợp giàu dinh dưỡng pH 6.5"
+    },
+    "traits": [
+      "Lá hình đàn vĩ cầm",
+      "Thân gỗ vươn cao",
+      "Điểm nhấn kiến trúc",
+      "Thanh lọc không khí"
+    ],
+    "tags": [
+      "#FicusLyrata",
+      "#ArchitecturalPlant",
+      "#ModernInterior",
+      "#StatementPlant",
+      "#Moraceae"
+    ],
+    "taxonomyTags": [
+      "Moraceae",
+      "Ficus",
+      "Rosales",
+      "Eudicots",
+      "Plantae"
+    ],
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
+    },
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "specimenId": "specimen-peace-lily",
+    "catalogCode": "CANOPY-008",
+    "name": "Peace Lily (Lan Ý Thanh Tao)",
+    "scientificName": "Spathiphyllum wallisii",
+    "slug": "peace-lily-spathiphyllum",
+    "category": "Flowering",
+    "biome": "tropical",
+    "biomeLabel": "Understory Rainforest",
+    "shortDesc": "Bông hoa trắng muốt vươn lên giữa bụi lá xanh đậm, đại sứ hòa bình và khả năng lọc độc tố hàng đầu của NASA.",
+    "description": "Lan Ý đứng đầu trong nghiên cứu lọc khí của NASA với khả năng hấp thụ cùng lúc 5 loại độc tố nguy hiểm nhất trong không khí gia đình.",
+    "origin": "Rừng mưa nhiệt đới Trung và Nam Mỹ.",
+    "purpose": "Hấp thụ acetone, trichloroethylene và sóng điện từ văn phòng.",
+    "light": "Ánh sáng yếu đến trung bình. Tránh hoàn toàn ánh nắng gắt trực tiếp làm cháy lá.",
+    "watering": "Tưới 1-2 lần/tuần khi cây rũ nhẹ báo hiệu cần nước.",
+    "soil": "Hỗn hợp đất giàu hữu cơ tơi xốp giữ ẩm tốt.",
+    "temp": "18°C – 26°C",
+    "humidity": "60% – 80%",
+    "growth": "Nhanh",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa tinh thể canxi oxalat gây khó chịu đường miệng nếu nhai phải."
+    },
+    "telemetry": {
+      "waterDaily": "300 ml / 4 Days",
+      "waterBar": "85%",
+      "waterVal": "300 ml",
+      "waterStatus": "Turgid & Erect",
+      "waterSub": "Cành lá đứng thẳng tươi tốt sau khi tưới.",
+      "waterFreq": "4-5 ngày / lần",
+      "humidityVal": "68% RH",
+      "humidityBar": "80%",
+      "humiditySub": "Độ ẩm hỗ trợ đơm nụ hoa trắng muốt.",
+      "humidityTarget": "60% – 80% RH",
+      "mistCadence": "Phun sương lá 2 ngày/lần",
+      "envVal": "1,000 FC",
+      "envBar": "78%",
+      "envSub": "Bóng râm mát mẻ phòng ngủ hoặc bàn làm việc.",
+      "tempRange": "18°C - 26°C",
+      "soilVal": "Moisture Retentive Mix",
+      "soilBar": "86%",
+      "soilSub": "Đất giàu xơ dừa giữ ẩm pH 6.0"
+    },
+    "traits": [
+      "Hoa trắng tinh khôi",
+      "Báo hiệu khi thiếu nước",
+      "Lọc độc tố NASA",
+      "Chịu bóng râm tốt"
+    ],
+    "tags": [
+      "#WhiteBlooms",
+      "#NASACleanAir",
+      "#EasyCare",
+      "#PeaceSymbol",
+      "#ShadeLover"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Spathiphyllum",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
+    ],
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1593691509543-c55fb32e7355?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
+    },
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1593691509543-c55fb32e7355?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "specimenId": "specimen-pothos",
+    "catalogCode": "CANOPY-009",
+    "name": "Golden Pothos (Trầu Bà Vàng Hoàng Kim)",
+    "scientificName": "Epipremnum aureum",
+    "slug": "golden-pothos",
+    "category": "Aroid",
+    "biome": "tropical",
+    "biomeLabel": "Island Canopy",
+    "shortDesc": "Những dây leo tràn đầy sức sống với đốm vàng lốm đốm trên nền lá xanh hình trái tim thân thương.",
+    "description": "Golden Pothos được ca tụng là loài cây 'bất diệt' dành cho người mới bắt đầu làm quen với cây cảnh, có thể trồng cả trong đất hoặc thủy canh bằng nước.",
+    "origin": "Đảo Mo'orea thuộc quần đảo Société ở Polynesia thuộc Pháp.",
+    "purpose": "Trang trí kệ sách, bàn làm việc, lọc khói thuốc và khí độc máy in.",
+    "light": "Thích nghi tốt từ bóng râm đến ánh sáng trung bình.",
+    "watering": "Tưới 1 lần/tuần khi đất khô ráo hoàn toàn.",
+    "soil": "Mọi loại đất trồng thông thường thoát nước tốt.",
+    "temp": "15°C – 30°C",
+    "humidity": "50% – 75%",
+    "growth": "Rất nhanh",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa canxi oxalat gây kích ứng nếu nuốt phải."
+    },
+    "telemetry": {
+      "waterDaily": "200 ml / 6 Days",
+      "waterBar": "75%",
+      "waterVal": "200 ml",
+      "waterStatus": "Robust Trailing",
+      "waterSub": "Dây leo vươn dài khỏe khoắn.",
+      "waterFreq": "6-7 ngày / lần",
+      "humidityVal": "58% RH",
+      "humidityBar": "70%",
+      "humiditySub": "Đốm vàng quang hợp ổn định.",
+      "humidityTarget": "50% – 75% RH",
+      "mistCadence": "Thỉnh thoảng phun sương làm mát",
+      "envVal": "1,200 FC",
+      "envBar": "85%",
+      "envSub": "Ánh sáng dịu nhẹ trên kệ sách.",
+      "tempRange": "15°C - 30°C",
+      "soilVal": "Standard Houseplant Soil",
+      "soilBar": "80%",
+      "soilSub": "Thoát nước tự nhiên pH 6.2"
+    },
+    "traits": [
+      "Dây leo xanh mướt",
+      "Cực kỳ dễ nhân giống",
+      "Trồng được trong nước",
+      "Lọc không khí bền bỉ"
+    ],
+    "tags": [
+      "#TrailingVine",
+      "#BeginnerFriendly",
+      "#WaterPropagation",
+      "#GoldenLeaves",
+      "#Araceae"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Epipremnum",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
+    ],
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
+    },
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "specimenId": "specimen-calathea",
+    "catalogCode": "CANOPY-010",
+    "name": "Calathea Orbifolia (Đuôi Công Tròn Xanh Bạc)",
+    "scientificName": "Calathea orbifolia (Linden) H.A.Kenn.",
     "slug": "calathea-orbifolia",
-    "name": "Calathea Orbifolia",
-    "botanicalName": "Calathea orbifolia",
-    "category": "foliage",
-    "description": "Exquisite prayer plant showcasing large, rounded foliage marked with delicate metallic silver and emerald brushstrokes.",
-    "light": "medium",
-    "water": "high",
-    "difficulty": "hard",
-    "regions": [
-      "central",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
+    "category": "Foliage",
+    "biome": "tropical",
+    "biomeLabel": "Amazon Basin Understory",
+    "shortDesc": "Những phiến lá tròn trịa bản lớn điểm xuyết dải sọc xanh bạc tinh xảo như họa phẩm sơn mài.",
+    "description": "Calathea Orbifolia được mệnh danh là 'cây cầu nguyện' (Prayer Plant) nhờ khả năng cử động khép lá lại vào ban đêm và xòe rộng đón bình minh theo nhịp sinh học tự nhiên.",
+    "origin": "Rừng rậm nhiệt đới lưu vực sông Amazon, Bolivia.",
+    "purpose": "Tác phẩm nghệ thuật sống cho không gian thiền định, an toàn tuyệt đối với thú cưng.",
+    "light": "Ánh sáng khuếch tán dịu nhẹ. Tuyệt đối không để nắng trực tiếp làm cháy vân sọc bạc.",
+    "watering": "Tưới nước lọc hoặc nước mưa ẩm đều đặn 2 lần/tuần. Nhạy cảm với clo trong nước máy.",
+    "soil": "Hỗn hợp xốp giữ ẩm trộn rêu than bùn, perlite và vỏ thông nhỏ.",
+    "temp": "18°C – 25°C",
+    "humidity": "65% – 85%",
+    "growth": "Trung bình",
+    "careLevel": "Moderate",
+    "toxicity": {
+      "isToxicToPets": false,
+      "details": "Hoàn toàn không độc hại, thân thiện với mèo và chó."
+    },
+    "telemetry": {
+      "waterDaily": "280 ml / 4 Days",
+      "waterBar": "85%",
+      "waterVal": "280 ml",
+      "waterStatus": "Nyctinastic Active",
+      "waterSub": "Cơ chế khép mở lá ban đêm hoạt động chuẩn xác.",
+      "waterFreq": "3-4 ngày / lần",
+      "humidityVal": "75% RH",
+      "humidityBar": "90%",
+      "humiditySub": "Mép lá xanh mướt không bị khô cháy viền.",
+      "humidityTarget": "65% – 85% RH",
+      "mistCadence": "Bật máy tạo ẩm sương mịn hàng ngày",
+      "envVal": "1,400 FC",
+      "envBar": "88%",
+      "envSub": "Ánh sáng dịu mát không chói gắt.",
+      "tempRange": "18°C - 25°C",
+      "soilVal": "High Humus Porous Blend",
+      "soilBar": "87%",
+      "soilSub": "Giá thể giàu mùn giữ ẩm pH 6.0"
+    },
+    "traits": [
+      "Cử động khép lá ban đêm",
+      "Vân sọc xanh bạc",
+      "Tuyệt đối an toàn thú cưng",
+      "Lọc bụi mịn"
     ],
     "tags": [
-      "indoor",
-      "patterned-leaves",
-      "humidity-loving"
+      "#PrayerPlant",
+      "#SilverStripes",
+      "#PetSafe",
+      "#HighHumidity",
+      "#Marantaceae"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1616690710400-a16d146927c5?auto=format&fit=crop&w=800&q=80",
-        "alt": "Calathea orbifolia wide round leaves with silver stripes",
-        "isPrimary": true
-      },
-      {
-        "url": "https://i.pinimg.com/736x/09/dd/5b/09dd5bf913224e66fcc96eb65df90b15.jpg",
-        "alt": "Hypnotic silver brushstrokes on broad round prayer plant foliage",
-        "isPrimary": false
-      }
+    "taxonomyTags": [
+      "Marantaceae",
+      "Goeppertia",
+      "Zingiberales",
+      "Monocots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "bathroom",
-        "bedroom"
-      ],
-      "growthHabit": "Clumping herbaceous perennial with diurnal nyctinastic leaf movement.",
-      "soil": "Moisture-retentive, loose substrate with peat moss and perlite.",
-      "container": "Wide shallow pot with multiple bottom drainage holes.",
-      "watering": "Keep substrate evenly moist using filtered or rainwater. Water every 5-7 days.",
-      "routineCare": "Thrives in high humidity (60%+). Shield strictly from harsh direct sun rays.",
-      "toxicityCaution": {
-        "pets": "safe",
-        "humans": "safe",
-        "note": "Non-toxic and completely pet-safe for cats and dogs.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "calathea-makoyana",
-      "maranta-leuconeura"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "lavandula-angustifolia",
-    "name": "English Lavender",
-    "botanicalName": "Lavandula angustifolia",
-    "category": "herb",
-    "description": "Aromatic perennial shrub with silver-green foliage and calming fragrant purple flower spikes, thriving in airy sunny environments.",
-    "light": "full-sun",
-    "water": "low",
-    "difficulty": "hard",
-    "regions": [
-      "highlands"
-    ],
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "tags": [
-      "outdoor",
-      "aromatic",
-      "flower",
-      "herb"
-    ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=800&q=80",
-        "alt": "Fragrant purple English Lavender flowers in bloom",
-        "isPrimary": true
-      }
-    ],
-    "guide": {
-      "environments": [
-        "balcony",
-        "terrace",
-        "garden"
-      ],
-      "growthHabit": "Bushy compact subshrub with fragrant blooms.",
-      "soil": "Gritty, lean, well-draining alkaline soil mix.",
-      "container": "Unglazed terracotta pot with ample aeration holes.",
-      "watering": "Water deeply when soil is completely dry. Avoid waterlogging roots.",
-      "routineCare": "Prune lightly after blooming to maintain compact bushy form. Full sun essential.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "safe",
-        "note": "Contains linalool which can cause mild upset in pets if ingested in quantity.",
-        "source": "ASPCA"
-      }
-    },
-    "similarPlantSlugs": [
-      "rosemary",
-      "thyme"
-    ],
-    "status": "published"
-  },
-  {
-    "slug": "epipremnum-aureum",
-    "name": "Golden Pothos",
-    "botanicalName": "Epipremnum aureum",
-    "category": "foliage",
-    "description": "Versatile and forgiving trailing vine adorned with heart-shaped leaves variegated in golden-yellow and emerald green.",
-    "light": "low",
-    "water": "moderate",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south",
-      "highlands"
-    ],
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn",
-      "winter"
-    ],
-    "tags": [
-      "indoor",
-      "easy-care",
-      "trailing",
-      "low-light"
-    ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=800&q=80",
-        "alt": "Golden Pothos trailing heart-shaped foliage",
-        "isPrimary": true
-      },
-      {
-        "url": "https://i.pinimg.com/736x/52/e9/f5/52e9f55be3f9ff605a658b71c07e1b8e.jpg",
-        "alt": "Marbled ivory and jade trailing foliage",
-        "isPrimary": false
-      }
-    ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "bathroom"
-      ],
-      "growthHabit": "Cascading or climbing vine with aerial rootlets.",
-      "soil": "Standard all-purpose potting soil with perlite.",
-      "container": "Hanging basket or pot with trellis/pole support.",
-      "watering": "Allow top half of soil to dry before watering, typically every 7 days.",
-      "routineCare": "Trim leggy stems to encourage bushier growth. Highly adaptable to low light.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Insoluble oxalates cause oral irritation in pets if chewed.",
-        "source": "ASPCA"
-      }
-    },
-    "similarPlantSlugs": [
-      "philodendron-hederaceum",
-      "monstera-deliciosa"
-    ],
-    "status": "published"
-  },
-  {
-    "slug": "zamioculcas-zamiifolia",
-    "name": "ZZ Plant",
-    "botanicalName": "Zamioculcas zamiifolia",
-    "category": "succulent",
-    "description": "Extremely durable low-light champion with feather-like stems and glossy, waxy deep green leaflets rising from underground rhizomes.",
-    "light": "low",
-    "water": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "tags": [
-      "indoor",
-      "office",
-      "indestructible",
-      "low-light"
-    ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=800&q=80",
-        "alt": "Glossy green ZZ Plant stems in minimalist neutral interior",
-        "isPrimary": true
-      },
-      {
-        "url": "https://i.pinimg.com/736x/37/c3/cc/37c3cca8114b900db96863b218504d73.jpg",
-        "alt": "Resilient Zamioculcas zamiifolia foliage",
-        "isPrimary": false
-      }
-    ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "bedroom"
-      ],
-      "growthHabit": "Upright arching stems emerging from thick tuberous rhizomes.",
-      "soil": "Well-draining, porous potting medium with coarse sand.",
-      "container": "Sturdy planter with good drainage.",
-      "watering": "Water thoroughly every 2-3 weeks; highly tolerant of neglect and drought.",
-      "routineCare": "Wipe glossy leaves periodically. Can thrive under fluorescent office lighting.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Mildly toxic due to calcium oxalate crystals.",
-        "source": "ASPCA"
-      }
-    },
-    "similarPlantSlugs": [
-      "sansevieria-trifasciata",
-      "cast-iron-plant"
-    ],
-    "status": "published"
-  },
-  {
-    "slug": "spathiphyllum",
-    "name": "Peace Lily",
-    "botanicalName": "Spathiphyllum wallisii",
-    "category": "flower",
-    "description": "Graceful shade-loving plant with lustrous dark green foliage and long-lasting pristine white flower spathes. Natural air purifier.",
-    "light": "medium",
-    "water": "high",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "tags": [
-      "indoor",
-      "flowering",
-      "air-purifying"
-    ],
-    "images": [
-      {
-        "url": "https://i.pinimg.com/736x/76/35/d3/7635d392b9976b1e49ff6391db6a710e.jpg",
-        "alt": "Peace Lily white spathe flowering amidst deep dark green leaves",
-        "isPrimary": true
-      }
-    ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "bedroom"
-      ],
-      "growthHabit": "Clump-forming evergreen perennial producing erect flower stalks.",
-      "soil": "Peat-based potting soil rich in organic matter.",
-      "container": "Moisture-retentive ceramic container with drainage.",
-      "watering": "Water when topsoil feels barely dry; plant visibly droops when thirsty.",
-      "routineCare": "Keep in moderate indirect light; mist leaves to sustain ambient humidity.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Calcium oxalate crystals cause irritation if chewed by pets.",
-        "source": "ASPCA"
-      }
-    },
-    "similarPlantSlugs": [
-      "anthurium-andraeanum",
-      "aglaonema"
-    ],
-    "status": "published"
-  },
-  {
-    "slug": "chlorophytum-comosum",
-    "name": "Spider Plant",
-    "botanicalName": "Chlorophytum comosum",
-    "category": "foliage",
-    "description": "Classic and prolific indoor plant with arching ribbon-like variegated leaves and miniature plantlets cascading on long stolons.",
-    "light": "bright-indirect",
-    "water": "moderate",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south",
-      "highlands"
-    ],
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "tags": [
-      "indoor",
-      "pet-safe",
-      "hanging",
-      "air-purifying"
-    ],
-    "images": [
-      {
-        "url": "https://i.pinimg.com/736x/8a/59/74/8a5974fab2e2b80fe526d2c5c064d02a.jpg",
-        "alt": "Curated variegated Spider Plant foliage with arching leaves",
-        "isPrimary": true
-      },
-      {
-        "url": "https://i.pinimg.com/736x/03/7b/ca/037bca59efd69485b36a8e1db4129b0a.jpg",
-        "alt": "Spider Plant runners and delicate foliage",
-        "isPrimary": false
-      }
-    ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "balcony"
-      ],
-      "growthHabit": "Rosette of arching slender foliage producing spiderettes.",
-      "soil": "Standard well-draining potting soil.",
-      "container": "Hanging basket or elevated pedestal pot with drainage.",
-      "watering": "Water moderately once weekly during the growing season.",
-      "routineCare": "Clip and propagate spiderettes in water or potting soil.",
-      "toxicityCaution": {
-        "pets": "safe",
-        "humans": "safe",
-        "note": "Safe and non-toxic for domestic pets.",
-        "source": "ASPCA"
-      }
-    },
-    "similarPlantSlugs": [
-      "epipremnum-aureum",
-      "boston-fern"
-    ],
-    "status": "published"
-  },
-  {
-    "slug": "ficus-elastica",
-    "name": "Rubber Tree",
-    "botanicalName": "Ficus elastica",
-    "category": "tree",
-    "description": "Striking sculptural specimen with thick, leathery broad leaves in rich burgundy-green tones, exuding modern botanical elegance.",
-    "light": "bright-indirect",
-    "water": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "tags": [
-      "indoor",
-      "tree",
-      "bold-foliage"
-    ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?auto=format&fit=crop&w=800&q=80",
-        "alt": "Rubber Tree plant with bold sculptural foliage",
-        "isPrimary": true
-      },
-      {
-        "url": "https://i.pinimg.com/736x/89/19/92/8919929faecbe659698eee0bb0debf8d.jpg",
-        "alt": "Variegated Rubber Tree plant foliage catching sunlight",
-        "isPrimary": false
-      }
-    ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "living-room"
-      ],
-      "growthHabit": "Tree form with thick upright woody stem and large oval leaves.",
-      "soil": "Well-draining potting mix rich in organic compost.",
-      "container": "Heavy ceramic or stone pot with drainage holes.",
-      "watering": "Water when top 3-4cm is dry to the touch.",
-      "routineCare": "Wipe broad leaves with a damp cloth; provide bright indirect light.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Milky latex sap can cause dermal or digestive irritation in pets.",
-        "source": "ASPCA"
-      }
-    },
-    "similarPlantSlugs": [
-      "ficus-lyrata",
-      "ficus-benjamina"
-    ],
-    "status": "published"
-  },
-  {
-    "slug": "philodendron-birkin",
-    "name": "Philodendron Birkin",
-    "botanicalName": "Philodendron 'Birkin'",
-    "category": "foliage",
-    "description": "Compact collector favourite boasting dramatic pinstripe variegation of creamy white lines across glossy dark emerald leaves.",
-    "light": "bright-indirect",
-    "water": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer"
-    ],
-    "tags": [
-      "indoor",
-      "variegated",
-      "compact"
-    ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80",
-        "alt": "Philodendron Birkin glossy dark foliage with creamy pinstripes",
-        "isPrimary": true
-      }
-    ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "balcony"
-      ],
-      "growthHabit": "Self-heading compact rosette habit, does not require climbing pole.",
-      "soil": "Chunky aroid mix with bark, perlite, and coco coir.",
-      "container": "Pot with excellent drainage holes.",
-      "watering": "Water when top half of soil dries, roughly every 7-9 days.",
-      "routineCare": "Bright indirect light preserves the striking variegated striping.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Contains calcium oxalates; keep away from curious pets.",
-        "source": "ASPCA"
-      }
-    },
-    "similarPlantSlugs": [
-      "monstera-deliciosa",
-      "aglaonema"
-    ],
-    "status": "published"
-  },
-  {
+    "specimenId": "specimen-alocasia-amazonica",
+    "catalogCode": "CANOPY-011",
+    "name": "Alocasia Amazonica (Ráy Cung Điện Châu Phi)",
+    "scientificName": "Alocasia × amazonica",
     "slug": "alocasia-amazonica",
-    "name": "African Mask Plant",
-    "botanicalName": "Alocasia amazonica (Polly)",
-    "category": "foliage",
-    "description": "Dramatically sculpted arrow-shaped foliage with wavy margins and bold silvery-white venation against near-black emerald leaf surfaces.",
-    "light": "bright-indirect",
-    "water": "high",
-    "difficulty": "hard",
-    "regions": [
-      "central",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer"
+    "category": "Aroid",
+    "biome": "tropical",
+    "biomeLabel": "Equatorial Rainforest",
+    "shortDesc": "Những chiếc lá mũi tên màu xanh đen huyền bí viền gân trắng bạc sắc nét như chiếc khiên chiến binh.",
+    "description": "Alocasia Amazonica là giống lai kiểng lá nhiệt đới đầy kịch tính với phiến lá dập nổi góc cạnh và mặt sau mang sắc tím than quý phái.",
+    "origin": "Được lai tạo từ các loài Alocasia bản địa Đông Nam Á nhiệt đới.",
+    "purpose": "Tạo điểm nhấn kịch tính cho bàn làm việc hoặc giá sách sang trọng.",
+    "light": "Ánh sáng tán xạ mạnh nhưng tránh ánh nắng rọi trực diện.",
+    "watering": "Tưới khi lớp đất trên mặt khô 2-3cm; giảm tưới vào mùa đông.",
+    "soil": "Giá thể Aroid chunky thoát nước cực nhanh, thoáng khí tối đa.",
+    "temp": "18°C – 28°C",
+    "humidity": "65% – 80%",
+    "growth": "Trung bình",
+    "careLevel": "Challenging",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa canxi oxalat gây kích ứng nếu nhai nuốt."
+    },
+    "telemetry": {
+      "waterDaily": "300 ml / 5 Days",
+      "waterBar": "78%",
+      "waterVal": "300 ml",
+      "waterStatus": "Shield Turgor Peak",
+      "waterSub": "Gân lá nổi gồ bóng bẩy.",
+      "waterFreq": "5 ngày / lần",
+      "humidityVal": "70% RH",
+      "humidityBar": "85%",
+      "humiditySub": "Độ ẩm cao ngăn ngừa hiện tượng rụng lá nghỉ đông.",
+      "humidityTarget": "65% – 80% RH",
+      "mistCadence": "Phun sương môi trường xung quanh",
+      "envVal": "1,800 FC",
+      "envBar": "90%",
+      "envSub": "Ánh sáng khuếch tán ổn định.",
+      "tempRange": "18°C - 28°C",
+      "soilVal": "Chunky Aerated Aroid",
+      "soilBar": "92%",
+      "soilSub": "Thoát nước thông thoáng pH 5.8"
+    },
+    "traits": [
+      "Lá hình khiên mũi tên",
+      "Gân trắng tương phản",
+      "Mặt dưới lá màu tím",
+      "Vẻ đẹp điêu khắc"
     ],
     "tags": [
-      "indoor",
-      "bold-foliage",
-      "humidity-loving"
+      "#AfricanMask",
+      "#DramaticFoliage",
+      "#AroidCollector",
+      "#ShieldLeaf",
+      "#Araceae"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=800&q=80",
-        "alt": "Alocasia Amazonica with striking white leaf veins",
-        "isPrimary": true
-      }
+    "taxonomyTags": [
+      "Araceae",
+      "Alocasia",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "bathroom",
-        "office"
-      ],
-      "growthHabit": "Rhizomatous perennial producing arrow-shaped leaves on long petioles.",
-      "soil": "Airy, well-aerated chunky aroid substrate.",
-      "container": "Well-draining pot with permeable sidewalls.",
-      "watering": "Keep moist but never waterlogged; water every 5-7 days.",
-      "routineCare": "Prefers warm temperatures (above 18°C) and higher humidity levels.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "toxic",
-        "note": "Toxic to cats and dogs if ingested.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "calathea-orbifolia",
-      "colocasia-esculenta"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "crassula-ovata",
-    "name": "Jade Plant",
-    "botanicalName": "Crassula ovata",
-    "category": "succulent",
-    "description": "Beloved succulent bonsai-like plant with thick woody stems and plump oval jade-green leaves, symbolizing good fortune and abundance.",
-    "light": "full-sun",
-    "water": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "highlands",
-      "central",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn",
-      "winter"
+    "specimenId": "specimen-rubber-tree",
+    "catalogCode": "CANOPY-012",
+    "name": "Rubber Tree Burgundy (Đa Búp Đỏ Cẩm Thạch)",
+    "scientificName": "Ficus elastica 'Burgundy'",
+    "slug": "rubber-tree-burgundy",
+    "category": "Foliage",
+    "biome": "tropical",
+    "biomeLabel": "South Asian Monsoon",
+    "shortDesc": "Những búp lá đỏ rực như ngọn lửa mở ra phiến lá dày bóng màu mận chín quyền lực và lịch lãm.",
+    "description": "Ficus elastica là loài cây bóng râm bền bỉ, dễ chăm sóc và có khả năng chịu đựng khô hạn tốt nhờ phiến lá dày tráng sáp bóng.",
+    "origin": "Vùng nhiệt đới Ấn Độ và Malaysia.",
+    "purpose": "Hấp thụ carbon monoxide và các hạt bụi lơ lửng trong nhà.",
+    "light": "Ánh sáng gián tiếp rực rỡ, thích nghi được với nắng sớm nhẹ.",
+    "watering": "Tưới 1 lần/tuần khi bề mặt đất khô ráo hoàn toàn.",
+    "soil": "Đất thịt nhẹ giàu dinh dưỡng trộn xơ dừa và đá perlite.",
+    "temp": "16°C – 29°C",
+    "humidity": "45% – 65%",
+    "growth": "Nhanh",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Mủ cao su trắng có thể gây dị ứng da nếu tiếp xúc."
+    },
+    "telemetry": {
+      "waterDaily": "400 ml / 7 Days",
+      "waterBar": "80%",
+      "waterVal": "400 ml",
+      "waterStatus": "Sturdy Stem Vigour",
+      "waterSub": "Cây đứng vững vươn thẳng.",
+      "waterFreq": "7 ngày / lần",
+      "humidityVal": "55% RH",
+      "humidityBar": "70%",
+      "humiditySub": "Lớp sáp bảo vệ phiến lá dày dặn.",
+      "humidityTarget": "45% – 65% RH",
+      "mistCadence": "Lau lá ẩm 2 tuần/lần",
+      "envVal": "2,200 FC",
+      "envBar": "90%",
+      "envSub": "Ánh sáng sáng sủa gần ban công.",
+      "tempRange": "16°C - 29°C",
+      "soilVal": "Well-Drained Loam",
+      "soilBar": "85%",
+      "soilSub": "Hỗn hợp giữ dinh dưỡng pH 6.5"
+    },
+    "traits": [
+      "Búp non đỏ thắm",
+      "Lá dày màu mận chín",
+      "Thanh lọc khí CO",
+      "Dáng cây đứng trang trọng"
     ],
     "tags": [
-      "indoor",
-      "outdoor",
-      "succulent",
-      "bonsai-potential"
+      "#BurgundyLeaves",
+      "#FicusElastica",
+      "#SturdyPlant",
+      "#IndoorTree",
+      "#AirCleaner"
     ],
-    "images": [
-      {
-        "url": "https://i.pinimg.com/736x/7c/93/88/7c9388432c687afc5493f010e2b9f5e7.jpg",
-        "alt": "Minimalist desktop Jade Plant arrangement in stone bowl",
-        "isPrimary": true
-      }
+    "taxonomyTags": [
+      "Moraceae",
+      "Ficus",
+      "Rosales",
+      "Eudicots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "balcony"
-      ],
-      "growthHabit": "Branching succulent shrub with thick fleshy leaves.",
-      "soil": "Cactus and succulent potting mix with perlite or pumice.",
-      "container": "Heavy terracotta pot for balance and moisture evaporation.",
-      "watering": "Water thoroughly only when soil is completely dry.",
-      "routineCare": "Provide at least 4-6 hours of bright or direct sunshine daily.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "mild",
-        "note": "Can cause vomiting and depression in pets if ingested.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "sansevieria-trifasciata",
-      "aloe-vera"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "strelitzia-reginae",
-    "name": "Bird of Paradise",
-    "botanicalName": "Strelitzia reginae",
-    "category": "flower",
-    "description": "Regal tropical plant featuring grand banana-like paddles and exotic crane-shaped blooms in brilliant orange and azure blue.",
-    "light": "full-sun",
-    "water": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "central",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer"
+    "specimenId": "specimen-spider-plant",
+    "catalogCode": "CANOPY-013",
+    "name": "Spider Plant (Cỏ Mẫu Tử Cánh Nhện)",
+    "scientificName": "Chlorophytum comosum 'Vittatum'",
+    "slug": "spider-plant-variegated",
+    "category": "Foliage",
+    "biome": "subtropical",
+    "biomeLabel": "Southern African Woodlands",
+    "shortDesc": "Những chùm lá sọc trắng xanh uốn cong mềm mại cùng vô số chồi non đu đưa như những chiếc xích đu thu nhỏ.",
+    "description": "Cỏ Mẫu Tử nổi tiếng với những nhánh hoa dài sinh ra các chồi cây con xinh xắn, tượng trưng cho tình mẫu tử thiêng liêng và sự sinh sôi nảy nở.",
+    "origin": "Vùng ven biển và cao nguyên rừng Nam Phi.",
+    "purpose": "Hấp thụ carbon monoxide, khí xylene và mùi sơn mới trong nhà.",
+    "light": "Ánh sáng khuếch tán từ trung bình đến sáng.",
+    "watering": "Tưới 1-2 lần/tuần khi lớp đất mặt hơi khô. Không để rễ bị úng nước.",
+    "soil": "Đất trồng chậu thông dụng có độ thoáng khí tốt.",
+    "temp": "15°C – 25°C",
+    "humidity": "40% – 60%",
+    "growth": "Nhanh",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": false,
+      "details": "Hoàn toàn an toàn cho thú nuôi."
+    },
+    "telemetry": {
+      "waterDaily": "250 ml / 5 Days",
+      "waterBar": "80%",
+      "waterVal": "250 ml",
+      "waterStatus": "Healthy Offsets",
+      "waterSub": "Chồi con phát triển liên tục.",
+      "waterFreq": "5 ngày / lần",
+      "humidityVal": "50% RH",
+      "humidityBar": "65%",
+      "humiditySub": "Độ ẩm phòng điều hòa vừa đủ.",
+      "humidityTarget": "40% – 60% RH",
+      "mistCadence": "Thỉnh thoảng phun sương gốc",
+      "envVal": "1,500 FC",
+      "envBar": "85%",
+      "envSub": "Ánh sáng dịu mát cửa sổ.",
+      "tempRange": "15°C - 25°C",
+      "soilVal": "Porous Potting Mix",
+      "soilBar": "82%",
+      "soilSub": "Thoát nước tốt pH 6.5"
+    },
+    "traits": [
+      "Sinh chồi cây con",
+      "Uốn cong duyên dáng",
+      "An toàn cho chó mèo",
+      "Hấp thụ khói độc"
     ],
     "tags": [
-      "outdoor",
-      "statement-plant",
-      "flowering"
+      "#Spiderettes",
+      "#PetFriendly",
+      "#HangingBasket",
+      "#AirFiltering",
+      "#EasyHouseplant"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1551893478-d726eaf0442c?auto=format&fit=crop&w=800&q=80",
-        "alt": "Exotic orange and blue Bird of Paradise flower",
-        "isPrimary": true
-      }
+    "taxonomyTags": [
+      "Asparagaceae",
+      "Chlorophytum",
+      "Asparagales",
+      "Monocots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "balcony",
-        "living-room"
-      ],
-      "growthHabit": "Clumping erect perennial with broad paddle-shaped leaves.",
-      "soil": "Rich loam substrate with excellent moisture retention and drainage.",
-      "container": "Deep, sturdy container with multiple drainage holes.",
-      "watering": "Water regularly in spring/summer, allowing topsoil to dry between sessions.",
-      "routineCare": "Needs abundant light; tolerates several hours of direct sunshine.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "mild",
-        "note": "Mildly toxic to pets; seeds are the most toxic part.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "ficus-lyrata",
-      "musa-acuminata"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "nephrolepis-exaltata",
-    "name": "Boston Fern",
-    "botanicalName": "Nephrolepis exaltata",
-    "category": "foliage",
-    "description": "Lush cascading fern with arching feathery fronds that naturally humidifies ambient air and softens interior architectural contours.",
-    "light": "medium",
-    "water": "high",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "highlands",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
+    "specimenId": "specimen-string-of-pearls",
+    "catalogCode": "CANOPY-014",
+    "name": "String of Pearls (Sen Đá Chuỗi Ngọc Rủ)",
+    "scientificName": "Curio rowleyanus",
+    "slug": "string-of-pearls",
+    "category": "Succulent",
+    "biome": "arid",
+    "biomeLabel": "Southwest African Karoo",
+    "shortDesc": "Những chuỗi hạt tròn xoe xanh biếc rủ xuống như chuỗi vòng ngọc bích của thiên nhiên hoang dã.",
+    "description": "Các phiến lá tròn vo như hạt đậu hạt ngọc giúp tối thiểu hóa diện tích thoát hơi nước dưới khí hậu sa mạc khô khốc Tây Nam Phi.",
+    "origin": "Vùng bán sa mạc khô hạn Karoo thuộc Tây Nam Phi.",
+    "purpose": "Trang trí chậu treo cửa sổ ngập nắng, tạo điểm nhấn nghệ thuật độc bản.",
+    "light": "Ánh nắng trực tiếp buổi sáng sớm hoặc ánh sáng gián tiếp rất sáng.",
+    "watering": "Tưới từ đáy chậu mỗi 2–3 tuần khi các hạt hơi nhăn nheo báo hiệu cần nước.",
+    "soil": "Hỗn hợp đất xương rồng 70% sỏi pumice và perlite hạt thô.",
+    "temp": "18°C – 26°C",
+    "humidity": "30% – 50%",
+    "growth": "Trung bình",
+    "careLevel": "Moderate",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa độc tố nhẹ có thể gây nôn ói nếu động vật ăn phải."
+    },
+    "telemetry": {
+      "waterDaily": "100 ml / 15 Days",
+      "waterBar": "50%",
+      "waterVal": "100 ml",
+      "waterStatus": "Spherical Turgor",
+      "waterSub": "Hạt ngọc tròn căng chứa đầy nước.",
+      "waterFreq": "14-20 ngày / lần",
+      "humidityVal": "38% RH",
+      "humidityBar": "45%",
+      "humiditySub": "Môi trường khô thoáng tránh thối nhũn.",
+      "humidityTarget": "30% – 50% RH",
+      "mistCadence": "Tuyệt đối không phun sương đọng nước",
+      "envVal": "3,000 FC",
+      "envBar": "95%",
+      "envSub": "Cửa sổ đón nắng sớm ban mai.",
+      "tempRange": "18°C - 26°C",
+      "soilVal": "High Mineral Gritty Mix",
+      "soilBar": "96%",
+      "soilSub": "Đá pumice và akadama pH 6.8"
+    },
+    "traits": [
+      "Lá tròn như hạt ngọc",
+      "Dây rủ như thác",
+      "Chịu hạn sa mạc",
+      "Kiểu dáng độc nhất vô nhị"
     ],
     "tags": [
-      "indoor",
-      "hanging",
-      "pet-safe",
-      "humidity-loving"
+      "#SucculentLover",
+      "#TrailingSucculent",
+      "#BeadedVines",
+      "#SunnyWindow",
+      "#Curio"
     ],
-    "images": [
-      {
-        "url": "https://i.pinimg.com/736x/3e/3f/9a/3e3f9a309c76c20e41f5a0d6d4121235.jpg",
-        "alt": "Cascading Boston Fern fronds in architectural ceramic planter",
-        "isPrimary": true
-      }
+    "taxonomyTags": [
+      "Asteraceae",
+      "Curio",
+      "Asterales",
+      "Eudicots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "bathroom",
-        "shaded-balcony"
-      ],
-      "growthHabit": "Clumping perennial with graceful arching pinnate fronds.",
-      "soil": "Rich, porous potting mix with peat moss and vermiculite.",
-      "container": "Hanging basket or elevated pedestal pot with drainage.",
-      "watering": "Maintain consistent moisture; never let root ball dry out completely.",
-      "routineCare": "Provide bright filtered light and generous ambient humidity.",
-      "toxicityCaution": {
-        "pets": "safe",
-        "humans": "safe",
-        "note": "Non-toxic and completely pet-safe.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "chlorophytum-comosum",
-      "calathea-orbifolia"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "senecio-rowleyanus",
-    "name": "String of Pearls",
-    "botanicalName": "Senecio rowleyanus",
-    "category": "succulent",
-    "description": "Whimsical trailing succulent with slender thread-like stems draped in spherical pea-like green bead foliage.",
-    "light": "bright-indirect",
-    "water": "low",
-    "difficulty": "hard",
-    "regions": [
-      "highlands",
-      "central"
-    ],
-    "seasons": [
-      "spring",
-      "autumn"
+    "specimenId": "specimen-bird-of-paradise",
+    "catalogCode": "CANOPY-015",
+    "name": "Bird of Paradise (Thiên Điểu Đại Ngàn)",
+    "scientificName": "Strelitzia nicolai",
+    "slug": "bird-of-paradise-strelitzia",
+    "category": "Foliage",
+    "biome": "tropical",
+    "biomeLabel": "Coastal Subtropical Forest",
+    "shortDesc": "Những vòm lá khổng lồ như cánh chim đại ngàn vươn cao, đưa không gian nghỉ dưỡng nhiệt đới vào ngôi nhà bạn.",
+    "description": "Strelitzia nicolai là loài cây cảnh quan nhiệt đới đẳng cấp hàng đầu với những tán lá giống cây chuối quạt khổng lồ mang hơi thở đại ngàn.",
+    "origin": "Rừng ven biển phía đông Nam Phi.",
+    "purpose": "Kiến tạo mảng xanh nhiệt đới hoành tráng cho giếng trời, phòng khách thông tầng và ban công lớn.",
+    "light": "Ánh nắng mặt trời trực tiếp ít nhất 4–6 giờ mỗi ngày.",
+    "watering": "Tưới đẫm 1 lần/tuần khi lớp đất mặt khô 3-5cm.",
+    "soil": "Đất thịt màu mỡ giàu hữu cơ, thoát nước tốt.",
+    "temp": "18°C – 32°C",
+    "humidity": "50% – 75%",
+    "growth": "Nhanh",
+    "careLevel": "Moderate",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Hạt và lá có thể gây rối loạn tiêu hóa nhẹ ở chó mèo."
+    },
+    "telemetry": {
+      "waterDaily": "800 ml / 6 Days",
+      "waterBar": "85%",
+      "waterVal": "800 ml",
+      "waterStatus": "Canopy Sun-Ready",
+      "waterSub": "Tán lá đón nhận năng lượng nắng tốt.",
+      "waterFreq": "5-7 ngày / lần",
+      "humidityVal": "60% RH",
+      "humidityBar": "75%",
+      "humiditySub": "Độ ẩm cân bằng cho phiến lá lớn.",
+      "humidityTarget": "50% – 75% RH",
+      "mistCadence": "Phun sương lá vào những ngày hè nắng gắt",
+      "envVal": "4,000 FC",
+      "envBar": "98%",
+      "envSub": "Ánh sáng mặt trời chan hòa rực rỡ.",
+      "tempRange": "18°C - 32°C",
+      "soilVal": "Deep Rich Garden Soil",
+      "soilBar": "86%",
+      "soilSub": "Đất giàu dinh dưỡng tầng sâu pH 6.5"
+    },
+    "traits": [
+      "Lá khổng lồ uy nghi",
+      "Vẻ đẹp resort nhiệt đới",
+      "Thích nghi nắng mạnh",
+      "Tạo bóng mát sinh thái"
     ],
     "tags": [
-      "indoor",
-      "succulent",
-      "trailing"
+      "#TropicalResort",
+      "#GiantFoliage",
+      "#SunWorshipper",
+      "#StatementTree",
+      "#Strelitzia"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=800&q=80",
-        "alt": "Trailing String of Pearls succulent beads cascading gently",
-        "isPrimary": true
-      }
+    "taxonomyTags": [
+      "Strelitziaceae",
+      "Strelitzia",
+      "Zingiberales",
+      "Monocots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "balcony"
-      ],
-      "growthHabit": "Pendant trailing succulent stems cascading up to 1 meter.",
-      "soil": "Fast-draining gritty succulent mix.",
-      "container": "Shallow hanging planter with bottom drainage.",
-      "watering": "Water when pearl spheres soften slightly; roughly every 10-14 days.",
-      "routineCare": "Ensure top of pot receives bright light; avoid overwatering.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Toxic to pets; can cause lethargy and digestive distress.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "crassula-ovata",
-      "ceropegia-woodii"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "hedera-helix",
-    "name": "English Ivy",
-    "botanicalName": "Hedera helix",
-    "category": "foliage",
-    "description": "Vigorous evergreen trailing climber with classic lobed leaves, ideal for hanging baskets or climbing decorative trellises.",
-    "light": "medium",
-    "water": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "highlands"
-    ],
-    "seasons": [
-      "autumn",
-      "winter",
-      "spring"
+    "specimenId": "specimen-anthurium",
+    "catalogCode": "CANOPY-016",
+    "name": "Anthurium Clarinervium (Hồng Môn Gân Bạc Nhung)",
+    "scientificName": "Anthurium clarinervium",
+    "slug": "anthurium-clarinervium",
+    "category": "Aroid",
+    "biome": "tropical",
+    "biomeLabel": "Karst Mountain Jungle",
+    "shortDesc": "Những phiến lá hình trái tim phủ nhung đen tuyền với hệ thống gân lá trắng bạc phát sáng kỳ ảo.",
+    "description": "Anthurium clarinervium là loài cây quý tộc trong giới sưu tầm Araceae với bề mặt lá mịn như vải nhung nhung và độ bền phiến lá đáng kinh ngạc.",
+    "origin": "Những vách đá vôi ẩm ướt ở bang Chiapas, miền nam Mexico.",
+    "purpose": "Bộ sưu tập cây cảnh quý hiếm, tạo điểm nhấn sang trọng cho nội thất cao cấp.",
+    "light": "Ánh sáng khuếch tán vừa phải (1,000 – 1,800 FC).",
+    "watering": "Tưới khi giá thể hơi se khô; rễ cần lượng oxy lớn.",
+    "soil": "Hỗn hợp vỏ thông lớn, đá pumice, perlite và rêu sphagnum moss.",
+    "temp": "18°C – 26°C",
+    "humidity": "70% – 90%",
+    "growth": "Chậm",
+    "careLevel": "Moderate",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa tinh thể canxi oxalat."
+    },
+    "telemetry": {
+      "waterDaily": "200 ml / 6 Days",
+      "waterBar": "75%",
+      "waterVal": "200 ml",
+      "waterStatus": "Velvet Foliage Pristine",
+      "waterSub": "Bề mặt nhung mịn hoàn hảo.",
+      "waterFreq": "6 ngày / lần",
+      "humidityVal": "78% RH",
+      "humidityBar": "92%",
+      "humiditySub": "Độ ẩm cao giữ cho gân lá phát sáng rực rỡ.",
+      "humidityTarget": "70% – 90% RH",
+      "mistCadence": "Đặt khay sỏi nước bên dưới đáy chậu",
+      "envVal": "1,400 FC",
+      "envBar": "85%",
+      "envSub": "Ánh sáng tán cây vách núi đá vôi.",
+      "tempRange": "18°C - 26°C",
+      "soilVal": "Chunky Lithophyte Blend",
+      "soilBar": "94%",
+      "soilSub": "Giá thể phụ sinh bám đá pH 6.0"
+    },
+    "traits": [
+      "Lá nhung hình trái tim",
+      "Gân bạc phát sáng",
+      "Cây sưu tầm đắt giá",
+      "Bền bỉ quanh năm"
     ],
     "tags": [
-      "indoor",
-      "outdoor",
-      "trailing",
-      "cold-tolerant"
+      "#VelvetAnthurium",
+      "#RarePlantCollector",
+      "#HeartLeaf",
+      "#SilverVeins",
+      "#Araceae"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80",
-        "alt": "Lush green English Ivy climbing with distinctive lobed leaves",
-        "isPrimary": true
-      }
+    "taxonomyTags": [
+      "Araceae",
+      "Anthurium",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "balcony",
-        "office"
-      ],
-      "growthHabit": "Vigorous climbing and trailing woody evergreen vine.",
-      "soil": "Standard moist, fertile, well-drained potting compost.",
-      "container": "Hanging planter or pot with trellis framework.",
-      "watering": "Water when top 2cm feels dry; avoid standing in water.",
-      "routineCare": "Thrives in cooler room temperatures and medium to bright light.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Foliage contains triterpenoid saponins.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "epipremnum-aureum",
-      "chlorophytum-comosum"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "aspidistra-elatior",
-    "name": "Cast-Iron Plant",
-    "botanicalName": "Aspidistra elatior",
-    "category": "foliage",
-    "description": "Renowned for its indestructible stamina, with broad dark green lance-shaped leaves thriving in low-light, low-humidity spaces.",
-    "light": "low",
-    "water": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn",
-      "winter"
+    "specimenId": "specimen-philodendron-birkin",
+    "catalogCode": "CANOPY-017",
+    "name": "Philodendron Birkin (Trầu Bà Cẩm Thạch Birkin)",
+    "scientificName": "Philodendron 'Birkin'",
+    "slug": "philodendron-birkin",
+    "category": "Aroid",
+    "biome": "tropical",
+    "biomeLabel": "Greenhouse Cultivar",
+    "shortDesc": "Những đường sọc cẩm thạch trắng kem vẽ tay trên nền lá xanh đậm như những nét cọ tinh tế của danh họa.",
+    "description": "Philodendron Birkin là một đột biến tự nhiên tuyệt đẹp từ giống Rojo Congo, mỗi chiếc lá mới mở ra là một tác phẩm độc bản với hoa văn sọc kem không lặp lại.",
+    "origin": "Đột biến nuôi cấy mô được phát hiện tại Thái Lan và Florida, Hoa Kỳ.",
+    "purpose": "Cây để bàn làm việc phong cách tối giản, lọc các hợp chất hữu cơ bay hơi.",
+    "light": "Ánh sáng gián tiếp sáng rõ để duy trì hoa văn sọc kem sắc nét.",
+    "watering": "Tưới khi lớp đất trên mặt khô 3cm (khoảng 1 tuần/lần).",
+    "soil": "Hỗn hợp đất Aroid tơi xốp, thoát nước tốt.",
+    "temp": "18°C – 28°C",
+    "humidity": "55% – 75%",
+    "growth": "Trung bình",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa canxi oxalat gây kích ứng nếu nhai phải."
+    },
+    "telemetry": {
+      "waterDaily": "220 ml / 6 Days",
+      "waterBar": "80%",
+      "waterVal": "220 ml",
+      "waterStatus": "Variegation Stable",
+      "waterSub": "Hoa văn sọc trắng đạt độ tương phản cao.",
+      "waterFreq": "6-7 ngày / lần",
+      "humidityVal": "65% RH",
+      "humidityBar": "78%",
+      "humiditySub": "Độ ẩm hỗ trợ lá non mở bung hoàn chỉnh.",
+      "humidityTarget": "55% – 75% RH",
+      "mistCadence": "Lau lá định kỳ giữ vân sáng bóng",
+      "envVal": "1,600 FC",
+      "envBar": "88%",
+      "envSub": "Ánh sáng tán quang bàn làm việc.",
+      "tempRange": "18°C - 28°C",
+      "soilVal": "Fluffy Aroid Mix",
+      "soilBar": "88%",
+      "soilSub": "Thoáng khí xốp nhẹ pH 6.2"
+    },
+    "traits": [
+      "Vân sọc kem cẩm thạch",
+      "Dáng cây bụi gọn gàng",
+      "Mỗi lá một hoa văn riêng",
+      "Dễ chăm sóc"
     ],
     "tags": [
-      "indoor",
-      "indestructible",
-      "pet-safe",
-      "low-light"
+      "#PhilodendronBirkin",
+      "#VariegatedAroid",
+      "#DesktopPlant",
+      "#DesignerPlant",
+      "#Araceae"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=800&q=80",
-        "alt": "Resilient Cast-Iron Plant broad dark green foliage",
-        "isPrimary": true
-      }
+    "taxonomyTags": [
+      "Araceae",
+      "Philodendron",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "corridor"
-      ],
-      "growthHabit": "Clumping upright foliage growing directly from underground rhizomes.",
-      "soil": "Standard well-draining indoor potting mix.",
-      "container": "Heavy ceramic or plastic pot with good drainage.",
-      "watering": "Water moderately when top 5cm of soil is dry.",
-      "routineCare": "Wipe dust from broad leaves; tolerates wide temperature swings.",
-      "toxicityCaution": {
-        "pets": "safe",
-        "humans": "safe",
-        "note": "Non-toxic and safe for all household pets.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "sansevieria-trifasciata",
-      "zamioculcas-zamiifolia"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "anthurium-andraeanum",
-    "name": "Flamingo Flower",
-    "botanicalName": "Anthurium andraeanum",
-    "category": "flower",
-    "description": "Dazzling tropical beauty featuring glossy heart-shaped foliage crowned with long-lasting waxy scarlet spathes and yellow spadices.",
-    "light": "bright-indirect",
-    "water": "moderate",
-    "difficulty": "medium",
-    "regions": [
-      "north",
-      "south"
-    ],
-    "seasons": [
-      "spring",
-      "summer",
-      "autumn"
+    "specimenId": "specimen-jade-plant",
+    "catalogCode": "CANOPY-018",
+    "name": "Jade Plant (Sen Đá Ngọc Bích May Mắn)",
+    "scientificName": "Crassula ovata",
+    "slug": "jade-plant-crassula-ovata",
+    "category": "Succulent",
+    "biome": "arid",
+    "biomeLabel": "South African Succulent Thicket",
+    "shortDesc": "Thân cây bonsai thu nhỏ với những chiếc lá mọng nước hình đồng xu xanh bóng, biểu tượng của sự may mắn trường thọ.",
+    "description": "Crassula ovata có thể sống hàng chục năm trong chậu, gốc cây hóa gỗ tạo nên dáng thế bonsai cổ thụ vững chãi tuyệt đẹp.",
+    "origin": "Tỉnh KwaZulu-Natal và Đông Cape, Nam Phi.",
+    "purpose": "Cây phong thủy may mắn, quà tặng tân gia, trang trí bàn làm việc ngập nắng.",
+    "light": "Ánh nắng trực tiếp tối thiểu 4-6 giờ mỗi ngày.",
+    "watering": "Tưới đẫm mỗi 2–3 tuần khi lá hơi mềm nhẹ.",
+    "soil": "Đất trồng xương rồng đá sỏi thoát nước tức thì.",
+    "temp": "15°C – 30°C",
+    "humidity": "30% – 50%",
+    "growth": "Chậm",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Độc hại đối với chó mèo nếu nuốt phải lượng lớn."
+    },
+    "telemetry": {
+      "waterDaily": "120 ml / 16 Days",
+      "waterBar": "45%",
+      "waterVal": "120 ml",
+      "waterStatus": "Bonsai Trunk Hardy",
+      "waterSub": "Thân gỗ tích trữ lượng nước dồi dào.",
+      "waterFreq": "14-21 ngày / lần",
+      "humidityVal": "40% RH",
+      "humidityBar": "48%",
+      "humiditySub": "Không khí khô ráo tránh úng rễ.",
+      "humidityTarget": "30% – 50% RH",
+      "mistCadence": "Không cần phun sương",
+      "envVal": "3,500 FC",
+      "envBar": "96%",
+      "envSub": "Nắng sớm ban mai tạo viền đỏ quanh lá.",
+      "tempRange": "15°C - 30°C",
+      "soilVal": "Granite Grit & Pumice",
+      "soilBar": "95%",
+      "soilSub": "Thoát nước tức thì pH 6.5"
+    },
+    "traits": [
+      "Dáng bonsai cổ thụ",
+      "Lá mọng hình đồng xu",
+      "Tuổi thọ hàng chục năm",
+      "Phong thủy may mắn"
     ],
     "tags": [
-      "indoor",
-      "flowering",
-      "bold-foliage"
+      "#CrassulaOvata",
+      "#MoneyTree",
+      "#BonsaiSucculent",
+      "#GoodFortune",
+      "#DroughtTolerant"
     ],
-    "images": [
-      {
-        "url": "https://i.pinimg.com/736x/e6/87/6c/e6876c9a7dd702a114b74b7eaa39b334.jpg",
-        "alt": "Vibrant scarlet Anthurium bloom with yellow spadix",
-        "isPrimary": true
-      }
+    "taxonomyTags": [
+      "Crassulaceae",
+      "Crassula",
+      "Saxifragales",
+      "Eudicots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "office",
-        "living-room"
-      ],
-      "growthHabit": "Epiphytic clumping perennial with heart-shaped leaves and showy spathes.",
-      "soil": "Coarse, well-aerated orchid and aroid potting mix.",
-      "container": "Pot with drainage; ensure roots have adequate airflow.",
-      "watering": "Water when top 3cm of soil dries; do not leave water in the saucer.",
-      "routineCare": "Bright indirect light encourages continuous flower spathe blooms.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "irritant",
-        "note": "Contains calcium oxalate crystals; toxic to pets.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "spathiphyllum",
-      "philodendron-birkin"
-    ],
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    "slug": "aloe-vera",
-    "name": "Aloe Vera",
-    "botanicalName": "Aloe vera",
-    "category": "succulent",
-    "description": "Timeless succulent revered for its soothing gel-filled lanceolate leaves adorned with soft serrated edges. Thrives in sunlit corners.",
-    "light": "full-sun",
-    "water": "low",
-    "difficulty": "easy",
-    "regions": [
-      "north",
-      "central",
-      "south",
-      "highlands"
-    ],
-    "seasons": [
-      "spring",
-      "summer"
+    "specimenId": "specimen-english-ivy",
+    "catalogCode": "CANOPY-019",
+    "name": "English Ivy (Thường Xuân Cổ Điển)",
+    "scientificName": "Hedera helix 'Glacier'",
+    "slug": "english-ivy-glacier",
+    "category": "Foliage",
+    "biome": "temperate",
+    "biomeLabel": "European Woodlands",
+    "shortDesc": "Những dải dây leo xanh bạc uốn lượn cổ kính, máy lọc nấm mốc và vi khuẩn lơ lửng hiệu quả nhất trong không gian sống.",
+    "description": "Thường xuân là loài cây kinh điển của châu Âu, có thể chịu được nhiệt độ lạnh và phát triển mạnh mẽ quanh năm.",
+    "origin": "Hầu hết các vùng châu Âu và Tây Á.",
+    "purpose": "Hấp thụ các bào tử nấm mốc trong không khí, trang trí ban công và hàng rào xanh.",
+    "light": "Ánh sáng gián tiếp từ trung bình đến sáng mát mẻ.",
+    "watering": "Tưới đều đặn mỗi 5–7 ngày khi lớp đất mặt se khô.",
+    "soil": "Đất trồng chậu tơi xốp, thoát nước tốt.",
+    "temp": "10°C – 24°C",
+    "humidity": "50% – 70%",
+    "growth": "Nhanh",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": true,
+      "details": "Chứa saponin và hederagenin gây kích ứng tiêu hóa."
+    },
+    "telemetry": {
+      "waterDaily": "250 ml / 6 Days",
+      "waterBar": "75%",
+      "waterVal": "250 ml",
+      "waterStatus": "Cascading Cascade",
+      "waterSub": "Dây leo phát triển đều đặn.",
+      "waterFreq": "5-7 ngày / lần",
+      "humidityVal": "58% RH",
+      "humidityBar": "72%",
+      "humiditySub": "Khí hậu mát mẻ phòng điều hòa lý tưởng.",
+      "humidityTarget": "50% – 70% RH",
+      "mistCadence": "Phun sương lá 2 ngày/lần ngừa bọ trĩ",
+      "envVal": "1,300 FC",
+      "envBar": "82%",
+      "envSub": "Ánh sáng râm mát châu Âu.",
+      "tempRange": "10°C - 24°C",
+      "soilVal": "Standard Garden Loam",
+      "soilBar": "82%",
+      "soilSub": "Thoát nước tốt pH 6.5"
+    },
+    "traits": [
+      "Lọc bào tử nấm mốc",
+      "Leo tường hoặc rủ chậu",
+      "Chịu lạnh xuất sắc",
+      "Vẻ đẹp châu Âu cổ kính"
     ],
     "tags": [
-      "indoor",
-      "outdoor",
-      "succulent",
-      "medicinal"
+      "#MoldPurifier",
+      "#ClassicIvy",
+      "#CoolClimate",
+      "#TrailingVine",
+      "#Araliaceae"
     ],
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1567689265664-1c48de61db0b?auto=format&fit=crop&w=800&q=80",
-        "alt": "Fresh Aloe Vera succulent with thick fleshy gel leaves",
-        "isPrimary": true
-      }
+    "taxonomyTags": [
+      "Araliaceae",
+      "Hedera",
+      "Apiales",
+      "Eudicots",
+      "Plantae"
     ],
-    "guide": {
-      "environments": [
-        "indoor",
-        "kitchen",
-        "balcony"
-      ],
-      "growthHabit": "Stemless rosette of thick fleshy erect leaves.",
-      "soil": "Porous cactus or succulent soil with sand and perlite.",
-      "container": "Wide, shallow unglazed terracotta pot with drainage.",
-      "watering": "Soak thoroughly and allow soil to dry out completely before next watering.",
-      "routineCare": "Place in direct or bright sunlight for optimal vigor.",
-      "toxicityCaution": {
-        "pets": "toxic",
-        "humans": "safe",
-        "note": "Gel is soothing for humans, but rind contains aloin which is toxic to pets.",
-        "source": "ASPCA"
-      }
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
     },
-    "similarPlantSlugs": [
-      "sansevieria-trifasciata",
-      "crassula-ovata"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "specimenId": "specimen-echeveria",
+    "catalogCode": "CANOPY-020",
+    "name": "Echeveria Elegans (Sen Đá Hoa Hồng Tuyết)",
+    "scientificName": "Echeveria elegans Rose",
+    "slug": "echeveria-elegans",
+    "category": "Succulent",
+    "biome": "arid",
+    "biomeLabel": "Mexican Highland Desert",
+    "shortDesc": "Đóa hoa hồng ngọc bích từ sa mạc Mexico với lớp phấn phủ màu lam tuyết thanh khiết và đài hoa hoàn mỹ.",
+    "description": "Echeveria elegans là biểu tượng tinh túy của chi Echeveria với cấu trúc xếp cánh đối xứng hình học Fibonacci chuẩn xác và lớp phấn sáp bảo vệ chống tia cực tím.",
+    "origin": "Vùng núi bán sa mạc bang Hidalgo, miền trung Mexico.",
+    "purpose": "Trang trí tiểu cảnh terrarium, bàn làm việc máy tính, biểu tượng của sự thanh khiết.",
+    "light": "Ánh nắng chan hòa trực tiếp tối thiểu 5-6 giờ mỗi ngày.",
+    "watering": "Tưới thấm ngược đáy chậu 2 tuần/lần khi đất khô ráo. Không để giọt nước đọng trên đài hoa.",
+    "soil": "Hỗn hợp 80% hạt khoáng pumice, perlite và akadama thoát nước cực nhanh.",
+    "temp": "15°C – 28°C",
+    "humidity": "30% – 45%",
+    "growth": "Chậm",
+    "careLevel": "Easy",
+    "toxicity": {
+      "isToxicToPets": false,
+      "details": "Hoàn toàn an toàn cho mèo và chó."
+    },
+    "telemetry": {
+      "waterDaily": "80 ml / 14 Days",
+      "waterBar": "50%",
+      "waterVal": "80 ml",
+      "waterStatus": "Farina Shield Pristine",
+      "waterSub": "Lớp phấn tuyết nguyên vẹn bảo vệ đài hoa.",
+      "waterFreq": "14 ngày / lần",
+      "humidityVal": "35% RH",
+      "humidityBar": "40%",
+      "humiditySub": "Khí hậu khô ráo sa mạc lý tưởng.",
+      "humidityTarget": "30% – 45% RH",
+      "mistCadence": "Tuyệt đối không phun sương làm trôi phấn",
+      "envVal": "4,200 FC",
+      "envBar": "98%",
+      "envSub": "Ánh nắng chan hòa giúp đài hoa lên màu viền hồng.",
+      "tempRange": "15°C - 28°C",
+      "soilVal": "80% Mineral Gritty Mix",
+      "soilBar": "98%",
+      "soilSub": "Đá pumice và perlite pH 6.8"
+    },
+    "traits": [
+      "Cánh đối xứng hình hoa hồng",
+      "Phủ lớp phấn tuyết bảo vệ",
+      "Lên màu hồng viền khi đủ nắng",
+      "An toàn với thú cưng"
     ],
-    "status": "published"
+    "tags": [
+      "#EcheveriaElegans",
+      "#MexicanSnowball",
+      "#SucculentArt",
+      "#PetSafe",
+      "#FibonacciBeauty"
+    ],
+    "taxonomyTags": [
+      "Crassulaceae",
+      "Echeveria",
+      "Saxifragales",
+      "Eudicots",
+      "Plantae"
+    ],
+    "images": {
+      "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+      "gallery": []
+    },
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
   }
 ]

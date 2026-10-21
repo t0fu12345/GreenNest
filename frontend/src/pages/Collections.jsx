@@ -14,7 +14,7 @@ import {
 
 const Collections = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const userEmail = user?.email || 'guest';
 
   const [collections, setCollections] = useState([]);
@@ -36,11 +36,12 @@ const Collections = () => {
   };
 
   useEffect(() => {
-    const list = reloadCollections();
-    if (list.length > 0 && !selectedColId) {
-      // Default view is boards list, or user can click into one
+    if (isAuthenticated) {
+      reloadCollections();
+    } else {
+      setCollections([]);
     }
-  }, [userEmail]);
+  }, [isAuthenticated, userEmail]);
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -105,17 +106,17 @@ const Collections = () => {
   // Filter plants inside current collection
   const innerPlants = currentCollection
     ? (currentCollection.plantSlugs || [])
-        .map((slug) => BOTANICAL_SPECIMENS[slug])
-        .filter(Boolean)
-        .filter((p) => {
-          if (!innerFilter) return true;
-          const q = innerFilter.toLowerCase();
-          return (
-            p.name.toLowerCase().includes(q) ||
-            p.scientificName.toLowerCase().includes(q) ||
-            p.category?.toLowerCase().includes(q)
-          );
-        })
+      .map((slug) => BOTANICAL_SPECIMENS[slug])
+      .filter(Boolean)
+      .filter((p) => {
+        if (!innerFilter) return true;
+        const q = innerFilter.toLowerCase();
+        return (
+          p.name.toLowerCase().includes(q) ||
+          p.scientificName.toLowerCase().includes(q) ||
+          p.category?.toLowerCase().includes(q)
+        );
+      })
     : [];
 
   return (
@@ -146,9 +147,146 @@ const Collections = () => {
       )}
 
       <main style={{ flex: 1, padding: '130px 24px 80px', maxWidth: '1360px', width: '100%', margin: '0 auto' }}>
-        
-        {/* VIEW 1: Detail of Single Collection */}
-        {selectedColId && currentCollection ? (
+
+        {/* UNAUTHENTICATED STATE: Centered Sign In Prompt */}
+        {!isAuthenticated ? (
+          <div
+            style={{
+              minHeight: '55vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '40px 20px'
+            }}
+          >
+            <div
+              style={{
+                maxWidth: '560px',
+                width: '100%',
+                background: 'rgba(14, 30, 22, 0.92)',
+                border: '1px solid rgba(34, 197, 94, 0.35)',
+                borderRadius: '28px',
+                padding: '48px 36px',
+                textAlign: 'center',
+                boxShadow: '0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(34, 197, 94, 0.15)',
+                backdropFilter: 'blur(16px)'
+              }}
+            >
+              <div
+                style={{
+                  width: '72px',
+                  height: '72px',
+                  borderRadius: '50%',
+                  background: 'rgba(34, 197, 94, 0.15)',
+                  border: '1px solid rgba(34, 197, 94, 0.4)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '2.4rem',
+                  marginBottom: '20px',
+                  boxShadow: '0 0 25px rgba(34, 197, 94, 0.25)'
+                }}
+              >
+                📁
+              </div>
+
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'rgba(34, 197, 94, 0.12)',
+                  border: '1px solid rgba(34, 197, 94, 0.3)',
+                  color: '#86efac',
+                  padding: '4px 14px',
+                  borderRadius: '9999px',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  marginBottom: '16px'
+                }}
+              >
+                <span>YÊU CẦU ĐĂNG NHẬP</span>
+              </div>
+
+              <h2
+                style={{
+                  fontFamily: "var(--font-serif, 'Playfair Display', serif)",
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.3rem)',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  marginBottom: '14px',
+                  lineHeight: 1.25
+                }}
+              >
+                Vui Lòng Đăng Nhập
+              </h2>
+
+              <p
+                style={{
+                  color: '#cbd5e1',
+                  fontSize: '0.98rem',
+                  lineHeight: 1.65,
+                  maxWidth: '440px',
+                  margin: '0 auto 28px',
+                  fontWeight: 300
+                }}
+              >
+                Để xem, tạo mới và quản lý các bộ sưu tập cây trồng cá nhân hóa theo từng không gian sống, vui lòng đăng nhập vào tài khoản GreenNest của bạn.
+              </p>
+
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '14px',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexWrap: 'wrap'
+                }}
+              >
+                <Link
+                  to="/"
+                  style={{
+                    padding: '11px 22px',
+                    borderRadius: '9999px',
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    color: '#cbd5e1',
+                    fontSize: '0.88rem',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  ← Về Trang Chủ
+                </Link>
+
+                <Link
+                  to="/login"
+                  state={{ from: { pathname: '/collections' } }}
+                  style={{
+                    padding: '12px 28px',
+                    borderRadius: '9999px',
+                    background: 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: '0 8px 25px rgba(34, 197, 94, 0.35)',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <span>Đăng Nhập Ngay</span>
+                  <span>→</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        ) : selectedColId && currentCollection ? (
           <div>
             {/* Top Breadcrumb & Actions */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>

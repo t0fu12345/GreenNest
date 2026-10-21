@@ -10,6 +10,9 @@ import {
   DATABASE_USERS 
 } from '../data/botanicalSpecimens';
 import { decodeJwt } from '../utils/jwt';
+import adminApi from '../services/adminApi';
+import plantApi from '../services/plantApi';
+import contactApi from '../services/contactApi';
 
 const DEFAULT_PLANT_IMAGE = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
 const DEFAULT_USER_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80';
@@ -25,6 +28,7 @@ const AdminDashboard = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [stats, setStats] = useState(null);
 
   // Plant form state for adding new specimens
   const [isAddPlantOpen, setIsAddPlantOpen] = useState(false);
@@ -41,30 +45,18 @@ const AdminDashboard = () => {
     shortDesc: ''
   });
 
-  const showToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(''), 3500);
-  };
-
   // Load registered users, plants and collections from DB sources & localStorage
   useEffect(() => {
     // 1. Users from DB / AuthContext
-    const loadedUsers = getAllUsers();
-    setUserList(loadedUsers && loadedUsers.length > 0 ? loadedUsers : DATABASE_USERS);
+    if (typeof getAllUsers === 'function') {
+      const loadedUsers = getAllUsers();
+      setUserList(loadedUsers && loadedUsers.length > 0 ? loadedUsers : DATABASE_USERS);
+    } else {
+      setUserList(DATABASE_USERS);
+    }
 
     // 2. Canonical specimens from MongoDB seed dataset (clean 20 canonical plants)
     const canonicalPlants = CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean);
-    try {
-      const customSaved = localStorage.getItem('greenNest_custom_specimens');
-      if (customSaved) {
-        const parsed = JSON.parse(customSaved);
-        setSpecimens([...canonicalPlants, ...parsed]);
-      } else {
-        setSpecimens(canonicalPlants);
-      }
-    } catch {
-      setSpecimens(canonicalPlants);
-    }
 
     // 3. Collections from MongoDB seed dataset
     try {
@@ -77,6 +69,60 @@ const AdminDashboard = () => {
     } catch {
       setCollections(PLANT_COLLECTIONS || []);
     }
+
+    const loadBackendData = async () => {
+      // Fetch backend stats if API is running
+      try {
+        const statsRes = await adminApi.getDashboardStats();
+        if (statsRes?.data) {
+          setStats(statsRes.data);
+        }
+      } catch (err) {
+        console.warn('Dashboard stats API offline, using local metrics:', err.message);
+      }
+
+      // Fetch plants from MongoDB API if available
+      try {
+        const plantsRes = await plantApi.getPlants({ limit: 100 });
+        if (plantsRes?.data?.plants && plantsRes.data.plants.length > 0) {
+          const apiList = plantsRes.data.plants.map(p => ({
+            id: p.specimenId || p.slug || p._id,
+            _id: p._id,
+            catalogCode: p.catalogCode || p.specimenId || 'CANOPY-001',
+            name: p.name,
+            scientificName: p.scientificName || p.botanicalName || '',
+            category: p.category || 'foliage',
+            biome: p.biome || 'tropical',
+            biomeLabel: p.biome ? p.biome.toUpperCase() : 'Tropical Rainforest',
+            image: p.image || p.images?.hero || p.images?.[0]?.url || DEFAULT_PLANT_IMAGE,
+            water: p.watering || 'Every 7-10 days',
+            light: p.light || 'Dappled indirect sunlight',
+            soil: p.careGuide?.soil || p.soil || 'Chunky aroid mix',
+            shortDesc: p.description || p.shortDesc || '',
+            tags: p.tags?.length ? p.tags : ['#DatabaseCatalog']
+          }));
+          setSpecimens(apiList);
+          return;
+        }
+      } catch (err) {
+        console.warn('Backend plant API offline, using seed catalog:', err.message);
+      }
+
+      // Fallback to local canonical plants + custom specimens
+      try {
+        const customSaved = localStorage.getItem('greenNest_custom_specimens');
+        if (customSaved) {
+          const parsed = JSON.parse(customSaved);
+          setSpecimens([...canonicalPlants, ...parsed]);
+        } else {
+          setSpecimens(canonicalPlants);
+        }
+      } catch {
+        setSpecimens(canonicalPlants);
+      }
+    };
+
+    loadBackendData();
   }, [getAllUsers]);
 
   // Decode active JWT token
@@ -129,7 +175,7 @@ const AdminDashboard = () => {
   };
 
   // Handle Add New Plant
-  const handleAddPlant = (e) => {
+  const handleAddPlant = async (e) => {
     e.preventDefault();
     if (!newPlant.name.trim()) return;
 
@@ -138,39 +184,66 @@ const AdminDashboard = () => {
     const biomeLabelMap = {
       tropical: 'Tropical Biome',
       subtropical: 'Subtropical Highlands',
-      arid: 'Arid & Desert'
+      arid: 'Arid & Desert',
+      temperate: 'Temperate Canopy'
     };
 
-    const plantObj = {
-      id: plantId,
-      slug: plantId,
-      catalogCode: `CANOPY-${String(specimens.length + 1).padStart(3, '0')}`,
+    const plantPayload = {
       name: newPlant.name,
       scientificName: newPlant.scientificName || `${newPlant.name} spp.`,
-      category: newPlant.category,
-      biome: newPlant.biome,
-      biomeLabel: biomeLabelMap[newPlant.biome] || 'Tropical Biome',
-      image: newPlant.image || DEFAULT_PLANT_IMAGE,
-      images: [{ url: newPlant.image || DEFAULT_PLANT_IMAGE, alt: newPlant.name, isPrimary: true }],
-      water: newPlant.water,
+      specimenId: `CANOPY-${String(specimens.length + 1).padStart(3, '0')}`,
+      slug: plantId,
+      category: newPlant.category || 'foliage',
+      biome: newPlant.biome || 'tropical',
       light: newPlant.light,
-      difficulty: newPlant.difficulty,
-      soil: newPlant.soil,
-      status: 'published',
-      shortDesc: newPlant.shortDesc || `Curated living specimen introduced by Master Botanist ${user?.name || 'Administrator'}.`,
-      tags: ['#NewSpecimen', '#CuratedCollection', `#${newPlant.category.charAt(0).toUpperCase() + newPlant.category.slice(1)}`],
-      taxonomyTags: [newPlant.category, newPlant.name.split(' ')[0], 'Plantae'],
-      seasons: ['spring', 'summer']
+      watering: newPlant.water,
+      careLevel: newPlant.difficulty || 'Easy',
+      description: newPlant.shortDesc || `Cultivar curated by Master Botanist ${user?.name || 'Administrator'}.`,
+      origin: 'GreenNest Botanical Reserve',
+      images: [{
+        url: newPlant.image || DEFAULT_PLANT_IMAGE,
+        alt: newPlant.name,
+        isPrimary: true
+      }]
     };
 
     try {
-      let customList = [];
-      const saved = localStorage.getItem('greenNest_custom_specimens');
-      if (saved) customList = JSON.parse(saved);
-      customList.unshift(plantObj);
-      localStorage.setItem('greenNest_custom_specimens', JSON.stringify(customList));
+      let created = null;
+      try {
+        const res = await plantApi.createPlant(plantPayload);
+        created = res?.data?.plant || res?.data;
+      } catch (apiErr) {
+        console.warn('Backend plant creation API offline, saving locally:', apiErr.message);
+      }
 
-      setSpecimens(prev => [plantObj, ...prev]);
+      const normalizedCreated = {
+        id: created?.specimenId || plantPayload.slug,
+        slug: plantPayload.slug,
+        _id: created?._id,
+        catalogCode: created?.catalogCode || plantPayload.specimenId,
+        name: created?.name || plantPayload.name,
+        scientificName: created?.scientificName || plantPayload.scientificName,
+        category: plantPayload.category,
+        biome: created?.biome || plantPayload.biome,
+        biomeLabel: biomeLabelMap[newPlant.biome] || 'Tropical Biome',
+        image: newPlant.image || DEFAULT_PLANT_IMAGE,
+        water: plantPayload.watering,
+        light: plantPayload.light,
+        soil: newPlant.soil,
+        difficulty: newPlant.difficulty,
+        shortDesc: plantPayload.description,
+        tags: ['#NewSpecimen', '#CuratedCollection', `#${newPlant.category.charAt(0).toUpperCase() + newPlant.category.slice(1)}`]
+      };
+
+      setSpecimens(prev => [normalizedCreated, ...prev]);
+
+      try {
+        const saved = localStorage.getItem('greenNest_custom_specimens');
+        const list = saved ? JSON.parse(saved) : [];
+        list.push(normalizedCreated);
+        localStorage.setItem('greenNest_custom_specimens', JSON.stringify(list));
+      } catch {}
+
       setIsAddPlantOpen(false);
       setNewPlant({
         name: '',
@@ -184,7 +257,8 @@ const AdminDashboard = () => {
         image: DEFAULT_PLANT_IMAGE,
         shortDesc: ''
       });
-      showToast(`Added new botanical specimen: ${plantObj.name}`);
+
+      showToast(`Added new botanical specimen: ${plantPayload.name}`);
     } catch (err) {
       console.error(err);
       showToast('Error saving new specimen to database.');
@@ -192,19 +266,31 @@ const AdminDashboard = () => {
   };
 
   // Handle Delete Plant
-  const handleDeletePlant = (plantId, plantName) => {
+  const handleDeletePlant = async (plantId, plantName) => {
     if (window.confirm(`Confirm removal of specimen "${plantName}" from active database catalog?`)) {
       try {
-        let customList = [];
-        const saved = localStorage.getItem('greenNest_custom_specimens');
-        if (saved) customList = JSON.parse(saved);
-        const filtered = customList.filter(p => p.id !== plantId && p.slug !== plantId);
-        localStorage.setItem('greenNest_custom_specimens', JSON.stringify(filtered));
+        const target = specimens.find(p => p.id === plantId || p._id === plantId || p.slug === plantId);
+        if (target?._id) {
+          try {
+            await plantApi.deletePlant(target._id);
+          } catch (apiErr) {
+            console.warn('Backend delete API offline, removing locally:', apiErr.message);
+          }
+        }
 
-        setSpecimens(prev => prev.filter(p => p.id !== plantId && p.slug !== plantId));
+        try {
+          let customList = [];
+          const saved = localStorage.getItem('greenNest_custom_specimens');
+          if (saved) customList = JSON.parse(saved);
+          const filtered = customList.filter(p => p.id !== plantId && p.slug !== plantId);
+          localStorage.setItem('greenNest_custom_specimens', JSON.stringify(filtered));
+        } catch {}
+
+        setSpecimens(prev => prev.filter(p => p.id !== plantId && p._id !== plantId && p.slug !== plantId));
         showToast(`Specimen "${plantName}" removed from catalog.`);
       } catch (err) {
-        console.error(err);
+        setSpecimens(prev => prev.filter(p => p.id !== plantId));
+        showToast(`Removed from view: ${plantName}`);
       }
     }
   };

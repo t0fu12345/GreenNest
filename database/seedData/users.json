@@ -1,10 +1,12 @@
 [
   {
-    "email": "admin@greennest.com",
-    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "fullName": "Elena Vu (Master Admin)",
-    "avatar": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80",
+    "email": "admin@greennest.com",
+    "password": "AdminCanopy2026!",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "role": "admin",
+    "avatar": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80",
     "savedGardenSlugs": [
       "monstera-deliciosa",
       "calathea-orbifolia",
@@ -13,11 +15,27 @@
     "status": "active"
   },
   {
-    "email": "alex.pham@example.com",
+    "fullName": "Admin GreenNest",
+    "email": "admin@greennest.vn",
+    "password": "Admin@123456",
     "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+    "role": "admin",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "savedGardenSlugs": [
+      "monstera-deliciosa",
+      "calathea-orbifolia"
+    ],
+    "status": "active"
+  },
+  {
     "fullName": "Alexandre Pham",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "email": "alex.pham@example.com",
+    "password": "GreenCanopy2026",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "role": "user",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
     "savedGardenSlugs": [
       "sansevieria-trifasciata",
       "lavandula-angustifolia"
@@ -25,13 +43,28 @@
     "status": "active"
   },
   {
-    "email": "user@demo.com",
-    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "fullName": "Demo Member",
-    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
+    "email": "user@demo.com",
+    "password": "GreenCanopy2026",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     "role": "user",
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
     "savedGardenSlugs": [
       "ficus-lyrata",
+      "monstera-deliciosa"
+    ],
+    "status": "active"
+  },
+  {
+    "fullName": "Lê Hoàng Nam",
+    "email": "nam.le@greennest.vn",
+    "password": "GreenNest@2026",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+    "role": "user",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "savedGardenSlugs": [
       "monstera-deliciosa"
     ],
     "status": "active"

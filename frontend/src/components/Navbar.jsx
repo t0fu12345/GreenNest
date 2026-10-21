@@ -64,7 +64,7 @@ const Navbar = () => {
               </NavLink>
             </li>
           )}
-          <li><a href="#footer">Contact</a></li>
+          <li><NavLink to="/contact">Contact ↗</NavLink></li>
         </ul>
 
         {/* Right CTAs with Notification Bell */}
@@ -190,7 +190,7 @@ const Navbar = () => {
               </button>
             </div>
           ) : (
-            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem' }}>
+            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem', borderRadius: '9999px' }}>
               Sign In
             </Link>
           )}

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth, getCookie } from '../context/AuthContext';
 
 const Login = () => {
-  const { login, loginWithGoogle, STORAGE_KEYS } = useAuth();
+  const { login, STORAGE_KEYS } = useAuth();
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -43,15 +43,17 @@ const Login = () => {
     }, 900);
   };
 
-  const handleLogin = (e) => {
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (!identifier.trim() || !password.trim()) {
       showNotification('Please enter both your Nickname (or Email) and Password.', 'error');
+
       return;
     }
 
     setSubmitting(true);
-    const result = login(identifier, password, rememberMe);
+    const result = await login(identifier, password, rememberMe);
 
     if (result.success) {
       if (result.isAdmin) {
@@ -82,6 +84,7 @@ const Login = () => {
     setPassword('AdminCanopy2026!');
     showNotification('Filled Admin account: admin. Ready to sign in.', 'success', 2500);
   };
+
 
   return (
     <>
@@ -117,26 +120,6 @@ const Login = () => {
           <p className="auth-subtitle">Sign in to manage your private sanctuary and climate-tailored cultivation guide.</p>
         </div>
 
-        {/* Continue with Google / Gmail */}
-        <button 
-          type="button" 
-          className="btn-google-auth" 
-          id="btnGoogleLogin" 
-          onClick={() => handleSocialLogin('Google')}
-          disabled={submitting}
-        >
-          <svg className="google-icon-svg" viewBox="0 0 24 24">
-            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
-            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
-            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9c-.1-.7-.3-1.5-.3-2.4l.3-3z"/>
-            <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 16.9C3.7 20.6 7.5 23.5 12 23.5z"/>
-          </svg>
-          <span>Continue with Google / Gmail</span>
-        </button>
-
-        <div className="auth-divider">
-          <span>Or continue with Nickname</span>
-        </div>
 
         {/* Nickname & Password Form */}
         <form className="auth-form" id="loginForm" onSubmit={handleLogin}>
@@ -180,7 +163,7 @@ const Login = () => {
                 title="Toggle password visibility"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                  <path d="M1 12s4-8 11-8 11 8 11 8 -4 8 -11 8 -11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
               </button>
@@ -235,6 +218,7 @@ const Login = () => {
                 👑 Admin
               </button>
             </div>
+
           </div>
 
           <button 

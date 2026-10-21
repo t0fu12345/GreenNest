@@ -32,8 +32,20 @@ plants.forEach((p, idx) => {
     toxicityText = 'Mild Caution';
   }
 
-  const primaryImg = p.images?.find(img => img.isPrimary)?.url || p.images?.[0]?.url || '';
-  
+  let primaryImg = '';
+  let imageArray = [];
+  if (Array.isArray(p.images)) {
+    primaryImg = p.images.find(img => img.isPrimary)?.url || p.images[0]?.url || '';
+    imageArray = p.images;
+  } else if (p.images && typeof p.images === 'object') {
+    primaryImg = p.images.hero || p.images.gallery?.[0] || '';
+    imageArray = [
+      { url: p.images.hero, alt: p.name, isPrimary: true },
+      ...(p.images.gallery || []).map((url, i) => ({ url, alt: `${p.name} view ${i+1}`, isPrimary: false }))
+    ].filter(img => img.url);
+  }
+  if (!primaryImg && p.image) primaryImg = p.image;
+
   const tags = (p.tags || []).map(t => t.startsWith('#') ? t : '#' + t.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(''));
   if (p.category && !tags.includes('#' + p.category)) {
     tags.push('#' + p.category.charAt(0).toUpperCase() + p.category.slice(1));
@@ -50,12 +62,12 @@ plants.forEach((p, idx) => {
     slug: p.slug,
     catalogCode,
     name: p.name,
-    scientificName: p.botanicalName,
+    scientificName: p.scientificName || p.botanicalName,
     category: p.category,
     biome: bInfo.biome,
     biomeLabel: bInfo.label,
     image: primaryImg,
-    images: p.images || [],
+    images: imageArray,
     tags,
     taxonomyTags: [p.category, p.botanicalName.split(' ')[0], 'Plantae'],
     traits: [

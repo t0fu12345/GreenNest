@@ -4,14 +4,40 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import {
   BOTANICAL_SPECIMENS,
-  CANONICAL_PLANT_SLUGS,
-  getStarredPlantIds,
-  toggleStarredPlant
+  CANONICAL_PLANT_SLUGS
 } from '../data/botanicalSpecimens';
 import SaveToCollectionModal from '../components/gallery/SaveToCollectionModal';
+import { useAuth } from '../context/AuthContext';
+import plantApi from '../services/plantApi';
+import gardenApi from '../services/gardenApi';
+
+const normalizePlant = (p) => ({
+  id: p.specimenId || p._id,
+  _id: p._id,
+  catalogCode: p.specimenId || 'CANOPY-001',
+  name: p.name,
+  scientificName: p.scientificName || p.botanicalName || '',
+  biome: p.biome || 'tropical',
+  biomeLabel: p.biome ? p.biome.toUpperCase() : 'Botanical Cultivar',
+  image: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
+  tags: p.tags?.length ? p.tags : [`#${p.category || 'Foliage'}`, `#${p.biome || 'Indoor'}`],
+  taxonomyTags: [p.category, p.biome, 'Plantae'].filter(Boolean),
+  traits: [p.light, p.watering, p.careLevel].filter(Boolean),
+  shortDesc: p.description || p.shortDesc || '',
+  origin: p.origin || 'Vườn ươm GreenNest Sanctuary',
+  water: p.watering || 'Weekly',
+  light: p.light || 'Bright indirect',
+  soil: p.careGuide?.soil || 'Đất tơi xốp, thoát nước tốt',
+  humidity: p.careGuide?.humidity || '60% - 80%',
+  temp: '20°C – 28°C',
+  growth: p.careLevel || 'Moderate',
+  toxicity: p.toxicity?.isToxicToPets ? 'Pet Caution' : 'Pet Safe',
+  raw: p
+});
 
 const Plants = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialQ = searchParams.get('q') || searchParams.get('search') || '';
@@ -24,6 +50,8 @@ const Plants = () => {
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [inspectPlant, setInspectPlant] = useState(null);
+  const [apiPlants, setApiPlants] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
 
   // Sync state if URL search params change
@@ -43,25 +71,73 @@ const Plants = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    setStarredIds(getStarredPlantIds());
-  }, []);
+    // Tải dữ liệu cây thực tế từ MongoDB Backend
+    const fetchPlants = async () => {
+      try {
+        setLoading(true);
+        const res = await plantApi.getPlants({ limit: 100 });
+        if (res?.data?.plants && Array.isArray(res.data.plants)) {
+          setApiPlants(res.data.plants.map(normalizePlant));
+        }
+      } catch (err) {
+        console.warn('Không thể kết nối API Plants, sử dụng dữ liệu dự phòng:', err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const allPlants = CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean);
+    const fetchUserSaved = async () => {
+      if (isAuthenticated) {
+        try {
+          const res = await gardenApi.getMyGarden();
+          const saved = res?.data?.savedPlants || [];
+          const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
+          setStarredIds(ids);
+        } catch (e) {
+          console.warn('Không thể tải cây yêu thích từ API:', e);
+        }
+      } else {
+        setStarredIds([]);
+      }
+    };
+
+    fetchPlants();
+    fetchUserSaved();
+  }, [isAuthenticated]);
+
+  const fallbackPlants = CANONICAL_PLANT_SLUGS?.length
+    ? CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean)
+    : Object.values(BOTANICAL_SPECIMENS);
+  const allPlants = apiPlants.length > 0 ? apiPlants : fallbackPlants;
 
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(''), 3500);
   };
 
-  const handleToggleStar = (plantId, e) => {
+  const handleToggleStar = async (plantId, e) => {
     if (e) e.stopPropagation();
-    const updated = toggleStarredPlant(plantId);
-    setStarredIds(updated);
-    const plant = BOTANICAL_SPECIMENS[plantId];
-    if (updated.includes(plantId)) {
-      showToast(`⭐ Added "${plant?.name || 'Plant'}" to Personal Gallery!`);
-    } else {
-      showToast(`Removed "${plant?.name || 'Plant'}" from Personal Gallery.`);
+    if (!isAuthenticated) {
+      showToast('Vui lòng đăng nhập để lưu cây vào mục yêu thích!');
+      setTimeout(() => navigate('/login'), 1200);
+      return;
+    }
+
+    const plant = allPlants.find(p => p.id === plantId || p._id === plantId) || BOTANICAL_SPECIMENS[plantId];
+    const identifier = plant?._id || plant?.id || plantId;
+
+    try {
+      const res = await gardenApi.toggleBookmark(identifier);
+      const isBookmarked = res?.data?.isBookmarked;
+      if (isBookmarked) {
+        setStarredIds(prev => Array.from(new Set([...prev, plantId])));
+        showToast(`⭐ Đã thêm "${plant?.name || 'Cây'}" vào Mục Yêu Thích!`);
+      } else {
+        setStarredIds(prev => prev.filter(id => id !== plantId && id !== identifier));
+        showToast(`Đã xóa "${plant?.name || 'Cây'}" khỏi Mục Yêu Thích.`);
+      }
+    } catch (err) {
+      showToast('Lỗi cập nhật yêu thích: ' + err.message);
     }
   };
 
@@ -198,7 +274,12 @@ const Plants = () => {
 
       {/* Specimen Grid */}
       <main style={{ flex: 1, maxWidth: '1360px', width: '100%', margin: '0 auto 100px', padding: '0 24px' }}>
-        {filteredPlants.length === 0 ? (
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '80px 24px', color: '#86efac' }}>
+            <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>🌿</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Đang nạp hồ sơ thực vật từ máy chủ GreenNest...</div>
+          </div>
+        ) : filteredPlants.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '75px 24px', background: 'rgba(14, 30, 22, 0.75)', border: '1.5px dashed rgba(245, 158, 11, 0.45)', borderRadius: '28px', maxWidth: '820px', margin: '0 auto' }}>
             <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🌱</div>
             <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#fff', marginBottom: '12px' }}>
@@ -333,8 +414,15 @@ const Plants = () => {
                       <div style={{ display: 'flex', gap: '6px' }}>
                         <button
                           type="button"
-                          onClick={() => setTargetSavePlantSlug(plant.slug || plant.id)}
-                          title="Save plant to collection"
+                onClick={() => {
+                  if (!isAuthenticated) {
+                    showToast('Please sign in to save specimens to your collection!');
+                    setTimeout(() => navigate('/login'), 1200);
+                    return;
+                  }
+                  setTargetSavePlantSlug(plant.slug || plant.id);
+                }}
+                title="Save specimen to collection"
                           style={{
                             background: 'rgba(34, 197, 94, 0.15)',
                             border: '1px solid rgba(34, 197, 94, 0.35)',
