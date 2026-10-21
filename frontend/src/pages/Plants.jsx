@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import {
@@ -38,15 +38,37 @@ const normalizePlant = (p) => ({
 const Plants = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const [activeBiome, setActiveBiome] = useState('all');
-  const [activeTag, setActiveTag] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const initialQ = searchParams.get('q') || searchParams.get('search') || '';
+  const initialTag = searchParams.get('tag') || null;
+  const initialBiome = searchParams.get('biome') || 'all';
+
+  const [activeBiome, setActiveBiome] = useState(initialBiome);
+  const [activeTag, setActiveTag] = useState(initialTag);
+  const [searchQuery, setSearchQuery] = useState(initialQ);
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [inspectPlant, setInspectPlant] = useState(null);
   const [apiPlants, setApiPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
+
+  // Sync state if URL search params change
+  useEffect(() => {
+    const q = searchParams.get('q') || searchParams.get('search');
+    if (q !== null && q !== searchQuery) {
+      setSearchQuery(q);
+    }
+    const t = searchParams.get('tag');
+    if (t !== null && t !== activeTag) {
+      setActiveTag(t);
+    }
+    const b = searchParams.get('biome');
+    if (b !== null && b !== activeBiome) {
+      setActiveBiome(b);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     // Tải dữ liệu cây thực tế từ MongoDB Backend
@@ -301,6 +323,10 @@ const Plants = () => {
                     <img
                       src={plant.image}
                       alt={plant.name}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
+                      }}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                     <span style={{
@@ -388,15 +414,15 @@ const Plants = () => {
                       <div style={{ display: 'flex', gap: '6px' }}>
                         <button
                           type="button"
-                          onClick={() => {
-                            if (!isAuthenticated) {
-                              showToast('Vui lòng đăng nhập để lưu cây vào bộ sưu tập!');
-                              setTimeout(() => navigate('/login'), 1200);
-                              return;
-                            }
-                            setTargetSavePlantSlug(plant.slug || plant.id);
-                          }}
-                          title="Lưu cây vào bộ sưu tập"
+                onClick={() => {
+                  if (!isAuthenticated) {
+                    showToast('Please sign in to save specimens to your collection!');
+                    setTimeout(() => navigate('/login'), 1200);
+                    return;
+                  }
+                  setTargetSavePlantSlug(plant.slug || plant.id);
+                }}
+                title="Save specimen to collection"
                           style={{
                             background: 'rgba(34, 197, 94, 0.15)',
                             border: '1px solid rgba(34, 197, 94, 0.35)',
@@ -412,7 +438,7 @@ const Plants = () => {
                           }}
                         >
                           <span>📁</span>
-                          <span>Lưu</span>
+                          <span>Save</span>
                         </button>
 
                         <button
@@ -514,6 +540,10 @@ const Plants = () => {
               <img
                 src={inspectPlant.image}
                 alt={inspectPlant.name}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
+                }}
                 style={{ width: '180px', height: '180px', objectFit: 'cover', borderRadius: '16px' }}
               />
               <div style={{ flex: 1, minWidth: '240px' }}>
@@ -606,7 +636,7 @@ const Plants = () => {
         onClose={() => setTargetSavePlantSlug(null)}
         plantSlug={targetSavePlantSlug}
         onSaved={() => {
-          showToast('Đã cập nhật bộ sưu tập thành công!');
+          showToast('Collection updated successfully!');
         }}
       />
 

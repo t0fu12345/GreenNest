@@ -83,7 +83,7 @@ const AdminRoute = ({ children }) => {
             color: '#ffffff',
             marginBottom: '12px'
           }}>
-            Khu vực độc quyền Quản trị viên
+            Restricted Administrator Clearance
           </h2>
 
           <p style={{
@@ -92,8 +92,8 @@ const AdminRoute = ({ children }) => {
             lineHeight: 1.6,
             marginBottom: '20px'
           }}>
-            Tài khoản hiện tại của bạn (<strong>{user?.email}</strong>) chỉ có quyền <code>{user?.role || 'user'}</code>.
-            Mã JWT Token của bạn không chứa quyền hạn <code>admin:access</code> để truy cập bảng điều khiển độc quyền.
+            Your current session (<strong>{user?.email}</strong>) possesses <code>{user?.role || 'user'}</code> privileges.
+            Your active RFC 7519 token claims do not include <code>admin:access</code> permissions required for this control center.
           </p>
 
           <div style={{
@@ -105,7 +105,7 @@ const AdminRoute = ({ children }) => {
             marginBottom: '28px',
             wordBreak: 'break-all',
             textAlign: 'left',
-            borderRadius: 0
+            borderRadius: '8px'
           }}>
             <span style={{ color: '#f87171', fontWeight: 600 }}>JWT Claims:</span> role="{user?.role}" | permissions={JSON.stringify(user?.permissions || [])}
           </div>
@@ -121,10 +121,10 @@ const AdminRoute = ({ children }) => {
                 fontSize: '0.86rem',
                 fontWeight: 600,
                 textDecoration: 'none',
-                borderRadius: 0
+                borderRadius: '9999px'
               }}
             >
-              ← Về trang chủ
+              ← Return to Home
             </Link>
 
             <Link
@@ -136,10 +136,10 @@ const AdminRoute = ({ children }) => {
                 fontSize: '0.86rem',
                 fontWeight: 700,
                 textDecoration: 'none',
-                borderRadius: 0
+                borderRadius: '9999px'
               }}
             >
-              Đăng nhập tài khoản Admin →
+              Sign In with Admin Account →
             </Link>
           </div>
         </div>

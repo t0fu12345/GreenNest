@@ -210,6 +210,10 @@ const SpecimenDetail = () => {
               <img
                 src={plant.image}
                 alt={plant.name}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
+                }}
                 style={{ width: '100%', height: '420px', objectFit: 'cover', display: 'block' }}
               />
               <span style={{
@@ -378,7 +382,7 @@ const SpecimenDetail = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  <span>📁 Lưu Vào Bộ Sưu Tập</span>
+                  <span>📁 Save To Collection</span>
                 </button>
 
                 <button
@@ -398,7 +402,7 @@ const SpecimenDetail = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  <span>{isStarred ? '★ Đã Yêu Thích' : '★ Yêu Thích'}</span>
+                  <span>{isStarred ? '★ Starred' : '★ Star Specimen'}</span>
                 </button>
 
                 <Link
@@ -527,7 +531,7 @@ const SpecimenDetail = () => {
         onClose={() => setIsSaveModalOpen(false)}
         plantSlug={plant.slug || plantId}
         onSaved={() => {
-          setToastMessage(`Đã cập nhật bộ sưu tập cho "${plant.name}"!`);
+          setToastMessage(`Collection updated for "${plant.name}"!`);
           setTimeout(() => setToastMessage(''), 3000);
         }}
       />

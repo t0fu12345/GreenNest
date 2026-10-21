@@ -46,7 +46,7 @@ const Gallery = () => {
   const handleLike = async (e, id) => {
     e.stopPropagation();
     if (!isAuthenticated) {
-      showToast('Vui lòng đăng nhập để thả tim cho bức ảnh!');
+      showToast('Please sign in to star this photograph!');
       setTimeout(() => navigate('/login'), 1200);
       return;
     }
@@ -58,10 +58,10 @@ const Gallery = () => {
         setItems(prev => prev.map(item => 
           item._id === id ? { ...item, likesCount: count, isLiked } : item
         ));
-        showToast(isLiked ? '❤️ Đã thả tim cho bức ảnh!' : '🤍 Đã hủy thả tim!');
+        showToast(isLiked ? '❤️ Added to starred gallery!' : '🤍 Removed star from photograph.');
       }
     } catch (err) {
-      showToast('Không thể cập nhật lượt thích: ' + (err.message || 'Lỗi'));
+      showToast('Unable to update like status: ' + (err.message || 'Error'));
     }
   };
 
@@ -148,9 +148,8 @@ const Gallery = () => {
           }}>
             Interactive Botanical Gallery
           </h1>
-
           <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '680px', margin: '0 auto 28px', lineHeight: 1.65 }}>
-            Bộ sưu tập nhiếp ảnh kiểng lá nhiệt đới và không gian sống sinh thái được đồng bộ trực tiếp từ cơ sở dữ liệu MongoDB Atlas. Click vào ảnh để mở chế độ Lightbox toàn màn hình.
+            Curated photographic exhibition of tropical aroids, living foliage, and biophilic interior spaces synchronized with MongoDB Atlas. Click any image to open the high-resolution interactive Lightbox.
           </p>
 
           {/* Quick Search in Gallery */}
@@ -159,7 +158,7 @@ const Gallery = () => {
               type="text"
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
-              placeholder="Tìm kiếm ảnh theo tên cây, chú thích..."
+              placeholder="Search photography by species, notes..."
               style={{
                 width: '100%',
                 background: 'rgba(14, 30, 22, 0.8)',
@@ -179,11 +178,11 @@ const Gallery = () => {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '100px 24px', color: '#86efac' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>🖼️</div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Đang nạp 20 tác phẩm từ MongoDB Atlas...</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading works from MongoDB Atlas...</div>
           </div>
         ) : filteredItems.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: '#94a3b8' }}>
-            <p>Không tìm thấy hình ảnh phù hợp với "{filterQuery}".</p>
+            <p>No photography matches "{filterQuery}".</p>
             <button
               type="button"
               onClick={() => setFilterQuery('')}
@@ -197,7 +196,7 @@ const Gallery = () => {
                 cursor: 'pointer'
               }}
             >
-              Xem tất cả ảnh
+              View all photography
             </button>
           </div>
         ) : (
@@ -269,7 +268,7 @@ const Gallery = () => {
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '0.74rem', color: '#86efac', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                      Nguồn: {item.credit || 'Pinterest'}
+                      Credit: {item.credit || 'Pinterest'}
                     </span>
 
                     <button
@@ -290,7 +289,7 @@ const Gallery = () => {
                         backdropFilter: 'blur(8px)',
                         transition: 'all 0.2s ease'
                       }}
-                      title={item.isLiked ? "Hủy thả tim" : "Thả tim"}
+                      title={item.isLiked ? "Unlike" : "Star"}
                     >
                       <span>{item.isLiked ? '❤️' : '🤍'}</span>
                       <span>{item.likesCount || 0}</span>
@@ -430,7 +429,7 @@ const Gallery = () => {
                   {activeItem.caption || activeItem.alt}
                 </p>
                 <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                  Nguồn tác giả: <span style={{ color: '#86efac' }}>{activeItem.credit || 'GreenNest Sanctuary'}</span> • Bức {activeLightboxIndex + 1} / {filteredItems.length}
+                  Photographer: <span style={{ color: '#86efac' }}>{activeItem.credit || 'GreenNest Sanctuary'}</span> • Specimen {activeLightboxIndex + 1} / {filteredItems.length}
                 </div>
               </div>
 
@@ -453,7 +452,7 @@ const Gallery = () => {
                   gap: '8px'
                 }}
               >
-                <span>{activeItem.isLiked ? '❤️ Đã Thích' : '🤍 Thả Tim'}</span>
+                <span>{activeItem.isLiked ? '❤️ Liked' : '🤍 Star Image'}</span>
                 <span>({activeItem.likesCount || 0})</span>
               </button>
             </div>

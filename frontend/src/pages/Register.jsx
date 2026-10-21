@@ -26,21 +26,30 @@ const Register = () => {
     }, duration);
   };
 
+  const handleSocialRegister = (provider) => {
+    setSubmitting(true);
+    showNotification(`Connected with ${provider}! Welcome to GreenNest.`, 'success');
+    loginWithGoogle();
+    setTimeout(() => {
+      navigate('/');
+    }, 950);
+  };
+
 
   const handleEmailRegister = async (e) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !password.trim()) {
-      showNotification('Vui lòng điền đầy đủ các thông tin bắt buộc.', 'error');
+      showNotification('Please fill in all required fields.', 'error');
       return;
     }
 
     if (password.length < 6) {
-      showNotification('Mật khẩu cần tối thiểu 6 ký tự để đảm bảo an toàn.', 'error');
+      showNotification('Password must be at least 6 characters for security.', 'error');
       return;
     }
 
     if (!agreeTerms) {
-      showNotification('Vui lòng đồng ý với các nguyên tắc chăm sóc sinh thái.', 'error');
+      showNotification('Please agree to the botanical care principles.', 'error');
       return;
     }
 
@@ -53,7 +62,7 @@ const Register = () => {
     });
 
     if (result.success) {
-      showNotification(`Tạo tài khoản thành công! Chào mừng ${result.user.name}. Đang chuyển hướng...`, 'success');
+      showNotification(`Account created successfully! Welcome ${result.user.name}. Redirecting...`, 'success');
       setTimeout(() => {
         navigate('/');
       }, 950);
@@ -118,7 +127,7 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="regNickname" className="form-label">Nickname (dùng để đăng nhập)</label>
+            <label htmlFor="regNickname" className="form-label">Username / Nickname (for login)</label>
             <div className="input-wrapper">
               <input 
                 type="text" 
@@ -155,7 +164,7 @@ const Register = () => {
                 type={showPassword ? 'text' : 'password'} 
                 id="regPassword" 
                 className="input-field" 
-                placeholder="Tối thiểu 6 ký tự" 
+                placeholder="Minimum 6 characters" 
                 required 
                 minLength={6}
                 value={password}
@@ -166,7 +175,7 @@ const Register = () => {
                 type="button" 
                 className="input-icon-btn" 
                 onClick={() => setShowPassword(!showPassword)} 
-                title="Hiện/Ẩn mật khẩu"
+                title="Toggle password visibility"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M1 12s4-8 11-8 11 8 11 8 -4 8 -11 8 -11-8z"></path>
@@ -185,7 +194,7 @@ const Register = () => {
               onChange={(e) => setAgreeTerms(e.target.checked)} 
               required 
             />
-            <span>Tôi cam kết bảo tồn sinh thái và tuân thủ nguyên tắc chăm sóc thực vật hữu cơ.</span>
+            <span>I commit to ecological preservation and organic plant care principles.</span>
           </label>
 
           <button 
@@ -194,7 +203,7 @@ const Register = () => {
             id="submitRegBtn"
             disabled={submitting}
           >
-            <span>{submitting ? 'Đang tạo tài khoản...' : 'Create Account & Enter Sanctuary →'}</span>
+            <span>{submitting ? 'Creating Account...' : 'Create Account & Enter Sanctuary →'}</span>
           </button>
 
           {/* Feedback Toast */}
@@ -215,8 +224,8 @@ const Register = () => {
         </form>
 
         <div className="auth-footer">
-          Đã có tài khoản GreenNest?{' '}
-          <Link to="/login">Đăng nhập tại đây →</Link>
+          Already have a GreenNest account?{' '}
+          <Link to="/login">Sign in here →</Link>
         </div>
       </main>
 

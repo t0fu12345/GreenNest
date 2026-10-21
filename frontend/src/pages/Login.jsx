@@ -34,11 +34,21 @@ const Login = () => {
     }, duration);
   };
 
+  const handleSocialLogin = (provider) => {
+    setSubmitting(true);
+    showNotification(`Connecting via ${provider}... Authentication successful!`, 'success');
+    loginWithGoogle();
+    setTimeout(() => {
+      navigate('/');
+    }, 900);
+  };
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!identifier.trim() || !password.trim()) {
-      showNotification('Vui lòng nhập đầy đủ Email (hoặc Nickname) và Mật khẩu.', 'error');
+      showNotification('Please enter both your Nickname (or Email) and Password.', 'error');
+
       return;
     }
 
@@ -47,12 +57,12 @@ const Login = () => {
 
     if (result.success) {
       if (result.isAdmin) {
-        showNotification(`Xác thực thành công! Đã cấp quyền Quản trị viên & Token JWT. Đang vào Admin Portal...`, 'success');
+        showNotification(`Authentication successful! Administrator clearance verified. Entering Admin Portal...`, 'success');
         setTimeout(() => {
           navigate('/admin');
         }, 900);
       } else {
-        showNotification(`Chào mừng trở lại, ${result.user.name}! Đăng nhập thành công. Đang chuyển hướng...`, 'success');
+        showNotification(`Welcome back, ${result.user.name}! Redirecting to your botanical space...`, 'success');
         setTimeout(() => {
           navigate('/');
         }, 900);
@@ -61,6 +71,18 @@ const Login = () => {
       setSubmitting(false);
       showNotification(result.message, 'error', 4000);
     }
+  };
+
+  const fillDemoAccount = () => {
+    setIdentifier('minhthao');
+    setPassword('GreenCanopy2026');
+    showNotification('Filled demo member: minhthao. Ready to sign in.', 'success', 2500);
+  };
+
+  const fillAdminAccount = () => {
+    setIdentifier('admin');
+    setPassword('AdminCanopy2026!');
+    showNotification('Filled Admin account: admin. Ready to sign in.', 'success', 2500);
   };
 
 
@@ -121,7 +143,7 @@ const Login = () => {
           <div className="form-group">
             <div className="form-label">
               <label htmlFor="loginPassword">Password</label>
-              <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Hướng dẫn đặt lại mật khẩu đã được gửi đến email của bạn."); }}>Quên mật khẩu?</a>
+              <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Password reset instructions have been dispatched to your email address."); }}>Forgot password?</a>
             </div>
             <div className="input-wrapper">
               <input 
@@ -138,7 +160,7 @@ const Login = () => {
                 type="button" 
                 className="input-icon-btn" 
                 onClick={() => setShowPassword(!showPassword)} 
-                title="Hiện/Ẩn mật khẩu"
+                title="Toggle password visibility"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M1 12s4-8 11-8 11 8 11 8 -4 8 -11 8 -11-8z"></path>
@@ -156,8 +178,47 @@ const Login = () => {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)} 
               />
-              <span>Ghi nhớ phiên đăng nhập (Cookie)</span>
+              <span>Remember session (Cookie)</span>
             </label>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              <button 
+                type="button" 
+                onClick={fillDemoAccount}
+                style={{
+                  background: 'rgba(34, 197, 94, 0.15)',
+                  border: '1px solid rgba(34, 197, 94, 0.35)',
+                  color: '#86efac',
+                  fontSize: '0.74rem',
+                  borderRadius: '9999px',
+                  padding: '4px 10px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                title="Standard User: Nickname: minhthao / Password: GreenCanopy2026"
+              >
+                ⚡ Member
+              </button>
+
+              <button 
+                type="button" 
+                onClick={fillAdminAccount}
+                style={{
+                  background: 'rgba(234, 179, 8, 0.18)',
+                  border: '1px solid rgba(234, 179, 8, 0.5)',
+                  color: '#fef08a',
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  borderRadius: '9999px',
+                  padding: '4px 10px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                title="Admin Account: Nickname: admin / Password: AdminCanopy2026!"
+              >
+                👑 Admin
+              </button>
+            </div>
+
           </div>
 
           <button 
@@ -166,7 +227,7 @@ const Login = () => {
             id="submitBtn"
             disabled={submitting}
           >
-            <span>{submitting ? 'Đang xác thực...' : 'Sign In to Sanctuary →'}</span>
+            <span>{submitting ? 'Verifying Credentials...' : 'Sign In to Sanctuary →'}</span>
           </button>
 
           {/* Toast Feedback */}
@@ -187,8 +248,8 @@ const Login = () => {
         </form>
 
         <div className="auth-footer">
-          Chưa có tài khoản GreenNest?{' '}
-          <Link to="/register">Tạo tài khoản mới ngay →</Link>
+          Don't have a GreenNest account yet?{' '}
+          <Link to="/register">Create a new account now →</Link>
         </div>
       </main>
 

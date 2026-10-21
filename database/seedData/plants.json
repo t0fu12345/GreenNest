@@ -43,9 +43,26 @@
       "soilBar": "90%",
       "soilSub": "Hỗn hợp xốp thoáng pH 6.0"
     },
-    "traits": ["Xẻ lá tự nhiên", "Rễ khí sinh khỏe", "Cây leo thường xanh", "Lọc bụi mịn"],
-    "tags": ["#Araceae", "#TrailingFoliage", "#VelvetLeaf", "#DeepShadeThriving", "#RareCultivar"],
-    "taxonomyTags": ["Araceae", "Monstera", "Alismatales", "Angiosperms", "Plantae"],
+    "traits": [
+      "Xẻ lá tự nhiên",
+      "Rễ khí sinh khỏe",
+      "Cây leo thường xanh",
+      "Lọc bụi mịn"
+    ],
+    "tags": [
+      "#Araceae",
+      "#TrailingFoliage",
+      "#VelvetLeaf",
+      "#DeepShadeThriving",
+      "#RareCultivar"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Monstera",
+      "Alismatales",
+      "Angiosperms",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
       "gallery": [
@@ -53,7 +70,8 @@
         "https://images.unsplash.com/photo-1617173944883-6ffbd35d584d?auto=format&fit=crop&w=800&q=80"
       ]
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-red-rose",
@@ -99,16 +117,34 @@
       "soilBar": "88%",
       "soilSub": "Đất giàu dinh dưỡng pH 6.5"
     },
-    "traits": ["Hương thơm nồng nàn", "Cánh nhung dày", "Thân gai bảo vệ", "Nở hoa liên tục"],
-    "tags": ["#SubtropicalHighlands", "#TemperateGarden", "#AromaticBloom", "#SunLoving", "#Rosa"],
-    "taxonomyTags": ["Rosaceae", "Rosa", "Rosales", "Eudicots", "Plantae"],
+    "traits": [
+      "Hương thơm nồng nàn",
+      "Cánh nhung dày",
+      "Thân gai bảo vệ",
+      "Nở hoa liên tục"
+    ],
+    "tags": [
+      "#SubtropicalHighlands",
+      "#TemperateGarden",
+      "#AromaticBloom",
+      "#SunLoving",
+      "#Rosa"
+    ],
+    "taxonomyTags": [
+      "Rosaceae",
+      "Rosa",
+      "Rosales",
+      "Eudicots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
       "gallery": [
         "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=800&q=80"
       ]
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-aechmea",
@@ -154,14 +190,32 @@
       "soilBar": "85%",
       "soilSub": "Giá thể phụ sinh xốp nhẹ pH 5.8"
     },
-    "traits": ["Bình nước trung tâm", "Lá phủ phấn bạc", "Hoa hồng bền 4 tháng", "Quang hợp CAM ban đêm"],
-    "tags": ["#Bromeliad", "#Epiphyte", "#SilverFoliage", "#TropicalShowstopper", "#PinkBloom"],
-    "taxonomyTags": ["Bromeliaceae", "Aechmea", "Poales", "Commelinids", "Plantae"],
+    "traits": [
+      "Bình nước trung tâm",
+      "Lá phủ phấn bạc",
+      "Hoa hồng bền 4 tháng",
+      "Quang hợp CAM ban đêm"
+    ],
+    "tags": [
+      "#Bromeliad",
+      "#Epiphyte",
+      "#SilverFoliage",
+      "#TropicalShowstopper",
+      "#PinkBloom"
+    ],
+    "taxonomyTags": [
+      "Bromeliaceae",
+      "Aechmea",
+      "Poales",
+      "Commelinids",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-boston-fern",
@@ -207,14 +261,32 @@
       "soilBar": "88%",
       "soilSub": "Giá thể giữ ẩm tơi xốp pH 5.5"
     },
-    "traits": ["Vòm lá rủ mềm mại", "Máy tạo ẩm sinh học", "Hấp thụ Formaldehyde", "Thích nghi bóng râm"],
-    "tags": ["#FernFamily", "#AirPurifying", "#HangingBasket", "#MoistureLover", "#PetSafe"],
-    "taxonomyTags": ["Nephrolepidaceae", "Nephrolepis", "Polypodiales", "Polypodiopsida", "Plantae"],
+    "traits": [
+      "Vòm lá rủ mềm mại",
+      "Máy tạo ẩm sinh học",
+      "Hấp thụ Formaldehyde",
+      "Thích nghi bóng râm"
+    ],
+    "tags": [
+      "#FernFamily",
+      "#AirPurifying",
+      "#HangingBasket",
+      "#MoistureLover",
+      "#PetSafe"
+    ],
+    "taxonomyTags": [
+      "Nephrolepidaceae",
+      "Nephrolepis",
+      "Polypodiales",
+      "Polypodiopsida",
+      "Plantae"
+    ],
     "images": {
-      "hero": "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80",
+      "hero": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-snake-plant",
@@ -260,14 +332,32 @@
       "soilBar": "95%",
       "soilSub": "Thoát nước tức thì pH 7.0"
     },
-    "traits": ["Cực kỳ dễ sống", "Nhả Oxy ban đêm", "Chịu hạn xuất sắc", "Lá cứng thẳng đứng"],
-    "tags": ["#AirPurifying", "#NightOxygen", "#LowMaintenance", "#BedroomSafe", "#Succulent"],
-    "taxonomyTags": ["Asparagaceae", "Dracaena", "Asparagales", "Monocots", "Plantae"],
+    "traits": [
+      "Cực kỳ dễ sống",
+      "Nhả Oxy ban đêm",
+      "Chịu hạn xuất sắc",
+      "Lá cứng thẳng đứng"
+    ],
+    "tags": [
+      "#AirPurifying",
+      "#NightOxygen",
+      "#LowMaintenance",
+      "#BedroomSafe",
+      "#Succulent"
+    ],
+    "taxonomyTags": [
+      "Asparagaceae",
+      "Dracaena",
+      "Asparagales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
-      "hero": "https://images.unsplash.com/photo-1599598425947-5203ddb7c252?auto=format&fit=crop&w=1200&q=80",
+      "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-zz-plant",
@@ -313,14 +403,32 @@
       "soilBar": "90%",
       "soilSub": "Thoát nước nhanh chóng pH 6.5"
     },
-    "traits": ["Lá bóng tự nhiên", "Củ trữ nước ngầm", "Không tốn công chăm", "Phong thủy tài lộc"],
-    "tags": ["#OfficePlants", "#LowLightTolerant", "#GlossyLeaves", "#Indestructible", "#Araceae"],
-    "taxonomyTags": ["Araceae", "Zamioculcas", "Alismatales", "Monocots", "Plantae"],
+    "traits": [
+      "Lá bóng tự nhiên",
+      "Củ trữ nước ngầm",
+      "Không tốn công chăm",
+      "Phong thủy tài lộc"
+    ],
+    "tags": [
+      "#OfficePlants",
+      "#LowLightTolerant",
+      "#GlossyLeaves",
+      "#Indestructible",
+      "#Araceae"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Zamioculcas",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-fiddle-leaf",
@@ -366,14 +474,32 @@
       "soilBar": "85%",
       "soilSub": "Hỗn hợp giàu dinh dưỡng pH 6.5"
     },
-    "traits": ["Lá hình đàn vĩ cầm", "Thân gỗ vươn cao", "Điểm nhấn kiến trúc", "Thanh lọc không khí"],
-    "tags": ["#FicusLyrata", "#ArchitecturalPlant", "#ModernInterior", "#StatementPlant", "#Moraceae"],
-    "taxonomyTags": ["Moraceae", "Ficus", "Rosales", "Eudicots", "Plantae"],
+    "traits": [
+      "Lá hình đàn vĩ cầm",
+      "Thân gỗ vươn cao",
+      "Điểm nhấn kiến trúc",
+      "Thanh lọc không khí"
+    ],
+    "tags": [
+      "#FicusLyrata",
+      "#ArchitecturalPlant",
+      "#ModernInterior",
+      "#StatementPlant",
+      "#Moraceae"
+    ],
+    "taxonomyTags": [
+      "Moraceae",
+      "Ficus",
+      "Rosales",
+      "Eudicots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-peace-lily",
@@ -419,14 +545,32 @@
       "soilBar": "86%",
       "soilSub": "Đất giàu xơ dừa giữ ẩm pH 6.0"
     },
-    "traits": ["Hoa trắng tinh khôi", "Báo hiệu khi thiếu nước", "Lọc độc tố NASA", "Chịu bóng râm tốt"],
-    "tags": ["#WhiteBlooms", "#NASACleanAir", "#EasyCare", "#PeaceSymbol", "#ShadeLover"],
-    "taxonomyTags": ["Araceae", "Spathiphyllum", "Alismatales", "Monocots", "Plantae"],
+    "traits": [
+      "Hoa trắng tinh khôi",
+      "Báo hiệu khi thiếu nước",
+      "Lọc độc tố NASA",
+      "Chịu bóng râm tốt"
+    ],
+    "tags": [
+      "#WhiteBlooms",
+      "#NASACleanAir",
+      "#EasyCare",
+      "#PeaceSymbol",
+      "#ShadeLover"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Spathiphyllum",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
-      "hero": "https://images.unsplash.com/photo-1593482892290-f54927ae1bf6?auto=format&fit=crop&w=1200&q=80",
+      "hero": "https://images.unsplash.com/photo-1593691509543-c55fb32e7355?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1593691509543-c55fb32e7355?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-pothos",
@@ -472,14 +616,32 @@
       "soilBar": "80%",
       "soilSub": "Thoát nước tự nhiên pH 6.2"
     },
-    "traits": ["Dây leo xanh mướt", "Cực kỳ dễ nhân giống", "Trồng được trong nước", "Lọc không khí bền bỉ"],
-    "tags": ["#TrailingVine", "#BeginnerFriendly", "#WaterPropagation", "#GoldenLeaves", "#Araceae"],
-    "taxonomyTags": ["Araceae", "Epipremnum", "Alismatales", "Monocots", "Plantae"],
+    "traits": [
+      "Dây leo xanh mướt",
+      "Cực kỳ dễ nhân giống",
+      "Trồng được trong nước",
+      "Lọc không khí bền bỉ"
+    ],
+    "tags": [
+      "#TrailingVine",
+      "#BeginnerFriendly",
+      "#WaterPropagation",
+      "#GoldenLeaves",
+      "#Araceae"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Epipremnum",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-calathea",
@@ -525,14 +687,32 @@
       "soilBar": "87%",
       "soilSub": "Giá thể giàu mùn giữ ẩm pH 6.0"
     },
-    "traits": ["Cử động khép lá ban đêm", "Vân sọc xanh bạc", "Tuyệt đối an toàn thú cưng", "Lọc bụi mịn"],
-    "tags": ["#PrayerPlant", "#SilverStripes", "#PetSafe", "#HighHumidity", "#Marantaceae"],
-    "taxonomyTags": ["Marantaceae", "Goeppertia", "Zingiberales", "Monocots", "Plantae"],
+    "traits": [
+      "Cử động khép lá ban đêm",
+      "Vân sọc xanh bạc",
+      "Tuyệt đối an toàn thú cưng",
+      "Lọc bụi mịn"
+    ],
+    "tags": [
+      "#PrayerPlant",
+      "#SilverStripes",
+      "#PetSafe",
+      "#HighHumidity",
+      "#Marantaceae"
+    ],
+    "taxonomyTags": [
+      "Marantaceae",
+      "Goeppertia",
+      "Zingiberales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-alocasia-amazonica",
@@ -578,14 +758,32 @@
       "soilBar": "92%",
       "soilSub": "Thoát nước thông thoáng pH 5.8"
     },
-    "traits": ["Lá hình khiên mũi tên", "Gân trắng tương phản", "Mặt dưới lá màu tím", "Vẻ đẹp điêu khắc"],
-    "tags": ["#AfricanMask", "#DramaticFoliage", "#AroidCollector", "#ShieldLeaf", "#Araceae"],
-    "taxonomyTags": ["Araceae", "Alocasia", "Alismatales", "Monocots", "Plantae"],
+    "traits": [
+      "Lá hình khiên mũi tên",
+      "Gân trắng tương phản",
+      "Mặt dưới lá màu tím",
+      "Vẻ đẹp điêu khắc"
+    ],
+    "tags": [
+      "#AfricanMask",
+      "#DramaticFoliage",
+      "#AroidCollector",
+      "#ShieldLeaf",
+      "#Araceae"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Alocasia",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-rubber-tree",
@@ -631,14 +829,32 @@
       "soilBar": "85%",
       "soilSub": "Hỗn hợp giữ dinh dưỡng pH 6.5"
     },
-    "traits": ["Búp non đỏ thắm", "Lá dày màu mận chín", "Thanh lọc khí CO", "Dáng cây đứng trang trọng"],
-    "tags": ["#BurgundyLeaves", "#FicusElastica", "#SturdyPlant", "#IndoorTree", "#AirCleaner"],
-    "taxonomyTags": ["Moraceae", "Ficus", "Rosales", "Eudicots", "Plantae"],
+    "traits": [
+      "Búp non đỏ thắm",
+      "Lá dày màu mận chín",
+      "Thanh lọc khí CO",
+      "Dáng cây đứng trang trọng"
+    ],
+    "tags": [
+      "#BurgundyLeaves",
+      "#FicusElastica",
+      "#SturdyPlant",
+      "#IndoorTree",
+      "#AirCleaner"
+    ],
+    "taxonomyTags": [
+      "Moraceae",
+      "Ficus",
+      "Rosales",
+      "Eudicots",
+      "Plantae"
+    ],
     "images": {
-      "hero": "https://images.unsplash.com/photo-1597055181363-22849b2750e3?auto=format&fit=crop&w=1200&q=80",
+      "hero": "https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-spider-plant",
@@ -684,14 +900,32 @@
       "soilBar": "82%",
       "soilSub": "Thoát nước tốt pH 6.5"
     },
-    "traits": ["Sinh chồi cây con", "Uốn cong duyên dáng", "An toàn cho chó mèo", "Hấp thụ khói độc"],
-    "tags": ["#Spiderettes", "#PetFriendly", "#HangingBasket", "#AirFiltering", "#EasyHouseplant"],
-    "taxonomyTags": ["Asparagaceae", "Chlorophytum", "Asparagales", "Monocots", "Plantae"],
+    "traits": [
+      "Sinh chồi cây con",
+      "Uốn cong duyên dáng",
+      "An toàn cho chó mèo",
+      "Hấp thụ khói độc"
+    ],
+    "tags": [
+      "#Spiderettes",
+      "#PetFriendly",
+      "#HangingBasket",
+      "#AirFiltering",
+      "#EasyHouseplant"
+    ],
+    "taxonomyTags": [
+      "Asparagaceae",
+      "Chlorophytum",
+      "Asparagales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-string-of-pearls",
@@ -737,14 +971,32 @@
       "soilBar": "96%",
       "soilSub": "Đá pumice và akadama pH 6.8"
     },
-    "traits": ["Lá tròn như hạt ngọc", "Dây rủ như thác", "Chịu hạn sa mạc", "Kiểu dáng độc nhất vô nhị"],
-    "tags": ["#SucculentLover", "#TrailingSucculent", "#BeadedVines", "#SunnyWindow", "#Curio"],
-    "taxonomyTags": ["Asteraceae", "Curio", "Asterales", "Eudicots", "Plantae"],
+    "traits": [
+      "Lá tròn như hạt ngọc",
+      "Dây rủ như thác",
+      "Chịu hạn sa mạc",
+      "Kiểu dáng độc nhất vô nhị"
+    ],
+    "tags": [
+      "#SucculentLover",
+      "#TrailingSucculent",
+      "#BeadedVines",
+      "#SunnyWindow",
+      "#Curio"
+    ],
+    "taxonomyTags": [
+      "Asteraceae",
+      "Curio",
+      "Asterales",
+      "Eudicots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-bird-of-paradise",
@@ -790,14 +1042,32 @@
       "soilBar": "86%",
       "soilSub": "Đất giàu dinh dưỡng tầng sâu pH 6.5"
     },
-    "traits": ["Lá khổng lồ uy nghi", "Vẻ đẹp resort nhiệt đới", "Thích nghi nắng mạnh", "Tạo bóng mát sinh thái"],
-    "tags": ["#TropicalResort", "#GiantFoliage", "#SunWorshipper", "#StatementTree", "#Strelitzia"],
-    "taxonomyTags": ["Strelitziaceae", "Strelitzia", "Zingiberales", "Monocots", "Plantae"],
+    "traits": [
+      "Lá khổng lồ uy nghi",
+      "Vẻ đẹp resort nhiệt đới",
+      "Thích nghi nắng mạnh",
+      "Tạo bóng mát sinh thái"
+    ],
+    "tags": [
+      "#TropicalResort",
+      "#GiantFoliage",
+      "#SunWorshipper",
+      "#StatementTree",
+      "#Strelitzia"
+    ],
+    "taxonomyTags": [
+      "Strelitziaceae",
+      "Strelitzia",
+      "Zingiberales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-anthurium",
@@ -843,14 +1113,32 @@
       "soilBar": "94%",
       "soilSub": "Giá thể phụ sinh bám đá pH 6.0"
     },
-    "traits": ["Lá nhung hình trái tim", "Gân bạc phát sáng", "Cây sưu tầm đắt giá", "Bền bỉ quanh năm"],
-    "tags": ["#VelvetAnthurium", "#RarePlantCollector", "#HeartLeaf", "#SilverVeins", "#Araceae"],
-    "taxonomyTags": ["Araceae", "Anthurium", "Alismatales", "Monocots", "Plantae"],
+    "traits": [
+      "Lá nhung hình trái tim",
+      "Gân bạc phát sáng",
+      "Cây sưu tầm đắt giá",
+      "Bền bỉ quanh năm"
+    ],
+    "tags": [
+      "#VelvetAnthurium",
+      "#RarePlantCollector",
+      "#HeartLeaf",
+      "#SilverVeins",
+      "#Araceae"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Anthurium",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-philodendron-birkin",
@@ -896,14 +1184,32 @@
       "soilBar": "88%",
       "soilSub": "Thoáng khí xốp nhẹ pH 6.2"
     },
-    "traits": ["Vân sọc kem cẩm thạch", "Dáng cây bụi gọn gàng", "Mỗi lá một hoa văn riêng", "Dễ chăm sóc"],
-    "tags": ["#PhilodendronBirkin", "#VariegatedAroid", "#DesktopPlant", "#DesignerPlant", "#Araceae"],
-    "taxonomyTags": ["Araceae", "Philodendron", "Alismatales", "Monocots", "Plantae"],
+    "traits": [
+      "Vân sọc kem cẩm thạch",
+      "Dáng cây bụi gọn gàng",
+      "Mỗi lá một hoa văn riêng",
+      "Dễ chăm sóc"
+    ],
+    "tags": [
+      "#PhilodendronBirkin",
+      "#VariegatedAroid",
+      "#DesktopPlant",
+      "#DesignerPlant",
+      "#Araceae"
+    ],
+    "taxonomyTags": [
+      "Araceae",
+      "Philodendron",
+      "Alismatales",
+      "Monocots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-jade-plant",
@@ -949,14 +1255,32 @@
       "soilBar": "95%",
       "soilSub": "Thoát nước tức thì pH 6.5"
     },
-    "traits": ["Dáng bonsai cổ thụ", "Lá mọng hình đồng xu", "Tuổi thọ hàng chục năm", "Phong thủy may mắn"],
-    "tags": ["#CrassulaOvata", "#MoneyTree", "#BonsaiSucculent", "#GoodFortune", "#DroughtTolerant"],
-    "taxonomyTags": ["Crassulaceae", "Crassula", "Saxifragales", "Eudicots", "Plantae"],
+    "traits": [
+      "Dáng bonsai cổ thụ",
+      "Lá mọng hình đồng xu",
+      "Tuổi thọ hàng chục năm",
+      "Phong thủy may mắn"
+    ],
+    "tags": [
+      "#CrassulaOvata",
+      "#MoneyTree",
+      "#BonsaiSucculent",
+      "#GoodFortune",
+      "#DroughtTolerant"
+    ],
+    "taxonomyTags": [
+      "Crassulaceae",
+      "Crassula",
+      "Saxifragales",
+      "Eudicots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-english-ivy",
@@ -1002,14 +1326,32 @@
       "soilBar": "82%",
       "soilSub": "Thoát nước tốt pH 6.5"
     },
-    "traits": ["Lọc bào tử nấm mốc", "Leo tường hoặc rủ chậu", "Chịu lạnh xuất sắc", "Vẻ đẹp châu Âu cổ kính"],
-    "tags": ["#MoldPurifier", "#ClassicIvy", "#CoolClimate", "#TrailingVine", "#Araliaceae"],
-    "taxonomyTags": ["Araliaceae", "Hedera", "Apiales", "Eudicots", "Plantae"],
+    "traits": [
+      "Lọc bào tử nấm mốc",
+      "Leo tường hoặc rủ chậu",
+      "Chịu lạnh xuất sắc",
+      "Vẻ đẹp châu Âu cổ kính"
+    ],
+    "tags": [
+      "#MoldPurifier",
+      "#ClassicIvy",
+      "#CoolClimate",
+      "#TrailingVine",
+      "#Araliaceae"
+    ],
+    "taxonomyTags": [
+      "Araliaceae",
+      "Hedera",
+      "Apiales",
+      "Eudicots",
+      "Plantae"
+    ],
     "images": {
-      "hero": "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80",
+      "hero": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80"
   },
   {
     "specimenId": "specimen-echeveria",
@@ -1055,13 +1397,31 @@
       "soilBar": "98%",
       "soilSub": "Đá pumice và perlite pH 6.8"
     },
-    "traits": ["Cánh đối xứng hình hoa hồng", "Phủ lớp phấn tuyết bảo vệ", "Lên màu hồng viền khi đủ nắng", "An toàn với thú cưng"],
-    "tags": ["#EcheveriaElegans", "#MexicanSnowball", "#SucculentArt", "#PetSafe", "#FibonacciBeauty"],
-    "taxonomyTags": ["Crassulaceae", "Echeveria", "Saxifragales", "Eudicots", "Plantae"],
+    "traits": [
+      "Cánh đối xứng hình hoa hồng",
+      "Phủ lớp phấn tuyết bảo vệ",
+      "Lên màu hồng viền khi đủ nắng",
+      "An toàn với thú cưng"
+    ],
+    "tags": [
+      "#EcheveriaElegans",
+      "#MexicanSnowball",
+      "#SucculentArt",
+      "#PetSafe",
+      "#FibonacciBeauty"
+    ],
+    "taxonomyTags": [
+      "Crassulaceae",
+      "Echeveria",
+      "Saxifragales",
+      "Eudicots",
+      "Plantae"
+    ],
     "images": {
       "hero": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
       "gallery": []
     },
-    "status": "published"
+    "status": "published",
+    "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
   }
 ]
