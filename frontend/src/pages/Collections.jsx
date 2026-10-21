@@ -63,7 +63,7 @@ const Collections = () => {
 
   const handleDeleteCollection = (colId, colName, e) => {
     if (e) e.stopPropagation();
-    if (window.confirm(`Are you sure you want to delete collection "${colName}"?`)) {
+    if (window.confirm(`Are you sure you want to delete the collection "${colName}"?`)) {
       deleteUserCollection(userEmail, colId);
       showToast(`Deleted collection "${colName}"`);
       if (selectedColId === colId) setSelectedColId(null);
@@ -207,7 +207,7 @@ const Collections = () => {
                   marginBottom: '16px'
                 }}
               >
-                <span>AUTHENTICATION REQUIRED</span>
+                <span>SIGN IN REQUIRED</span>
               </div>
 
               <h2
@@ -233,7 +233,7 @@ const Collections = () => {
                   fontWeight: 300
                 }}
               >
-                To create, curate, and manage your personalized living plant collections, please sign in to your GreenNest account.
+                Sign in to your GreenNest account to view, create, and manage plant collections personalized for each living space.
               </p>
 
               <div
@@ -259,7 +259,7 @@ const Collections = () => {
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  ← Return to Home
+                  ← Back to Home
                 </Link>
 
                 <Link
@@ -325,7 +325,7 @@ const Collections = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  ✎ Edit Title & Description
+                  ✎ Edit Title / Description
                 </button>
                 <Link
                   to="/plants"
@@ -340,7 +340,7 @@ const Collections = () => {
                     textDecoration: 'none'
                   }}
                 >
-                  + Add Specimen ↗
+                  + Add More Plants ↗
                 </Link>
               </div>
             </div>
@@ -372,7 +372,7 @@ const Collections = () => {
                 {currentCollection.name}
               </h1>
               <p style={{ color: '#cbd5e1', fontSize: '1rem', lineHeight: 1.6, maxWidth: '800px', fontWeight: 300, marginBottom: '24px' }}>
-                {currentCollection.description || 'No description available for this collection.'}
+                {currentCollection.description || 'No description provided for this collection.'}
               </p>
 
               {/* Inner Search Box */}
@@ -412,7 +412,7 @@ const Collections = () => {
                   {innerFilter ? 'No matching specimens found' : 'This collection has no specimens yet'}
                 </h3>
                 <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginBottom: '24px' }}>
-                  {innerFilter ? 'Try searching with different botanical keywords' : 'Explore the Living Canopy catalog and curate specimens into this collection.'}
+                  {innerFilter ? 'Try searching with different keywords.' : 'Explore the living catalog and save your favourite specimens to this collection.'}
                 </p>
                 <Link
                   to="/plants"
@@ -455,6 +455,7 @@ const Collections = () => {
                       <img
                         src={plant.image}
                         alt={plant.name}
+                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                       <button
@@ -539,10 +540,10 @@ const Collections = () => {
                     lineHeight: 1.15
                   }}
                 >
-                  My Curated Collections
+                  My Botanical Collections
                 </h1>
                 <p style={{ color: '#cbd5e1', fontSize: '1rem', marginTop: '8px', fontWeight: 300, maxWidth: '640px' }}>
-                  Curate and personalize living plant collections tailored to your home layout, care schedule, and interior aesthetics.
+                  Curate your private botanical galleries. Organize living specimens by room microclimate, care cadence, or biophilic design.
                 </p>
               </div>
 
@@ -609,12 +610,13 @@ const Collections = () => {
                           }}
                         >
                           <span style={{ fontSize: '2.5rem', marginBottom: '4px' }}>🌿</span>
-                          <span style={{ fontSize: '0.78rem' }}>No specimens added</span>
+                          <span style={{ fontSize: '0.78rem' }}>No specimens yet</span>
                         </div>
                       ) : previewImages.length === 1 ? (
                         <img
                           src={previewImages[0]}
                           alt={col.name}
+                          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       ) : (
@@ -623,6 +625,7 @@ const Collections = () => {
                             <img
                               src={previewImages[0]}
                               alt="Collage 1"
+                              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
                           </div>
@@ -631,6 +634,7 @@ const Collections = () => {
                               <img
                                 src={previewImages[1]}
                                 alt="Collage 2"
+                                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                               />
                             </div>
@@ -639,6 +643,7 @@ const Collections = () => {
                                 <img
                                   src={previewImages[2]}
                                   alt="Collage 3"
+                                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
                               </div>
@@ -676,11 +681,11 @@ const Collections = () => {
                               fontWeight: 600
                             }}
                           >
-                            {col.plantSlugs.length} plants
+                            {col.plantSlugs.length} specimen{col.plantSlugs.length !== 1 ? "s" : ""}
                           </span>
                         </div>
                         <p style={{ color: '#94a3b8', fontSize: '0.86rem', lineHeight: 1.5, marginBottom: '16px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                          {col.description || 'Personalized botanical collection.'}
+                          {col.description || 'Custom curated collection.'}
                         </p>
                       </div>
 
@@ -772,7 +777,7 @@ const Collections = () => {
               {editingCol ? 'Edit Collection' : 'Create New Collection'}
             </h3>
             <p style={{ color: '#94a3b8', fontSize: '0.86rem', marginBottom: '20px' }}>
-              Curate custom groupings to organize plant specimens by space, lighting, or personal preference.
+              Organize your botanical favorites into tailored living collections for every sanctuary.
             </p>
 
             <form onSubmit={handleSaveCollectionForm} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -783,7 +788,7 @@ const Collections = () => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g., Bedroom Air Purifiers..."
+                  placeholder="e.g. Bedroom Air Purifiers, Sunlit Balcony Garden..."
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   style={{
@@ -801,11 +806,11 @@ const Collections = () => {
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, marginBottom: '6px' }}>
-                  Description / Purpose
+                  Description & Vibe
                 </label>
                 <textarea
                   rows={3}
-                  placeholder="Briefly describe the criteria or intended space..."
+                  placeholder="Describe the placement criteria, aesthetic vibe, or care goals..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   style={{

@@ -20,7 +20,7 @@ const Gallery = () => {
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  // Fetch gallery list from MongoDB Atlas
+  // Load the image list from MongoDB Atlas
   const fetchGallery = useCallback(async () => {
     try {
       const res = await galleryApi.getGallery({ limit: 50 });
@@ -31,7 +31,7 @@ const Gallery = () => {
         setItems(galleryList);
       }
     } catch (err) {
-      console.warn('Error loading gallery from MongoDB Atlas, using fallback data:', err.message);
+      console.warn('Could not load the gallery from MongoDB Atlas; using fallback data:', err.message);
       setItems(fallbackGallery);
     } finally {
       setLoading(false);
@@ -42,11 +42,11 @@ const Gallery = () => {
     fetchGallery();
   }, [fetchGallery]);
 
-  // Like photo API - requires login, 1 like per photo toggle
+  // Toggle an image like through the API; authentication is required
   const handleLike = async (e, id) => {
     e.stopPropagation();
     if (!isAuthenticated) {
-      showToast('Please sign in to like this photograph!');
+      showToast('Please sign in to star this photograph!');
       setTimeout(() => navigate('/login'), 1200);
       return;
     }
@@ -58,14 +58,14 @@ const Gallery = () => {
         setItems(prev => prev.map(item => 
           item._id === id ? { ...item, likesCount: count, isLiked } : item
         ));
-        showToast(isLiked ? '❤️ Added to liked gallery!' : '🤍 Removed from liked gallery.');
+        showToast(isLiked ? '❤️ Added to starred gallery!' : '🤍 Removed star from photograph.');
       }
     } catch (err) {
       showToast('Unable to update like status: ' + (err.message || 'Error'));
     }
   };
 
-  // Keyboard navigation for Lightbox (ESC, ArrowLeft, ArrowRight)
+  // Handle keyboard controls while the lightbox is open
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (activeLightboxIndex === null) return;
@@ -148,9 +148,8 @@ const Gallery = () => {
           }}>
             Interactive Botanical Gallery
           </h1>
-
           <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '680px', margin: '0 auto 28px', lineHeight: 1.65 }}>
-            A curated photographic exhibition of tropical foliage and biophilic interiors synchronized live with MongoDB Atlas. Click any photograph to launch the full-screen Lightbox view.
+            Curated photographic exhibition of tropical aroids, living foliage, and biophilic interior spaces synchronized with MongoDB Atlas. Click any image to open the high-resolution interactive Lightbox.
           </p>
 
           {/* Quick Search in Gallery */}
@@ -159,7 +158,7 @@ const Gallery = () => {
               type="text"
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
-              placeholder="Search photographs by plant name, caption..."
+              placeholder="Search photography by species, notes..."
               style={{
                 width: '100%',
                 background: 'rgba(14, 30, 22, 0.8)',
@@ -179,11 +178,11 @@ const Gallery = () => {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '100px 24px', color: '#86efac' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>🖼️</div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading 20 botanical photographs from MongoDB Atlas...</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading works from MongoDB Atlas...</div>
           </div>
         ) : filteredItems.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: '#94a3b8' }}>
-            <p>No photographs found matching "{filterQuery}".</p>
+            <p>No photography matches "{filterQuery}".</p>
             <button
               type="button"
               onClick={() => setFilterQuery('')}
@@ -197,7 +196,7 @@ const Gallery = () => {
                 cursor: 'pointer'
               }}
             >
-              View All Photographs
+              View all photography
             </button>
           </div>
         ) : (
@@ -290,7 +289,7 @@ const Gallery = () => {
                         backdropFilter: 'blur(8px)',
                         transition: 'all 0.2s ease'
                       }}
-                      title={item.isLiked ? "Unlike" : "Like"}
+                      title={item.isLiked ? "Unlike" : "Star"}
                     >
                       <span>{item.isLiked ? '❤️' : '🤍'}</span>
                       <span>{item.likesCount || 0}</span>
@@ -430,7 +429,7 @@ const Gallery = () => {
                   {activeItem.caption || activeItem.alt}
                 </p>
                 <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                  Curator Credit: <span style={{ color: '#86efac' }}>{activeItem.credit || 'GreenNest Sanctuary'}</span> • Photo {activeLightboxIndex + 1} of {filteredItems.length}
+                  Photographer: <span style={{ color: '#86efac' }}>{activeItem.credit || 'GreenNest Sanctuary'}</span> • Specimen {activeLightboxIndex + 1} / {filteredItems.length}
                 </div>
               </div>
 
@@ -453,7 +452,7 @@ const Gallery = () => {
                   gap: '8px'
                 }}
               >
-                <span>{activeItem.isLiked ? '❤️ Liked' : '🤍 Like'}</span>
+                <span>{activeItem.isLiked ? '❤️ Liked' : '🤍 Star Image'}</span>
                 <span>({activeItem.likesCount || 0})</span>
               </button>
             </div>

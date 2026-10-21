@@ -1,62 +1,96 @@
 // Comprehensive Botanical Specimens Seed Data from MongoDB Dataset
-// Contains all 20 standardized botanical specimens + 4 curated living collections
+// Contains all 20 standardized botanical specimens + 4 seasonal curated collections + DB seed users
 
 export const PLANT_COLLECTIONS = [
   {
-    "title": "NASA Clean Air Living Sanctuary",
-    "slug": "nasa-clean-air-living-sanctuary",
-    "description": "A curated collection of air-purifying cultivars proven by NASA clean air research to efficiently filter airborne toxins such as formaldehyde, benzene, and xylene.",
-    "coverImage": "https://images.unsplash.com/photo-1593482892290-f54927ae1bf6?auto=format&fit=crop&w=1200&q=80",
-    "season": "all",
-    "isFeatured": true,
-    "plantSpecimenIds": [
-      "specimen-peace-lily",
-      "specimen-snake-plant",
-      "specimen-boston-fern",
-      "specimen-spider-plant"
-    ]
-  },
-  {
-    "title": "Sunlit Balcony & Floral Oasis",
-    "slug": "sunlit-balcony-and-floral-oasis",
-    "description": "Resilient, sun-loving varieties offering vibrant blooms and aromatic fragrances, transforming urban balconies into serene personal retreats.",
-    "coverImage": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
-    "season": "summer",
-    "isFeatured": true,
-    "plantSpecimenIds": [
-      "specimen-red-rose",
-      "specimen-bird-of-paradise",
-      "specimen-jade-plant",
-      "specimen-echeveria"
-    ]
-  },
-  {
-    "title": "Resilient Foliage for Busy Schedules",
-    "slug": "resilient-foliage-for-busy-schedules",
-    "description": "Tailored for plant lovers with demanding routines. Highly forgiving specimens capable of withstanding irregular watering and lower light levels while remaining vibrant.",
-    "coverImage": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80",
-    "season": "all",
-    "isFeatured": false,
-    "plantSpecimenIds": [
-      "specimen-zz-plant",
-      "specimen-snake-plant",
-      "specimen-pothos",
-      "specimen-rubber-tree"
-    ]
-  },
-  {
-    "title": "Tropical Rainforest Canopy",
-    "slug": "tropical-rainforest-canopy",
-    "description": "A collection of dramatic broadleaf Araceae specimens evoking the primeval humidity and layered foliage of Central and South American rainforests.",
-    "coverImage": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
+    "slug": "spring-collection",
+    "seasonKey": "spring",
     "season": "spring",
-    "isFeatured": true,
+    "name": "Spring Awakening Collection",
+    "title": "Spring Awakening Collection",
+    "description": "The golden period for propagation and fresh growth. Living specimens sprout vibrant new shoots and enter their peak active cycle.",
+    "plantSlugs": [
+      "monstera-deliciosa",
+      "sansevieria-trifasciata",
+      "ficus-lyrata",
+      "calathea-orbifolia",
+      "lavandula-angustifolia"
+    ],
     "plantSpecimenIds": [
       "specimen-monstera",
+      "specimen-snake-plant",
+      "specimen-ficus-lyrata",
       "specimen-calathea",
-      "specimen-alocasia-amazonica",
-      "specimen-anthurium"
-    ]
+      "specimen-lavender"
+    ],
+    "image": "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=1200&q=80",
+    "coverImage": "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=1200&q=80",
+    "isFeatured": true,
+    "status": "published"
+  },
+  {
+    "slug": "summer-collection",
+    "seasonKey": "summer",
+    "season": "summer",
+    "name": "Summer Canopy Collection",
+    "title": "Summer Canopy Collection",
+    "description": "Vibrant sunlit vitality with abundant ambient light, ideal for tropical jungle cultivars to unfurl their largest dramatic foliage.",
+    "plantSlugs": [
+      "monstera-deliciosa",
+      "sansevieria-trifasciata",
+      "ficus-lyrata",
+      "calathea-orbifolia",
+      "lavandula-angustifolia"
+    ],
+    "plantSpecimenIds": [
+      "specimen-monstera",
+      "specimen-snake-plant",
+      "specimen-ficus-lyrata",
+      "specimen-calathea",
+      "specimen-lavender"
+    ],
+    "image": "https://images.unsplash.com/photo-1542317148-8b4bdccb33ea?auto=format&fit=crop&w=1200&q=80",
+    "coverImage": "https://images.unsplash.com/photo-1542317148-8b4bdccb33ea?auto=format&fit=crop&w=1200&q=80",
+    "isFeatured": true,
+    "status": "published"
+  },
+  {
+    "slug": "autumn-collection",
+    "seasonKey": "autumn",
+    "season": "autumn",
+    "name": "Autumn Serenity Collection",
+    "title": "Autumn Serenity Collection",
+    "description": "Temperate, mild weather. The ideal time to introduce moisture-loving and subtropical forest foliage into your living sanctuary.",
+    "plantSlugs": [
+      "sansevieria-trifasciata",
+      "calathea-orbifolia"
+    ],
+    "plantSpecimenIds": [
+      "specimen-snake-plant",
+      "specimen-calathea"
+    ],
+    "image": "https://images.unsplash.com/photo-1507371341162-763b5e419408?auto=format&fit=crop&w=1200&q=80",
+    "coverImage": "https://images.unsplash.com/photo-1507371341162-763b5e419408?auto=format&fit=crop&w=1200&q=80",
+    "isFeatured": true,
+    "status": "published"
+  },
+  {
+    "slug": "winter-collection",
+    "seasonKey": "winter",
+    "season": "winter",
+    "name": "Winter Resilience Collection",
+    "title": "Winter Resilience Collection",
+    "description": "Curated cold-hardy, drought-tolerant specimens that maintain lush vitality and clean indoor air throughout low-sunlight months.",
+    "plantSlugs": [
+      "sansevieria-trifasciata"
+    ],
+    "plantSpecimenIds": [
+      "specimen-snake-plant"
+    ],
+    "image": "https://images.unsplash.com/photo-1483664852095-d6cc6870702d?auto=format&fit=crop&w=1200&q=80",
+    "coverImage": "https://images.unsplash.com/photo-1483664852095-d6cc6870702d?auto=format&fit=crop&w=1200&q=80",
+    "isFeatured": true,
+    "status": "published"
   }
 ];
 
@@ -69,11 +103,24 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Monstera deliciosa Liebm.",
     "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Tropical Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1596724809804-814e44383a15?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1617173944883-6ffbd35d584d?auto=format&fit=crop&w=800&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Monstera Deliciosa (Swiss Cheese Plant)",
+        "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1596724809804-814e44383a15?auto=format&fit=crop&w=800&q=80",
+        "alt": "Monstera Deliciosa (Swiss Cheese Plant) view 1",
+        "isPrimary": false
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617173944883-6ffbd35d584d?auto=format&fit=crop&w=800&q=80",
+        "alt": "Monstera Deliciosa (Swiss Cheese Plant) view 2",
+        "isPrimary": false
+      }
     ],
     "tags": [
       "#Araceae",
@@ -91,10 +138,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Natural Fenestrations",
-      "Vigorous Aerial Roots",
-      "Evergreen Climber",
-      "Air Filtering"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Iconic modern interior specimen known for dramatic fenestrations and tropical rainforest foliage.",
     "description": "Monstera Deliciosa is an evergreen tropical climbing vine native to Central America. In natural habitats, aerial roots anchor to canopy trees while leaf fenestrations allow torrential winds and dappled light to pass through smoothly.",
@@ -107,7 +153,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "20°C – 28°C",
     "growth": "Fast Growing",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Contains insoluble calcium oxalate crystals; keep away from curious pets.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Balanced",
     "notifMsg": "Monstera Deliciosa (Swiss Cheese Plant) is maintaining optimal hydration and metabolic vitality.",
@@ -128,6 +174,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Aroid Chunk",
     "soilBar": "90%",
     "soilSub": "Airy chunky substrate pH 6.0",
+    "seasons": [],
+    "lightRequirement": "Bright indirect filtered sunlight (1,200 – 2,000 FC). Avoid harsh direct midday rays.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "red-heritage-rose": {
@@ -137,11 +187,20 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Red Heritage Rose (Heirloom Crimson Rose)",
     "scientificName": "Rosa damascena / Rosa gallica",
     "category": "Flowering",
-    "biome": "subtropical",
-    "biomeLabel": "Subtropical Highlands",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=800&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Red Heritage Rose (Heirloom Crimson Rose)",
+        "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=800&q=80",
+        "alt": "Red Heritage Rose (Heirloom Crimson Rose) view 1",
+        "isPrimary": false
+      }
     ],
     "tags": [
       "#SubtropicalHighlands",
@@ -159,10 +218,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Damask Floral Aroma",
-      "Velvety Crimson Petals",
-      "Continuous Flowering",
-      "Pet Safe"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Classic fragrant heritage rose featuring velvety deep crimson petals and continuous seasonal blooming.",
     "description": "An ancient highland cultivar celebrated for velvety crimson multi-layered petals and classic damask perfume. Breeds high resilience against temperature shifts in sunny balconies.",
@@ -196,6 +254,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Rich Organic Loam",
     "soilBar": "88%",
     "soilSub": "Humus-rich loamy soil pH 6.5",
+    "seasons": [],
+    "lightRequirement": "Full direct sunlight (minimum 6 hours daily, 3,500+ FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "aechmea-fasciata": {
@@ -206,10 +268,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Aechmea fasciata (Lindl.) Baker",
     "category": "Foliage",
     "biome": "tropical",
-    "biomeLabel": "Tropical Conservatory",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Aechmea Fasciata (Silver Vase Urn Plant)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#Bromeliad",
@@ -227,10 +293,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Powdery Silver Foliage",
-      "Central Water Urn",
-      "Long-Lasting Bloom",
-      "Pet Safe"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Stunning epiphytic bromeliad with powdery silver-banded foliage and long-lasting pink inflorescence.",
     "description": "Native to Brazilian rainforest canopies, this striking epiphyte absorbs hydration and nutrients primarily through its central foliage urn tank.",
@@ -264,6 +329,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Epiphyte Orchid Bark",
     "soilBar": "85%",
     "soilSub": "Epiphytic orchid bark substrate",
+    "seasons": [],
+    "lightRequirement": "Bright indirect light or gentle morning sun (1,500 – 2,500 FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "boston-fern": {
@@ -273,11 +342,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Boston Sword Fern (Nephrolepis Exaltata)",
     "scientificName": "Nephrolepis exaltata 'Bostoniensis'",
     "category": "Fern",
-    "biome": "subtropical",
-    "biomeLabel": "Humid Understory",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Boston Sword Fern (Nephrolepis Exaltata)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#FernFamily",
@@ -295,10 +368,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Cascading Fronds",
-      "NASA Air Purifier",
-      "Natural Humidifier",
-      "100% Pet Safe"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Graceful cascading sword-shaped fronds that naturally purify indoor air and elevate ambient humidity.",
     "description": "Beloved Victorian houseplant featuring lush arching fronds that thrive in humid environments. A powerhouse natural air purifier and living humidifier.",
@@ -332,6 +404,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Peat Moss Blend",
     "soilBar": "88%",
     "soilSub": "Peat and humus moisture blend",
+    "seasons": [],
+    "lightRequirement": "Medium to bright filtered indirect light (800 – 1,500 FC). Avoid scorching sun.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "snake-plant-laurentii": {
@@ -341,11 +417,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Variegated Snake Plant (Sansevieria Laurentii)",
     "scientificName": "Sansevieria trifasciata 'Laurentii'",
     "category": "Succulent",
-    "biome": "arid",
-    "biomeLabel": "Arid & Desert",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1599598425947-5203ddb7c252?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1599598425947-5203ddb7c252?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1599598425947-5203ddb7c252?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Variegated Snake Plant (Sansevieria Laurentii)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#AirPurifying",
@@ -362,10 +442,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "CAM Night Oxygenation",
-      "Drought Champion",
-      "Golden Margins",
-      "NASA Certified"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Sculptural architectural upright foliage banded in gold; virtually indestructible and CAM night oxygenating.",
     "description": "Architectural succulent featuring rigid upright sword leaves with radiant golden margins. Converts carbon dioxide into oxygen at night via Crassulacean Acid Metabolism (CAM).",
@@ -378,7 +457,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "15°C – 32°C",
     "growth": "Slow",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Mildly toxic to pets if chewed; contains saponins causing stomach upset.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "150 ml / 18 Days",
     "waterStatus": "Drought Stress Resistant",
     "notifMsg": "Variegated Snake Plant (Sansevieria Laurentii) is maintaining optimal hydration and metabolic vitality.",
@@ -399,6 +478,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Cactus Gravel Mix",
     "soilBar": "95%",
     "soilSub": "Gritty mineral blend pH 6.5",
+    "seasons": [],
+    "lightRequirement": "Highly adaptable: survives deep shade up to full direct sunlight (500 – 3,000 FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "zz-plant-zamioculcas": {
@@ -408,11 +491,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "ZZ Plant (Zamioculcas Zamiifolia)",
     "scientificName": "Zamioculcas zamiifolia",
     "category": "Foliage",
-    "biome": "arid",
-    "biomeLabel": "Eastern African Plains",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80",
+        "alt": "ZZ Plant (Zamioculcas Zamiifolia)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#OfficePlants",
@@ -430,10 +517,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Mirror Gloss Leaves",
-      "Subsurface Rhizomes",
-      "Extreme Drought Tolerance",
-      "Low Light Tolerant"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Glossy emerald feather foliage with subsurface water rhizomes; thrives on utter neglect and low light.",
     "description": "Resilient perennial from eastern Africa featuring naturally glossy waxy pinnate leaves. Subsurface potato-like rhizomes store ample water reserves for prolonged dry periods.",
@@ -446,7 +532,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 30°C",
     "growth": "Slow",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Contains calcium oxalates; mild irritant if chewed by animals.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "200 ml / 14 Days",
     "waterStatus": "Tuber Reserve Full",
     "notifMsg": "ZZ Plant (Zamioculcas Zamiifolia) is maintaining optimal hydration and metabolic vitality.",
@@ -467,6 +553,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Porous Succulent Soil",
     "soilBar": "90%",
     "soilSub": "Free-draining porous potting mix",
+    "seasons": [],
+    "lightRequirement": "Low to moderate indirect light (400 – 1,200 FC). Thrives under standard fluorescent lighting.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "fiddle-leaf-fig": {
@@ -477,10 +567,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Ficus lyrata Warb.",
     "category": "Foliage",
     "biome": "tropical",
-    "biomeLabel": "Lowland Tropical Forest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Fiddle Leaf Fig (Ficus Lyrata)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#FicusLyrata",
@@ -498,10 +592,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Violin Shaped Leaves",
-      "Architectural Stature",
-      "Interior Design Icon",
-      "Evergreen Tree"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Dramatic sculptural tree featuring violin-shaped leathery leaves that anchor high-ceiling living spaces.",
     "description": "Preeminent interior design statement plant native to lowland tropical rainforests. Broad violin-shaped leaves capture diffused light and establish structural focal points.",
@@ -514,7 +607,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 27°C",
     "growth": "Moderate",
     "careLevel": "Moderate",
-    "toxicity": "Pet Caution (Ficus sap is mildly toxic to pets; causes oral irritation if ingested.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "600 ml / 7 Days",
     "waterStatus": "Optimal Drainage",
     "notifMsg": "Fiddle Leaf Fig (Ficus Lyrata) is maintaining optimal hydration and metabolic vitality.",
@@ -535,6 +628,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Rich Tropical Mix",
     "soilBar": "85%",
     "soilSub": "Chunky bark and loam mix pH 6.2",
+    "seasons": [],
+    "lightRequirement": "Consistent bright indirect sunlight with 2–3 hours gentle morning sun (1,800 – 2,500 FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "peace-lily-spathiphyllum": {
@@ -545,10 +642,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Spathiphyllum wallisii",
     "category": "Flowering",
     "biome": "tropical",
-    "biomeLabel": "Understory Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1593482892290-f54927ae1bf6?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1593482892290-f54927ae1bf6?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1593482892290-f54927ae1bf6?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Peace Lily (Spathiphyllum Wallisii)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#WhiteBlooms",
@@ -566,10 +667,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "White Spathe Blooms",
-      "NASA Air Purifier",
-      "Thirst Communicator",
-      "Low Light Capable"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Elegant glossy deep-green foliage topped with pristine white spathe blooms; dramatic natural humidity indicator.",
     "description": "Forest-floor tropical plant famous for graceful white flower spathes and reliable air filtration. Clearly signals thirst with graceful temporary drooping.",
@@ -582,7 +682,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 26°C",
     "growth": "Moderate",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Mildly toxic to pets due to calcium oxalate crystals.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "300 ml / 4 Days",
     "waterStatus": "Turgid & Erect",
     "notifMsg": "Peace Lily (Spathiphyllum Wallisii) is maintaining optimal hydration and metabolic vitality.",
@@ -603,6 +703,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Moisture Retentive Mix",
     "soilBar": "86%",
     "soilSub": "Humus rich moisture blend",
+    "seasons": [],
+    "lightRequirement": "Low to bright indirect light (500 – 1,200 FC). Sensitive to direct sun scorching.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "golden-pothos": {
@@ -613,10 +717,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Epipremnum aureum",
     "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Tropical Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Golden Pothos (Devil's Ivy)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#TrailingVine",
@@ -634,10 +742,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Trailing Golden Vines",
-      "Effortless Propagation",
-      "Air Purifying",
-      "High Adaptability"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Cascading heart-shaped emerald leaves splashed with creamy gold; exceptionally resilient and versatile.",
     "description": "Vigorous evergreen trailing vine adorned with heart-shaped foliage splashed in golden marbling. Forgiving of missed waterings and adapts to almost any interior environment.",
@@ -650,7 +757,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "15°C – 30°C",
     "growth": "Fast",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Mildly toxic to pets; place on high shelves out of reach.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "200 ml / 6 Days",
     "waterStatus": "Robust Trailing",
     "notifMsg": "Golden Pothos (Devil's Ivy) is maintaining optimal hydration and metabolic vitality.",
@@ -671,6 +778,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Standard Houseplant Soil",
     "soilBar": "80%",
     "soilSub": "Standard airy peat blend",
+    "seasons": [],
+    "lightRequirement": "Low, medium, or bright indirect light (400 – 1,800 FC). Gold variegation brightens with light.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "calathea-orbifolia": {
@@ -681,10 +792,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Calathea orbifolia (Linden) H.A.Kenn.",
     "category": "Foliage",
     "biome": "tropical",
-    "biomeLabel": "Amazon Basin Understory",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Calathea Orbifolia (Prayer Plant)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#PrayerPlant",
@@ -702,10 +817,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Circadian Leaf Prayer",
-      "Metallic Silver Bands",
-      "Non-Toxic Pet Safe",
-      "Artisan Centerpiece"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Exquisite oversized round leaves decorated with silvery-green geometric brushstroke patterns.",
     "description": "Prized prayer-plant cultivar celebrated for broad circular leaves adorned with metallic silver-green bands. Foliage naturally folds upward at night in serene nyctinastic movement.",
@@ -739,6 +853,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "High Humus Porous Blend",
     "soilBar": "87%",
     "soilSub": "Spongy coco-peat substrate",
+    "seasons": [],
+    "lightRequirement": "Medium to bright indirect light (800 – 1,500 FC). Absolute shade from direct sun.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "alocasia-amazonica": {
@@ -749,10 +867,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Alocasia × amazonica",
     "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Tropical Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Alocasia Amazonica (African Mask / Polly)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#AfricanMask",
@@ -770,10 +892,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Sculptural Arrowhead Leaf",
-      "Silver-White Ribs",
-      "Wavy Margins",
-      "Rare Collector Jewel"
+      "CHALLENGING Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Dramatic arrowhead foliage with scalloped margins and striking bone-white veins on deep jade.",
     "description": "Architectural jewel featuring glossy arrowhead leaves with pronounced silvery-white veins and wavy edges. Evokes prehistoric botanical geometry.",
@@ -786,7 +907,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 28°C",
     "growth": "Moderate",
     "careLevel": "Challenging",
-    "toxicity": "Pet Caution (Contains calcium oxalates; keep out of reach of household pets.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "300 ml / 5 Days",
     "waterStatus": "Shield Turgor Peak",
     "notifMsg": "Alocasia Amazonica (African Mask / Polly) is maintaining optimal hydration and metabolic vitality.",
@@ -807,6 +928,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Chunky Aerated Aroid",
     "soilBar": "92%",
     "soilSub": "Chunky orchid bark and charcoal",
+    "seasons": [],
+    "lightRequirement": "Bright indirect sunlight (1,500 – 2,200 FC). Protect from chilly drafts.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "rubber-tree-burgundy": {
@@ -817,10 +942,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Ficus elastica 'Burgundy'",
     "category": "Foliage",
     "biome": "tropical",
-    "biomeLabel": "South Asian Monsoon",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1597055181363-22849b2750e3?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1597055181363-22849b2750e3?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1597055181363-22849b2750e3?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Burgundy Rubber Tree (Ficus Elastica)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#BurgundyLeaves",
@@ -838,10 +967,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Deep Wine Burgundy Tone",
-      "Crimson New Sheaths",
-      "Stately Tree Stature",
-      "Thick Leathery Leaves"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Glossy leathery leaves with rich bronze-burgundy undertones emerging from striking crimson sheaths.",
     "description": "Stately ornamental tree showcasing thick leathery leaves that transition from deep wine-burgundy to forest green. Crimson growth sheaths add vivid living color accents.",
@@ -854,7 +982,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "16°C – 29°C",
     "growth": "Fast to Moderate",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Sap is mildly irritating to pets; caution recommended.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "400 ml / 7 Days",
     "waterStatus": "Sturdy Stem Vigour",
     "notifMsg": "Burgundy Rubber Tree (Ficus Elastica) is maintaining optimal hydration and metabolic vitality.",
@@ -875,6 +1003,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Well-Drained Loam",
     "soilBar": "85%",
     "soilSub": "Rich aerated potting loam",
+    "seasons": [],
+    "lightRequirement": "Bright indirect light with some soft morning direct sunlight (1,500 – 2,500 FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "spider-plant-variegated": {
@@ -884,11 +1016,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Variegated Spider Plant (Chlorophytum Comosum)",
     "scientificName": "Chlorophytum comosum 'Vittatum'",
     "category": "Foliage",
-    "biome": "subtropical",
-    "biomeLabel": "Southern African Woodlands",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Variegated Spider Plant (Chlorophytum Comosum)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#Spiderettes",
@@ -906,10 +1042,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Cascading Spiderettes",
-      "NASA Clean Air Rank #1",
-      "Fountain Ribbon Foliage",
-      "100% Pet Safe"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Arched grassy ribbon fronds with cream ribbons, producing graceful cascades of miniature spiderettes.",
     "description": "Classic joyful houseplant producing fountain-like rosettes of ribbon foliage striped in cream and green. Produces cascading runners bearing tiny white flowers and baby plantlets.",
@@ -943,6 +1078,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Porous Potting Mix",
     "soilBar": "82%",
     "soilSub": "Fertile porous potting soil",
+    "seasons": [],
+    "lightRequirement": "Medium to bright indirect light (800 – 2,000 FC). Adapts to light shade.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "string-of-pearls": {
@@ -952,11 +1091,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "String of Pearls (Curio Rowleyanus)",
     "scientificName": "Curio rowleyanus",
     "category": "Succulent",
-    "biome": "arid",
-    "biomeLabel": "Arid & Desert",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+        "alt": "String of Pearls (Curio Rowleyanus)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#SucculentLover",
@@ -974,10 +1117,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Translucent Leaf Windows",
-      "Cascading Pearl Tendrils",
-      "Living Jewelry",
-      "Drought Resilient"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Trailing succulent tendrils adorned with translucent sphere beads resembling living jade jewelry.",
     "description": "Fascinating trailing succulent showcasing bead-shaped pea leaves along slender hanging stems. Specialized translucent epidermal windows allow sunlight into the photosynthetic interior.",
@@ -990,7 +1132,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 26°C",
     "growth": "Fast in Warm Season",
     "careLevel": "Moderate",
-    "toxicity": "Pet Caution (Mildly toxic if ingested by pets; suspend high away from animals.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "100 ml / 15 Days",
     "waterStatus": "Spherical Turgor",
     "notifMsg": "String of Pearls (Curio Rowleyanus) is maintaining optimal hydration and metabolic vitality.",
@@ -1011,6 +1153,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "High Mineral Gritty Mix",
     "soilBar": "96%",
     "soilSub": "High-mineral pumice and gritty sand",
+    "seasons": [],
+    "lightRequirement": "Bright indirect sunlight with 2–4 hours of direct morning sun (2,000 – 3,500 FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "bird-of-paradise-strelitzia": {
@@ -1021,10 +1167,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Strelitzia nicolai",
     "category": "Foliage",
     "biome": "tropical",
-    "biomeLabel": "Coastal Subtropical Forest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80",
+        "alt": "White Bird of Paradise (Strelitzia Nicolai)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#TropicalResort",
@@ -1042,10 +1192,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Monumental Paddle Foliage",
-      "Architectural Fan Crown",
-      "Resort Sanctuary Aesthetic",
-      "Sun Worshipper"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Monumental architectural banana-like paddle leaves bringing majestic resort vibes to spacious interiors.",
     "description": "Grand tropical perennial known for enormous paddle-shaped leaves arranged in a stately fan crown. Leaves naturally develop splits over time to let heavy winds slip through.",
@@ -1058,7 +1207,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 32°C",
     "growth": "Vigorous in Bright Sun",
     "careLevel": "Moderate",
-    "toxicity": "Pet Caution (Mildly toxic to pets if large amounts are ingested.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "800 ml / 6 Days",
     "waterStatus": "Canopy Sun-Ready",
     "notifMsg": "White Bird of Paradise (Strelitzia Nicolai) is maintaining optimal hydration and metabolic vitality.",
@@ -1079,6 +1228,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Deep Rich Garden Soil",
     "soilBar": "86%",
     "soilSub": "Loamy compost and perlite mix",
+    "seasons": [],
+    "lightRequirement": "Bright direct to indirect sunlight (2,500 – 4,000 FC). Loves sunshine.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "anthurium-clarinervium": {
@@ -1089,10 +1242,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Anthurium clarinervium",
     "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Tropical Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Velvet Cardboard Anthurium (Clarinervium)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#VelvetAnthurium",
@@ -1110,10 +1267,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Velvety Cardboard Texture",
-      "Luminous Silver Veins",
-      "Rare Collector Specimen",
-      "Heart-Shaped Silhouette"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Deep velvet heart-shaped leaves etched with glowing emerald and silver crystalline venation.",
     "description": "Breathtaking lithophytic Anthurium characterized by stiff, velvety cardboard-like heart leaves. Luminous white crystalline veins create a dramatic electrified web against deep forest green.",
@@ -1126,7 +1282,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 26°C",
     "growth": "Slow",
     "careLevel": "Moderate",
-    "toxicity": "Pet Caution (Contains calcium oxalate crystals; toxic to cats and dogs if chewed.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "200 ml / 6 Days",
     "waterStatus": "Velvet Foliage Pristine",
     "notifMsg": "Velvet Cardboard Anthurium (Clarinervium) is maintaining optimal hydration and metabolic vitality.",
@@ -1147,6 +1303,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Chunky Lithophyte Blend",
     "soilBar": "94%",
     "soilSub": "Ultra-chunky limestone and bark mix",
+    "seasons": [],
+    "lightRequirement": "Bright, strictly indirect light (1,200 – 1,800 FC). Sensitive to leaf scorch.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "philodendron-birkin": {
@@ -1157,10 +1317,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Philodendron 'Birkin'",
     "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Tropical Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Philodendron Birkin (White Measure)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#PhilodendronBirkin",
@@ -1178,10 +1342,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Creamy Ivory Pinstripes",
-      "Compact Self-Heading Habit",
-      "Modern Geometric Foliage",
-      "Easy Care Desktop Plant"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Compact self-heading foliage marked with crisp pinstripes of creamy ivory against glossy deep jade.",
     "description": "Spontaneous chimeric mutation featuring heart-shaped leaves that emerge ivory white with fine pinstripes, maturing into deep jade green. Compact self-heading habit fits any desktop.",
@@ -1194,7 +1357,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 28°C",
     "growth": "Moderate",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Mildly toxic to household pets; keep off floor level.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "220 ml / 6 Days",
     "waterStatus": "Variegation Stable",
     "notifMsg": "Philodendron Birkin (White Measure) is maintaining optimal hydration and metabolic vitality.",
@@ -1215,6 +1378,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Fluffy Aroid Mix",
     "soilBar": "88%",
     "soilSub": "Airy coco-perlite substrate",
+    "seasons": [],
+    "lightRequirement": "Medium to bright indirect light (1,200 – 2,000 FC). Good light sustains variegation.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "jade-plant-crassula-ovata": {
@@ -1224,11 +1391,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Jade Plant (Crassula Ovata / Money Tree)",
     "scientificName": "Crassula ovata",
     "category": "Succulent",
-    "biome": "arid",
-    "biomeLabel": "Arid & Desert",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Jade Plant (Crassula Ovata / Money Tree)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#CrassulaOvata",
@@ -1246,10 +1417,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Sculptural Bonsai Stature",
-      "Plump Jade Cushion Leaves",
-      "Symbol of Prosperity",
-      "Decades of Longevity"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Chubby jade-green succulent leaves on woody bonsai-like stems; celebrated symbol of prosperity.",
     "description": "Beloved succulent tree featuring plump fleshy teardrop leaves and thick sculptural branches. Develops subtle ruby margins when kissed by bright sun; can live for decades.",
@@ -1262,7 +1432,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "15°C – 30°C",
     "growth": "Slow & Steady",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Toxic to pets; keep away from cats and dogs.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "120 ml / 16 Days",
     "waterStatus": "Bonsai Trunk Hardy",
     "notifMsg": "Jade Plant (Crassula Ovata / Money Tree) is maintaining optimal hydration and metabolic vitality.",
@@ -1283,6 +1453,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Granite Grit & Pumice",
     "soilBar": "95%",
     "soilSub": "High-drainage mineral grit pH 6.5",
+    "seasons": [],
+    "lightRequirement": "Full sun to very bright indirect light (minimum 4-6 hours direct sun, 3,000+ FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "english-ivy-glacier": {
@@ -1292,11 +1466,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Glacier English Ivy (Hedera Helix)",
     "scientificName": "Hedera helix 'Glacier'",
     "category": "Foliage",
-    "biome": "temperate",
-    "biomeLabel": "European Woodlands",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Glacier English Ivy (Hedera Helix)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#MoldPurifier",
@@ -1314,10 +1492,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Glacier Silver Variegation",
-      "Cold Hardy Climber",
-      "NASA Mold Spore Purifier",
-      "Graceful Hanging Trails"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Charming three-lobed leaves variegated with misty glacier gray and creamy white margins.",
     "description": "Cold-hardy classical evergreen climber with iconic three-lobed leaves rimmed in silvery white. Exceptional at removing airborne mold spores and airborne impurities.",
@@ -1330,7 +1507,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "10°C – 24°C",
     "growth": "Fast",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Toxic to dogs and cats; hang safely or elevate.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "250 ml / 6 Days",
     "waterStatus": "Cascading Cascade",
     "notifMsg": "Glacier English Ivy (Hedera Helix) is maintaining optimal hydration and metabolic vitality.",
@@ -1351,6 +1528,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Standard Garden Loam",
     "soilBar": "82%",
     "soilSub": "Moist loamy potting blend",
+    "seasons": [],
+    "lightRequirement": "Medium to bright indirect light (800 – 1,800 FC). Enjoys cooler room locations.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "echeveria-elegans": {
@@ -1360,11 +1541,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Mexican Snowball Echeveria (Echeveria Elegans)",
     "scientificName": "Echeveria elegans Rose",
     "category": "Succulent",
-    "biome": "arid",
-    "biomeLabel": "Arid & Desert",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Mexican Snowball Echeveria (Echeveria Elegans)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#EcheveriaElegans",
@@ -1382,10 +1567,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Powdery Farina Wax",
-      "Geometric Rose Rosette",
-      "Pet Friendly Non-Toxic",
-      "Drought Champion"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Mesmerizing geometric rosette of silvery blue-green spoon leaves coated in powdery farina wax.",
     "description": "Iconic desert succulent forming tight symmetrical rosettes of translucent pale blue-green leaves. A natural powdery wax coating (farina) protects delicate tissue from intense sun.",
@@ -1419,6 +1603,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "80% Mineral Gritty Mix",
     "soilBar": "98%",
     "soilSub": "Mineral grit and porous volcanic pumice",
+    "seasons": [],
+    "lightRequirement": "Direct intense sunlight (minimum 6 hours daily, 3,500 – 5,000 FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-monstera": {
@@ -1429,11 +1617,24 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Monstera deliciosa Liebm.",
     "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Tropical Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1596724809804-814e44383a15?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1617173944883-6ffbd35d584d?auto=format&fit=crop&w=800&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Monstera Deliciosa (Swiss Cheese Plant)",
+        "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1596724809804-814e44383a15?auto=format&fit=crop&w=800&q=80",
+        "alt": "Monstera Deliciosa (Swiss Cheese Plant) view 1",
+        "isPrimary": false
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617173944883-6ffbd35d584d?auto=format&fit=crop&w=800&q=80",
+        "alt": "Monstera Deliciosa (Swiss Cheese Plant) view 2",
+        "isPrimary": false
+      }
     ],
     "tags": [
       "#Araceae",
@@ -1451,10 +1652,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Natural Fenestrations",
-      "Vigorous Aerial Roots",
-      "Evergreen Climber",
-      "Air Filtering"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Iconic modern interior specimen known for dramatic fenestrations and tropical rainforest foliage.",
     "description": "Monstera Deliciosa is an evergreen tropical climbing vine native to Central America. In natural habitats, aerial roots anchor to canopy trees while leaf fenestrations allow torrential winds and dappled light to pass through smoothly.",
@@ -1467,7 +1667,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "20°C – 28°C",
     "growth": "Fast Growing",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Contains insoluble calcium oxalate crystals; keep away from curious pets.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "350 ml / 7 Days",
     "waterStatus": "Balanced",
     "notifMsg": "Monstera Deliciosa (Swiss Cheese Plant) is maintaining optimal hydration and metabolic vitality.",
@@ -1488,209 +1688,95 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Aroid Chunk",
     "soilBar": "90%",
     "soilSub": "Airy chunky substrate pH 6.0",
+    "seasons": [],
+    "lightRequirement": "Bright indirect filtered sunlight (1,200 – 2,000 FC). Avoid harsh direct midday rays.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-red-rose": {
-    "id": "red-heritage-rose",
-    "slug": "red-heritage-rose",
-    "catalogCode": "CANOPY-002",
-    "name": "Red Heritage Rose (Heirloom Crimson Rose)",
-    "scientificName": "Rosa damascena / Rosa gallica",
-    "category": "Flowering",
-    "biome": "subtropical",
-    "biomeLabel": "Subtropical Highlands",
-    "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
-    "images": [
-      "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=800&q=80"
-    ],
-    "tags": [
-      "#SubtropicalHighlands",
-      "#TemperateGarden",
-      "#AromaticBloom",
-      "#SunLoving",
-      "#Rosa",
-      "#Flowering"
-    ],
-    "taxonomyTags": [
-      "Rosaceae",
-      "Rosa",
-      "Rosales",
-      "Eudicots",
-      "Plantae"
-    ],
-    "traits": [
-      "Damask Floral Aroma",
-      "Velvety Crimson Petals",
-      "Continuous Flowering",
-      "Pet Safe"
-    ],
-    "shortDesc": "Classic fragrant heritage rose featuring velvety deep crimson petals and continuous seasonal blooming.",
-    "description": "An ancient highland cultivar celebrated for velvety crimson multi-layered petals and classic damask perfume. Breeds high resilience against temperature shifts in sunny balconies.",
-    "origin": "Highland plateaus and Mediterranean temperate microclimates.",
-    "purpose": "Infuses spaces with calming natural floral fragrance and attracts beneficial pollinators.",
-    "water": "Water deeply at the base every 2-3 days; keep foliage dry to prevent fungal issues.",
-    "light": "Full direct sunlight (minimum 6 hours daily, 3,500+ FC).",
-    "soil": "Rich loamy soil with aged compost, perlite, and good aeration (pH 6.2 – 6.8).",
-    "humidity": "40% – 60%",
-    "temp": "18°C – 26°C",
-    "growth": "Moderate to Vigorous",
-    "careLevel": "Moderate",
-    "toxicity": "Non-Toxic (Pet Safe)",
-    "waterDaily": "500 ml / 4 Days",
-    "waterStatus": "Fully Saturated",
-    "notifMsg": "Red Heritage Rose (Heirloom Crimson Rose) is maintaining optimal hydration and metabolic vitality.",
-    "waterVal": "500 ml",
-    "waterBar": "90%",
-    "waterSub": "Deep soil moisture adequate for blossom support.",
-    "waterVol": "500 ml",
-    "waterFreq": "Every 2-3 days",
-    "humidityVal": "55% RH",
-    "humidityBar": "72%",
-    "humiditySub": "Well-ventilated ambient humidity preventing mildew.",
-    "humidityTarget": "40% – 60% RH",
-    "mistCadence": "Avoid overhead misting; maintain airflow",
-    "envVal": "4,500 FC",
-    "envBar": "98%",
-    "envSub": "High solar radiant intensity for continuous budding.",
-    "tempRange": "18°C - 26°C",
-    "soilVal": "Rich Organic Loam",
-    "soilBar": "88%",
-    "soilSub": "Humus-rich loamy soil pH 6.5",
-    "status": "published"
-  },
-  "specimen-snake-plant": {
-    "id": "snake-plant-laurentii",
-    "slug": "snake-plant-laurentii",
-    "catalogCode": "CANOPY-005",
-    "name": "Variegated Snake Plant (Sansevieria Laurentii)",
-    "scientificName": "Sansevieria trifasciata 'Laurentii'",
-    "category": "Succulent",
-    "biome": "arid",
-    "biomeLabel": "Arid & Desert",
-    "image": "https://images.unsplash.com/photo-1599598425947-5203ddb7c252?auto=format&fit=crop&w=1200&q=80",
-    "images": [
-      "https://images.unsplash.com/photo-1599598425947-5203ddb7c252?auto=format&fit=crop&w=1200&q=80"
-    ],
-    "tags": [
-      "#AirPurifying",
-      "#NightOxygen",
-      "#LowMaintenance",
-      "#BedroomSafe",
-      "#Succulent"
-    ],
-    "taxonomyTags": [
-      "Asparagaceae",
-      "Dracaena",
-      "Asparagales",
-      "Monocots",
-      "Plantae"
-    ],
-    "traits": [
-      "CAM Night Oxygenation",
-      "Drought Champion",
-      "Golden Margins",
-      "NASA Certified"
-    ],
-    "shortDesc": "Sculptural architectural upright foliage banded in gold; virtually indestructible and CAM night oxygenating.",
-    "description": "Architectural succulent featuring rigid upright sword leaves with radiant golden margins. Converts carbon dioxide into oxygen at night via Crassulacean Acid Metabolism (CAM).",
-    "origin": "Tropical West Africa from Nigeria east to the Congo Basin.",
-    "purpose": "Nighttime bedroom air filtration and modern architectural vertical greenery.",
-    "water": "Allow potting mix to dry out 100% between waterings. Very drought resilient.",
-    "light": "Highly adaptable: survives deep shade up to full direct sunlight (500 – 3,000 FC).",
-    "soil": "Fast-draining gritty succulent & cactus mix with coarse sand and pumice.",
-    "humidity": "30% – 50%",
-    "temp": "15°C – 32°C",
-    "growth": "Slow",
-    "careLevel": "Easy",
-    "toxicity": "Pet Caution (Mildly toxic to pets if chewed; contains saponins causing stomach upset.)",
-    "waterDaily": "150 ml / 18 Days",
-    "waterStatus": "Drought Stress Resistant",
-    "notifMsg": "Variegated Snake Plant (Sansevieria Laurentii) is maintaining optimal hydration and metabolic vitality.",
-    "waterVal": "150 ml",
-    "waterBar": "40%",
-    "waterSub": "Substrate dry and crisp; roots safe from rot.",
-    "waterVol": "150 ml",
-    "waterFreq": "Every 2-4 weeks",
-    "humidityVal": "42% RH",
-    "humidityBar": "50%",
-    "humiditySub": "Thrives in dry to moderate room humidity.",
-    "humidityTarget": "30% – 50% RH",
-    "mistCadence": "No misting required; keep foliage dry",
-    "envVal": "800 - 3,000 FC",
-    "envBar": "85%",
-    "envSub": "Wide tolerance spectrum (low shade to sun).",
-    "tempRange": "15°C - 32°C",
-    "soilVal": "Cactus Gravel Mix",
-    "soilBar": "95%",
-    "soilSub": "Gritty mineral blend pH 6.5",
-    "status": "published"
-  },
-  "specimen-fiddle-leaf": {
-    "id": "fiddle-leaf-fig",
-    "slug": "fiddle-leaf-fig",
-    "catalogCode": "CANOPY-007",
-    "name": "Fiddle Leaf Fig (Ficus Lyrata)",
-    "scientificName": "Ficus lyrata Warb.",
-    "category": "Foliage",
+    "id": "monstera-deliciosa",
+    "slug": "monstera-deliciosa",
+    "catalogCode": "CANOPY-001",
+    "name": "Monstera Deliciosa (Swiss Cheese Plant)",
+    "scientificName": "Monstera deliciosa Liebm.",
+    "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Lowland Tropical Forest",
-    "image": "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80",
+    "biomeLabel": "Tropical Biome",
+    "image": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Monstera Deliciosa (Swiss Cheese Plant)",
+        "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1596724809804-814e44383a15?auto=format&fit=crop&w=800&q=80",
+        "alt": "Monstera Deliciosa (Swiss Cheese Plant) view 1",
+        "isPrimary": false
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617173944883-6ffbd35d584d?auto=format&fit=crop&w=800&q=80",
+        "alt": "Monstera Deliciosa (Swiss Cheese Plant) view 2",
+        "isPrimary": false
+      }
     ],
     "tags": [
-      "#FicusLyrata",
-      "#ArchitecturalPlant",
-      "#ModernInterior",
-      "#StatementPlant",
-      "#Moraceae",
-      "#Foliage"
+      "#Araceae",
+      "#TrailingFoliage",
+      "#VelvetLeaf",
+      "#DeepShadeThriving",
+      "#RareCultivar",
+      "#Aroid"
     ],
     "taxonomyTags": [
-      "Moraceae",
-      "Ficus",
-      "Rosales",
-      "Eudicots",
+      "Araceae",
+      "Monstera",
+      "Alismatales",
+      "Angiosperms",
       "Plantae"
     ],
     "traits": [
-      "Violin Shaped Leaves",
-      "Architectural Stature",
-      "Interior Design Icon",
-      "Evergreen Tree"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
-    "shortDesc": "Dramatic sculptural tree featuring violin-shaped leathery leaves that anchor high-ceiling living spaces.",
-    "description": "Preeminent interior design statement plant native to lowland tropical rainforests. Broad violin-shaped leaves capture diffused light and establish structural focal points.",
-    "origin": "Western African lowland tropical rainforests from Cameroon to Sierra Leone.",
-    "purpose": "High-ceiling architectural anchor, corner focal point, and light-filled salon styling.",
-    "water": "Water deeply when the top 2-3 inches of soil have dried; ensure excellent drainage.",
-    "light": "Consistent bright indirect sunlight with 2–3 hours gentle morning sun (1,800 – 2,500 FC).",
-    "soil": "Rich, well-aerated potting soil with pine bark, perlite, and biochar.",
-    "humidity": "50% – 70%",
-    "temp": "18°C – 27°C",
-    "growth": "Moderate",
-    "careLevel": "Moderate",
-    "toxicity": "Pet Caution (Ficus sap is mildly toxic to pets; causes oral irritation if ingested.)",
-    "waterDaily": "600 ml / 7 Days",
-    "waterStatus": "Optimal Drainage",
-    "notifMsg": "Fiddle Leaf Fig (Ficus Lyrata) is maintaining optimal hydration and metabolic vitality.",
-    "waterVal": "600 ml",
-    "waterBar": "80%",
-    "waterSub": "Deep soil moisture monitored to prevent leaf drop.",
-    "waterVol": "600 ml",
+    "shortDesc": "Iconic modern interior specimen known for dramatic fenestrations and tropical rainforest foliage.",
+    "description": "Monstera Deliciosa is an evergreen tropical climbing vine native to Central America. In natural habitats, aerial roots anchor to canopy trees while leaf fenestrations allow torrential winds and dappled light to pass through smoothly.",
+    "origin": "Tropical rainforests of southern Mexico and Central America.",
+    "purpose": "Purifies indoor air, balances room humidity, and creates architectural biophilic statements.",
+    "water": "Thorough watering every 7–10 days when top 50% of potting mix feels dry.",
+    "light": "Bright indirect filtered sunlight (1,200 – 2,000 FC). Avoid harsh direct midday rays.",
+    "soil": "Chunky, airy Aroid mix: pine bark, pumice, perlite, and coco coir.",
+    "humidity": "65% – 85%",
+    "temp": "20°C – 28°C",
+    "growth": "Fast Growing",
+    "careLevel": "Easy",
+    "toxicity": "Non-Toxic (Pet Safe)",
+    "waterDaily": "350 ml / 7 Days",
+    "waterStatus": "Balanced",
+    "notifMsg": "Monstera Deliciosa (Swiss Cheese Plant) is maintaining optimal hydration and metabolic vitality.",
+    "waterVal": "350 ml",
+    "waterBar": "82%",
+    "waterSub": "Root zone moisture at optimal equilibrium.",
+    "waterVol": "350 ml",
     "waterFreq": "Every 7-10 days",
-    "humidityVal": "62% RH",
-    "humidityBar": "75%",
-    "humiditySub": "Optimal leaf turgor in stable ambient conditions.",
-    "humidityTarget": "50% – 70% RH",
-    "mistCadence": "Dust and wipe broad leaves bi-weekly",
-    "envVal": "2,500 FC",
-    "envBar": "92%",
-    "envSub": "Stable, draft-free bright indirect exposure.",
-    "tempRange": "18°C - 27°C",
-    "soilVal": "Rich Tropical Mix",
-    "soilBar": "85%",
-    "soilSub": "Chunky bark and loam mix pH 6.2",
+    "humidityVal": "68% RH",
+    "humidityBar": "88%",
+    "humiditySub": "Epidermal leaf turgor optimized for photosynthesis.",
+    "humidityTarget": "65% – 85% RH",
+    "mistCadence": "Mist aerial root nodes every 48 hours",
+    "envVal": "1,600 FC",
+    "envBar": "95%",
+    "envSub": "Soft diffused canopy illumination.",
+    "tempRange": "20°C - 28°C",
+    "soilVal": "Aroid Chunk",
+    "soilBar": "90%",
+    "soilSub": "Airy chunky substrate pH 6.0",
+    "seasons": [],
+    "lightRequirement": "Bright indirect filtered sunlight (1,200 – 2,000 FC). Avoid harsh direct midday rays.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-peace-lily": {
@@ -1701,10 +1787,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Spathiphyllum wallisii",
     "category": "Flowering",
     "biome": "tropical",
-    "biomeLabel": "Understory Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1593482892290-f54927ae1bf6?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1593482892290-f54927ae1bf6?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1593482892290-f54927ae1bf6?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Peace Lily (Spathiphyllum Wallisii)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#WhiteBlooms",
@@ -1722,10 +1812,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "White Spathe Blooms",
-      "NASA Air Purifier",
-      "Thirst Communicator",
-      "Low Light Capable"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Elegant glossy deep-green foliage topped with pristine white spathe blooms; dramatic natural humidity indicator.",
     "description": "Forest-floor tropical plant famous for graceful white flower spathes and reliable air filtration. Clearly signals thirst with graceful temporary drooping.",
@@ -1738,7 +1827,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 26°C",
     "growth": "Moderate",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Mildly toxic to pets due to calcium oxalate crystals.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "300 ml / 4 Days",
     "waterStatus": "Turgid & Erect",
     "notifMsg": "Peace Lily (Spathiphyllum Wallisii) is maintaining optimal hydration and metabolic vitality.",
@@ -1759,6 +1848,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Moisture Retentive Mix",
     "soilBar": "86%",
     "soilSub": "Humus rich moisture blend",
+    "seasons": [],
+    "lightRequirement": "Low to bright indirect light (500 – 1,200 FC). Sensitive to direct sun scorching.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-boston-fern": {
@@ -1768,11 +1861,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Boston Sword Fern (Nephrolepis Exaltata)",
     "scientificName": "Nephrolepis exaltata 'Bostoniensis'",
     "category": "Fern",
-    "biome": "subtropical",
-    "biomeLabel": "Humid Understory",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1596724810776-6548a31e8fd2?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Boston Sword Fern (Nephrolepis Exaltata)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#FernFamily",
@@ -1790,10 +1887,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Cascading Fronds",
-      "NASA Air Purifier",
-      "Natural Humidifier",
-      "100% Pet Safe"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Graceful cascading sword-shaped fronds that naturally purify indoor air and elevate ambient humidity.",
     "description": "Beloved Victorian houseplant featuring lush arching fronds that thrive in humid environments. A powerhouse natural air purifier and living humidifier.",
@@ -1827,6 +1923,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Peat Moss Blend",
     "soilBar": "88%",
     "soilSub": "Peat and humus moisture blend",
+    "seasons": [],
+    "lightRequirement": "Medium to bright filtered indirect light (800 – 1,500 FC). Avoid scorching sun.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-spider-plant": {
@@ -1836,11 +1936,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Variegated Spider Plant (Chlorophytum Comosum)",
     "scientificName": "Chlorophytum comosum 'Vittatum'",
     "category": "Foliage",
-    "biome": "subtropical",
-    "biomeLabel": "Southern African Woodlands",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1572688484438-313a6e50c333?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Variegated Spider Plant (Chlorophytum Comosum)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#Spiderettes",
@@ -1858,10 +1962,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Cascading Spiderettes",
-      "NASA Clean Air Rank #1",
-      "Fountain Ribbon Foliage",
-      "100% Pet Safe"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Arched grassy ribbon fronds with cream ribbons, producing graceful cascades of miniature spiderettes.",
     "description": "Classic joyful houseplant producing fountain-like rosettes of ribbon foliage striped in cream and green. Produces cascading runners bearing tiny white flowers and baby plantlets.",
@@ -1895,6 +1998,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Porous Potting Mix",
     "soilBar": "82%",
     "soilSub": "Fertile porous potting soil",
+    "seasons": [],
+    "lightRequirement": "Medium to bright indirect light (800 – 2,000 FC). Adapts to light shade.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-zz-plant": {
@@ -1904,11 +2011,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "ZZ Plant (Zamioculcas Zamiifolia)",
     "scientificName": "Zamioculcas zamiifolia",
     "category": "Foliage",
-    "biome": "arid",
-    "biomeLabel": "Eastern African Plains",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=1200&q=80",
+        "alt": "ZZ Plant (Zamioculcas Zamiifolia)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#OfficePlants",
@@ -1926,10 +2037,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Mirror Gloss Leaves",
-      "Subsurface Rhizomes",
-      "Extreme Drought Tolerance",
-      "Low Light Tolerant"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Glossy emerald feather foliage with subsurface water rhizomes; thrives on utter neglect and low light.",
     "description": "Resilient perennial from eastern Africa featuring naturally glossy waxy pinnate leaves. Subsurface potato-like rhizomes store ample water reserves for prolonged dry periods.",
@@ -1942,7 +2052,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 30°C",
     "growth": "Slow",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Contains calcium oxalates; mild irritant if chewed by animals.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "200 ml / 14 Days",
     "waterStatus": "Tuber Reserve Full",
     "notifMsg": "ZZ Plant (Zamioculcas Zamiifolia) is maintaining optimal hydration and metabolic vitality.",
@@ -1963,6 +2073,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Porous Succulent Soil",
     "soilBar": "90%",
     "soilSub": "Free-draining porous potting mix",
+    "seasons": [],
+    "lightRequirement": "Low to moderate indirect light (400 – 1,200 FC). Thrives under standard fluorescent lighting.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-pothos": {
@@ -1973,10 +2087,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Epipremnum aureum",
     "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Tropical Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1597055181300-e3633a917c9c?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Golden Pothos (Devil's Ivy)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#TrailingVine",
@@ -1994,10 +2112,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Trailing Golden Vines",
-      "Effortless Propagation",
-      "Air Purifying",
-      "High Adaptability"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Cascading heart-shaped emerald leaves splashed with creamy gold; exceptionally resilient and versatile.",
     "description": "Vigorous evergreen trailing vine adorned with heart-shaped foliage splashed in golden marbling. Forgiving of missed waterings and adapts to almost any interior environment.",
@@ -2010,7 +2127,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "15°C – 30°C",
     "growth": "Fast",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Mildly toxic to pets; place on high shelves out of reach.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "200 ml / 6 Days",
     "waterStatus": "Robust Trailing",
     "notifMsg": "Golden Pothos (Devil's Ivy) is maintaining optimal hydration and metabolic vitality.",
@@ -2031,6 +2148,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Standard Houseplant Soil",
     "soilBar": "80%",
     "soilSub": "Standard airy peat blend",
+    "seasons": [],
+    "lightRequirement": "Low, medium, or bright indirect light (400 – 1,800 FC). Gold variegation brightens with light.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-rubber-tree": {
@@ -2041,10 +2162,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Ficus elastica 'Burgundy'",
     "category": "Foliage",
     "biome": "tropical",
-    "biomeLabel": "South Asian Monsoon",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1597055181363-22849b2750e3?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1597055181363-22849b2750e3?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1597055181363-22849b2750e3?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Burgundy Rubber Tree (Ficus Elastica)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#BurgundyLeaves",
@@ -2062,10 +2187,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Deep Wine Burgundy Tone",
-      "Crimson New Sheaths",
-      "Stately Tree Stature",
-      "Thick Leathery Leaves"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Glossy leathery leaves with rich bronze-burgundy undertones emerging from striking crimson sheaths.",
     "description": "Stately ornamental tree showcasing thick leathery leaves that transition from deep wine-burgundy to forest green. Crimson growth sheaths add vivid living color accents.",
@@ -2078,7 +2202,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "16°C – 29°C",
     "growth": "Fast to Moderate",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Sap is mildly irritating to pets; caution recommended.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "400 ml / 7 Days",
     "waterStatus": "Sturdy Stem Vigour",
     "notifMsg": "Burgundy Rubber Tree (Ficus Elastica) is maintaining optimal hydration and metabolic vitality.",
@@ -2099,6 +2223,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Well-Drained Loam",
     "soilBar": "85%",
     "soilSub": "Rich aerated potting loam",
+    "seasons": [],
+    "lightRequirement": "Bright indirect light with some soft morning direct sunlight (1,500 – 2,500 FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-calathea": {
@@ -2109,10 +2237,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Calathea orbifolia (Linden) H.A.Kenn.",
     "category": "Foliage",
     "biome": "tropical",
-    "biomeLabel": "Amazon Basin Understory",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Calathea Orbifolia (Prayer Plant)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#PrayerPlant",
@@ -2130,10 +2262,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Circadian Leaf Prayer",
-      "Metallic Silver Bands",
-      "Non-Toxic Pet Safe",
-      "Artisan Centerpiece"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Exquisite oversized round leaves decorated with silvery-green geometric brushstroke patterns.",
     "description": "Prized prayer-plant cultivar celebrated for broad circular leaves adorned with metallic silver-green bands. Foliage naturally folds upward at night in serene nyctinastic movement.",
@@ -2167,6 +2298,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "High Humus Porous Blend",
     "soilBar": "87%",
     "soilSub": "Spongy coco-peat substrate",
+    "seasons": [],
+    "lightRequirement": "Medium to bright indirect light (800 – 1,500 FC). Absolute shade from direct sun.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-alocasia-amazonica": {
@@ -2177,10 +2312,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Alocasia × amazonica",
     "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Tropical Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Alocasia Amazonica (African Mask / Polly)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#AfricanMask",
@@ -2198,10 +2337,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Sculptural Arrowhead Leaf",
-      "Silver-White Ribs",
-      "Wavy Margins",
-      "Rare Collector Jewel"
+      "CHALLENGING Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Dramatic arrowhead foliage with scalloped margins and striking bone-white veins on deep jade.",
     "description": "Architectural jewel featuring glossy arrowhead leaves with pronounced silvery-white veins and wavy edges. Evokes prehistoric botanical geometry.",
@@ -2214,7 +2352,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 28°C",
     "growth": "Moderate",
     "careLevel": "Challenging",
-    "toxicity": "Pet Caution (Contains calcium oxalates; keep out of reach of household pets.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "300 ml / 5 Days",
     "waterStatus": "Shield Turgor Peak",
     "notifMsg": "Alocasia Amazonica (African Mask / Polly) is maintaining optimal hydration and metabolic vitality.",
@@ -2235,6 +2373,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Chunky Aerated Aroid",
     "soilBar": "92%",
     "soilSub": "Chunky orchid bark and charcoal",
+    "seasons": [],
+    "lightRequirement": "Bright indirect sunlight (1,500 – 2,200 FC). Protect from chilly drafts.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-anthurium": {
@@ -2245,10 +2387,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Anthurium clarinervium",
     "category": "Aroid",
     "biome": "tropical",
-    "biomeLabel": "Tropical Rainforest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Velvet Cardboard Anthurium (Clarinervium)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#VelvetAnthurium",
@@ -2266,10 +2412,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Velvety Cardboard Texture",
-      "Luminous Silver Veins",
-      "Rare Collector Specimen",
-      "Heart-Shaped Silhouette"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Deep velvet heart-shaped leaves etched with glowing emerald and silver crystalline venation.",
     "description": "Breathtaking lithophytic Anthurium characterized by stiff, velvety cardboard-like heart leaves. Luminous white crystalline veins create a dramatic electrified web against deep forest green.",
@@ -2282,7 +2427,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 26°C",
     "growth": "Slow",
     "careLevel": "Moderate",
-    "toxicity": "Pet Caution (Contains calcium oxalate crystals; toxic to cats and dogs if chewed.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "200 ml / 6 Days",
     "waterStatus": "Velvet Foliage Pristine",
     "notifMsg": "Velvet Cardboard Anthurium (Clarinervium) is maintaining optimal hydration and metabolic vitality.",
@@ -2303,6 +2448,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Chunky Lithophyte Blend",
     "soilBar": "94%",
     "soilSub": "Ultra-chunky limestone and bark mix",
+    "seasons": [],
+    "lightRequirement": "Bright, strictly indirect light (1,200 – 1,800 FC). Sensitive to leaf scorch.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-bird-of-paradise": {
@@ -2313,10 +2462,14 @@ export const BOTANICAL_SPECIMENS = {
     "scientificName": "Strelitzia nicolai",
     "category": "Foliage",
     "biome": "tropical",
-    "biomeLabel": "Coastal Subtropical Forest",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80",
+        "alt": "White Bird of Paradise (Strelitzia Nicolai)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#TropicalResort",
@@ -2334,10 +2487,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Monumental Paddle Foliage",
-      "Architectural Fan Crown",
-      "Resort Sanctuary Aesthetic",
-      "Sun Worshipper"
+      "MODERATE Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Monumental architectural banana-like paddle leaves bringing majestic resort vibes to spacious interiors.",
     "description": "Grand tropical perennial known for enormous paddle-shaped leaves arranged in a stately fan crown. Leaves naturally develop splits over time to let heavy winds slip through.",
@@ -2350,7 +2502,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "18°C – 32°C",
     "growth": "Vigorous in Bright Sun",
     "careLevel": "Moderate",
-    "toxicity": "Pet Caution (Mildly toxic to pets if large amounts are ingested.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "800 ml / 6 Days",
     "waterStatus": "Canopy Sun-Ready",
     "notifMsg": "White Bird of Paradise (Strelitzia Nicolai) is maintaining optimal hydration and metabolic vitality.",
@@ -2371,6 +2523,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Deep Rich Garden Soil",
     "soilBar": "86%",
     "soilSub": "Loamy compost and perlite mix",
+    "seasons": [],
+    "lightRequirement": "Bright direct to indirect sunlight (2,500 – 4,000 FC). Loves sunshine.",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-jade-plant": {
@@ -2380,11 +2536,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Jade Plant (Crassula Ovata / Money Tree)",
     "scientificName": "Crassula ovata",
     "category": "Succulent",
-    "biome": "arid",
-    "biomeLabel": "Arid & Desert",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Jade Plant (Crassula Ovata / Money Tree)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#CrassulaOvata",
@@ -2402,10 +2562,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Sculptural Bonsai Stature",
-      "Plump Jade Cushion Leaves",
-      "Symbol of Prosperity",
-      "Decades of Longevity"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Chubby jade-green succulent leaves on woody bonsai-like stems; celebrated symbol of prosperity.",
     "description": "Beloved succulent tree featuring plump fleshy teardrop leaves and thick sculptural branches. Develops subtle ruby margins when kissed by bright sun; can live for decades.",
@@ -2418,7 +2577,7 @@ export const BOTANICAL_SPECIMENS = {
     "temp": "15°C – 30°C",
     "growth": "Slow & Steady",
     "careLevel": "Easy",
-    "toxicity": "Pet Caution (Toxic to pets; keep away from cats and dogs.)",
+    "toxicity": "Non-Toxic (Pet Safe)",
     "waterDaily": "120 ml / 16 Days",
     "waterStatus": "Bonsai Trunk Hardy",
     "notifMsg": "Jade Plant (Crassula Ovata / Money Tree) is maintaining optimal hydration and metabolic vitality.",
@@ -2439,6 +2598,10 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "Granite Grit & Pumice",
     "soilBar": "95%",
     "soilSub": "High-drainage mineral grit pH 6.5",
+    "seasons": [],
+    "lightRequirement": "Full sun to very bright indirect light (minimum 4-6 hours direct sun, 3,000+ FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   },
   "specimen-echeveria": {
@@ -2448,11 +2611,15 @@ export const BOTANICAL_SPECIMENS = {
     "name": "Mexican Snowball Echeveria (Echeveria Elegans)",
     "scientificName": "Echeveria elegans Rose",
     "category": "Succulent",
-    "biome": "arid",
-    "biomeLabel": "Arid & Desert",
+    "biome": "tropical",
+    "biomeLabel": "Tropical Biome",
     "image": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80"
+      {
+        "url": "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1200&q=80",
+        "alt": "Mexican Snowball Echeveria (Echeveria Elegans)",
+        "isPrimary": true
+      }
     ],
     "tags": [
       "#EcheveriaElegans",
@@ -2470,10 +2637,9 @@ export const BOTANICAL_SPECIMENS = {
       "Plantae"
     ],
     "traits": [
-      "Powdery Farina Wax",
-      "Geometric Rose Rosette",
-      "Pet Friendly Non-Toxic",
-      "Drought Champion"
+      "EASY Maintenance",
+      "Filtered Sunlight",
+      "Perennial"
     ],
     "shortDesc": "Mesmerizing geometric rosette of silvery blue-green spoon leaves coated in powdery farina wax.",
     "description": "Iconic desert succulent forming tight symmetrical rosettes of translucent pale blue-green leaves. A natural powdery wax coating (farina) protects delicate tissue from intense sun.",
@@ -2507,9 +2673,86 @@ export const BOTANICAL_SPECIMENS = {
     "soilVal": "80% Mineral Gritty Mix",
     "soilBar": "98%",
     "soilSub": "Mineral grit and porous volcanic pumice",
+    "seasons": [],
+    "lightRequirement": "Direct intense sunlight (minimum 6 hours daily, 3,500 – 5,000 FC).",
+    "regions": [],
+    "similarPlantSlugs": [],
     "status": "published"
   }
 };
+
+export const DATABASE_USERS = [
+  {
+    "fullName": "Elena Vu (Master Admin)",
+    "email": "admin@greennest.com",
+    "password": "AdminCanopy2026!",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+    "role": "admin",
+    "avatar": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80",
+    "savedGardenSlugs": [
+      "monstera-deliciosa",
+      "calathea-orbifolia",
+      "ficus-lyrata"
+    ],
+    "status": "active"
+  },
+  {
+    "fullName": "Admin GreenNest",
+    "email": "admin@greennest.vn",
+    "password": "Admin@123456",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+    "role": "admin",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "savedGardenSlugs": [
+      "monstera-deliciosa",
+      "calathea-orbifolia"
+    ],
+    "status": "active"
+  },
+  {
+    "fullName": "Alexandre Pham",
+    "email": "alex.pham@example.com",
+    "password": "GreenCanopy2026",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+    "role": "user",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "savedGardenSlugs": [
+      "sansevieria-trifasciata",
+      "lavandula-angustifolia"
+    ],
+    "status": "active"
+  },
+  {
+    "fullName": "Demo Member",
+    "email": "user@demo.com",
+    "password": "GreenCanopy2026",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+    "role": "user",
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
+    "savedGardenSlugs": [
+      "ficus-lyrata",
+      "monstera-deliciosa"
+    ],
+    "status": "active"
+  },
+  {
+    "fullName": "Nam Le",
+    "email": "nam.le@greennest.vn",
+    "password": "GreenNest@2026",
+    "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+    "role": "user",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "savedGardenSlugs": [
+      "monstera-deliciosa"
+    ],
+    "status": "active"
+  }
+];
 
 // List of canonical 20 plant slugs (excluding legacy aliases)
 export const CANONICAL_PLANT_SLUGS = [
@@ -2545,7 +2788,7 @@ export function getStarredPlantIds() {
   if (typeof window === 'undefined') return ['monstera-deliciosa'];
   const stored = localStorage.getItem(STARRED_STORAGE_KEY);
   if (stored === null) {
-    const initial = ['monstera-deliciosa', 'snake-plant-laurentii'];
+    const initial = ['monstera-deliciosa', 'sansevieria-trifasciata'];
     localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(initial));
     return initial;
   }
@@ -2575,18 +2818,18 @@ export function toggleStarredPlant(plantId) {
 }
 
 export function getGardenPlantIds() {
-  if (typeof window === 'undefined') return ['monstera-deliciosa', 'fiddle-leaf-fig'];
+  if (typeof window === 'undefined') return ['monstera-deliciosa', 'ficus-lyrata'];
   const stored = localStorage.getItem(GARDEN_STORAGE_KEY);
   if (stored === null) {
-    const initial = ['monstera-deliciosa', 'fiddle-leaf-fig'];
+    const initial = ['monstera-deliciosa', 'ficus-lyrata'];
     localStorage.setItem(GARDEN_STORAGE_KEY, JSON.stringify(initial));
     return initial;
   }
   try {
     const parsed = JSON.parse(stored);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : ['monstera-deliciosa', 'fiddle-leaf-fig'];
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : ['monstera-deliciosa', 'ficus-lyrata'];
   } catch (e) {
-    return ['monstera-deliciosa', 'fiddle-leaf-fig'];
+    return ['monstera-deliciosa', 'ficus-lyrata'];
   }
 }
 

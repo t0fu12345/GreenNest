@@ -36,7 +36,7 @@ const SpecimenDetail = () => {
           const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
           setStarredIds(ids);
         } catch (e) {
-          console.warn('Unable to load saved favorites:', e);
+          console.warn('Could not load favorite plants:', e);
         }
       } else {
         setStarredIds([]);
@@ -48,12 +48,12 @@ const SpecimenDetail = () => {
   useEffect(() => {
     if (!requestedId) return;
 
-    // Populate from BOTANICAL_SPECIMENS if available
+    // Use the local botanical catalog immediately when the ID is available
     if (BOTANICAL_SPECIMENS[requestedId]) {
       setCurrentPlant(BOTANICAL_SPECIMENS[requestedId]);
     }
 
-    // Fetch latest live record from MongoDB API
+    // Then request the latest data from MongoDB through the API
     const fetchDetail = async () => {
       try {
         setLoading(true);
@@ -98,7 +98,7 @@ const SpecimenDetail = () => {
           });
         }
       } catch (err) {
-        console.warn('Using fallback data for specimen detail:', err.message);
+        console.warn('Using fallback data for specimen details:', err.message);
       } finally {
         setLoading(false);
       }
@@ -119,7 +119,7 @@ const SpecimenDetail = () => {
 
   const handleToggleStar = async () => {
     if (!isAuthenticated) {
-      showToast('Please sign in to save specimens to your favorites!');
+      showToast('Please sign in to save plants to your favorites!');
       setTimeout(() => navigate('/login'), 1200);
       return;
     }
@@ -130,13 +130,13 @@ const SpecimenDetail = () => {
       const isBookmarked = res?.data?.isBookmarked;
       if (isBookmarked) {
         setStarredIds(prev => Array.from(new Set([...prev, plantId])));
-        showToast(`⭐ Added "${plant.name}" to Sanctuary Favorites!`);
+        showToast(`⭐ Added "${plant.name}" to Favorites!`);
       } else {
         setStarredIds(prev => prev.filter(id => id !== plantId && id !== plant._id));
-        showToast(`Removed "${plant.name}" from Sanctuary Favorites.`);
+        showToast(`Removed "${plant.name}" from Favorites.`);
       }
     } catch (err) {
-      showToast('Error updating favorites: ' + err.message);
+      showToast('Could not update favorites: ' + err.message);
     }
   };
 
@@ -210,6 +210,10 @@ const SpecimenDetail = () => {
               <img
                 src={plant.image}
                 alt={plant.name}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
+                }}
                 style={{ width: '100%', height: '420px', objectFit: 'cover', display: 'block' }}
               />
               <span style={{
@@ -358,7 +362,7 @@ const SpecimenDetail = () => {
                   type="button"
                   onClick={() => {
                     if (!isAuthenticated) {
-                      showToast('Please sign in to add this specimen to your collection!');
+                      showToast('Please sign in to add plants to a collection!');
                       setTimeout(() => navigate('/login'), 1200);
                       return;
                     }
@@ -378,7 +382,7 @@ const SpecimenDetail = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  <span>📁 Save to Collection</span>
+                  <span>📁 Save To Collection</span>
                 </button>
 
                 <button
@@ -398,7 +402,7 @@ const SpecimenDetail = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  <span>{isStarred ? '★ Favorited' : '★ Add to Favorites'}</span>
+                  <span>{isStarred ? '★ Starred' : '★ Star Specimen'}</span>
                 </button>
 
                 <Link
@@ -527,7 +531,7 @@ const SpecimenDetail = () => {
         onClose={() => setIsSaveModalOpen(false)}
         plantSlug={plant.slug || plantId}
         onSaved={() => {
-          setToastMessage(`Updated collection for "${plant.name}"!`);
+          setToastMessage(`Collection updated for "${plant.name}"!`);
           setTimeout(() => setToastMessage(''), 3000);
         }}
       />

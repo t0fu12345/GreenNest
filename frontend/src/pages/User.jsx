@@ -150,7 +150,8 @@ const User = () => {
                     border: '1px solid rgba(239, 68, 68, 0.4)',
                     color: '#fca5a5',
                     borderRadius: '9999px',
-                    padding: '6px 14px',
+                    padding: '6px 16px',
+
                     fontSize: '0.8rem',
                     fontWeight: 600,
                     cursor: 'pointer'
@@ -170,7 +171,7 @@ const User = () => {
               border: '1px solid rgba(255, 255, 255, 0.14)',
               borderRadius: '9999px'
             }}>
-              <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Not currently signed in.</span>
+              <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Not signed in.</span>
               <Link 
                 to="/login"
                 style={{
@@ -180,7 +181,7 @@ const User = () => {
                   textDecoration: 'none'
                 }}
               >
-                Sign In Now →
+                Sign in now →
               </Link>
             </div>
           )}

@@ -26,6 +26,15 @@ const Register = () => {
     }, duration);
   };
 
+  const handleSocialRegister = (provider) => {
+    setSubmitting(true);
+    showNotification(`Connected with ${provider}! Welcome to GreenNest.`, 'success');
+    loginWithGoogle();
+    setTimeout(() => {
+      navigate('/');
+    }, 950);
+  };
+
 
   const handleEmailRegister = async (e) => {
     e.preventDefault();
@@ -35,12 +44,12 @@ const Register = () => {
     }
 
     if (password.length < 6) {
-      showNotification('Password must be at least 6 characters.', 'error');
+      showNotification('Password must be at least 6 characters for security.', 'error');
       return;
     }
 
     if (!agreeTerms) {
-      showNotification('Please agree to our ecological botanical stewardship guidelines.', 'error');
+      showNotification('Please agree to the botanical care principles.', 'error');
       return;
     }
 
@@ -118,7 +127,7 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="regNickname" className="form-label">Nickname (optional login identifier)</label>
+            <label htmlFor="regNickname" className="form-label">Username / Nickname (for login)</label>
             <div className="input-wrapper">
               <input 
                 type="text" 
@@ -185,7 +194,7 @@ const Register = () => {
               onChange={(e) => setAgreeTerms(e.target.checked)} 
               required 
             />
-            <span>I agree to ecological stewardship and organic botanical care guidelines.</span>
+            <span>I commit to ecological preservation and organic plant care principles.</span>
           </label>
 
           <button 

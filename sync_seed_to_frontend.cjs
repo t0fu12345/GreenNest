@@ -3,55 +3,59 @@ const path = require('path');
 
 const plantsPath = path.join(__dirname, 'database', 'seedData', 'plants.json');
 const colsPath = path.join(__dirname, 'database', 'seedData', 'plantCollections.json');
+const usersPath = path.join(__dirname, 'database', 'seedData', 'users.json');
 const destPath = path.join(__dirname, 'frontend', 'src', 'data', 'botanicalSpecimens.js');
 
 const plants = JSON.parse(fs.readFileSync(plantsPath, 'utf8'));
 const cols = JSON.parse(fs.readFileSync(colsPath, 'utf8'));
+const users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
 
 const biomeMap = {
-  'Aroid': { biome: 'tropical', label: 'Tropical Rainforest' },
-  'Rose': { biome: 'temperate', label: 'Temperate Garden' },
-  'Bromeliad': { biome: 'tropical', label: 'Tropical Canopy' },
-  'Fern': { biome: 'subtropical', label: 'Humid Understory' },
-  'Sansevieria': { biome: 'arid', label: 'Arid & Desert' },
-  'Succulent': { biome: 'arid', label: 'Arid & Desert' },
-  'Ficus': { biome: 'tropical', label: 'Tropical Forest' },
-  'Spathiphyllum': { biome: 'tropical', label: 'Understory Rainforest' },
-  'Epipremnum': { biome: 'tropical', label: 'Tropical Rainforest' },
-  'Calathea': { biome: 'tropical', label: 'Tropical Floor' },
-  'Alocasia': { biome: 'tropical', label: 'Tropical Rainforest' },
-  'Chlorophytum': { biome: 'subtropical', label: 'Subtropical Grassland' },
-  'Strelitzia': { biome: 'tropical', label: 'Subtropical Coast' },
-  'Anthurium': { biome: 'tropical', label: 'Tropical Lithophyte' },
-  'Philodendron': { biome: 'tropical', label: 'Tropical Rainforest' },
-  'Crassula': { biome: 'arid', label: 'Arid Karoo' },
-  'Hedera': { biome: 'temperate', label: 'Temperate Woodland' },
-  'Echeveria': { biome: 'arid', label: 'Arid Semi-Desert' }
+  'foliage': { biome: 'tropical', label: 'Tropical Biome' },
+  'tree': { biome: 'tropical', label: 'Tropical Rainforest' },
+  'succulent': { biome: 'arid', label: 'Arid & Desert' },
+  'herb': { biome: 'subtropical', label: 'Subtropical Highlands' },
+  'flower': { biome: 'subtropical', label: 'Subtropical Highlands' }
 };
 
 const transformed = {};
 
 plants.forEach((p, idx) => {
   const num = String(idx + 1).padStart(3, '0');
-  const catalogCode = p.catalogCode || ('CANOPY-' + num);
-  const bInfo = biomeMap[p.category] || { biome: p.biome || 'tropical', label: p.biomeLabel || 'Tropical Biome' };
+  const catalogCode = 'CANOPY-' + num;
+  const bInfo = biomeMap[p.category] || { biome: 'tropical', label: 'Tropical Biome' };
   
   let toxicityText = 'Non-Toxic (Pet Safe)';
-  if (p.toxicity) {
-    if (typeof p.toxicity === 'string') {
-      toxicityText = p.toxicity;
-    } else if (p.toxicity.isToxicToPets) {
-      toxicityText = 'Pet Caution (' + (p.toxicity.details || 'Contains oxalates') + ')';
-    }
+  if (p.guide?.toxicityCaution?.pets === 'toxic') {
+    toxicityText = 'Pet Caution (' + (p.guide.toxicityCaution.humans === 'irritant' ? 'Toxic to Pets / Irritant' : 'Toxic to Pets') + ')';
+  } else if (p.guide?.toxicityCaution?.pets === 'caution') {
+    toxicityText = 'Mild Caution';
   }
 
-  const primaryImg = p.images?.hero || (Array.isArray(p.images) ? p.images.find(img => img.isPrimary)?.url || p.images[0]?.url : '') || '';
-  const galleryImgs = Array.isArray(p.images?.gallery) ? p.images.gallery : (Array.isArray(p.images) ? p.images.map(img => typeof img === 'string' ? img : img.url) : []);
+  let primaryImg = '';
+  let imageArray = [];
+  if (Array.isArray(p.images)) {
+    primaryImg = p.images.find(img => img.isPrimary)?.url || p.images[0]?.url || '';
+    imageArray = p.images;
+  } else if (p.images && typeof p.images === 'object') {
+    primaryImg = p.images.hero || p.images.gallery?.[0] || '';
+    imageArray = [
+      { url: p.images.hero, alt: p.name, isPrimary: true },
+      ...(p.images.gallery || []).map((url, i) => ({ url, alt: `${p.name} view ${i+1}`, isPrimary: false }))
+    ].filter(img => img.url);
+  }
+  if (!primaryImg && p.image) primaryImg = p.image;
 
   const tags = (p.tags || []).map(t => t.startsWith('#') ? t : '#' + t.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(''));
   if (p.category && !tags.includes('#' + p.category)) {
     tags.push('#' + p.category.charAt(0).toUpperCase() + p.category.slice(1));
   }
+
+  const waterDailyMap = {
+    'low': '150 ml / 14 Days',
+    'moderate': '350 ml / 7 Days',
+    'high': '500 ml / 3 Days'
+  };
 
   const item = {
     id: p.slug,
@@ -63,27 +67,27 @@ plants.forEach((p, idx) => {
     biome: bInfo.biome,
     biomeLabel: bInfo.label,
     image: primaryImg,
-    images: galleryImgs.length > 0 ? galleryImgs : [primaryImg],
+    images: imageArray,
     tags,
-    taxonomyTags: p.taxonomyTags || [p.category, (p.scientificName || '').split(' ')[0], 'Plantae'],
-    traits: p.traits || [
+    taxonomyTags: p.taxonomyTags || [p.category, (p.scientificName || p.botanicalName || '').split(' ')[0], 'Plantae'].filter(Boolean),
+    traits: [
       p.careLevel ? p.careLevel.toUpperCase() + ' Maintenance' : 'Adaptive',
       'Filtered Sunlight',
-      'Evergreen Perennial'
+      p.guide?.growthHabit ? p.guide.growthHabit.split('.')[0] : 'Perennial'
     ],
     shortDesc: p.shortDesc || p.description,
     description: p.description,
     origin: p.origin || 'Tropical and Subtropical Regions',
-    purpose: p.purpose || 'Purifies indoor air and anchors modern biophilic interiors.',
-    water: p.watering || 'Water thoroughly when topsoil dries.',
+    purpose: p.purpose || 'Air-purifying botanical specimen for modern biophilic interiors.',
+    water: p.watering || p.guide?.watering || 'Water thoroughly when the topsoil dries.',
     light: p.light || 'Abundant filtered indirect sunlight.',
-    soil: p.soil || 'Well-draining, nutrient-rich aerated substrate.',
+    soil: p.soil || p.guide?.soil || 'Well-draining, nutrient-rich aerated substrate.',
     humidity: p.humidity || '55% – 75%',
     temp: p.temp || '18°C – 28°C',
     growth: p.growth || 'Moderate Growth',
-    careLevel: p.careLevel || 'Moderate',
+    careLevel: p.careLevel || p.difficulty || 'Moderate',
     toxicity: toxicityText,
-    waterDaily: p.telemetry?.waterDaily || '350 ml / 7 Days',
+    waterDaily: p.telemetry?.waterDaily || waterDailyMap[p.water] || '350 ml / 7 Days',
     waterStatus: p.telemetry?.waterStatus || 'Balanced',
     notifMsg: p.name + ' is maintaining optimal hydration and metabolic vitality.',
     waterVal: p.telemetry?.waterVal || '350 ml',
@@ -93,27 +97,34 @@ plants.forEach((p, idx) => {
     waterFreq: p.telemetry?.waterFreq || 'Every 7-10 days',
     humidityVal: p.telemetry?.humidityVal || '65% RH',
     humidityBar: p.telemetry?.humidityBar || '80%',
-    humiditySub: p.telemetry?.humiditySub || 'Leaf transpiration rate maintaining natural equilibrium.',
-    humidityTarget: p.telemetry?.humidityTarget || '60% – 80% RH',
-    mistCadence: p.telemetry?.mistCadence || 'Foliage misting every 3-4 days',
+    humiditySub: p.telemetry?.humiditySub || 'Leaf transpiration is maintaining a natural equilibrium.',
+    humidityTarget: p.telemetry?.humidityTarget || '55% – 80% RH',
+    mistCadence: p.telemetry?.mistCadence || 'Mist foliage every 3-4 days',
     envVal: p.telemetry?.envVal || '1,500 FC',
     envBar: p.telemetry?.envBar || '85%',
     envSub: p.telemetry?.envSub || 'Calibrated lighting spectrum.',
-    tempRange: p.telemetry?.tempRange || '18°C min night / 28°C max day',
+    tempRange: p.telemetry?.tempRange || '18°C minimum night / 28°C maximum day',
     soilVal: p.telemetry?.soilVal || 'Airy Aroid Blend',
     soilBar: p.telemetry?.soilBar || '85%',
-    soilSub: p.telemetry?.soilSub || 'Pot equipped with adequate drainage hole.',
+    soilSub: p.telemetry?.soilSub || 'Container with adequate drainage.',
+    guide: p.guide,
+    seasons: p.seasons || [],
+    lightRequirement: p.light,
+    wateringFrequency: p.water,
+    difficulty: p.difficulty,
+    regions: p.regions || [],
+    similarPlantSlugs: p.similarPlantSlugs || [],
     status: p.status || 'published'
   };
 
   transformed[p.slug] = item;
 });
 
-// Backward-compatibility legacy aliases
+// Legacy aliases for backward compatibility with old mock IDs
 transformed['specimen-monstera'] = transformed['monstera-deliciosa'];
-transformed['specimen-red-rose'] = transformed['red-heritage-rose'] || transformed['monstera-deliciosa'];
-transformed['specimen-snake-plant'] = transformed['snake-plant-laurentii'] || transformed['monstera-deliciosa'];
-transformed['specimen-fiddle-leaf'] = transformed['fiddle-leaf-fig'] || transformed['monstera-deliciosa'];
+transformed['specimen-red-rose'] = transformed['monstera-deliciosa'];
+transformed['specimen-snake-plant'] = transformed['sansevieria-trifasciata'];
+transformed['specimen-fiddle-leaf'] = transformed['ficus-lyrata'];
 transformed['specimen-peace-lily'] = transformed['peace-lily-spathiphyllum'] || transformed['monstera-deliciosa'];
 transformed['specimen-boston-fern'] = transformed['boston-fern'] || transformed['monstera-deliciosa'];
 transformed['specimen-spider-plant'] = transformed['spider-plant-variegated'] || transformed['monstera-deliciosa'];
@@ -128,11 +139,13 @@ transformed['specimen-jade-plant'] = transformed['jade-plant-crassula-ovata'] ||
 transformed['specimen-echeveria'] = transformed['echeveria-elegans'] || transformed['monstera-deliciosa'];
 
 const fileContent = `// Comprehensive Botanical Specimens Seed Data from MongoDB Dataset
-// Contains all 20 standardized botanical specimens + 4 curated living collections
+// Contains all 20 standardized botanical specimens + 4 seasonal curated collections + DB seed users
 
 export const PLANT_COLLECTIONS = ${JSON.stringify(cols, null, 2)};
 
 export const BOTANICAL_SPECIMENS = ${JSON.stringify(transformed, null, 2)};
+
+export const DATABASE_USERS = ${JSON.stringify(users, null, 2)};
 
 // List of canonical 20 plant slugs (excluding legacy aliases)
 export const CANONICAL_PLANT_SLUGS = ${JSON.stringify(plants.map(p => p.slug), null, 2)};
@@ -147,7 +160,7 @@ export function getStarredPlantIds() {
   if (typeof window === 'undefined') return ['monstera-deliciosa'];
   const stored = localStorage.getItem(STARRED_STORAGE_KEY);
   if (stored === null) {
-    const initial = ['monstera-deliciosa', 'snake-plant-laurentii'];
+    const initial = ['monstera-deliciosa', 'sansevieria-trifasciata'];
     localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(initial));
     return initial;
   }
@@ -177,18 +190,18 @@ export function toggleStarredPlant(plantId) {
 }
 
 export function getGardenPlantIds() {
-  if (typeof window === 'undefined') return ['monstera-deliciosa', 'fiddle-leaf-fig'];
+  if (typeof window === 'undefined') return ['monstera-deliciosa', 'ficus-lyrata'];
   const stored = localStorage.getItem(GARDEN_STORAGE_KEY);
   if (stored === null) {
-    const initial = ['monstera-deliciosa', 'fiddle-leaf-fig'];
+    const initial = ['monstera-deliciosa', 'ficus-lyrata'];
     localStorage.setItem(GARDEN_STORAGE_KEY, JSON.stringify(initial));
     return initial;
   }
   try {
     const parsed = JSON.parse(stored);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : ['monstera-deliciosa', 'fiddle-leaf-fig'];
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : ['monstera-deliciosa', 'ficus-lyrata'];
   } catch (e) {
-    return ['monstera-deliciosa', 'fiddle-leaf-fig'];
+    return ['monstera-deliciosa', 'ficus-lyrata'];
   }
 }
 
@@ -199,4 +212,4 @@ export function setGardenPlantIds(ids) {
 `;
 
 fs.writeFileSync(destPath, fileContent, 'utf8');
-console.log('Synchronized ' + plants.length + ' plants and ' + cols.length + ' collections to ' + destPath);
+console.log('Synchronized ' + plants.length + ' plants, ' + cols.length + ' collections, and ' + users.length + ' DB users to ' + destPath);

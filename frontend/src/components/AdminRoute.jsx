@@ -83,7 +83,7 @@ const AdminRoute = ({ children }) => {
             color: '#ffffff',
             marginBottom: '12px'
           }}>
-            Administrator Protected Access
+            Restricted Administrator Clearance
           </h2>
 
           <p style={{
@@ -92,8 +92,8 @@ const AdminRoute = ({ children }) => {
             lineHeight: 1.6,
             marginBottom: '20px'
           }}>
-            Your current account (<strong>{user?.email}</strong>) is assigned the role <code>{user?.role || 'user'}</code>.
-            Your session token does not hold <code>admin:access</code> privileges to enter the Sanctuary Admin Portal.
+            Your current session (<strong>{user?.email}</strong>) possesses <code>{user?.role || 'user'}</code> privileges.
+            Your active RFC 7519 token claims do not include <code>admin:access</code> permissions required for this control center.
           </p>
 
           <div style={{
@@ -105,7 +105,7 @@ const AdminRoute = ({ children }) => {
             marginBottom: '28px',
             wordBreak: 'break-all',
             textAlign: 'left',
-            borderRadius: 0
+            borderRadius: '8px'
           }}>
             <span style={{ color: '#f87171', fontWeight: 600 }}>JWT Claims:</span> role="{user?.role}" | permissions={JSON.stringify(user?.permissions || [])}
           </div>
@@ -121,7 +121,7 @@ const AdminRoute = ({ children }) => {
                 fontSize: '0.86rem',
                 fontWeight: 600,
                 textDecoration: 'none',
-                borderRadius: 0
+                borderRadius: '9999px'
               }}
             >
               ← Return to Home
@@ -136,10 +136,10 @@ const AdminRoute = ({ children }) => {
                 fontSize: '0.86rem',
                 fontWeight: 700,
                 textDecoration: 'none',
-                borderRadius: 0
+                borderRadius: '9999px'
               }}
             >
-              Sign In as Administrator →
+              Sign In with Admin Account →
             </Link>
           </div>
         </div>

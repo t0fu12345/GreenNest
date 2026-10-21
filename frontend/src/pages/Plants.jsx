@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import {
@@ -27,7 +27,7 @@ const normalizePlant = (p) => ({
   origin: p.origin || 'GreenNest Sanctuary Nursery',
   water: p.watering || 'Weekly',
   light: p.light || 'Bright indirect',
-  soil: p.careGuide?.soil || 'Loose, well-draining aerated soil',
+  soil: p.careGuide?.soil || 'Loose, well-draining soil',
   humidity: p.careGuide?.humidity || '60% - 80%',
   temp: '20°C – 28°C',
   growth: p.careLevel || 'Moderate',
@@ -38,9 +38,15 @@ const normalizePlant = (p) => ({
 const Plants = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const [activeBiome, setActiveBiome] = useState('all');
-  const [activeTag, setActiveTag] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const initialQ = searchParams.get('q') || searchParams.get('search') || '';
+  const initialTag = searchParams.get('tag') || null;
+  const initialBiome = searchParams.get('biome') || 'all';
+
+  const [activeBiome, setActiveBiome] = useState(initialBiome);
+  const [activeTag, setActiveTag] = useState(initialTag);
+  const [searchQuery, setSearchQuery] = useState(initialQ);
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [inspectPlant, setInspectPlant] = useState(null);
@@ -48,8 +54,24 @@ const Plants = () => {
   const [loading, setLoading] = useState(true);
   const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
 
+  // Sync state if URL search params change
   useEffect(() => {
-    // Fetch live botanical specimen records from MongoDB Backend
+    const q = searchParams.get('q') || searchParams.get('search');
+    if (q !== null && q !== searchQuery) {
+      setSearchQuery(q);
+    }
+    const t = searchParams.get('tag');
+    if (t !== null && t !== activeTag) {
+      setActiveTag(t);
+    }
+    const b = searchParams.get('biome');
+    if (b !== null && b !== activeBiome) {
+      setActiveBiome(b);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    // Load live plant data from the MongoDB backend
     const fetchPlants = async () => {
       try {
         setLoading(true);
@@ -58,7 +80,7 @@ const Plants = () => {
           setApiPlants(res.data.plants.map(normalizePlant));
         }
       } catch (err) {
-        console.warn('Unable to connect to Plants API, using fallback data:', err.message);
+        console.warn('Could not connect to the Plants API; using fallback data:', err.message);
       } finally {
         setLoading(false);
       }
@@ -72,7 +94,7 @@ const Plants = () => {
           const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
           setStarredIds(ids);
         } catch (e) {
-          console.warn('Unable to load saved plants from API:', e);
+          console.warn('Could not load favorite plants from the API:', e);
         }
       } else {
         setStarredIds([]);
@@ -96,7 +118,7 @@ const Plants = () => {
   const handleToggleStar = async (plantId, e) => {
     if (e) e.stopPropagation();
     if (!isAuthenticated) {
-      showToast('Please sign in to save specimens to your favorites!');
+      showToast('Please sign in to save plants to your favorites!');
       setTimeout(() => navigate('/login'), 1200);
       return;
     }
@@ -109,13 +131,13 @@ const Plants = () => {
       const isBookmarked = res?.data?.isBookmarked;
       if (isBookmarked) {
         setStarredIds(prev => Array.from(new Set([...prev, plantId])));
-        showToast(`⭐ Added "${plant?.name || 'Specimen'}" to Sanctuary Favorites!`);
+        showToast(`⭐ Added "${plant?.name || 'Plant'}" to Favorites!`);
       } else {
         setStarredIds(prev => prev.filter(id => id !== plantId && id !== identifier));
-        showToast(`Removed "${plant?.name || 'Specimen'}" from Sanctuary Favorites.`);
+        showToast(`Removed "${plant?.name || 'Plant'}" from Favorites.`);
       }
     } catch (err) {
-      showToast('Error updating favorites: ' + err.message);
+      showToast('Could not update favorites: ' + err.message);
     }
   };
 
@@ -255,7 +277,7 @@ const Plants = () => {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 24px', color: '#86efac' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>🌿</div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading botanical specimen profiles from GreenNest server...</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading botanical profiles from the GreenNest server...</div>
           </div>
         ) : filteredPlants.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '75px 24px', background: 'rgba(14, 30, 22, 0.75)', border: '1.5px dashed rgba(245, 158, 11, 0.45)', borderRadius: '28px', maxWidth: '820px', margin: '0 auto' }}>
@@ -301,6 +323,10 @@ const Plants = () => {
                     <img
                       src={plant.image}
                       alt={plant.name}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
+                      }}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                     <span style={{
@@ -388,15 +414,15 @@ const Plants = () => {
                       <div style={{ display: 'flex', gap: '6px' }}>
                         <button
                           type="button"
-                          onClick={() => {
-                            if (!isAuthenticated) {
-                              showToast('Please sign in to save specimens to your collections!');
-                              setTimeout(() => navigate('/login'), 1200);
-                              return;
-                            }
-                            setTargetSavePlantSlug(plant.slug || plant.id);
-                          }}
-                          title="Save specimen to collection"
+                onClick={() => {
+                  if (!isAuthenticated) {
+                    showToast('Please sign in to save specimens to your collection!');
+                    setTimeout(() => navigate('/login'), 1200);
+                    return;
+                  }
+                  setTargetSavePlantSlug(plant.slug || plant.id);
+                }}
+                title="Save specimen to collection"
                           style={{
                             background: 'rgba(34, 197, 94, 0.15)',
                             border: '1px solid rgba(34, 197, 94, 0.35)',
@@ -514,6 +540,10 @@ const Plants = () => {
               <img
                 src={inspectPlant.image}
                 alt={inspectPlant.name}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
+                }}
                 style={{ width: '180px', height: '180px', objectFit: 'cover', borderRadius: '16px' }}
               />
               <div style={{ flex: 1, minWidth: '240px' }}>
@@ -606,7 +636,7 @@ const Plants = () => {
         onClose={() => setTargetSavePlantSlug(null)}
         plantSlug={targetSavePlantSlug}
         onSaved={() => {
-          showToast('Updated collection successfully!');
+          showToast('Collection updated successfully!');
         }}
       />
 

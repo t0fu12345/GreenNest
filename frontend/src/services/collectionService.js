@@ -282,7 +282,7 @@ const saveAllCollectionsMap = (map) => {
 /**
  * Get all collections for a user.
  * If none exist, create a default collection named 'My Living Sanctuary'
- * with description 'Default curated botanical collection' and empty plantSlugs.
+ * with description 'Default botanical collection' and empty plantSlugs.
  */
 export const getUserCollections = (userEmail) => {
   const email = getNormalizedEmail(userEmail);
@@ -301,7 +301,7 @@ export const getUserCollections = (userEmail) => {
   const defaultCol = {
     id: `ucol_${Date.now()}`,
     name: 'My Living Sanctuary',
-    description: 'Default curated botanical collection',
+    description: 'Default botanical collection',
     plantSlugs: [],
     createdAt: now,
     updatedAt: now,
@@ -337,7 +337,7 @@ export const createUserCollection = (userEmail, { name, description, initialPlan
 
   const newCol = {
     id: generatedId,
-    name: (name && typeof name === 'string' && name.trim()) || 'Untitled Collection',
+    name: (name && typeof name === 'string' && name.trim()) || 'New Collection',
     description: (description && typeof description === 'string' && description.trim()) || '',
     plantSlugs,
     createdAt: now,
