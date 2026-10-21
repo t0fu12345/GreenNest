@@ -2,28 +2,38 @@
   {
     "email": "admin@greennest.com",
     "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-    "fullName": "Elena Vũ (Admin)",
+    "fullName": "Elena Vu (Master Admin)",
     "avatar": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80",
     "role": "admin",
-    "savedGardenSlugs": ["monstera-deliciosa", "calathea-orbifolia"],
+    "savedGardenSlugs": [
+      "monstera-deliciosa",
+      "calathea-orbifolia",
+      "ficus-lyrata"
+    ],
     "status": "active"
   },
   {
     "email": "alex.pham@example.com",
     "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-    "fullName": "Alexandre Phạm",
+    "fullName": "Alexandre Pham",
     "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
     "role": "user",
-    "savedGardenSlugs": ["sansevieria-trifasciata", "lavandula-angustifolia"],
+    "savedGardenSlugs": [
+      "sansevieria-trifasciata",
+      "lavandula-angustifolia"
+    ],
     "status": "active"
   },
   {
     "email": "user@demo.com",
     "passwordHash": "$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-    "fullName": "Người Dùng Mẫu",
-    "avatar": "/images/users/default.png",
+    "fullName": "Demo Member",
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
     "role": "user",
-    "savedGardenSlugs": ["ficus-lyrata"],
+    "savedGardenSlugs": [
+      "ficus-lyrata",
+      "monstera-deliciosa"
+    ],
     "status": "active"
   }
 ]

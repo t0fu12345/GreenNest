@@ -3,10 +3,12 @@ const path = require('path');
 
 const plantsPath = path.join(__dirname, 'database', 'seedData', 'plants.json');
 const colsPath = path.join(__dirname, 'database', 'seedData', 'plantCollections.json');
+const usersPath = path.join(__dirname, 'database', 'seedData', 'users.json');
 const destPath = path.join(__dirname, 'frontend', 'src', 'data', 'botanicalSpecimens.js');
 
 const plants = JSON.parse(fs.readFileSync(plantsPath, 'utf8'));
 const cols = JSON.parse(fs.readFileSync(colsPath, 'utf8'));
+const users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
 
 const biomeMap = {
   'foliage': { biome: 'tropical', label: 'Tropical Biome' },
@@ -62,42 +64,43 @@ plants.forEach((p, idx) => {
       p.guide?.growthHabit ? p.guide.growthHabit.split('.')[0] : 'Perennial'
     ].slice(0, 4),
     shortDesc: p.description,
-    origin: p.regions ? 'Vùng sinh trưởng: ' + p.regions.join(', ') : 'Vùng nhiệt đới và cận nhiệt đới',
-    purpose: p.guide?.growthHabit || 'Lọc sạch không khí nội thất, phong cách trang trí Biophilic hiện đại.',
-    water: p.guide?.watering || 'Tưới nước điều độ khi lớp đất mặt đã se khô.',
-    light: 'Ánh sáng: ' + p.light + '. ' + (p.light === 'bright-indirect' ? 'Ánh sáng tán xạ gián tiếp dồi dào.' : p.light === 'low' ? 'Chịu bóng tốt, sống khỏe trong góc tối.' : 'Ưa sáng mạnh và nắng trực tiếp.'),
-    soil: p.guide?.soil || 'Giá thể thoát nước tốt, tơi xốp giàu dinh dưỡng.',
+    origin: p.regions ? 'Growth Regions: ' + p.regions.map(r => r.charAt(0).toUpperCase() + r.slice(1)).join(', ') : 'Tropical & Subtropical Biomes',
+    purpose: p.guide?.growthHabit || 'Air-purifying botanical specimen for modern biophilic interiors.',
+    water: p.guide?.watering || 'Water moderately when upper soil layer is dry.',
+    light: 'Light: ' + p.light + '. ' + (p.light === 'bright-indirect' ? 'Thrives in abundant bright indirect sunlight.' : p.light === 'low' ? 'Tolerates low light and shaded indoor spaces.' : 'Requires direct or high-intensity sunlight.'),
+    soil: p.guide?.soil || 'Well-draining, nutrient-rich aerated substrate.',
     humidity: p.water === 'high' ? '70% – 90%' : p.water === 'moderate' ? '50% – 70%' : '30% – 50%',
     temp: '18°C – 28°C',
-    growth: p.difficulty === 'easy' ? 'Phát triển khỏe / Dễ trồng' : 'Trung bình',
+    growth: p.difficulty === 'easy' ? 'Vigorous / Easy Care' : (p.difficulty === 'hard' ? 'Demanding Care' : 'Moderate Care'),
     toxicity: toxicityText,
     waterDaily: waterDailyMap[p.water] || '350 ml / 7 Days',
-    waterStatus: p.water === 'low' ? 'Chịu hạn tốt' : 'Độ ẩm tối ưu',
-    notifMsg: p.name + ' đang hấp thụ ánh sáng và trao đổi chất ổn định.',
+    waterStatus: p.water === 'low' ? 'Drought-tolerant' : 'Optimal Hydration',
+    notifMsg: p.name + ' is actively transpiring with stable metabolic balance.',
     waterVal: p.water === 'low' ? '150 ml' : p.water === 'high' ? '500 ml' : '350 ml',
     waterBar: p.water === 'low' ? '45%' : p.water === 'high' ? '92%' : '75%',
-    waterSub: p.guide?.watering || 'Độ ẩm tầng rễ cân bằng tốt.',
+    waterSub: p.guide?.watering || 'Root zone moisture well balanced.',
     waterVol: p.water === 'low' ? '150 ml' : '350 ml',
-    waterFreq: p.guide?.watering || 'Khoảng 7-10 ngày một lần',
+    waterFreq: p.guide?.watering || 'Every 7-10 days',
     humidityVal: p.water === 'high' ? '78% RH' : '62% RH',
     humidityBar: p.water === 'high' ? '85%' : '68%',
-    humiditySub: 'Độ thoát hơi nước qua lá duy trì ổn định.',
+    humiditySub: 'Steady foliar transpiration rate.',
     humidityTarget: '55% – 80% RH',
-    mistCadence: p.category === 'succulent' ? 'Không cần phun sương' : 'Phun sương lá 3-4 ngày/lần',
+    mistCadence: p.category === 'succulent' ? 'No misting needed' : 'Mist foliage every 3-4 days',
     envVal: p.light === 'full-sun' ? '3,000 FC' : p.light === 'bright-indirect' ? '1,500 FC' : '800 FC',
     envBar: p.light === 'full-sun' ? '95%' : '80%',
-    envSub: 'Cường độ quang phổ chuẩn cho ' + p.light,
-    tempRange: '18°C tối thiểu ban đêm / 28°C tối đa ban ngày',
-    soilVal: p.guide?.soil ? p.guide.soil.split(',')[0].slice(0, 20) : 'Đất mùn tơi xốp',
+    envSub: 'Standard spectrum intensity for ' + p.light,
+    tempRange: '18°C minimum night / 28°C maximum day',
+    soilVal: p.guide?.soil ? p.guide.soil.split(',')[0].slice(0, 24) : 'Rich organic loam',
     soilBar: '85%',
-    soilSub: p.guide?.container || 'Chậu có lỗ thoát nước tốt.',
+    soilSub: p.guide?.container || 'Container with excellent drainage.',
     guide: p.guide,
     seasons: p.seasons || [],
     lightRequirement: p.light,
     wateringFrequency: p.water,
     difficulty: p.difficulty,
     regions: p.regions || [],
-    similarPlantSlugs: p.similarPlantSlugs || []
+    similarPlantSlugs: p.similarPlantSlugs || [],
+    status: p.status || 'published'
   };
 
   transformed[p.slug] = item;
@@ -110,11 +113,13 @@ transformed['specimen-snake-plant'] = transformed['sansevieria-trifasciata'];
 transformed['specimen-fiddle-leaf'] = transformed['ficus-lyrata'];
 
 const fileContent = `// Comprehensive Botanical Specimens Seed Data from MongoDB Dataset
-// Contains all 20 standardized botanical specimens + 4 seasonal curated collections
+// Contains all 20 standardized botanical specimens + 4 seasonal curated collections + DB seed users
 
 export const PLANT_COLLECTIONS = ${JSON.stringify(cols, null, 2)};
 
 export const BOTANICAL_SPECIMENS = ${JSON.stringify(transformed, null, 2)};
+
+export const DATABASE_USERS = ${JSON.stringify(users, null, 2)};
 
 // List of canonical 20 plant slugs (excluding legacy aliases)
 export const CANONICAL_PLANT_SLUGS = ${JSON.stringify(plants.map(p => p.slug), null, 2)};
@@ -181,4 +186,4 @@ export function setGardenPlantIds(ids) {
 `;
 
 fs.writeFileSync(destPath, fileContent, 'utf8');
-console.log('Synchronized ' + plants.length + ' plants and ' + cols.length + ' collections to ' + destPath);
+console.log('Synchronized ' + plants.length + ' plants, ' + cols.length + ' collections, and ' + users.length + ' DB users to ' + destPath);

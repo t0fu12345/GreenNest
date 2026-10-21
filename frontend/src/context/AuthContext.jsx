@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { signJwt, verifyJwt, decodeJwt } from '../utils/jwt';
+import { DATABASE_USERS } from '../data/botanicalSpecimens';
 
 // Cookie helper utilities
 export const setCookie = (name, value, days = 7) => {
@@ -42,37 +43,42 @@ const STORAGE_KEYS = {
   COOKIE_JWT: 'greenNest_jwt'
 };
 
-// Initial system accounts: Admin & Demo User
-const INITIAL_REGISTERED_USERS = [
-  {
-    id: 'usr_admin_001',
-    name: 'Administrator',
-    nickname: 'admin',
-    email: 'admin@greennest.com',
-    password: 'AdminCanopy2026!',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-    role: 'admin',
-    permissions: ['admin:access', 'plants:manage', 'users:manage', 'system:telemetry'],
-    level: 'Tier 4 (Master Curator & Admin)',
-    biome: 'Global Botanical Network',
-    joinDate: 'January 2026',
-    loginMethod: 'Nickname/Email'
-  },
-  {
-    id: 'user_1',
-    name: 'Minh Thảo',
-    nickname: 'minhthao',
-    email: 'minhthao.botany@gmail.com',
-    password: 'GreenCanopy2026',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
-    role: 'user',
-    permissions: ['garden:access', 'plants:view'],
-    level: 'Tier 3 (Master Botanist)',
-    biome: 'Tropical Biome',
-    joinDate: 'March 2026',
-    loginMethod: 'Nickname/Email'
-  }
-];
+// Map initial system accounts directly from MongoDB seed dataset (users.json)
+const INITIAL_REGISTERED_USERS = (DATABASE_USERS && DATABASE_USERS.length > 0)
+  ? DATABASE_USERS.map((u, idx) => ({
+      id: u.id || `usr_db_${idx + 1}`,
+      name: u.fullName,
+      nickname: u.email === 'admin@greennest.com' ? 'admin' : (u.nickname || u.email.split('@')[0]),
+      email: u.email,
+      password: u.role === 'admin' ? 'AdminCanopy2026!' : 'GreenCanopy2026',
+      avatar: u.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80',
+      role: u.role || 'user',
+      status: u.status || 'active',
+      savedGardenSlugs: u.savedGardenSlugs || [],
+      permissions: u.role === 'admin'
+        ? ['admin:access', 'plants:manage', 'users:manage', 'collections:manage', 'system:telemetry']
+        : ['garden:access', 'plants:view'],
+      level: u.role === 'admin' ? 'Tier 4 (Master Curator & Admin)' : 'Tier 2 (Botanical Naturalist)',
+      biome: 'Global Botanical Network',
+      joinDate: 'January 2026',
+      loginMethod: 'Nickname/Email'
+    }))
+  : [
+      {
+        id: 'usr_admin_001',
+        name: 'Elena Vu (Master Admin)',
+        nickname: 'admin',
+        email: 'admin@greennest.com',
+        password: 'AdminCanopy2026!',
+        avatar: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80',
+        role: 'admin',
+        permissions: ['admin:access', 'plants:manage', 'users:manage', 'collections:manage', 'system:telemetry'],
+        level: 'Tier 4 (Master Curator & Admin)',
+        biome: 'Global Botanical Network',
+        joinDate: 'January 2026',
+        loginMethod: 'Nickname/Email'
+      }
+    ];
 
 const AuthContext = createContext(null);
 
@@ -88,6 +94,13 @@ export const AuthProvider = ({ children }) => {
       if (stored) {
         let parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
+          // Merge in any DB users that might not be in localStorage yet
+          INITIAL_REGISTERED_USERS.forEach(dbU => {
+            if (!parsed.some(existing => existing.email.toLowerCase() === dbU.email.toLowerCase())) {
+              parsed.push(dbU);
+            }
+          });
+
           // Ensure every user has nickname
           parsed = parsed.map(u => {
             if (!u.nickname) {
@@ -111,7 +124,7 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       console.error('Error parsing registered users from localStorage:', e);
     }
-    // Seed initial demo and admin user
+    // Seed initial demo and admin user from DB
     localStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(INITIAL_REGISTERED_USERS));
     return INITIAL_REGISTERED_USERS;
   }, []);
@@ -197,7 +210,7 @@ export const AuthProvider = ({ children }) => {
     const cleanPassword = (password || '').trim();
 
     if (!cleanId || !cleanPassword) {
-      return { success: false, message: 'Vui lòng nhập đầy đủ Nickname (hoặc Email) và Mật khẩu.' };
+      return { success: false, message: 'Please enter both your Nickname (or Email) and Password.' };
     }
 
     const users = getRegisteredUsers();
@@ -211,14 +224,14 @@ export const AuthProvider = ({ children }) => {
     if (!foundUser) {
       return {
         success: false,
-        message: 'Tài khoản hoặc Nickname không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới!'
+        message: 'Account or Nickname does not exist. Please check your credentials or create a new account!'
       };
     }
 
     if (foundUser.password !== cleanPassword) {
       return {
         success: false,
-        message: 'Mật khẩu không chính xác. Vui lòng thử lại!'
+        message: 'Incorrect password. Please try again!'
       };
     }
 
@@ -226,7 +239,7 @@ export const AuthProvider = ({ children }) => {
     const userRole = foundUser.role || 'user';
     const permissions = foundUser.permissions || (
       userRole === 'admin'
-        ? ['admin:access', 'plants:manage', 'users:manage', 'system:telemetry']
+        ? ['admin:access', 'plants:manage', 'users:manage', 'collections:manage', 'system:telemetry']
         : ['garden:access', 'plants:view']
     );
 
@@ -290,11 +303,11 @@ export const AuthProvider = ({ children }) => {
     const cleanPassword = (password || '').trim();
 
     if (!cleanName || !cleanEmail || !cleanPassword) {
-      return { success: false, message: 'Vui lòng điền đầy đủ các thông tin bắt buộc.' };
+      return { success: false, message: 'Please fill in all required fields.' };
     }
 
     if (cleanPassword.length < 6) {
-      return { success: false, message: 'Mật khẩu phải chứa ít nhất 6 ký tự.' };
+      return { success: false, message: 'Password must be at least 6 characters long.' };
     }
 
     const users = getRegisteredUsers();
@@ -306,12 +319,12 @@ export const AuthProvider = ({ children }) => {
       if (existing.email.toLowerCase() === cleanEmail) {
         return {
           success: false,
-          message: 'Email này đã được sử dụng! Vui lòng đăng nhập hoặc sử dụng email khác.'
+          message: 'This email is already in use! Please log in or use another email.'
         };
       }
       return {
         success: false,
-        message: 'Nickname này đã có người sử dụng! Vui lòng chọn nickname khác.'
+        message: 'This nickname is already taken! Please choose a different nickname.'
       };
     }
 

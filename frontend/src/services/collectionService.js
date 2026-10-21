@@ -281,8 +281,8 @@ const saveAllCollectionsMap = (map) => {
 
 /**
  * Get all collections for a user.
- * If none exist, create a default collection named 'Bộ sưu tập của tôi'
- * with description 'Bộ sưu tập mặc định' and empty plantSlugs.
+ * If none exist, create a default collection named 'My Living Sanctuary'
+ * with description 'Default botanical collection' and empty plantSlugs.
  */
 export const getUserCollections = (userEmail) => {
   const email = getNormalizedEmail(userEmail);
@@ -300,8 +300,8 @@ export const getUserCollections = (userEmail) => {
   const now = new Date().toISOString();
   const defaultCol = {
     id: `ucol_${Date.now()}`,
-    name: 'Bộ sưu tập của tôi',
-    description: 'Bộ sưu tập mặc định',
+    name: 'My Living Sanctuary',
+    description: 'Default botanical collection',
     plantSlugs: [],
     createdAt: now,
     updatedAt: now,
@@ -337,7 +337,7 @@ export const createUserCollection = (userEmail, { name, description, initialPlan
 
   const newCol = {
     id: generatedId,
-    name: (name && typeof name === 'string' && name.trim()) || 'Bộ sưu tập mới',
+    name: (name && typeof name === 'string' && name.trim()) || 'New Collection',
     description: (description && typeof description === 'string' && description.trim()) || '',
     plantSlugs,
     createdAt: now,

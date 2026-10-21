@@ -5,22 +5,22 @@ import { PLANT_COLLECTIONS, BOTANICAL_SPECIMENS } from '../data/botanicalSpecime
 const SEASON_META = {
   spring: {
     icon: '🌸',
-    label: 'Mùa Xuân',
+    label: 'Spring Season',
     english: 'Spring Equinox'
   },
   summer: {
     icon: '☀️',
-    label: 'Mùa Hạ',
+    label: 'Summer Season',
     english: 'Summer Solstice'
   },
   autumn: {
     icon: '🍂',
-    label: 'Mùa Thu',
+    label: 'Autumn Season',
     english: 'Autumn Equinox'
   },
   winter: {
     icon: '❄️',
-    label: 'Mùa Đông',
+    label: 'Winter Season',
     english: 'Winter Solstice'
   }
 };
@@ -103,7 +103,7 @@ const SeasonalCollections = () => {
             margin: 0
           }}
         >
-          Bộ Sưu Tập Theo Mùa
+          Seasonal Curated Collections
         </h2>
 
         <p
@@ -116,7 +116,7 @@ const SeasonalCollections = () => {
             margin: 0
           }}
         >
-          Khám phá chu kỳ sinh trưởng của hệ thực vật qua bốn mùa xuân, hạ, thu, đông. Mỗi bộ sưu tập được tuyển chọn kỹ lưỡng phù hợp với nhịp điệu ánh sáng, nhiệt độ và điều kiện thời tiết đặc trưng.
+          Explore the living rhythms of our botanical biosphere through spring, summer, autumn, and winter. Each seasonal collection is tailored to ambient lighting, temperature profiles, and microclimate characteristics.
         </p>
       </div>
 
@@ -189,7 +189,7 @@ const SeasonalCollections = () => {
                   fontWeight: 600
                 }}
               >
-                {collection.plantSlugs.length} loài
+                {collection.plantSlugs.length} species
               </span>
             </button>
           );
@@ -213,6 +213,10 @@ const SeasonalCollections = () => {
         <img
           src={activeCollection.image}
           alt={activeCollection.name}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = 'https://images.unsplash.com/photo-1542317148-8b4bdccb33ea?auto=format&fit=crop&w=1200&q=80';
+          }}
           style={{
             position: 'absolute',
             inset: 0,
@@ -332,6 +336,10 @@ const SeasonalCollections = () => {
                 <img
                   src={plant.image}
                   alt={plant.name}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
+                  }}
                   style={{
                     width: '100%',
                     height: '100%',
@@ -438,7 +446,7 @@ const SeasonalCollections = () => {
                       transform: isCardHovered ? 'translateX(4px)' : 'translateX(0)'
                     }}
                   >
-                    <span>→ Xem chi tiết</span>
+                    <span>→ View Specimen Details</span>
                   </Link>
                 </div>
               </div>

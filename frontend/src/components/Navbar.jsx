@@ -177,8 +177,8 @@ const Navbar = () => {
                   background: 'rgba(239, 68, 68, 0.15)',
                   border: '1px solid rgba(239, 68, 68, 0.35)',
                   color: '#fca5a5',
-                  borderRadius: 0,
-                  padding: '7px 14px',
+                  borderRadius: '9999px',
+                  padding: '7px 16px',
                   fontSize: '0.8rem',
                   cursor: 'pointer',
                   fontWeight: 600,
@@ -190,7 +190,7 @@ const Navbar = () => {
               </button>
             </div>
           ) : (
-            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem', borderRadius: 0 }}>
+            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem' }}>
               Sign In
             </Link>
           )}

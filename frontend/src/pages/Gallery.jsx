@@ -14,7 +14,7 @@ const Gallery = () => {
             Interactive Botanical Gallery
           </h1>
           <p style={{ color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.6, fontSize: '1rem', marginBottom: '24px' }}>
-            Không gian triển lãm ảnh thực vật nghệ thuật & Lightbox tương tác (FRS 6). Đang trong quá trình tích hợp bản thiết kế giao diện từ Google Stitch.
+            Artistic botanical photography exhibition & interactive specimen showcase. Harmonizing microclimates and botanical aesthetics.
           </p>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', borderRadius: '9999px', background: 'rgba(46, 125, 50, 0.15)', border: '1px solid rgba(46, 125, 50, 0.3)', color: '#81c784', fontSize: '0.85rem' }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#81c784', display: 'inline-block', animation: 'pulse 2s infinite' }}></span>

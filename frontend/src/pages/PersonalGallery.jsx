@@ -62,9 +62,9 @@ const PersonalGallery = () => {
 
   const handleDeleteCollection = (colId, colName, e) => {
     if (e) e.stopPropagation();
-    if (window.confirm(`Bạn có chắc chắn muốn xóa bộ sưu tập "${colName}"?`)) {
+    if (window.confirm(`Are you sure you want to delete the collection "${colName}"?`)) {
       deleteUserCollection(userEmail, colId);
-      showToast(`Đã xóa bộ sưu tập "${colName}"`);
+      showToast(`Deleted collection "${colName}"`);
       if (selectedColId === colId) setSelectedColId(null);
       reloadCollections();
     }
@@ -79,13 +79,13 @@ const PersonalGallery = () => {
         name: formData.name.trim(),
         description: formData.description.trim()
       });
-      showToast('Đã cập nhật bộ sưu tập');
+      showToast('Collection updated successfully');
     } else {
       const created = createUserCollection(userEmail, {
         name: formData.name.trim(),
         description: formData.description.trim()
       });
-      showToast(`Đã tạo bộ sưu tập "${created.name}"`);
+      showToast(`Created collection "${created.name}"`);
     }
 
     setIsModalOpen(false);
@@ -95,7 +95,7 @@ const PersonalGallery = () => {
   const handleRemovePlant = (colId, plantSlug, plantName, e) => {
     if (e) e.stopPropagation();
     togglePlantInCollection(userEmail, colId, plantSlug);
-    showToast(`Đã xóa "${plantName}" khỏi bộ sưu tập`);
+    showToast(`Removed "${plantName}" from collection`);
     reloadCollections();
   };
 
@@ -169,7 +169,7 @@ const PersonalGallery = () => {
                   gap: '8px'
                 }}
               >
-                <span>← Quay lại danh sách Bộ sưu tập</span>
+                <span>← Back to Collections</span>
               </button>
 
               <div style={{ display: 'flex', gap: '10px' }}>
@@ -187,7 +187,7 @@ const PersonalGallery = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  ✎ Đổi tên / Mô tả
+                  ✎ Edit Title / Description
                 </button>
                 <Link
                   to="/plants"
@@ -202,7 +202,7 @@ const PersonalGallery = () => {
                     textDecoration: 'none'
                   }}
                 >
-                  + Thêm cây mới ↗
+                  + Add More Plants ↗
                 </Link>
               </div>
             </div>
@@ -220,7 +220,7 @@ const PersonalGallery = () => {
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#86efac', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '10px' }}>
                 <span>📁 USER COLLECTION</span>
                 <span>•</span>
-                <span>{currentCollection.plantSlugs.length} CÂY CẢNH</span>
+                <span>{currentCollection.plantSlugs.length} SPECIMENS</span>
               </div>
               <h1
                 style={{
@@ -234,14 +234,14 @@ const PersonalGallery = () => {
                 {currentCollection.name}
               </h1>
               <p style={{ color: '#cbd5e1', fontSize: '1rem', lineHeight: 1.6, maxWidth: '800px', fontWeight: 300, marginBottom: '24px' }}>
-                {currentCollection.description || 'Chưa có mô tả cho bộ sưu tập này.'}
+                {currentCollection.description || 'No description provided for this collection.'}
               </p>
 
               {/* Inner Search Box */}
               <div style={{ maxWidth: '450px' }}>
                 <input
                   type="text"
-                  placeholder="Lọc cây trong bộ sưu tập này..."
+                  placeholder="Filter specimens in this collection..."
                   value={innerFilter}
                   onChange={(e) => setInnerFilter(e.target.value)}
                   style={{
@@ -271,10 +271,10 @@ const PersonalGallery = () => {
               >
                 <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🌱</div>
                 <h3 style={{ fontFamily: "var(--font-serif, 'Playfair Display', serif)", fontSize: '1.6rem', color: '#fff', marginBottom: '8px' }}>
-                  {innerFilter ? 'Không tìm thấy cây phù hợp' : 'Bộ sưu tập chưa có cây nào'}
+                  {innerFilter ? 'No matching specimens found' : 'This collection has no specimens yet'}
                 </h3>
                 <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginBottom: '24px' }}>
-                  {innerFilter ? 'Thử tìm với từ khóa khác' : 'Hãy khám phá danh mục và lưu cây yêu thích vào bộ sưu tập này.'}
+                  {innerFilter ? 'Try searching with different keywords.' : 'Explore the living catalog and save your favourite specimens to this collection.'}
                 </p>
                 <Link
                   to="/plants"
@@ -291,7 +291,7 @@ const PersonalGallery = () => {
                     fontSize: '0.88rem'
                   }}
                 >
-                  Khám phá Danh mục Cây →
+                  Explore Botanical Catalog →
                 </Link>
               </div>
             ) : (
@@ -317,12 +317,13 @@ const PersonalGallery = () => {
                       <img
                         src={plant.image}
                         alt={plant.name}
+                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                       <button
                         type="button"
                         onClick={(e) => handleRemovePlant(currentCollection.id, plant.slug, plant.name, e)}
-                        title="Xóa khỏi bộ sưu tập này"
+                        title="Remove from this collection"
                         style={{
                           position: 'absolute',
                           top: '12px',
@@ -374,7 +375,7 @@ const PersonalGallery = () => {
                           to={`/specimen-detail?id=${encodeURIComponent(plant.slug)}`}
                           style={{ fontSize: '0.8rem', color: '#86efac', textDecoration: 'none', fontWeight: 600 }}
                         >
-                          Chi tiết →
+                          Details →
                         </Link>
                       </div>
                     </div>
@@ -401,10 +402,10 @@ const PersonalGallery = () => {
                     lineHeight: 1.15
                   }}
                 >
-                  Bộ Sưu Tập Của Tôi
+                  My Botanical Collections
                 </h1>
                 <p style={{ color: '#cbd5e1', fontSize: '1rem', marginTop: '8px', fontWeight: 300, maxWidth: '640px' }}>
-                  Quản lý các bộ sưu tập cây trồng theo ý thích cá nhân. Phân loại theo góc phòng, độ khó hoặc kế hoạch trang trí không gian sống.
+                  Curate your private botanical galleries. Organize living specimens by room microclimate, care cadence, or biophilic design.
                 </p>
               </div>
 
@@ -426,7 +427,7 @@ const PersonalGallery = () => {
                   boxShadow: '0 8px 20px rgba(34, 197, 94, 0.35)'
                 }}
               >
-                <span>+ Tạo Bộ Sưu Tập Mới</span>
+                <span>+ Create New Collection</span>
               </button>
             </div>
 
@@ -471,12 +472,13 @@ const PersonalGallery = () => {
                           }}
                         >
                           <span style={{ fontSize: '2.5rem', marginBottom: '4px' }}>🌿</span>
-                          <span style={{ fontSize: '0.78rem' }}>Chưa có cây nào</span>
+                          <span style={{ fontSize: '0.78rem' }}>No specimens yet</span>
                         </div>
                       ) : previewImages.length === 1 ? (
                         <img
                           src={previewImages[0]}
                           alt={col.name}
+                          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       ) : (
@@ -485,6 +487,7 @@ const PersonalGallery = () => {
                             <img
                               src={previewImages[0]}
                               alt="Collage 1"
+                              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
                           </div>
@@ -493,6 +496,7 @@ const PersonalGallery = () => {
                               <img
                                 src={previewImages[1]}
                                 alt="Collage 2"
+                                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                               />
                             </div>
@@ -501,6 +505,7 @@ const PersonalGallery = () => {
                                 <img
                                   src={previewImages[2]}
                                   alt="Collage 3"
+                                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80'; }}
                                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
                               </div>
@@ -538,23 +543,23 @@ const PersonalGallery = () => {
                               fontWeight: 600
                             }}
                           >
-                            {col.plantSlugs.length} cây
+                            {col.plantSlugs.length} specimen{col.plantSlugs.length !== 1 ? "s" : ""}
                           </span>
                         </div>
                         <p style={{ color: '#94a3b8', fontSize: '0.86rem', lineHeight: 1.5, marginBottom: '16px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                          {col.description || 'Bộ sưu tập cá nhân hóa.'}
+                          {col.description || 'Custom curated collection.'}
                         </p>
                       </div>
 
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
                         <span style={{ fontSize: '0.78rem', color: '#86efac', fontWeight: 600 }}>
-                          Xem chi tiết →
+                          View Collection →
                         </span>
                         <div style={{ display: 'flex', gap: '6px' }}>
                           <button
                             type="button"
                             onClick={(e) => handleOpenEditModal(col, e)}
-                            title="Chỉnh sửa bộ sưu tập"
+                            title="Edit collection"
                             style={{
                               background: 'rgba(255, 255, 255, 0.06)',
                               border: '1px solid rgba(255, 255, 255, 0.12)',
@@ -574,7 +579,7 @@ const PersonalGallery = () => {
                           <button
                             type="button"
                             onClick={(e) => handleDeleteCollection(col.id, col.name, e)}
-                            title="Xóa bộ sưu tập"
+                            title="Delete collection"
                             style={{
                               background: 'rgba(239, 68, 68, 0.12)',
                               border: '1px solid rgba(239, 68, 68, 0.3)',
@@ -631,21 +636,21 @@ const PersonalGallery = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 style={{ fontFamily: "var(--font-serif, 'Playfair Display', serif)", fontSize: '1.5rem', marginBottom: '8px', color: '#fff' }}>
-              {editingCol ? 'Chỉnh Sửa Bộ Sưu Tập' : 'Tạo Bộ Sưu Tập Mới'}
+              {editingCol ? 'Edit Collection' : 'Create New Collection'}
             </h3>
             <p style={{ color: '#94a3b8', fontSize: '0.86rem', marginBottom: '20px' }}>
-              Tạo danh mục riêng để gom nhóm các loài cây theo sở thích và không gian của bạn.
+              Organize your botanical favorites into tailored living collections for every sanctuary.
             </p>
 
             <form onSubmit={handleSaveCollectionForm} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, marginBottom: '6px' }}>
-                  Tên Bộ Sưu Tập *
+                  Collection Title *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="VD: Cây lọc không khí phòng ngủ..."
+                  placeholder="e.g. Bedroom Air Purifiers, Sunlit Balcony Garden..."
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   style={{
@@ -663,11 +668,11 @@ const PersonalGallery = () => {
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, marginBottom: '6px' }}>
-                  Mô Tả Mục Đích
+                  Description & Vibe
                 </label>
                 <textarea
                   rows={3}
-                  placeholder="Giải thích ngắn gọn tiêu chí hoặc vị trí đặt cây..."
+                  placeholder="Describe the placement criteria, aesthetic vibe, or care goals..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   style={{
@@ -698,7 +703,7 @@ const PersonalGallery = () => {
                     fontSize: '0.86rem'
                   }}
                 >
-                  Hủy
+                  Cancel
                 </button>
                 <button
                   type="submit"
@@ -713,7 +718,7 @@ const PersonalGallery = () => {
                     fontSize: '0.86rem'
                   }}
                 >
-                  {editingCol ? 'Lưu Thay Đổi' : 'Tạo Ngay'}
+                  {editingCol ? 'Save Changes' : 'Create Collection'}
                 </button>
               </div>
             </form>
