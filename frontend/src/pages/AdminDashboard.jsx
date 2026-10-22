@@ -3,11 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
-import { 
-  BOTANICAL_SPECIMENS, 
-  CANONICAL_PLANT_SLUGS, 
-  PLANT_COLLECTIONS, 
-  DATABASE_USERS 
+import {
+  BOTANICAL_SPECIMENS,
+  CANONICAL_PLANT_SLUGS,
+  PLANT_COLLECTIONS,
+  DATABASE_USERS
 } from '../data/botanicalSpecimens';
 import { decodeJwt } from '../utils/jwt';
 import adminApi from '../services/adminApi';
@@ -297,7 +297,7 @@ const AdminDashboard = () => {
 
   // Filtered specimens
   const filteredSpecimens = specimens.filter(p => {
-    const matchesSearch = 
+    const matchesSearch =
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.scientificName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.catalogCode?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -705,12 +705,12 @@ const AdminDashboard = () => {
                               e.currentTarget.onerror = null;
                               e.currentTarget.src = DEFAULT_PLANT_IMAGE;
                             }}
-                            style={{ 
-                              width: '48px', 
-                              height: '48px', 
-                              objectFit: 'cover', 
-                              borderRadius: '8px', 
-                              border: '1px solid rgba(255,255,255,0.1)' 
+                            style={{
+                              width: '48px',
+                              height: '48px',
+                              objectFit: 'cover',
+                              borderRadius: '8px',
+                              border: '1px solid rgba(255,255,255,0.1)'
                             }}
                           />
                         </td>

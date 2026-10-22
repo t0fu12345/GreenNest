@@ -156,8 +156,8 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)} 
                 autoComplete="current-password"
               />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="input-icon-btn" 
                 onClick={() => setShowPassword(!showPassword)} 
                 title="Toggle password visibility"
@@ -181,8 +181,8 @@ const Login = () => {
               <span>Remember session (Cookie)</span>
             </label>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={fillDemoAccount}
                 style={{
                   background: 'rgba(34, 197, 94, 0.15)',
@@ -199,8 +199,8 @@ const Login = () => {
                 ⚡ Member
               </button>
 
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={fillAdminAccount}
                 style={{
                   background: 'rgba(234, 179, 8, 0.18)',

@@ -12,7 +12,7 @@ class GardenerService {
     );
 
     if (!gardener) {
-      const error = new Error('Không tìm thấy hồ sơ chuyên gia');
+      const error = new Error('Botanist profile not found');
       error.statusCode = 404;
       error.errorCode = 'GARDENER_NOT_FOUND';
       throw error;
@@ -28,7 +28,7 @@ class GardenerService {
   async updateGardener(id, updateData) {
     const gardener = await Gardener.findById(id);
     if (!gardener) {
-      const error = new Error('Không tìm thấy chuyên gia cần cập nhật');
+      const error = new Error('Botanist profile to update not found');
       error.statusCode = 404;
       error.errorCode = 'GARDENER_NOT_FOUND';
       throw error;
@@ -43,7 +43,7 @@ class GardenerService {
   async deleteGardener(id) {
     const gardener = await Gardener.findById(id);
     if (!gardener) {
-      const error = new Error('Không tìm thấy chuyên gia cần xóa');
+      const error = new Error('Botanist profile to delete not found');
       error.statusCode = 404;
       error.errorCode = 'GARDENER_NOT_FOUND';
       throw error;

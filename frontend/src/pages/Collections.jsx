@@ -207,7 +207,7 @@ const Collections = () => {
                   marginBottom: '16px'
                 }}
               >
-                <span>YÊU CẦU ĐĂNG NHẬP</span>
+                <span>SIGN IN REQUIRED</span>
               </div>
 
               <h2
@@ -220,7 +220,7 @@ const Collections = () => {
                   lineHeight: 1.25
                 }}
               >
-                Vui Lòng Đăng Nhập
+                Please Sign In
               </h2>
 
               <p
@@ -233,7 +233,7 @@ const Collections = () => {
                   fontWeight: 300
                 }}
               >
-                Để xem, tạo mới và quản lý các bộ sưu tập cây trồng cá nhân hóa theo từng không gian sống, vui lòng đăng nhập vào tài khoản GreenNest của bạn.
+                Sign in to your GreenNest account to view, create, and manage plant collections personalized for each living space.
               </p>
 
               <div
@@ -259,7 +259,7 @@ const Collections = () => {
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  ← Về Trang Chủ
+                  ← Back to Home
                 </Link>
 
                 <Link
@@ -280,7 +280,7 @@ const Collections = () => {
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  <span>Đăng Nhập Ngay</span>
+                  <span>Sign In Now</span>
                   <span>→</span>
                 </Link>
               </div>

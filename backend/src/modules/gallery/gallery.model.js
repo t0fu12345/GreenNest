@@ -3,17 +3,17 @@ const mongoose = require('mongoose');
 const GallerySchema = new mongoose.Schema({
   imageUrl: {
     type: String,
-    required: [true, 'URL hình ảnh là bắt buộc'],
+    required: [true, 'Image URL is required'],
     trim: true
   },
   alt: {
     type: String,
-    required: [true, 'Văn bản thay thế (Alt text) là bắt buộc'],
+    required: [true, 'Alternative text (Alt) is required'],
     trim: true
   },
   caption: {
     type: String,
-    required: [true, 'Chú thích ảnh (Caption) là bắt buộc'],
+    required: [true, 'Caption is required'],
     trim: true
   },
   credit: {

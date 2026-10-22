@@ -36,7 +36,7 @@ const SpecimenDetail = () => {
           const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
           setStarredIds(ids);
         } catch (e) {
-          console.warn('Không thể tải cây yêu thích:', e);
+          console.warn('Could not load favorite plants:', e);
         }
       } else {
         setStarredIds([]);
@@ -48,12 +48,12 @@ const SpecimenDetail = () => {
   useEffect(() => {
     if (!requestedId) return;
 
-    // Nếu ID có trong BOTANICAL_SPECIMENS thì set trước
+    // Use the local botanical catalog immediately when the ID is available
     if (BOTANICAL_SPECIMENS[requestedId]) {
       setCurrentPlant(BOTANICAL_SPECIMENS[requestedId]);
     }
 
-    // Sau đó gọi API để lấy dữ liệu mới nhất từ MongoDB
+    // Then request the latest data from MongoDB through the API
     const fetchDetail = async () => {
       try {
         setLoading(true);
@@ -72,7 +72,7 @@ const SpecimenDetail = () => {
             taxonomyTags: [p.category, p.biome, 'Plantae'].filter(Boolean),
             traits: [p.light, p.watering, p.careLevel].filter(Boolean),
             shortDesc: p.description || '',
-            origin: p.origin || 'Vườn ươm GreenNest Sanctuary',
+            origin: p.origin || 'GreenNest Sanctuary Nursery',
             water: p.watering || 'Every 7-10 days',
             light: p.light || 'Dappled indirect sunlight',
             soil: p.careGuide?.soil || 'Chunky aroid mix',
@@ -98,7 +98,7 @@ const SpecimenDetail = () => {
           });
         }
       } catch (err) {
-        console.warn('Dùng dữ liệu dự phòng cho chi tiết cây:', err.message);
+        console.warn('Using fallback data for specimen details:', err.message);
       } finally {
         setLoading(false);
       }
@@ -119,7 +119,7 @@ const SpecimenDetail = () => {
 
   const handleToggleStar = async () => {
     if (!isAuthenticated) {
-      showToast('Vui lòng đăng nhập để lưu cây vào mục yêu thích!');
+      showToast('Please sign in to save plants to your favorites!');
       setTimeout(() => navigate('/login'), 1200);
       return;
     }
@@ -130,13 +130,13 @@ const SpecimenDetail = () => {
       const isBookmarked = res?.data?.isBookmarked;
       if (isBookmarked) {
         setStarredIds(prev => Array.from(new Set([...prev, plantId])));
-        showToast(`⭐ Đã thêm "${plant.name}" vào Mục Yêu Thích!`);
+        showToast(`⭐ Added "${plant.name}" to Favorites!`);
       } else {
         setStarredIds(prev => prev.filter(id => id !== plantId && id !== plant._id));
-        showToast(`Đã xóa "${plant.name}" khỏi Mục Yêu Thích.`);
+        showToast(`Removed "${plant.name}" from Favorites.`);
       }
     } catch (err) {
-      showToast('Lỗi cập nhật yêu thích: ' + err.message);
+      showToast('Could not update favorites: ' + err.message);
     }
   };
 
@@ -362,7 +362,7 @@ const SpecimenDetail = () => {
                   type="button"
                   onClick={() => {
                     if (!isAuthenticated) {
-                      showToast('Vui lòng đăng nhập để thêm cây vào bộ sưu tập!');
+                      showToast('Please sign in to add plants to a collection!');
                       setTimeout(() => navigate('/login'), 1200);
                       return;
                     }

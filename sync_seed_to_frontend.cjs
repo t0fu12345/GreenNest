@@ -62,49 +62,51 @@ plants.forEach((p, idx) => {
     slug: p.slug,
     catalogCode,
     name: p.name,
-    scientificName: p.scientificName || p.botanicalName,
+    scientificName: p.scientificName || p.botanicalName || '',
     category: p.category,
     biome: bInfo.biome,
     biomeLabel: bInfo.label,
     image: primaryImg,
     images: imageArray,
     tags,
-    taxonomyTags: [p.category, p.botanicalName.split(' ')[0], 'Plantae'],
+    taxonomyTags: p.taxonomyTags || [p.category, (p.scientificName || p.botanicalName || '').split(' ')[0], 'Plantae'].filter(Boolean),
     traits: [
-      p.difficulty ? p.difficulty.toUpperCase() + ' Maintenance' : 'Adaptive',
-      p.light ? p.light.replace('-', ' ').toUpperCase() : 'Indirect Sun',
+      p.careLevel ? p.careLevel.toUpperCase() + ' Maintenance' : 'Adaptive',
+      'Filtered Sunlight',
       p.guide?.growthHabit ? p.guide.growthHabit.split('.')[0] : 'Perennial'
-    ].slice(0, 4),
-    shortDesc: p.description,
-    origin: p.regions ? 'Growth Regions: ' + p.regions.map(r => r.charAt(0).toUpperCase() + r.slice(1)).join(', ') : 'Tropical & Subtropical Biomes',
-    purpose: p.guide?.growthHabit || 'Air-purifying botanical specimen for modern biophilic interiors.',
-    water: p.guide?.watering || 'Water moderately when upper soil layer is dry.',
-    light: 'Light: ' + p.light + '. ' + (p.light === 'bright-indirect' ? 'Thrives in abundant bright indirect sunlight.' : p.light === 'low' ? 'Tolerates low light and shaded indoor spaces.' : 'Requires direct or high-intensity sunlight.'),
-    soil: p.guide?.soil || 'Well-draining, nutrient-rich aerated substrate.',
-    humidity: p.water === 'high' ? '70% – 90%' : p.water === 'moderate' ? '50% – 70%' : '30% – 50%',
-    temp: '18°C – 28°C',
-    growth: p.difficulty === 'easy' ? 'Vigorous / Easy Care' : (p.difficulty === 'hard' ? 'Demanding Care' : 'Moderate Care'),
+    ],
+    shortDesc: p.shortDesc || p.description,
+    description: p.description,
+    origin: p.origin || 'Tropical and Subtropical Regions',
+    purpose: p.purpose || 'Air-purifying botanical specimen for modern biophilic interiors.',
+    water: p.watering || p.guide?.watering || 'Water thoroughly when the topsoil dries.',
+    light: p.light || 'Abundant filtered indirect sunlight.',
+    soil: p.soil || p.guide?.soil || 'Well-draining, nutrient-rich aerated substrate.',
+    humidity: p.humidity || '55% – 75%',
+    temp: p.temp || '18°C – 28°C',
+    growth: p.growth || 'Moderate Growth',
+    careLevel: p.careLevel || p.difficulty || 'Moderate',
     toxicity: toxicityText,
-    waterDaily: waterDailyMap[p.water] || '350 ml / 7 Days',
-    waterStatus: p.water === 'low' ? 'Drought-tolerant' : 'Optimal Hydration',
-    notifMsg: p.name + ' is actively transpiring with stable metabolic balance.',
-    waterVal: p.water === 'low' ? '150 ml' : p.water === 'high' ? '500 ml' : '350 ml',
-    waterBar: p.water === 'low' ? '45%' : p.water === 'high' ? '92%' : '75%',
-    waterSub: p.guide?.watering || 'Root zone moisture well balanced.',
-    waterVol: p.water === 'low' ? '150 ml' : '350 ml',
-    waterFreq: p.guide?.watering || 'Every 7-10 days',
-    humidityVal: p.water === 'high' ? '78% RH' : '62% RH',
-    humidityBar: p.water === 'high' ? '85%' : '68%',
-    humiditySub: 'Steady foliar transpiration rate.',
-    humidityTarget: '55% – 80% RH',
-    mistCadence: p.category === 'succulent' ? 'No misting needed' : 'Mist foliage every 3-4 days',
-    envVal: p.light === 'full-sun' ? '3,000 FC' : p.light === 'bright-indirect' ? '1,500 FC' : '800 FC',
-    envBar: p.light === 'full-sun' ? '95%' : '80%',
-    envSub: 'Standard spectrum intensity for ' + p.light,
-    tempRange: '18°C minimum night / 28°C maximum day',
-    soilVal: p.guide?.soil ? p.guide.soil.split(',')[0].slice(0, 24) : 'Rich organic loam',
-    soilBar: '85%',
-    soilSub: p.guide?.container || 'Container with excellent drainage.',
+    waterDaily: p.telemetry?.waterDaily || waterDailyMap[p.water] || '350 ml / 7 Days',
+    waterStatus: p.telemetry?.waterStatus || 'Balanced',
+    notifMsg: p.name + ' is maintaining optimal hydration and metabolic vitality.',
+    waterVal: p.telemetry?.waterVal || '350 ml',
+    waterBar: p.telemetry?.waterBar || '80%',
+    waterSub: p.telemetry?.waterSub || 'Balanced root zone hydration.',
+    waterVol: p.telemetry?.waterVal || '350 ml',
+    waterFreq: p.telemetry?.waterFreq || 'Every 7-10 days',
+    humidityVal: p.telemetry?.humidityVal || '65% RH',
+    humidityBar: p.telemetry?.humidityBar || '80%',
+    humiditySub: p.telemetry?.humiditySub || 'Leaf transpiration is maintaining a natural equilibrium.',
+    humidityTarget: p.telemetry?.humidityTarget || '55% – 80% RH',
+    mistCadence: p.telemetry?.mistCadence || 'Mist foliage every 3-4 days',
+    envVal: p.telemetry?.envVal || '1,500 FC',
+    envBar: p.telemetry?.envBar || '85%',
+    envSub: p.telemetry?.envSub || 'Calibrated lighting spectrum.',
+    tempRange: p.telemetry?.tempRange || '18°C minimum night / 28°C maximum day',
+    soilVal: p.telemetry?.soilVal || 'Airy Aroid Blend',
+    soilBar: p.telemetry?.soilBar || '85%',
+    soilSub: p.telemetry?.soilSub || 'Container with adequate drainage.',
     guide: p.guide,
     seasons: p.seasons || [],
     lightRequirement: p.light,
@@ -123,6 +125,18 @@ transformed['specimen-monstera'] = transformed['monstera-deliciosa'];
 transformed['specimen-red-rose'] = transformed['monstera-deliciosa'];
 transformed['specimen-snake-plant'] = transformed['sansevieria-trifasciata'];
 transformed['specimen-fiddle-leaf'] = transformed['ficus-lyrata'];
+transformed['specimen-peace-lily'] = transformed['peace-lily-spathiphyllum'] || transformed['monstera-deliciosa'];
+transformed['specimen-boston-fern'] = transformed['boston-fern'] || transformed['monstera-deliciosa'];
+transformed['specimen-spider-plant'] = transformed['spider-plant-variegated'] || transformed['monstera-deliciosa'];
+transformed['specimen-zz-plant'] = transformed['zz-plant-zamioculcas'] || transformed['monstera-deliciosa'];
+transformed['specimen-pothos'] = transformed['golden-pothos'] || transformed['monstera-deliciosa'];
+transformed['specimen-rubber-tree'] = transformed['rubber-tree-burgundy'] || transformed['monstera-deliciosa'];
+transformed['specimen-calathea'] = transformed['calathea-orbifolia'] || transformed['monstera-deliciosa'];
+transformed['specimen-alocasia-amazonica'] = transformed['alocasia-amazonica'] || transformed['monstera-deliciosa'];
+transformed['specimen-anthurium'] = transformed['anthurium-clarinervium'] || transformed['monstera-deliciosa'];
+transformed['specimen-bird-of-paradise'] = transformed['bird-of-paradise-strelitzia'] || transformed['monstera-deliciosa'];
+transformed['specimen-jade-plant'] = transformed['jade-plant-crassula-ovata'] || transformed['monstera-deliciosa'];
+transformed['specimen-echeveria'] = transformed['echeveria-elegans'] || transformed['monstera-deliciosa'];
 
 const fileContent = `// Comprehensive Botanical Specimens Seed Data from MongoDB Dataset
 // Contains all 20 standardized botanical specimens + 4 seasonal curated collections + DB seed users

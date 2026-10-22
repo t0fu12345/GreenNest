@@ -22,7 +22,7 @@ class GardenService {
       plant = await Plant.findOne({ specimenId: plantIdentifier });
     }
     if (!plant) {
-      const error = new Error('Không tìm thấy cây trồng này');
+      const error = new Error('Plant specimen not found');
       error.statusCode = 404;
       error.errorCode = 'PLANT_NOT_FOUND';
       throw error;
@@ -34,7 +34,7 @@ class GardenService {
       item => item.plant && item.plant.toString() === plant._id.toString()
     );
     if (alreadyInGarden) {
-      const error = new Error('Cây trồng này đã có trong Vườn của bạn');
+      const error = new Error('This plant specimen is already in your Garden');
       error.statusCode = 400;
       error.errorCode = 'PLANT_ALREADY_IN_GARDEN';
       throw error;
@@ -124,7 +124,7 @@ class GardenService {
     }
 
     if (!gardenItem) {
-      const error = new Error('Không tìm thấy mục cây trong vườn');
+      const error = new Error('Garden item not found');
       error.statusCode = 404;
       error.errorCode = 'ITEM_NOT_FOUND';
       throw error;
@@ -167,7 +167,7 @@ class GardenService {
       plant = await Plant.findOne({ specimenId: plantIdentifier });
     }
     if (!plant) {
-      const error = new Error('Không tìm thấy cây trồng này');
+      const error = new Error('Plant specimen not found');
       error.statusCode = 404;
       error.errorCode = 'PLANT_NOT_FOUND';
       throw error;

@@ -211,9 +211,9 @@ const Hero = () => {
                         onClick={() => handleSelectSpecimen(plant)}
                         onMouseEnter={() => setSelectedIndex(index)}
                       >
-                        <img 
-                          className="suggestion-thumb" 
-                          src={plant.image} 
+                        <img
+                          className="suggestion-thumb"
+                          src={plant.image}
                           alt={plant.name}
                           onError={(e) => {
                             e.currentTarget.onerror = null;

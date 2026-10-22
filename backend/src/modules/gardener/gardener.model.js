@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const GardenerSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Tên chuyên gia là bắt buộc'],
+    required: [true, 'Botanist name is required'],
     trim: true
   },
   avatar: {
@@ -16,7 +16,7 @@ const GardenerSchema = new mongoose.Schema({
   },
   specialization: {
     type: String,
-    required: [true, 'Lĩnh vực chuyên môn là bắt buộc'],
+    required: [true, 'Field of specialization is required'],
     trim: true
   },
   experienceYears: {

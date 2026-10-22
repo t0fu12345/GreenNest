@@ -95,7 +95,7 @@ class PlantService {
     }
 
     if (!plant) {
-      const error = new Error(`Không tìm thấy cây trồng với định danh: ${id}`);
+      const error = new Error(`Plant specimen not found with identifier: ${id}`);
       error.statusCode = 404;
       error.errorCode = 'PLANT_NOT_FOUND';
       throw error;
@@ -113,7 +113,7 @@ class PlantService {
     }
 
     if (!plant) {
-      const error = new Error('Không tìm thấy cây trồng gốc');
+      const error = new Error('Original plant specimen not found');
       error.statusCode = 404;
       error.errorCode = 'PLANT_NOT_FOUND';
       throw error;
@@ -136,7 +136,7 @@ class PlantService {
 
     const exists = await Plant.findOne({ specimenId: finalSpecimenId });
     if (exists) {
-      const error = new Error(`Cây trồng với mã ${finalSpecimenId} đã tồn tại`);
+      const error = new Error(`Plant specimen with code ${finalSpecimenId} already exists`);
       error.statusCode = 409;
       error.errorCode = 'PLANT_EXISTS';
       throw error;
@@ -155,7 +155,7 @@ class PlantService {
   async updatePlant(id, updateData) {
     const plant = await Plant.findById(id);
     if (!plant) {
-      const error = new Error('Không tìm thấy cây trồng cần chỉnh sửa');
+      const error = new Error('Specimen to update not found');
       error.statusCode = 404;
       error.errorCode = 'PLANT_NOT_FOUND';
       throw error;
@@ -170,7 +170,7 @@ class PlantService {
   async deletePlant(id) {
     const plant = await Plant.findById(id);
     if (!plant) {
-      const error = new Error('Không tìm thấy cây trồng cần xóa');
+      const error = new Error('Specimen to delete not found');
       error.statusCode = 404;
       error.errorCode = 'PLANT_NOT_FOUND';
       throw error;

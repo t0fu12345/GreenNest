@@ -7,7 +7,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    subject: 'Tư vấn chọn cây cảnh cho không gian sống',
+    subject: 'Interior Botanical Selection & Styling',
     message: ''
   });
 
@@ -29,22 +29,22 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.fullName.trim() || !formData.email.trim() || !formData.message.trim()) {
-      showToast('Vui lòng điền đầy đủ Họ tên, Email và Nội dung tin nhắn.', 'error');
+      showToast('Please fill in Full Name, Email, and Message content.', 'error');
       return;
     }
 
     try {
       setLoading(true);
       await contactApi.sendContact(formData);
-      showToast('Cảm ơn bạn! Tin nhắn tư vấn đã được gửi thành công đến đội ngũ chuyên gia GreenNest.', 'success');
+      showToast('Thank you! Your botanical inquiry has been sent to our expert team.', 'success');
       setFormData({
         fullName: '',
         email: '',
-        subject: 'Tư vấn chọn cây cảnh cho không gian sống',
+        subject: 'Interior Botanical Selection & Styling',
         message: ''
       });
     } catch (err) {
-      showToast(err.message || 'Không thể gửi tin nhắn. Vui lòng thử lại sau ít phút.', 'error');
+      showToast(err.message || 'Unable to send message. Please try again shortly.', 'error');
     } finally {
       setLoading(false);
     }
@@ -100,11 +100,11 @@ const Contact = () => {
             color: '#ffffff',
             marginBottom: '16px'
           }}>
-            Liên Hệ & Tư Vấn Thực Vật
+            Botanical Inquiries & Consultations
           </h1>
 
           <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '640px', margin: '0 auto', lineHeight: 1.65 }}>
-            Bạn đang cần tư vấn cây trồng phù hợp với hướng ban công, vi khí hậu căn hộ, hay thắc mắc về bệnh lý của cây? Hãy gửi tin nhắn cho các chuyên gia GreenNest.
+            Need expert advice on balcony orientation, indoor apartment microclimates, or plant health diagnostics? Reach out directly to GreenNest horticulturists.
           </p>
         </div>
 
@@ -124,22 +124,22 @@ const Contact = () => {
               GreenNest Conservatory Sanctuary
             </h2>
             <p style={{ color: '#94a3b8', fontSize: '0.92rem', lineHeight: 1.6 }}>
-              Không gian thực vật học số và trung tâm bảo tồn các dòng cây nhiệt đới quý hiếm. Chúng tôi luôn sẵn sàng hỗ trợ bạn kiến tạo không gian sống xanh biophilic.
+              A digital botanical sanctuary and conservation archive for rare tropical cultivars. We are dedicated to helping you design vibrant, resilient biophilic spaces.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '12px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <span style={{ fontSize: '1.4rem' }}>📍</span>
                 <div>
-                  <div style={{ fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', fontWeight: 600 }}>Địa chỉ Vườn Ươm</div>
-                  <div style={{ fontSize: '0.92rem', color: '#ffffff' }}>Khu Công Nghệ Sinh Học, Hòa Lạc, Hà Nội</div>
+                  <div style={{ fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', fontWeight: 600 }}>Sanctuary Nursery Location</div>
+                  <div style={{ fontSize: '0.92rem', color: '#ffffff' }}>Hoa Lac High-Tech Bio-Zone, Hanoi, Vietnam</div>
                 </div>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <span style={{ fontSize: '1.4rem' }}>📧</span>
                 <div>
-                  <div style={{ fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', fontWeight: 600 }}>Email Hỗ Trợ</div>
+                  <div style={{ fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', fontWeight: 600 }}>Support Email</div>
                   <div style={{ fontSize: '0.92rem', color: '#ffffff' }}>support@greennest.vn</div>
                 </div>
               </div>
@@ -147,8 +147,8 @@ const Contact = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <span style={{ fontSize: '1.4rem' }}>🌿</span>
                 <div>
-                  <div style={{ fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', fontWeight: 600 }}>Giờ Tiếp Đón Tham Quan</div>
-                  <div style={{ fontSize: '0.92rem', color: '#ffffff' }}>Thứ Hai – Thứ Bảy: 08:30 – 17:30</div>
+                  <div style={{ fontSize: '0.78rem', color: '#86efac', textTransform: 'uppercase', fontWeight: 600 }}>Visiting & Consultation Hours</div>
+                  <div style={{ fontSize: '0.92rem', color: '#ffffff' }}>Monday – Saturday: 08:30 – 17:30</div>
                 </div>
               </div>
             </div>
@@ -158,14 +158,14 @@ const Contact = () => {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px', fontWeight: 600 }}>
-                Họ và Tên <span style={{ color: '#22c55e' }}>*</span>
+                Full Name <span style={{ color: '#22c55e' }}>*</span>
               </label>
               <input
                 type="text"
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
-                placeholder="VD: Nguyễn Văn An"
+                placeholder="e.g., Elena Vance"
                 required
                 style={{
                   width: '100%',
@@ -182,14 +182,14 @@ const Contact = () => {
 
             <div>
               <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px', fontWeight: 600 }}>
-                Địa chỉ Email <span style={{ color: '#22c55e' }}>*</span>
+                Email Address <span style={{ color: '#22c55e' }}>*</span>
               </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="VD: an.nguyen@gmail.com"
+                placeholder="e.g., elena@example.com"
                 required
                 style={{
                   width: '100%',
@@ -206,7 +206,7 @@ const Contact = () => {
 
             <div>
               <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px', fontWeight: 600 }}>
-                Chủ Đề Cần Hỗ Trợ
+                Inquiry Subject
               </label>
               <select
                 name="subject"
@@ -223,23 +223,23 @@ const Contact = () => {
                   outline: 'none'
                 }}
               >
-                <option value="Tư vấn chọn cây cảnh cho không gian sống">Tư vấn chọn cây cảnh cho không gian sống</option>
-                <option value="Chẩn đoán bệnh lý & hướng dẫn chăm sóc cây">Chẩn đoán bệnh lý & hướng dẫn chăm sóc cây</option>
-                <option value="Hợp tác chuyên gia & cung cấp vườn ươm">Hợp tác chuyên gia & cung cấp vườn ươm</option>
-                <option value="Đóng góp ý kiến cho hệ sinh thái GreenNest">Đóng góp ý kiến cho hệ sinh thái GreenNest</option>
+                <option value="Interior Botanical Selection & Styling">Interior Botanical Selection & Styling</option>
+                <option value="Plant Pathology Diagnostics & Treatment">Plant Pathology Diagnostics & Treatment</option>
+                <option value="Nursery Partnerships & Commercial Supply">Nursery Partnerships & Commercial Supply</option>
+                <option value="GreenNest Ecosystem Feedback & Ideas">GreenNest Ecosystem Feedback & Ideas</option>
               </select>
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '6px', fontWeight: 600 }}>
-                Nội Dung Tin Nhắn <span style={{ color: '#22c55e' }}>*</span>
+                Message Content <span style={{ color: '#22c55e' }}>*</span>
               </label>
               <textarea
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
                 rows={4}
-                placeholder="Nhập chi tiết yêu cầu tư vấn hoặc tình trạng cây của bạn..."
+                placeholder="Describe your botanical inquiry, lighting conditions, or specimen questions..."
                 required
                 style={{
                   width: '100%',
@@ -272,7 +272,7 @@ const Contact = () => {
                 marginTop: '8px'
               }}
             >
-              {loading ? 'Đang gửi tin nhắn...' : 'Gửi Tin Nhắn Tư Vấn →'}
+              {loading ? 'Sending Inquiry...' : 'Send Botanical Inquiry →'}
             </button>
           </form>
         </div>

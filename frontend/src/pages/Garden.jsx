@@ -47,14 +47,14 @@ const Garden = () => {
           });
           setPlants(mapped);
         } else {
-          // Vườn trên MongoDB Atlas chưa có cây: để mảng rỗng để hiển thị Empty State
+          // No specimens in Atlas garden: leave empty to show Empty State
           setPlants([]);
         }
       } else {
         setPlants([]);
       }
     } catch (err) {
-      console.warn('Lỗi khi tải vườn từ MongoDB Atlas:', err.message);
+      console.warn('Error loading garden from MongoDB Atlas:', err.message);
       setPlants([]);
     } finally {
       setLoading(false);

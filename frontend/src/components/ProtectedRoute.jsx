@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children }) => {
       }}>
         <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🌿</div>
         <div style={{ fontSize: '0.95rem', letterSpacing: '0.05em' }}>
-          Đang xác thực phiên làm việc GreenNest...
+          Authenticating GreenNest botanical session...
         </div>
       </div>
     );

@@ -11,7 +11,7 @@ function ensureServerRunning() {
       .catch(() => {
         try {
           server = app.listen(5000, () => {
-            console.log('📡 Test runner đã khởi động Express server trên port 5000');
+            console.log('📡 Test runner started Express server on port 5000');
             setTimeout(resolve, 800);
           });
           server.on('error', (err) => {
@@ -27,7 +27,7 @@ function ensureServerRunning() {
 async function runTests() {
   await ensureServerRunning();
   console.log('🧪 ========================================================');
-  console.log('🧪 BẮT ĐẦU CHẠY BỘ KIỂM THỬ TỰ ĐỘNG GREENNEST RESTFUL API');
+  console.log('🧪 EXECUTING AUTOMATED GREENNEST RESTFUL API TEST SUITE');
   console.log('🧪 ========================================================\n');
 
   let passed = 0;
@@ -45,48 +45,48 @@ async function runTests() {
 
   try {
     // 1. Health Check
-    console.log('▶ [1/10] Kiểm tra Endpoint Sức khỏe (Health Check)');
+    console.log('▶ [1/10] System Health Check Endpoint');
     const resHealth = await fetch(`${BASE_URL}/health`);
     const health = await resHealth.json();
-    assert(resHealth.status === 200 && health.status === 'UP', 'GET /api/health trả về status: UP');
-    assert(health.architecture.includes('Modular MCS'), 'GET /api/health xác nhận kiến trúc Modular MCS');
+    assert(resHealth.status === 200 && health.status === 'UP', 'GET /api/health returns status: UP');
+    assert(health.architecture.includes('Modular MCS'), 'GET /api/health confirms Modular MCS architecture');
 
     // 2. Metadata / Filters
-    console.log('\n▶ [2/10] Kiểm tra Endpoint Metadata & Lookups');
+    console.log('\n▶ [2/10] Metadata & Filter Taxonomy Endpoint');
     const resMeta = await fetch(`${BASE_URL}/metadata/filters`);
     const meta = await resMeta.json();
-    assert(resMeta.status === 200 && meta.success === true, 'GET /api/metadata/filters trả về 200');
-    assert(Array.isArray(meta.data.biomes) && meta.data.biomes.length > 0, 'Dữ liệu Biomes khả dụng');
-    assert(Array.isArray(meta.data.categories) && meta.data.categories.length > 0, 'Dữ liệu Categories khả dụng');
+    assert(resMeta.status === 200 && meta.success === true, 'GET /api/metadata/filters returns 200 OK');
+    assert(Array.isArray(meta.data.biomes) && meta.data.biomes.length > 0, 'Biomes taxonomy available');
+    assert(Array.isArray(meta.data.categories) && meta.data.categories.length > 0, 'Categories taxonomy available');
 
     // 3. Auth Module - Validation, Register, Login
-    console.log('\n▶ [3/10] Kiểm tra Phân hệ Xác thực (Auth Module)');
-    // 3.1 Validation error khi đăng ký sai
+    console.log('\n▶ [3/10] Authentication & Identity Module');
+    // 3.1 Validation error when registering invalid data
     const resRegFail = await fetch(`${BASE_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'bad-email', password: '123' })
     });
-    assert(resRegFail.status === 422, 'POST /api/auth/register chặn dữ liệu lỗi với 422 Unprocessable Entity');
+    assert(resRegFail.status === 422, 'POST /api/auth/register intercepts invalid payload with 422 Unprocessable Entity');
 
-    // 3.2 Đăng nhập Admin
+    // 3.2 Login Admin
     const resAdminLogin = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'admin@greennest.vn', password: 'Admin@123456' })
     });
     const adminAuth = await resAdminLogin.json();
-    assert(resAdminLogin.status === 200 && adminAuth.data.user.role === 'admin', 'POST /api/auth/login thành công với Admin');
+    assert(resAdminLogin.status === 200 && adminAuth.data.user.role === 'admin', 'POST /api/auth/login successful for Administrator');
     const adminToken = adminAuth.data.token;
 
-    // 3.3 Đăng nhập User thường
+    // 3.3 Login Member
     const resUserLogin = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'nam.le@greennest.vn', password: 'GreenNest@2026' })
     });
     const userAuth = await resUserLogin.json();
-    assert(resUserLogin.status === 200 && userAuth.data.user.role === 'user', 'POST /api/auth/login thành công với Thành viên');
+    assert(resUserLogin.status === 200 && userAuth.data.user.role === 'user', 'POST /api/auth/login successful for Standard Member');
     const userToken = userAuth.data.token;
 
     // 3.4 Get Profile (Me)
@@ -94,71 +94,71 @@ async function runTests() {
       headers: { 'Authorization': `Bearer ${userToken}` }
     });
     const meData = await resMe.json();
-    assert(resMe.status === 200 && meData.data.email === 'nam.le@greennest.vn', 'GET /api/auth/me trả về đúng thông tin cá nhân');
+    assert(resMe.status === 200 && meData.data.email === 'nam.le@greennest.vn', 'GET /api/auth/me returns valid user credentials');
 
     // 4. Plants Module - Query, Search, Detail, Related
-    console.log('\n▶ [4/10] Kiểm tra Phân hệ Cây trồng (Plant Module)');
+    console.log('\n▶ [4/10] Botanical Plants & Specimen Catalog Module');
     const resPlants = await fetch(`${BASE_URL}/plants?limit=6`);
     const plantsData = await resPlants.json();
-    assert(resPlants.status === 200 && plantsData.data.length === 6, 'GET /api/plants phân trang 6 cây');
-    assert(plantsData.pagination.totalItems >= 20, `Tổng số cây trồng >= 20 (Hiện có: ${plantsData.pagination.totalItems})`);
+    assert(resPlants.status === 200 && plantsData.data.length === 6, 'GET /api/plants paginates 6 items');
+    assert(plantsData.pagination.totalItems >= 20, `Total catalog specimens >= 20 (Count: ${plantsData.pagination.totalItems})`);
 
     const firstPlant = plantsData.data[0];
     const resDetail = await fetch(`${BASE_URL}/plants/${firstPlant._id}`);
     const detailData = await resDetail.json();
-    assert(resDetail.status === 200 && detailData.data.name === firstPlant.name, `GET /api/plants/:id chi tiết cây [${firstPlant.name}]`);
+    assert(resDetail.status === 200 && detailData.data.name === firstPlant.name, `GET /api/plants/:id retrieves specimen [${firstPlant.name}]`);
 
     const resRelated = await fetch(`${BASE_URL}/plants/${firstPlant._id}/related`);
     const relatedData = await resRelated.json();
-    assert(resRelated.status === 200 && Array.isArray(relatedData.data), 'GET /api/plants/:id/related trả về danh sách cây tương tự');
+    assert(resRelated.status === 200 && Array.isArray(relatedData.data), 'GET /api/plants/:id/related returns affiliated species');
 
     // 5. Gardeners Module
-    console.log('\n▶ [5/10] Kiểm tra Phân hệ Chuyên gia (Gardener Module)');
+    console.log('\n▶ [5/10] Botanists & Gardeners Module');
     const resGardeners = await fetch(`${BASE_URL}/gardeners`);
     const gardenersData = await resGardeners.json();
-    assert(resGardeners.status === 200 && gardenersData.data.length === 4, 'GET /api/gardeners trả về đủ 4 chuyên gia thực vật');
+    assert(resGardeners.status === 200 && gardenersData.data.length === 4, 'GET /api/gardeners returns 4 master botanists');
 
     // 6. Collections Module
-    console.log('\n▶ [6/10] Kiểm tra Phân hệ Bộ sưu tập theo mùa (Collection Module)');
+    console.log('\n▶ [6/10] Curated Seasonal Collections Module');
     const resCollections = await fetch(`${BASE_URL}/collections`);
     const collectionsData = await resCollections.json();
-    assert(resCollections.status === 200 && collectionsData.data.length === 4, 'GET /api/collections trả về đủ 4 bộ sưu tập theo mùa');
+    assert(resCollections.status === 200 && collectionsData.data.length === 4, 'GET /api/collections returns 4 seasonal collections');
 
     // 7. Gallery Module - Lightbox & Likes
-    console.log('\n▶ [7/10] Kiểm tra Phân hệ Thư viện ảnh (Gallery Module)');
+    console.log('\n▶ [7/10] Botanical Gallery Module');
     const resGallery = await fetch(`${BASE_URL}/gallery?limit=10`);
     const galleryData = await resGallery.json();
-    assert(resGallery.status === 200 && galleryData.data.length === 10, 'GET /api/gallery phân trang 10 ảnh');
+    assert(resGallery.status === 200 && galleryData.data.length === 10, 'GET /api/gallery paginates 10 images');
 
     const firstImage = galleryData.data[0];
 
-    // 7.1 Chưa đăng nhập -> Chặn 401
+    // 7.1 Unauthenticated -> 401
     const resUnauthLike = await fetch(`${BASE_URL}/gallery/${firstImage._id}/like`, { method: 'POST' });
-    assert(resUnauthLike.status === 401, 'POST /api/gallery/:id/like chặn khách chưa đăng nhập với 401 Unauthorized');
+    assert(resUnauthLike.status === 401, 'POST /api/gallery/:id/like guards unauthenticated guests with 401 Unauthorized');
 
-    // 7.2 Đã đăng nhập -> Thả tim lần 1 (+1)
+    // 7.2 Authenticated -> Like (+1)
     const resLike = await fetch(`${BASE_URL}/gallery/${firstImage._id}/like`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${userToken}` }
     });
     const likeData = await resLike.json();
-    assert(resLike.status === 200 && likeData.data.liked === true, `POST /api/gallery/:id/like thả tim thành công (Lượt thích: ${likeData.data.likesCount})`);
+    assert(resLike.status === 200 && likeData.data.liked === true, `POST /api/gallery/:id/like favorited successfully (Likes: ${likeData.data.likesCount})`);
 
-    // 7.3 Đã đăng nhập -> Thả tim lần 2 (Hủy thả tim -1)
+    // 7.3 Authenticated -> Unlike (-1)
     const resUnlike = await fetch(`${BASE_URL}/gallery/${firstImage._id}/like`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${userToken}` }
     });
     const unlikeData = await resUnlike.json();
-    assert(resUnlike.status === 200 && unlikeData.data.liked === false, `POST /api/gallery/:id/like ấn lần 2 hủy thả tim thành công (Lượt thích: ${unlikeData.data.likesCount})`);
+    assert(resUnlike.status === 200 && unlikeData.data.liked === false, `POST /api/gallery/:id/like unfavorited successfully on repeat click (Likes: ${unlikeData.data.likesCount})`);
 
     // 8. User Garden Module - Hybrid Sync & Checklist
-    console.log('\n▶ [8/10] Kiểm tra Vườn cá nhân & Hybrid Sync (Garden Module)');
+    console.log('\n▶ [8/10] Living Garden Sanctuary & Care Schedule Module');
     const resGarden = await fetch(`${BASE_URL}/garden`, {
       headers: { 'Authorization': `Bearer ${userToken}` }
     });
     const gardenData = await resGarden.json();
-    assert(resGarden.status === 200 && Array.isArray(gardenData.data.garden), 'GET /api/garden trả về danh sách cây trong vườn');
+    assert(resGarden.status === 200 && Array.isArray(gardenData.data.garden), 'GET /api/garden returns user sanctuary specimens');
 
     // Hybrid Sync test
     const resSync = await fetch(`${BASE_URL}/garden/sync`, {
@@ -170,7 +170,7 @@ async function runTests() {
       body: JSON.stringify({ plantIds: [firstPlant._id] })
     });
     const syncData = await resSync.json();
-    assert(resSync.status === 200, `POST /api/garden/sync đồng bộ thành công`);
+    assert(resSync.status === 200, `POST /api/garden/sync synchronizes specimens cleanly`);
 
     // Update Checklist task
     const resChecklist = await fetch(`${BASE_URL}/garden/checklist`, {
@@ -185,56 +185,56 @@ async function runTests() {
         completed: true
       })
     });
-    assert(resChecklist.status === 200, 'PUT /api/garden/checklist đánh dấu hoàn thành tưới nước');
+    assert(resChecklist.status === 200, 'PUT /api/garden/checklist marks watering task completed');
 
     // 9. Contact Module
-    console.log('\n▶ [9/10] Kiểm tra Phân hệ Tin nhắn liên hệ (Contact Module)');
+    console.log('\n▶ [9/10] Botanical Inquiries & Contact Module');
     const resContact = await fetch(`${BASE_URL}/contact`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        fullName: 'Khách Thử Nghiệm',
+        fullName: 'Test Guest',
         email: 'test.guest@gmail.com',
-        subject: 'Hỏi về độ ẩm cho dương xỉ',
-        message: 'Xin chào ban quản trị GreenNest, xin hướng dẫn độ ẩm phù hợp cho dương xỉ phòng ngủ.'
+        subject: 'Humidity guidance for Boston Fern',
+        message: 'Hello GreenNest team, please advise on optimal ambient humidity for bedroom fern cultivation.'
       })
     });
     const contactData = await resContact.json();
-    assert(resContact.status === 201 && contactData.success === true, 'POST /api/contact gửi tin nhắn thành công');
+    assert(resContact.status === 201 && contactData.success === true, 'POST /api/contact submits inquiry successfully');
 
     // 10. Admin Module & RBAC Security Guards
-    console.log('\n▶ [10/10] Kiểm tra Phân quyền RBAC & Admin Dashboard');
-    // 10.1 User thường truy cập Admin -> Chặn 403 Forbidden
+    console.log('\n▶ [10/10] RBAC Access Control & Admin Telemetry Dashboard');
+    // 10.1 Standard user accessing Admin -> 403 Forbidden
     const resForbidden = await fetch(`${BASE_URL}/admin/dashboard/stats`, {
       headers: { 'Authorization': `Bearer ${userToken}` }
     });
-    assert(resForbidden.status === 403, 'RBAC chặn tài khoản thường truy cập Admin với 403 Forbidden');
+    assert(resForbidden.status === 403, 'RBAC intercepts non-admin account with 403 Forbidden');
 
-    // 10.2 Admin truy cập Admin Dashboard -> 200 OK
+    // 10.2 Admin accessing Admin Dashboard -> 200 OK
     const resAdminStats = await fetch(`${BASE_URL}/admin/dashboard/stats`, {
       headers: { 'Authorization': `Bearer ${adminToken}` }
     });
     const adminStatsData = await resAdminStats.json();
-    assert(resAdminStats.status === 200, 'Admin lấy Dashboard stats thành công');
-    assert(adminStatsData.data.totalPlants >= 20, `Dashboard: ${adminStatsData.data.totalPlants} cây trồng`);
-    assert(adminStatsData.data.totalGardeners === 4, `Dashboard: ${adminStatsData.data.totalGardeners} chuyên gia`);
-    assert(adminStatsData.data.totalCollections === 4, `Dashboard: ${adminStatsData.data.totalCollections} bộ sưu tập`);
-    assert(adminStatsData.data.totalGalleryImages === 20, `Dashboard: ${adminStatsData.data.totalGalleryImages} ảnh gallery`);
+    assert(resAdminStats.status === 200, 'Admin retrieves Dashboard statistics successfully');
+    assert(adminStatsData.data.totalPlants >= 20, `Dashboard: ${adminStatsData.data.totalPlants} botanical plants`);
+    assert(adminStatsData.data.totalGardeners === 4, `Dashboard: ${adminStatsData.data.totalGardeners} master botanists`);
+    assert(adminStatsData.data.totalCollections === 4, `Dashboard: ${adminStatsData.data.totalCollections} curated collections`);
+    assert(adminStatsData.data.totalGalleryImages === 20, `Dashboard: ${adminStatsData.data.totalGalleryImages} gallery photographs`);
 
-    // 10.3 Admin duyệt inbox contact
+    // 10.3 Admin browsing contact inbox
     const resAdminContact = await fetch(`${BASE_URL}/contact`, {
       headers: { 'Authorization': `Bearer ${adminToken}` }
     });
     const adminContactData = await resAdminContact.json();
-    assert(resAdminContact.status === 200 && adminContactData.data.length > 0, 'Admin xem hòm thư liên hệ thành công');
+    assert(resAdminContact.status === 200 && adminContactData.data.length > 0, 'Admin browses contact inquiry inbox successfully');
 
-    // Tổng kết
+    // Summary
     console.log('\n========================================================');
-    console.log(`🏁 TỔNG KẾT KIỂM THỬ: ${passed} PASS / ${failed} FAIL`);
+    console.log(`🏁 TEST EXECUTION SUMMARY: ${passed} PASS / ${failed} FAIL`);
     if (failed === 0) {
-      console.log('🎉 TOÀN BỘ CÁC TIÊU CHUẨN BACKEND ĐÃ ĐẠT 100% HOÀN HẢO!');
+      console.log('🎉 ALL BACKEND STANDARDS MET WITH 100% SUCCESS!');
     } else {
-      console.error('⚠️ CÓ TEST CHƯA ĐẠT, VUI LÒNG KIỂM TRA LẠI.');
+      console.error('⚠️ SOME TESTS FAILED. PLEASE VERIFY.');
     }
     console.log('========================================================\n');
 
@@ -243,7 +243,7 @@ async function runTests() {
     }
     process.exit(failed === 0 ? 0 : 1);
   } catch (error) {
-    console.error('💥 Lỗi ngoại lệ trong quá trình chạy test:', error);
+    console.error('💥 Exception during test execution:', error);
     if (server && server.listening) {
       server.close();
     }
@@ -251,5 +251,4 @@ async function runTests() {
   }
 }
 
-// Khởi chạy sau 1s để server mở port ổn định
 setTimeout(runTests, 1000);

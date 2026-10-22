@@ -7,11 +7,11 @@ class AuthController {
       const { fullName, email, password } = req.body;
 
       if (!fullName || !email || !password) {
-        return errorResponse(res, 'Vui lòng điền đầy đủ họ tên, email và mật khẩu', 400, 'MISSING_FIELDS');
+        return errorResponse(res, 'Please provide full name, email, and password', 400, 'MISSING_FIELDS');
       }
 
       const result = await authService.register({ fullName, email, password });
-      return successResponse(res, result, 'Đăng ký tài khoản thành công', 201);
+      return successResponse(res, result, 'User account registered successfully', 201);
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);
@@ -25,11 +25,11 @@ class AuthController {
       const { email, password } = req.body;
 
       if (!email || !password) {
-        return errorResponse(res, 'Vui lòng cung cấp email và mật khẩu', 400, 'MISSING_FIELDS');
+        return errorResponse(res, 'Please provide email and password', 400, 'MISSING_FIELDS');
       }
 
       const result = await authService.login({ email, password });
-      return successResponse(res, result, 'Đăng nhập thành công');
+      return successResponse(res, result, 'User authenticated successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);
@@ -41,7 +41,7 @@ class AuthController {
   async getMe(req, res, next) {
     try {
       const profile = await authService.getProfile(req.user._id);
-      return successResponse(res, profile, 'Lấy thông tin tài khoản thành công');
+      return successResponse(res, profile, 'User profile retrieved successfully');
     } catch (error) {
       next(error);
     }
@@ -52,11 +52,11 @@ class AuthController {
       const { currentPassword, newPassword } = req.body;
 
       if (!currentPassword || !newPassword) {
-        return errorResponse(res, 'Vui lòng cung cấp mật khẩu hiện tại và mật khẩu mới', 400, 'MISSING_FIELDS');
+        return errorResponse(res, 'Please provide both current and new passwords', 400, 'MISSING_FIELDS');
       }
 
       await authService.changePassword(req.user._id, currentPassword, newPassword);
-      return successResponse(res, null, 'Đổi mật khẩu thành công');
+      return successResponse(res, null, 'Password updated successfully');
     } catch (error) {
       if (error.statusCode) {
         return errorResponse(res, error.message, error.statusCode, error.errorCode);

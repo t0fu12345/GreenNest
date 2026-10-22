@@ -10,22 +10,22 @@ const protect = async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET || 'greennest_botanical_jwt_secret_key_2026_super_secure'
+        process.env.JWT_SECRET
       );
 
       req.user = await User.findById(decoded.id).select('-password');
       if (!req.user) {
-        return errorResponse(res, 'Người dùng liên kết với token này không còn tồn tại', 401, 'USER_NOT_FOUND');
+        return errorResponse(res, 'User linked to this token no longer exists', 401, 'USER_NOT_FOUND');
       }
 
       return next();
     } catch (error) {
-      return errorResponse(res, 'Mã xác thực không hợp lệ hoặc đã hết hạn', 401, 'INVALID_TOKEN');
+      return errorResponse(res, 'Invalid or expired authorization token', 401, 'INVALID_TOKEN');
     }
   }
 
   if (!token) {
-    return errorResponse(res, 'Vui lòng đăng nhập để thực hiện hành động này', 401, 'UNAUTHORIZED');
+    return errorResponse(res, 'Please sign in to perform this action', 401, 'UNAUTHORIZED');
   }
 };
 
@@ -35,7 +35,7 @@ const optionalAuth = async (req, res, next) => {
       const token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET || 'greennest_botanical_jwt_secret_key_2026_super_secure'
+        process.env.JWT_SECRET
       );
       req.user = await User.findById(decoded.id).select('-password');
     } catch (e) {

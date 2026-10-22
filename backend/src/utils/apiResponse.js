@@ -1,5 +1,5 @@
 /**
- * Chuẩn hóa cấu trúc JSON Response theo đúng OpenAPI 3.0.3 Contract
+ * Standardize JSON Response structure according to OpenAPI 3.0.3 Contract
  */
 const successResponse = (res, data = null, message = 'Success', statusCode = 200, pagination = null) => {
   const payload = {

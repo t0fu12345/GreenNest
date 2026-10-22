@@ -20,7 +20,7 @@ const Gallery = () => {
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  // Tải danh sách ảnh từ MongoDB Atlas
+  // Load the image list from MongoDB Atlas
   const fetchGallery = useCallback(async () => {
     try {
       const res = await galleryApi.getGallery({ limit: 50 });
@@ -31,7 +31,7 @@ const Gallery = () => {
         setItems(galleryList);
       }
     } catch (err) {
-      console.warn('Lỗi khi tải Gallery từ MongoDB Atlas, dùng dữ liệu dự phòng:', err.message);
+      console.warn('Could not load the gallery from MongoDB Atlas; using fallback data:', err.message);
       setItems(fallbackGallery);
     } finally {
       setLoading(false);
@@ -42,7 +42,7 @@ const Gallery = () => {
     fetchGallery();
   }, [fetchGallery]);
 
-  // Thả tim ảnh (Like API) - yêu cầu đăng nhập, mỗi ảnh chỉ thả tim 1 lần, ấn lần 2 hủy thả tim
+  // Toggle an image like through the API; authentication is required
   const handleLike = async (e, id) => {
     e.stopPropagation();
     if (!isAuthenticated) {
@@ -65,7 +65,7 @@ const Gallery = () => {
     }
   };
 
-  // Điều khiển phím bàn phím khi mở Lightbox (ESC, ArrowLeft, ArrowRight)
+  // Handle keyboard controls while the lightbox is open
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (activeLightboxIndex === null) return;

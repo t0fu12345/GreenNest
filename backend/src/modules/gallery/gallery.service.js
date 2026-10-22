@@ -45,7 +45,7 @@ class GalleryService {
   async likeImage(id, userId) {
     const image = await Gallery.findById(id);
     if (!image) {
-      const error = new Error('Không tìm thấy ảnh');
+      const error = new Error('Image not found');
       error.statusCode = 404;
       error.errorCode = 'IMAGE_NOT_FOUND';
       throw error;
@@ -61,12 +61,12 @@ class GalleryService {
 
     let isLiked = false;
     if (existingIndex > -1) {
-      // Đã like -> Hủy thả tim (ấn lần 2)
+      // Already liked -> Unlike
       image.likedBy.splice(existingIndex, 1);
       image.likesCount = Math.max(0, (image.likesCount || 1) - 1);
       isLiked = false;
     } else {
-      // Chưa like -> Thả tim (chỉ thả 1 lần)
+      // Not yet liked -> Like
       image.likedBy.push(userId);
       image.likesCount = (image.likesCount || 0) + 1;
       isLiked = true;
@@ -98,7 +98,7 @@ class GalleryService {
   async updateImage(id, data) {
     const image = await Gallery.findById(id);
     if (!image) {
-      const error = new Error('Không tìm thấy ảnh cần cập nhật');
+      const error = new Error('Image to update not found');
       error.statusCode = 404;
       error.errorCode = 'IMAGE_NOT_FOUND';
       throw error;
@@ -115,7 +115,7 @@ class GalleryService {
   async deleteImage(id) {
     const image = await Gallery.findById(id);
     if (!image) {
-      const error = new Error('Không tìm thấy ảnh cần xóa');
+      const error = new Error('Image to delete not found');
       error.statusCode = 404;
       error.errorCode = 'IMAGE_NOT_FOUND';
       throw error;

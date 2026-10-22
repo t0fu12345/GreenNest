@@ -10,7 +10,7 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
-// Request Interceptor: Tự động đính kèm JWT Bearer Token
+// Request Interceptor: Automatically attach JWT Bearer Token
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('greennest_token') || localStorage.getItem('token');
@@ -22,18 +22,18 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Chuẩn hóa dữ liệu trả về và xử lý lỗi tập trung
+// Response Interceptor: Normalize response data and centralized error handling
 apiClient.interceptors.response.use(
   (response) => {
     return response.data;
   },
   (error) => {
-    // Xử lý khi token hết hạn hoặc không hợp lệ (401)
+    // Handle expired or invalid token (401)
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('greennest_token');
       localStorage.removeItem('token');
       localStorage.removeItem('greennest_user');
-      // Không tự chuyển trang nếu đang ở trang login/register
+      // Do not redirect automatically if currently on login/register page
       if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
         window.dispatchEvent(new CustomEvent('auth:expired'));
       }
@@ -42,7 +42,7 @@ apiClient.interceptors.response.use(
     const message = error.response?.data?.error?.message 
       || error.response?.data?.message 
       || error.message 
-      || 'Đã xảy ra lỗi khi kết nối máy chủ.';
+      || 'An error occurred while connecting to the server.';
 
     return Promise.reject({
       status: error.response?.status,

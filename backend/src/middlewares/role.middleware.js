@@ -1,19 +1,19 @@
 const { errorResponse } = require('../utils/apiResponse');
 
 /**
- * Middleware phân quyền (Role Guard)
- * @param  {...string} roles - Danh sách vai trò được phép truy cập (vd: 'admin')
+ * Role Authorization Middleware (Role Guard)
+ * @param  {...string} roles - Permitted roles (e.g. 'admin')
  */
 const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {
-      return errorResponse(res, 'Chưa xác thực người dùng', 401, 'UNAUTHORIZED');
+      return errorResponse(res, 'User is not authenticated', 401, 'UNAUTHORIZED');
     }
 
     if (!roles.includes(req.user.role)) {
       return errorResponse(
         res,
-        `Quyền truy cập bị từ chối: Tài khoản vai trò [${req.user.role}] không được phép thực hiện hành động này`,
+        `Access denied: Account with role [${req.user.role}] is not authorized for this resource`,
         403,
         'FORBIDDEN'
       );

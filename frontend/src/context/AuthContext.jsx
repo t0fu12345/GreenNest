@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Lưu phiên đăng nhập an toàn vào LocalStorage và Cookies
+  // Save the authenticated session to LocalStorage and cookies
   const saveSession = useCallback((userObj, jwtToken, rememberMe = true) => {
     setUser(userObj);
     setToken(jwtToken);
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Xóa sạch phiên đăng nhập
+  // Clear the authenticated session
   const clearSession = useCallback(() => {
     setUser(null);
     setToken(null);
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
     deleteCookie(STORAGE_KEYS.COOKIE_SESSION);
   }, []);
 
-  // Tự động kích hoạt Hybrid Sync khi đăng nhập (Đồng bộ cây từ localStorage lên MongoDB)
+  // Trigger hybrid sync after login (localStorage to MongoDB)
   const triggerHybridSync = useCallback(async () => {
     try {
       const guestPlants = [];
@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Khôi phục phiên làm việc khi reload ứng dụng
+  // Restore the session when the application reloads
   useEffect(() => {
     const restoreSession = async () => {
       try {
@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }) => {
 
         if (savedToken) {
           setToken(savedToken);
-          // Thử gọi API /auth/me để xác thực token từ backend nếu có
+          // Validate the saved token through /auth/me when the backend is available
           try {
             const res = await authApi.getMe();
             if (res && res.data && res.data.user) {
@@ -135,7 +135,7 @@ export const AuthProvider = ({ children }) => {
               return;
             }
           } catch {
-            // Backend offline, khôi phục từ local cache
+            // Restore from the local cache when the backend is offline
             const savedUserStr = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
             if (savedUserStr) {
               setUser(JSON.parse(savedUserStr));
@@ -160,7 +160,7 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('auth:expired', handleAuthExpired);
   }, [clearSession]);
 
-  // Đăng nhập kết nối API Backend thực tế (kèm fallback offline)
+  // Sign in through the backend API with an offline fallback
   const login = async (identifier, password, rememberMe = true) => {
     try {
       let emailInput = (identifier || '').trim().toLowerCase();
@@ -170,12 +170,12 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: 'Please enter both Email and Password.' };
       }
 
-      // Hỗ trợ alias đăng nhập nhanh
+      // Support quick-login aliases
       if (emailInput === 'admin') emailInput = 'admin@greennest.com';
       if (emailInput === 'admin@greennest.vn') emailInput = 'admin@greennest.com';
       if (emailInput === 'nam.le' || emailInput === 'alex') emailInput = 'alex.pham@example.com';
 
-      // 1. Thử gọi backend API
+      // 1. Try the backend API
       try {
         const res = await authApi.login({ email: emailInput, password: passwordInput });
         if (res && res.data && res.data.token) {
@@ -204,10 +204,10 @@ export const AuthProvider = ({ children }) => {
         console.warn('Backend login attempt unsuccessful, checking local credentials:', apiErr.message);
       }
 
-      // 2. Fallback local credentials cho development / offline
+      // 2. Fall back to local credentials during development or offline use
       const localUsers = getAllUsers();
-      const matched = localUsers.find(u => 
-        u.email?.toLowerCase() === emailInput || 
+      const matched = localUsers.find(u =>
+        u.email?.toLowerCase() === emailInput ||
         u.nickname?.toLowerCase() === emailInput
       );
 
@@ -242,7 +242,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Đăng ký tài khoản mới kết nối API Backend
+  // Register a new account through the backend API
   const register = async ({ name, email, password, nickname, preferredBiome = 'tropical' }) => {
     try {
       const cleanEmail = email.trim().toLowerCase();
@@ -255,7 +255,7 @@ export const AuthProvider = ({ children }) => {
         password: cleanPassword
       };
 
-      // 1. Thử gọi backend API
+      // 1. Try the backend API
       try {
         const res = await authApi.register(payload);
         if (res && res.data && res.data.token) {
@@ -318,12 +318,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Đăng xuất
+  // Sign out
   const logout = () => {
     clearSession();
   };
 
-  // Mô phỏng Google Login
+  // Simulate Google login
   const loginWithGoogle = async () => {
     return login('admin@greennest.com', 'AdminCanopy2026!', true);
   };

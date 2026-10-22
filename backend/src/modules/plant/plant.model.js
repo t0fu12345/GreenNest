@@ -13,12 +13,12 @@ const PlantSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: [true, 'Tên cây là bắt buộc'],
+    required: [true, 'Plant common name is required'],
     trim: true
   },
   scientificName: {
     type: String,
-    required: [true, 'Tên khoa học là bắt buộc'],
+    required: [true, 'Scientific botanical name is required'],
     trim: true
   },
   slug: {
@@ -27,13 +27,13 @@ const PlantSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: [true, 'Nhóm phân loại là bắt buộc'],
+    required: [true, 'Botanical category is required'],
     trim: true
   },
   biome: {
     type: String,
     enum: ['tropical', 'subtropical', 'arid', 'temperate'],
-    required: [true, 'Môi trường sinh trưởng (Biome) là bắt buộc']
+    required: [true, 'Growth biome environment is required']
   },
   biomeLabel: {
     type: String
@@ -52,11 +52,11 @@ const PlantSchema = new mongoose.Schema({
   },
   light: {
     type: String,
-    required: [true, 'Yêu cầu ánh sáng là bắt buộc']
+    required: [true, 'Light requirement is required']
   },
   watering: {
     type: String,
-    required: [true, 'Yêu cầu tưới nước là bắt buộc']
+    required: [true, 'Watering requirement is required']
   },
   soil: {
     type: String
@@ -84,7 +84,7 @@ const PlantSchema = new mongoose.Schema({
       type: String
     }
   },
-  // Nhóm chỉ số đo lường vi khí hậu hiển thị trên Telemetry Dashboard
+  // Telemetry metric indicators for live climate and sensor dashboard
   telemetry: {
     waterDaily: String,
     waterBar: String,
@@ -136,7 +136,7 @@ const PlantSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Full-text search index trên tên phổ thông, tên khoa học và mô tả
+// Full-text search index on common name, scientific name, and description
 PlantSchema.index({ name: 'text', scientificName: 'text', description: 'text' });
 
 module.exports = mongoose.model('Plant', PlantSchema);
