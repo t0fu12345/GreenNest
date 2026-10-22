@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { scorePlant } from '../utils/searchPlants';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -151,26 +152,31 @@ const Plants = () => {
     if (activeTag !== tag) setActiveBiome('all');
   };
 
-  // Filter plants
-  const filteredPlants = allPlants.filter(plant => {
-    // Biome
-    if (activeBiome !== 'all' && plant.biome !== activeBiome) {
-      return false;
-    }
-    // Tag
-    if (activeTag && !plant.tags?.includes(activeTag)) {
-      return false;
-    }
-    // Search
+  // Filter plants with botanical relevance scoring
+  const filteredPlants = useMemo(() => {
+    let result = allPlants.filter(plant => {
+      // Biome
+      if (activeBiome !== 'all' && plant.biome !== activeBiome) {
+        return false;
+      }
+      // Tag
+      if (activeTag && !plant.tags?.includes(activeTag)) {
+        return false;
+      }
+      // Search
+      if (searchQuery.trim()) {
+        const score = scorePlant(plant, searchQuery);
+        if (score <= 0) return false;
+      }
+      return true;
+    });
+
     if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
-      const matchName = plant.name.toLowerCase().includes(q);
-      const matchSci = plant.scientificName.toLowerCase().includes(q);
-      const matchTag = plant.tags?.some(t => t.toLowerCase().includes(q));
-      if (!matchName && !matchSci && !matchTag) return false;
+      result.sort((a, b) => scorePlant(b, searchQuery) - scorePlant(a, searchQuery));
     }
-    return true;
-  });
+
+    return result;
+  }, [allPlants, activeBiome, activeTag, searchQuery]);
 
   // Dynamic index tags extracted from all 20 plants
   const availableIndexTags = Array.from(

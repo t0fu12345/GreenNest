@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -45,11 +45,11 @@ const Navbar = () => {
         {/* Menu links in English */}
         <ul className="nav-links">
           <li><NavLink to="/" end>Overview</NavLink></li>
-          <li><NavLink to="/plants">Plants 🌿</NavLink></li>
-          <li><NavLink to="/collections">Collections 📁</NavLink></li>
-          <li><NavLink to="/gallery">Gallery ↗</NavLink></li>
-          <li><NavLink to="/about">About Us ↗</NavLink></li>
-          <li><NavLink to="/user">My Garden 🌿</NavLink></li>
+          <li><NavLink to="/plants">Plants</NavLink></li>
+          <li><NavLink to="/collections">Collections</NavLink></li>
+          <li><NavLink to="/gallery">Gallery</NavLink></li>
+          <li><NavLink to="/about">About Us</NavLink></li>
+          <li><NavLink to="/user">My Garden</NavLink></li>
           {isAdmin && (
             <li>
               <NavLink 
@@ -60,11 +60,11 @@ const Navbar = () => {
                   textShadow: '0 0 10px rgba(234, 179, 8, 0.4)' 
                 }}
               >
-                👑 Admin Portal
+                👑 Admin
               </NavLink>
             </li>
           )}
-          <li><NavLink to="/contact">Contact ↗</NavLink></li>
+          <li><NavLink to="/contact">Contact</NavLink></li>
         </ul>
 
         {/* Right CTAs with Notification Bell */}
@@ -130,7 +130,7 @@ const Navbar = () => {
                   onClick={() => handleItemClick(2)}
                 >
                   <Link to="/plants" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
-                    <div className="notif-icon-bubble gallery">🌱</div>
+                    <div className="notif-icon-bubble gallery">🖼️</div>
                     <div className="notif-body">
                       <div className="notif-meta">
                         <span className="notif-source-badge gallery">Gallery</span>
@@ -169,28 +169,23 @@ const Navbar = () => {
           </div>
 
           {isAuthenticated && user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <button
                 type="button"
                 onClick={logout}
-                style={{
-                  background: 'rgba(239, 68, 68, 0.15)',
-                  border: '1px solid rgba(239, 68, 68, 0.35)',
-                  color: '#fca5a5',
-                  borderRadius: '9999px',
-                  padding: '7px 16px',
-                  fontSize: '0.8rem',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  transition: 'all 0.25s ease'
-                }}
-                title={`Logged in as ${user.name}. Click to sign out.`}
+                className="btn-nav-signout"
+                title={`Logged in as ${user.name || user.email || 'User'}. Click to sign out.`}
               >
-                Sign Out
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Sign Out</span>
               </button>
             </div>
           ) : (
-            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '9px 18px', fontSize: '0.84rem', borderRadius: '9999px' }}>
+            <Link to="/login" className="btn-cta-pill" id="navAuthBtn" style={{ padding: '7px 16px', fontSize: '0.82rem', borderRadius: '9999px' }}>
               Sign In
             </Link>
           )}
