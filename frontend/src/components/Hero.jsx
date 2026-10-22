@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+﻿import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BOTANICAL_SPECIMENS, CANONICAL_PLANT_SLUGS } from '../data/botanicalSpecimens';
+import { filterAndRankPlants } from '../utils/searchPlants';
 
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
 
@@ -16,24 +17,15 @@ const Hero = () => {
     return CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean);
   }, []);
 
-  // Filter matching plants
+  // Filter and rank matching plants with intelligent botanical relevance scoring
   const { matchingPlants, totalMatches } = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
+    const q = searchQuery.trim();
     if (!q) return { matchingPlants: [], totalMatches: 0 };
 
-    const matches = allPlants.filter(plant => {
-      const matchName = plant.name?.toLowerCase().includes(q);
-      const matchSci = plant.scientificName?.toLowerCase().includes(q);
-      const matchCat = plant.category?.toLowerCase().includes(q);
-      const matchBiome = plant.biome?.toLowerCase().includes(q);
-      const matchCode = plant.catalogCode?.toLowerCase().includes(q);
-      const matchTags = plant.tags?.some(tag => tag.toLowerCase().includes(q));
-      return matchName || matchSci || matchCat || matchBiome || matchCode || matchTags;
-    });
-
+    const { results, totalMatches } = filterAndRankPlants(allPlants, q, 5);
     return {
-      matchingPlants: matches.slice(0, 5),
-      totalMatches: matches.length
+      matchingPlants: results,
+      totalMatches
     };
   }, [searchQuery, allPlants]);
 
@@ -291,4 +283,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
