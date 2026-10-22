@@ -1,30 +1,8 @@
-﻿import { useState, useRef, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated, isAdmin } = useAuth();
-  const [notifOpen, setNotifOpen] = useState(false);
-  const [unreadItems, setUnreadItems] = useState([1, 2, 3]);
-  const notifRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (notifRef.current && !notifRef.current.contains(e.target)) {
-        setNotifOpen(false);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, []);
-
-  const markAllAsRead = () => {
-    setUnreadItems([]);
-  };
-
-  const handleItemClick = (id) => {
-    setUnreadItems(prev => prev.filter(item => item !== id));
-  };
 
   return (
     <header className="header-floating-wrap">
@@ -67,107 +45,8 @@ const Navbar = () => {
           <li><NavLink to="/contact">Contact</NavLink></li>
         </ul>
 
-        {/* Right CTAs with Notification Bell */}
+        {/* Right CTAs */}
         <div className="nav-actions">
-          {/* Notification Bell with Popover Dropdown */}
-          <div className="notif-container" ref={notifRef} id="notifContainer">
-            <button
-              type="button"
-              className={`btn-notif-bell ${notifOpen ? 'active' : ''}`}
-              id="notifBellBtn"
-              aria-label="Notifications"
-              aria-expanded={notifOpen}
-              title="Notifications"
-              onClick={(e) => {
-                e.stopPropagation();
-                setNotifOpen(!notifOpen);
-              }}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-              </svg>
-              {unreadItems.length > 0 && (
-                <span className="notif-badge-pill" id="notifBadge">{unreadItems.length}</span>
-              )}
-            </button>
-
-            {/* Notification Dropdown Popover Box */}
-            <div className={`notif-dropdown ${notifOpen ? 'show' : ''}`} id="notifDropdown" role="region" aria-label="Notifications Panel">
-              <div className="notif-header">
-                <div className="notif-header-title-wrap">
-                  <span className="notif-header-title">Notifications</span>
-                  <span className="notif-count-tag" id="notifCountTag">
-                    {unreadItems.length > 0 ? `${unreadItems.length} New` : 'All Read'}
-                  </span>
-                </div>
-                <button type="button" className="notif-mark-read" onClick={markAllAsRead}>
-                  Mark all as read
-                </button>
-              </div>
-
-              <ul className="notif-list" id="notifList">
-                <li
-                  className={`notif-item ${unreadItems.includes(1) ? 'unread' : ''}`}
-                  onClick={() => handleItemClick(1)}
-                >
-                  <Link to="/user" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
-                    <div className="notif-icon-bubble garden">🌿</div>
-                    <div className="notif-body">
-                      <div className="notif-meta">
-                        <span className="notif-source-badge garden">Your Garden</span>
-                        <span className="notif-time">10m ago</span>
-                      </div>
-                      <div className="notif-title">Watering Schedule Due</div>
-                      <div className="notif-text">3 saved plants in your sanctuary need hydration check.</div>
-                    </div>
-                    {unreadItems.includes(1) && <div className="notif-dot"></div>}
-                  </Link>
-                </li>
-
-                <li
-                  className={`notif-item ${unreadItems.includes(2) ? 'unread' : ''}`}
-                  onClick={() => handleItemClick(2)}
-                >
-                  <Link to="/plants" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
-                    <div className="notif-icon-bubble gallery">🖼️</div>
-                    <div className="notif-body">
-                      <div className="notif-meta">
-                        <span className="notif-source-badge gallery">Gallery</span>
-                        <span className="notif-time">1h ago</span>
-                      </div>
-                      <div className="notif-title">3 New Specimens Added</div>
-                      <div className="notif-text">Explore newly curated Araceae & Velvet Leaf cultivars in the archive.</div>
-                    </div>
-                    {unreadItems.includes(2) && <div className="notif-dot"></div>}
-                  </Link>
-                </li>
-
-                <li
-                  className={`notif-item ${unreadItems.includes(3) ? 'unread' : ''}`}
-                  onClick={() => handleItemClick(3)}
-                >
-                  <Link to="/about" style={{ display: 'flex', gap: '12px', textDecoration: 'none', color: 'inherit', width: '100%' }}>
-                    <div className="notif-icon-bubble about">📖</div>
-                    <div className="notif-body">
-                      <div className="notif-meta">
-                        <span className="notif-source-badge about">Botanical Journal</span>
-                        <span className="notif-time">Yesterday</span>
-                      </div>
-                      <div className="notif-title">Exhibition Dispatch Published</div>
-                      <div className="notif-text">Read: "Canopy Humidity & Microclimates in Modern Living Spaces".</div>
-                    </div>
-                    {unreadItems.includes(3) && <div className="notif-dot"></div>}
-                  </Link>
-                </li>
-              </ul>
-
-              <div className="notif-footer">
-                <Link to="/user" className="notif-footer-link">Go to My Garden 🌿</Link>
-              </div>
-            </div>
-          </div>
-
           {isAuthenticated && user ? (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <button
