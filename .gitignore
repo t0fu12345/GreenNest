@@ -33,3 +33,5 @@ build/
 *.sln
 *.sw?
 Thumbs.db
+
+database/
