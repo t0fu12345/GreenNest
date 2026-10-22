@@ -54,6 +54,8 @@ const Plants = () => {
   const [apiPlants, setApiPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
+  const [gardenPlantIds, setGardenPlantIds] = useState([]);
+  const [addingPlantId, setAddingPlantId] = useState(null);
 
   // Sync state if URL search params change
   useEffect(() => {
@@ -94,11 +96,16 @@ const Plants = () => {
           const saved = res?.data?.savedPlants || [];
           const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
           setStarredIds(ids);
+
+          const garden = res?.data?.garden || [];
+          const gIds = garden.map(item => item.plant?._id || item.plant?.specimenId || item.plant?.slug || item.plant?.catalogCode).filter(Boolean);
+          setGardenPlantIds(gIds);
         } catch (e) {
           console.warn('Could not load favorite plants from the API:', e);
         }
       } else {
         setStarredIds([]);
+        setGardenPlantIds([]);
       }
     };
 
@@ -139,6 +146,43 @@ const Plants = () => {
       }
     } catch (err) {
       showToast('Could not update favorites: ' + err.message);
+    }
+  };
+
+  const handleAddToGarden = async (plant, e) => {
+    if (e) e.stopPropagation();
+    if (!isAuthenticated) {
+      showToast('Please sign in to add specimens to your personal garden sanctuary!');
+      setTimeout(() => navigate('/login'), 1200);
+      return;
+    }
+
+    const plantIdentifier = plant._id || plant.id || plant.specimenId || plant.slug;
+    const isAlready = gardenPlantIds.includes(plant.id) ||
+                      gardenPlantIds.includes(plant._id) ||
+                      gardenPlantIds.includes(plant.specimenId) ||
+                      (plant.raw?._id && gardenPlantIds.includes(plant.raw._id));
+
+    if (isAlready) {
+      showToast(`"${plant.name}" is already in your Garden Sanctuary!`);
+      return;
+    }
+
+    try {
+      setAddingPlantId(plant.id);
+      await gardenApi.addPlant(plantIdentifier);
+      setGardenPlantIds(prev => [...prev, plant.id, plant._id, plant.specimenId].filter(Boolean));
+      showToast(`🌱 Added "${plant.name}" to My Garden!`);
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Could not add to garden';
+      if (msg.includes('already in your garden') || msg.includes('PLANT_ALREADY_IN_GARDEN')) {
+        setGardenPlantIds(prev => [...prev, plant.id, plant._id, plant.specimenId].filter(Boolean));
+        showToast(`"${plant.name}" is already in your garden sanctuary.`);
+      } else {
+        showToast('Error: ' + msg);
+      }
+    } finally {
+      setAddingPlantId(null);
     }
   };
 
@@ -417,18 +461,62 @@ const Plants = () => {
 
                     {/* Action Bar */}
                     <div style={{ paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                        {(() => {
+                          const inGarden = gardenPlantIds.includes(plant.id) ||
+                                           gardenPlantIds.includes(plant._id) ||
+                                           gardenPlantIds.includes(plant.specimenId) ||
+                                           (plant.raw?._id && gardenPlantIds.includes(plant.raw._id));
+                          return (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                if (inGarden) {
+                                  navigate('/garden');
+                                } else {
+                                  handleAddToGarden(plant, e);
+                                }
+                              }}
+                              disabled={addingPlantId === plant.id}
+                              title={inGarden ? 'View in your Living Garden Sanctuary' : 'Add to personal Living Garden'}
+                              style={{
+                                background: inGarden ? 'rgba(34, 197, 94, 0.22)' : 'rgba(34, 197, 94, 0.12)',
+                                border: inGarden ? '1px solid #22c55e' : '1px solid rgba(34, 197, 94, 0.35)',
+                                color: inGarden ? '#86efac' : '#a7f3d0',
+                                padding: '6px 10px',
+                                borderRadius: '9999px',
+                                fontSize: '0.74rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                transition: 'all 0.2s ease'
+                              }}
+                            >
+                              <span>{inGarden ? '🌿' : '🌱'}</span>
+                              <span>
+                                {addingPlantId === plant.id
+                                  ? 'Adding...'
+                                  : inGarden
+                                    ? 'In Garden'
+                                    : '+ Garden'}
+                              </span>
+                            </button>
+                          );
+                        })()}
+
                         <button
                           type="button"
-                onClick={() => {
-                  if (!isAuthenticated) {
-                    showToast('Please sign in to save specimens to your collection!');
-                    setTimeout(() => navigate('/login'), 1200);
-                    return;
-                  }
-                  setTargetSavePlantSlug(plant.slug || plant.id);
-                }}
-                title="Save specimen to collection"
+                          onClick={() => {
+                            if (!isAuthenticated) {
+                              showToast('Please sign in to save specimens to your collection!');
+                              setTimeout(() => navigate('/login'), 1200);
+                              return;
+                            }
+                            setTargetSavePlantSlug(plant.slug || plant.id);
+                          }}
+                          title="Save specimen to collection"
                           style={{
                             background: 'rgba(34, 197, 94, 0.15)',
                             border: '1px solid rgba(34, 197, 94, 0.35)',
@@ -579,7 +667,51 @@ const Plants = () => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
+              {(() => {
+                const isPlantInGarden = gardenPlantIds.includes(inspectPlant.id) ||
+                                        gardenPlantIds.includes(inspectPlant._id) ||
+                                        gardenPlantIds.includes(inspectPlant.specimenId) ||
+                                        (inspectPlant.raw?._id && gardenPlantIds.includes(inspectPlant.raw._id));
+                return (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      if (isPlantInGarden) {
+                        navigate('/garden');
+                      } else {
+                        handleAddToGarden(inspectPlant, e);
+                      }
+                    }}
+                    disabled={addingPlantId === inspectPlant.id}
+                    style={{
+                      background: isPlantInGarden ? 'rgba(34, 197, 94, 0.22)' : 'rgba(34, 197, 94, 0.15)',
+                      border: isPlantInGarden ? '1px solid #22c55e' : '1px solid var(--border-accent)',
+                      color: isPlantInGarden ? '#86efac' : '#a7f3d0',
+                      borderRadius: '9999px',
+                      padding: '10px 18px',
+                      fontSize: '0.84rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    title={isPlantInGarden ? 'View in your Living Garden Sanctuary' : 'Add to personal Living Garden'}
+                  >
+                    <span>{isPlantInGarden ? '🌿' : '🌱'}</span>
+                    <span>
+                      {addingPlantId === inspectPlant.id 
+                        ? 'Adding...' 
+                        : isPlantInGarden 
+                          ? 'In Your Garden →' 
+                          : 'Add to Garden'}
+                    </span>
+                  </button>
+                );
+              })()}
+
               <button
                 type="button"
                 onClick={() => handleToggleStar(inspectPlant.id)}
