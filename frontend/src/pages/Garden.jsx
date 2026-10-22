@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -47,16 +47,103 @@ const Garden = () => {
               rawPlant: p
             };
           });
-          setPlants(mapped);
+
+          // Also merge local cultivars so offline/fallback additions are visible
+          const localIds = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+          const apiSpecimenIds = new Set(mapped.flatMap(m => [m.id, m.dbId, m.rawPlant?.specimenId, m.rawPlant?.slug].filter(Boolean)));
+          const localOnly = localIds
+            .filter(id => !apiSpecimenIds.has(id))
+            .map(id => {
+              const p = BOTANICAL_SPECIMENS[id] || {};
+              return {
+                gardenItemId: `local-${id}`,
+                id: p.id || id,
+                dbId: null,
+                name: p.name || 'Cultivated Specimen',
+                scientificName: p.scientificName || 'Botanical flora',
+                biome: p.biome || 'tropical',
+                image: p.image || p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+                waterStatus: p.watering || 'Nominal Hydration',
+                isWatered: false,
+                checklist: [],
+                rawPlant: p
+              };
+            }).filter(p => p.name);
+
+          setPlants([...mapped, ...localOnly]);
+        } else {
+          // Check local fallback
+          const localIds = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+          if (localIds.length > 0) {
+            const localMapped = localIds.map(id => {
+              const p = BOTANICAL_SPECIMENS[id] || {};
+              return {
+                gardenItemId: `local-${id}`,
+                id: p.id || id,
+                dbId: null,
+                name: p.name || 'Cultivated Specimen',
+                scientificName: p.scientificName || 'Botanical flora',
+                biome: p.biome || 'tropical',
+                image: p.image || p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+                waterStatus: p.watering || 'Nominal Hydration',
+                isWatered: false,
+                checklist: [],
+                rawPlant: p
+              };
+            }).filter(p => p.name);
+            setPlants(localMapped);
+          } else {
+            setPlants([]);
+          }
+        }
+      } else {
+        const localIds = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+        if (localIds.length > 0) {
+          const localMapped = localIds.map(id => {
+            const p = BOTANICAL_SPECIMENS[id] || {};
+            return {
+              gardenItemId: `local-${id}`,
+              id: p.id || id,
+              dbId: null,
+              name: p.name || 'Cultivated Specimen',
+              scientificName: p.scientificName || 'Botanical flora',
+              biome: p.biome || 'tropical',
+              image: p.image || p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+              waterStatus: p.watering || 'Nominal Hydration',
+              isWatered: false,
+              checklist: [],
+              rawPlant: p
+            };
+          }).filter(p => p.name);
+          setPlants(localMapped);
         } else {
           setPlants([]);
         }
+      }
+    } catch (err) {
+      console.warn('Error loading garden from API, using local storage fallback:', err.message);
+      const localIds = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+      if (localIds.length > 0) {
+        const localMapped = localIds.map(id => {
+          const p = BOTANICAL_SPECIMENS[id] || {};
+          return {
+            gardenItemId: `local-${id}`,
+            id: p.id || id,
+            dbId: null,
+            name: p.name || 'Cultivated Specimen',
+            scientificName: p.scientificName || 'Botanical flora',
+            biome: p.biome || 'tropical',
+            image: p.image || p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+            waterStatus: p.watering || 'Nominal Hydration',
+            isWatered: false,
+            checklist: [],
+            rawPlant: p
+          };
+        }).filter(p => p.name);
+        setPlants(localMapped);
       } else {
         setPlants([]);
       }
-    } catch (err) {
-      console.warn('Error loading garden from MongoDB Atlas:', err.message);
-      setPlants([]);
     } finally {
       setLoading(false);
     }
@@ -108,6 +195,18 @@ const Garden = () => {
     if (!window.confirm(`Remove "${plant.name}" from your garden sanctuary?`)) return;
 
     if (plant.gardenItemId) {
+      if (typeof plant.gardenItemId === 'string' && plant.gardenItemId.startsWith('local-')) {
+        const rawId = plant.gardenItemId.replace('local-', '');
+        try {
+          const current = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+          const updated = current.filter(id => id !== rawId && id !== plant.id);
+          localStorage.setItem('livingCanopyGardenPlants', JSON.stringify(updated));
+        } catch {}
+        setPlants(prev => prev.filter(p => p.gardenItemId !== plant.gardenItemId));
+        showToast(`🍃 Removed "${plant.name}" from your sanctuary garden.`);
+        return;
+      }
+
       try {
         await gardenApi.removePlant(plant.gardenItemId);
         setPlants(prev => prev.filter(p => p.gardenItemId !== plant.gardenItemId));
@@ -123,30 +222,7 @@ const Garden = () => {
       <Navbar />
 
       {/* Standalone Back to Sanctuary Button outside header box */}
-      <div style={{ maxWidth: '1360px', width: '100%', margin: '0 auto', padding: '110px 24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <button
-          type="button"
-          onClick={() => setIsAddModalOpen(true)}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '9px 20px',
-            background: 'var(--emerald-accent, #22c55e)',
-            border: 'none',
-            color: '#07100b',
-            fontSize: '0.84rem',
-            fontWeight: 700,
-            borderRadius: '9999px',
-            cursor: 'pointer',
-            boxShadow: '0 8px 20px rgba(34, 197, 94, 0.35)',
-            transition: 'all 0.25s ease'
-          }}
-        >
-          <span>🌱</span>
-          <span>+ Add Specimen to Garden</span>
-        </button>
-
+      <div style={{ maxWidth: '1360px', width: '100%', margin: '0 auto', padding: '110px 24px 0', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <Link
           to="/user"
           style={{
@@ -318,29 +394,6 @@ const Garden = () => {
                 ))
               )}
             </ul>
-
-            <button
-              type="button"
-              onClick={() => setIsAddModalOpen(true)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                padding: '11px 16px',
-                background: 'rgba(34, 197, 94, 0.15)',
-                border: '1px solid var(--border-accent)',
-                borderRadius: '9999px',
-                color: 'var(--emerald-light)',
-                fontSize: '0.84rem',
-                fontWeight: 600,
-                textAlign: 'center',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              🌱 + Cultivate More Plants
-            </button>
           </aside>
 
           {/* Right Area: Header Banner + Bento Grid */}
@@ -481,7 +534,16 @@ const Garden = () => {
           fetchGarden();
           showToast(`🌱 Successfully added "${nickname}" to your garden sanctuary!`);
         }}
-        existingGardenPlantIds={plants.map(p => p.dbId || p.id || p.specimenId)}
+        existingGardenPlantIds={plants.flatMap(p => [
+          p.dbId, 
+          p.id, 
+          p.specimenId, 
+          p.gardenItemId, 
+          typeof p.gardenItemId === 'string' ? p.gardenItemId.replace('local-', '') : null,
+          p.rawPlant?._id, 
+          p.rawPlant?.specimenId, 
+          p.rawPlant?.slug
+        ].filter(Boolean))}
       />
 
       {/* Floating Toast Notification */}

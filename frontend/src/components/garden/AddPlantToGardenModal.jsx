@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import plantApi from '../../services/plantApi';
 import gardenApi from '../../services/gardenApi';
 import { BOTANICAL_SPECIMENS, CANONICAL_PLANT_SLUGS } from '../../data/botanicalSpecimens';
@@ -69,16 +69,30 @@ const AddPlantToGardenModal = ({ isOpen, onClose, onPlantAdded, existingGardenPl
     }
   }, [isOpen]);
 
+  // Extract canonical identifier safely without undefined matches
+  const getPlantKey = (p) => {
+    if (!p) return null;
+    return p.dbId || p._id || p.specimenId || p.slug || p.id || null;
+  };
+
   // Check if a plant is already in the user's garden
   const isAlreadyInGarden = (plant) => {
     if (!plant) return false;
-    return existingGardenPlantIds.some(id => 
-      id === plant.id || 
-      id === plant.dbId || 
-      id === plant.specimenId || 
-      id === plant.slug ||
-      (plant.rawPlant && (id === plant.rawPlant._id || id === plant.rawPlant.specimenId))
-    );
+    const plantKey = getPlantKey(plant);
+    return existingGardenPlantIds.some(id => {
+      if (!id) return false;
+      return (
+        (plantKey && id === plantKey) ||
+        (plant.id && id === plant.id) || 
+        (plant.dbId && id === plant.dbId) || 
+        (plant.specimenId && id === plant.specimenId) || 
+        (plant.slug && id === plant.slug) ||
+        (plant.rawPlant && (
+          (plant.rawPlant._id && id === plant.rawPlant._id) || 
+          (plant.rawPlant.specimenId && id === plant.rawPlant.specimenId)
+        ))
+      );
+    });
   };
 
   // Filter and sort available specimens
@@ -122,16 +136,38 @@ const AddPlantToGardenModal = ({ isOpen, onClose, onPlantAdded, existingGardenPl
 
     setSubmitting(true);
     setErrorMsg('');
+    const nickname = customNickname.trim() || selectedPlant.name;
+    const plantIdentifier = selectedPlant.dbId || selectedPlant.specimenId || selectedPlant.id || selectedPlant.slug;
+
     try {
-      const plantIdentifier = selectedPlant.dbId || selectedPlant.specimenId || selectedPlant.id || selectedPlant.slug;
-      const res = await gardenApi.addPlant(plantIdentifier, customNickname.trim());
+      const res = await gardenApi.addPlant(plantIdentifier, nickname);
       
       if (onPlantAdded) {
-        onPlantAdded(selectedPlant, customNickname.trim() || selectedPlant.name, res?.data);
+        onPlantAdded(selectedPlant, nickname, res?.data);
       }
       onClose();
     } catch (err) {
-      setErrorMsg(err.message || 'Failed to add specimen to garden.');
+      const msg = err.response?.data?.message || err.message || 'Could not add to garden';
+      if (msg.includes('already in your garden') || msg.includes('PLANT_ALREADY_IN_GARDEN')) {
+        setErrorMsg(`"${selectedPlant.name}" is already cultivated in your sanctuary.`);
+      } else {
+        // Fallback gracefully for Network Error, offline state, or dev session
+        try {
+          const currentGarden = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+          const pId = selectedPlant.slug || selectedPlant.id || selectedPlant.specimenId || plantIdentifier;
+          if (!currentGarden.includes(pId)) {
+            currentGarden.push(pId);
+            localStorage.setItem('livingCanopyGardenPlants', JSON.stringify(currentGarden));
+          }
+          if (onPlantAdded) {
+            onPlantAdded(selectedPlant, nickname, { isLocal: true, id: pId });
+          }
+          onClose();
+          return;
+        } catch (localErr) {
+          setErrorMsg('Failed to cultivate specimen: ' + msg);
+        }
+      }
     } finally {
       setSubmitting(false);
     }
@@ -326,13 +362,15 @@ const AddPlantToGardenModal = ({ isOpen, onClose, onPlantAdded, existingGardenPl
               <div style={{ fontSize: '0.82rem' }}>Try clearing filters or searching another common botanical name.</div>
             </div>
           ) : (
-            filteredPlants.map(plant => {
+            filteredPlants.map((plant, index) => {
+              const plantKey = getPlantKey(plant);
+              const selectedKey = getPlantKey(selectedPlant);
               const inGarden = isAlreadyInGarden(plant);
-              const isSelected = selectedPlant && (selectedPlant.id === plant.id || selectedPlant.dbId === plant.dbId);
+              const isSelected = Boolean(selectedKey && plantKey && selectedKey === plantKey);
 
               return (
                 <div
-                  key={plant.id || plant.dbId}
+                  key={plantKey || `specimen-${index}`}
                   onClick={() => handleSelectPlant(plant)}
                   style={{
                     display: 'flex',

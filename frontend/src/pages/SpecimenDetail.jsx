@@ -148,6 +148,20 @@ const SpecimenDetail = () => {
         setGardenPlantIds(prev => [...prev, plantId, plant._id].filter(Boolean));
         showToast(`"${plant.name}" is already in your garden sanctuary.`);
       } else {
+        const isNetworkIssue = !err.response || msg.includes('Network Error') || err.code === 'NETWORK_ERROR';
+        if (isNetworkIssue) {
+          try {
+            const currentGarden = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+            const pId = plant.slug || plant.id || plant.specimenId || defaultId;
+            if (!currentGarden.includes(pId)) {
+              currentGarden.push(pId);
+              localStorage.setItem('livingCanopyGardenPlants', JSON.stringify(currentGarden));
+            }
+            setGardenPlantIds(prev => [...prev, plantId, plant._id, plant.catalogCode, plant.slug, requestedId, pId].filter(Boolean));
+            showToast(`🌱 Added "${plant.name}" to your Garden Sanctuary!`);
+            return;
+          } catch {}
+        }
         showToast('Error: ' + msg);
       }
     } finally {
