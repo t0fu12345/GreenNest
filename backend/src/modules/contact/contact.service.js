@@ -63,6 +63,18 @@ class ContactService {
     await msg.save();
     return msg;
   }
+
+  async deleteMessage(id) {
+    const message = await ContactMessage.findById(id);
+    if (!message) {
+      const error = new Error('Contact message not found');
+      error.statusCode = 404;
+      error.errorCode = 'MESSAGE_NOT_FOUND';
+      throw error;
+    }
+    await message.deleteOne();
+    return true;
+  }
 }
 
 module.exports = new ContactService();

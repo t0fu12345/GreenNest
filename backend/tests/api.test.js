@@ -220,6 +220,41 @@ async function runTests() {
     assert(adminStatsData.data.totalGardeners === 4, `Dashboard: ${adminStatsData.data.totalGardeners} master botanists`);
     assert(adminStatsData.data.totalCollections === 4, `Dashboard: ${adminStatsData.data.totalCollections} curated collections`);
     assert(adminStatsData.data.totalGalleryImages === 20, `Dashboard: ${adminStatsData.data.totalGalleryImages} gallery photographs`);
+    assert(typeof adminStatsData.data.publishedPlants === 'number', 'Dashboard exposes published plant count');
+    assert(typeof adminStatsData.data.draftPlants === 'number', 'Dashboard exposes draft plant count');
+    assert(typeof adminStatsData.data.totalAccounts === 'number', 'Dashboard exposes total account count');
+    assert(typeof adminStatsData.data.totalAdmins === 'number', 'Dashboard exposes total administrator count');
+    assert(typeof adminStatsData.data.resolvedContacts === 'number', 'Dashboard exposes resolved contact count');
+
+    // 10.4 Admin user management
+    const resAdminUsers = await fetch(`${BASE_URL}/admin/users?role=user&page=1&limit=5`, {
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    });
+    const adminUsersData = await resAdminUsers.json();
+    assert(
+      resAdminUsers.status === 200
+        && Array.isArray(adminUsersData.data)
+        && adminUsersData.pagination?.page === 1
+        && adminUsersData.data.every(item => !Object.prototype.hasOwnProperty.call(item, 'password')),
+      'Admin lists paginated users without password fields'
+    );
+
+    const adminId = adminAuth.data.user.id || adminAuth.data.user._id;
+    const resSelfDemotion = await fetch(`${BASE_URL}/admin/users/${adminId}/role`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminToken}`
+      },
+      body: JSON.stringify({ role: 'user' })
+    });
+    assert(resSelfDemotion.status === 409, 'Admin cannot demote their own active account');
+
+    const resSelfDelete = await fetch(`${BASE_URL}/admin/users/${adminId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    });
+    assert(resSelfDelete.status === 409, 'Admin cannot delete their own active account');
 
     // 10.3 Admin browsing contact inbox
     const resAdminContact = await fetch(`${BASE_URL}/contact`, {
@@ -227,6 +262,13 @@ async function runTests() {
     });
     const adminContactData = await resAdminContact.json();
     assert(resAdminContact.status === 200 && adminContactData.data.length > 0, 'Admin browses contact inquiry inbox successfully');
+
+    const createdContactId = contactData.data._id;
+    const resDeleteContact = await fetch(`${BASE_URL}/contact/${createdContactId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    });
+    assert(resDeleteContact.status === 200, 'Admin deletes a contact inquiry successfully');
 
     // Summary
     console.log('\n========================================================');
