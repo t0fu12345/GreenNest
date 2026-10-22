@@ -30,8 +30,18 @@ const connectDB = async () => {
     }
   } catch (error) {
     console.error(`❌ [MongoDB] Connection error: ${error.message}`);
-    if (isAtlas && (error.message.includes('whitelist') || error.message.includes('timed out') || error.message.includes('buffering'))) {
-      console.error('💡 [Atlas Tip]: Please verify "Network Access" in MongoDB Atlas and ensure your IP is allowed (or Allow from anywhere: 0.0.0.0/0).');
+    if (isAtlas) {
+      console.warn('⚠️ [MongoDB Atlas] Cloud connection failed. Falling back to local MongoDB at mongodb://localhost:27017/greennest ...');
+      try {
+        const localConn = await mongoose.connect('mongodb://localhost:27017/greennest', options);
+        console.log(`🌿 [MongoDB Local] Connected successfully to fallback local database: ${localConn.connection.host}/${localConn.connection.name}`);
+        return;
+      } catch (localErr) {
+        console.error(`❌ [MongoDB Local] Local fallback failed: ${localErr.message}`);
+      }
+      if (error.message.includes('whitelist') || error.message.includes('timed out') || error.message.includes('buffering')) {
+        console.error('💡 [Atlas Tip]: Please verify "Network Access" in MongoDB Atlas and ensure your IP is allowed (or Allow from anywhere: 0.0.0.0/0).');
+      }
     }
     process.exit(1);
   }
