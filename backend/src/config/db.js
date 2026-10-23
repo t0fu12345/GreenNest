@@ -9,7 +9,11 @@ try {
 }
 
 const connectDB = async () => {
-  const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/greennest';
+  let uri = process.env.MONGO_URI || 'mongodb://localhost:27017/GreenNest';
+  // Safeguard: normalize database casing if 'greennest' is provided instead of 'GreenNest'
+  if (uri.includes('/greennest')) {
+    uri = uri.replace('/greennest', '/GreenNest');
+  }
   const isAtlas = uri.startsWith('mongodb+srv://');
 
   const options = {
