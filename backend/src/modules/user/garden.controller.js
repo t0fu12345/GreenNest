@@ -95,6 +95,9 @@ class GardenController {
         result.isBookmarked ? 'Specimen added to saved favorites' : 'Specimen removed from saved favorites'
       );
     } catch (error) {
+      if (error.statusCode) {
+        return errorResponse(res, error.message, error.statusCode, error.errorCode);
+      }
       next(error);
     }
   }
