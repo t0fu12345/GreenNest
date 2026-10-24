@@ -1,7 +1,7 @@
 const Gallery = require('./gallery.model');
 
 class GalleryService {
-  async getGallery({ aspectRatio, page = 1, limit = 20, userId = null }) {
+  async getGallery({ aspectRatio, page = 1, limit = 20, userId = null, includeDrafts = false }) {
     const query = {};
 
     if (aspectRatio && aspectRatio !== 'all') {
@@ -15,7 +15,7 @@ class GalleryService {
     const [totalItems, gallery] = await Promise.all([
       Gallery.countDocuments(query),
       Gallery.find(query)
-        .populate('plant', 'name scientificName specimenId')
+        .populate({ path: 'plant', select: 'name scientificName specimenId status', match: includeDrafts ? {} : { status: 'published' } })
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limitNum)

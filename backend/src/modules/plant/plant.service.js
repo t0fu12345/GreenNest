@@ -13,14 +13,15 @@ class PlantService {
     status,
     sort = 'latest',
     page = 1,
-    limit = 12
+    limit = 12,
+    includeDrafts = false
   }) {
     const query = {};
 
-    if (status) {
-      query.status = status;
-    } else {
+    if (!includeDrafts) {
       query.status = 'published';
+    } else if (status && status !== 'all') {
+      query.status = status;
     }
 
     const searchTerm = q || search;
@@ -84,15 +85,14 @@ class PlantService {
     };
   }
 
-  async getPlantById(id) {
-    let plant;
-    if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      plant = await Plant.findById(id).populate('gardener', 'name avatar specialization bio contactEmail');
-    } else {
-      plant = await Plant.findOne({
-        $or: [{ specimenId: id }, { slug: id }]
-      }).populate('gardener', 'name avatar specialization bio contactEmail');
-    }
+  async getPlantById(id, includeDrafts = false) {
+    const identifierQuery = id.match(/^[0-9a-fA-F]{24}$/)
+      ? { _id: id }
+      : { $or: [{ specimenId: id }, { slug: id }] };
+    if (!includeDrafts) identifierQuery.status = 'published';
+
+    const plant = await Plant.findOne(identifierQuery)
+      .populate('gardener', 'name avatar specialization bio contactEmail');
 
     if (!plant) {
       const error = new Error(`Plant specimen not found with identifier: ${id}`);
@@ -104,13 +104,12 @@ class PlantService {
     return plant;
   }
 
-  async getRelatedPlants(id) {
-    let plant;
-    if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      plant = await Plant.findById(id);
-    } else {
-      plant = await Plant.findOne({ $or: [{ specimenId: id }, { slug: id }] });
-    }
+  async getRelatedPlants(id, includeDrafts = false) {
+    const identifierQuery = id.match(/^[0-9a-fA-F]{24}$/)
+      ? { _id: id }
+      : { $or: [{ specimenId: id }, { slug: id }] };
+    if (!includeDrafts) identifierQuery.status = 'published';
+    const plant = await Plant.findOne(identifierQuery);
 
     if (!plant) {
       const error = new Error('Original plant specimen not found');

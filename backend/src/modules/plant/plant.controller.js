@@ -4,7 +4,10 @@ const { successResponse, errorResponse } = require('../../utils/apiResponse');
 class PlantController {
   async getPlants(req, res, next) {
     try {
-      const { plants, pagination } = await plantService.getPlants(req.query);
+      const { plants, pagination } = await plantService.getPlants({
+        ...req.query,
+        includeDrafts: req.user?.role === 'admin'
+      });
       return successResponse(res, plants, 'Plants retrieved successfully', 200, pagination);
     } catch (error) {
       next(error);
@@ -13,7 +16,7 @@ class PlantController {
 
   async getPlantById(req, res, next) {
     try {
-      const plant = await plantService.getPlantById(req.params.id);
+      const plant = await plantService.getPlantById(req.params.id, req.user?.role === 'admin');
       return successResponse(res, plant, 'Plant details retrieved successfully');
     } catch (error) {
       if (error.statusCode) {
@@ -25,7 +28,7 @@ class PlantController {
 
   async getRelatedPlants(req, res, next) {
     try {
-      const related = await plantService.getRelatedPlants(req.params.id);
+      const related = await plantService.getRelatedPlants(req.params.id, req.user?.role === 'admin');
       return successResponse(res, related, 'Related botanical specimens retrieved successfully');
     } catch (error) {
       if (error.statusCode) {

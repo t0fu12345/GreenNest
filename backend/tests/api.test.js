@@ -204,6 +204,9 @@ async function runTests() {
 
     // 10. Admin Module & RBAC Security Guards
     console.log('\n▶ [10/10] RBAC Access Control & Admin Telemetry Dashboard');
+    const resUnauthorizedAdmin = await fetch(`${BASE_URL}/admin/dashboard/stats`);
+    assert(resUnauthorizedAdmin.status === 401, 'RBAC intercepts anonymous admin access with 401 Unauthorized');
+
     // 10.1 Standard user accessing Admin -> 403 Forbidden
     const resForbidden = await fetch(`${BASE_URL}/admin/dashboard/stats`, {
       headers: { 'Authorization': `Bearer ${userToken}` }
@@ -225,6 +228,97 @@ async function runTests() {
     assert(typeof adminStatsData.data.totalAccounts === 'number', 'Dashboard exposes total account count');
     assert(typeof adminStatsData.data.totalAdmins === 'number', 'Dashboard exposes total administrator count');
     assert(typeof adminStatsData.data.resolvedContacts === 'number', 'Dashboard exposes resolved contact count');
+
+    const draftSpecimenId = `admin-draft-${Date.now()}`;
+    const resCreateDraft = await fetch(`${BASE_URL}/plants`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        specimenId: draftSpecimenId,
+        name: 'Admin Draft Visibility Test',
+        scientificName: 'Testus administratus',
+        category: 'Test specimen',
+        biome: 'tropical',
+        light: 'Indirect light',
+        watering: 'Weekly',
+        status: 'draft',
+        images: { hero: 'https://example.com/admin-draft.jpg', gallery: [] }
+      })
+    });
+    const createdDraftData = await resCreateDraft.json();
+    assert(resCreateDraft.status === 201, 'Admin creates a draft plant for visibility verification');
+
+    const resPublicAllPlants = await fetch(`${BASE_URL}/plants?status=all&limit=100`);
+    const publicAllPlantsData = await resPublicAllPlants.json();
+    assert(
+      publicAllPlantsData.data.length === adminStatsData.data.publishedPlants,
+      'Public catalog cannot expose draft plants through status=all'
+    );
+
+    const resPublicDraftPlants = await fetch(`${BASE_URL}/plants?status=draft&limit=100`);
+    const publicDraftPlantsData = await resPublicDraftPlants.json();
+    assert(
+      publicDraftPlantsData.data.every(item => item.status === 'published'),
+      'Public catalog cannot expose drafts through status=draft'
+    );
+
+    const resPublicDraftDetail = await fetch(`${BASE_URL}/plants/${createdDraftData.data._id}`);
+    assert(resPublicDraftDetail.status === 404, 'Public visitors cannot retrieve draft plant details');
+
+    const resAdminAllPlants = await fetch(`${BASE_URL}/plants?status=all&limit=100`, {
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    });
+    const adminAllPlantsData = await resAdminAllPlants.json();
+    assert(
+      adminAllPlantsData.data.length === adminStatsData.data.totalPlants + 1,
+      'Admin plant listing includes published and draft records'
+    );
+
+    const resAdminDraftDetail = await fetch(`${BASE_URL}/plants/${createdDraftData.data._id}`, {
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    });
+    assert(resAdminDraftDetail.status === 200, 'Admin can retrieve draft plant details');
+
+    const adminJsonHeaders = { 'Authorization': `Bearer ${adminToken}`, 'Content-Type': 'application/json' };
+    const resCreateDraftCollection = await fetch(`${BASE_URL}/collections`, {
+      method: 'POST', headers: adminJsonHeaders,
+      body: JSON.stringify({ title: `Draft Collection ${Date.now()}`, description: 'Draft visibility test', coverImage: 'https://example.com/collection.jpg', plants: [createdDraftData.data._id] })
+    });
+    const draftCollectionData = await resCreateDraftCollection.json();
+    const publicDraftCollection = await (await fetch(`${BASE_URL}/collections/${draftCollectionData.data._id}`)).json();
+    const adminDraftCollection = await (await fetch(`${BASE_URL}/collections/${draftCollectionData.data._id}`, { headers: { 'Authorization': `Bearer ${adminToken}` } })).json();
+    assert(publicDraftCollection.data.plants.length === 0, 'Public collections do not populate draft plant records');
+    assert(adminDraftCollection.data.plants.length === 1, 'Admin collections retain draft plant references');
+
+    const resCreateDraftGardener = await fetch(`${BASE_URL}/gardeners`, {
+      method: 'POST', headers: adminJsonHeaders,
+      body: JSON.stringify({ name: 'Draft Plant Curator', specialization: 'Draft testing', contactEmail: `draft-${Date.now()}@example.com`, associatedPlants: [createdDraftData.data._id] })
+    });
+    const draftGardenerData = await resCreateDraftGardener.json();
+    const publicDraftGardener = await (await fetch(`${BASE_URL}/gardeners/${draftGardenerData.data._id}`)).json();
+    const adminDraftGardener = await (await fetch(`${BASE_URL}/gardeners/${draftGardenerData.data._id}`, { headers: { 'Authorization': `Bearer ${adminToken}` } })).json();
+    assert(publicDraftGardener.data.associatedPlants.length === 0, 'Public gardener profiles do not populate draft plants');
+    assert(adminDraftGardener.data.associatedPlants.length === 1, 'Admin gardener profiles retain draft plant references');
+
+    const resCreateDraftGallery = await fetch(`${BASE_URL}/gallery`, {
+      method: 'POST', headers: adminJsonHeaders,
+      body: JSON.stringify({ imageUrl: 'https://example.com/draft-gallery.jpg', alt: 'Draft gallery test', caption: 'Draft gallery test', plant: createdDraftData.data._id })
+    });
+    const draftGalleryData = await resCreateDraftGallery.json();
+    const publicGalleryData = await (await fetch(`${BASE_URL}/gallery?limit=100`)).json();
+    const adminGalleryData = await (await fetch(`${BASE_URL}/gallery?limit=100`, { headers: { 'Authorization': `Bearer ${adminToken}` } })).json();
+    assert(publicGalleryData.data.find(item => item._id === draftGalleryData.data._id).plant === null, 'Public gallery does not populate draft plant data');
+    assert(adminGalleryData.data.find(item => item._id === draftGalleryData.data._id).plant._id === createdDraftData.data._id, 'Admin gallery retains draft plant data');
+
+    await fetch(`${BASE_URL}/collections/${draftCollectionData.data._id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
+    await fetch(`${BASE_URL}/gardeners/${draftGardenerData.data._id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
+    await fetch(`${BASE_URL}/gallery/${draftGalleryData.data._id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
+
+    const resDeleteDraft = await fetch(`${BASE_URL}/plants/${createdDraftData.data._id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    });
+    assert(resDeleteDraft.status === 200, 'Admin deletes the temporary draft plant');
 
     // 10.4 Admin user management
     const resAdminUsers = await fetch(`${BASE_URL}/admin/users?role=user&page=1&limit=5`, {

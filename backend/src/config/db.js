@@ -11,6 +11,8 @@ try {
 const connectDB = async () => {
   const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/greennest';
   const isAtlas = uri.startsWith('mongodb+srv://');
+  const fallbackUri = process.env.MONGO_FALLBACK_URI || 'mongodb://127.0.0.1:27017/greennest';
+  const allowDevelopmentFallback = process.env.NODE_ENV !== 'production' && uri !== fallbackUri;
 
   const options = {
     serverSelectionTimeoutMS: 8000,
@@ -30,18 +32,18 @@ const connectDB = async () => {
     }
   } catch (error) {
     console.error(`❌ [MongoDB] Connection error: ${error.message}`);
-    if (isAtlas) {
-      console.warn('⚠️ [MongoDB Atlas] Cloud connection failed. Falling back to local MongoDB at mongodb://localhost:27017/greennest ...');
+    if (allowDevelopmentFallback) {
+      console.warn(`⚠️ [MongoDB] Development connection failed. Falling back to ${fallbackUri.replace(/:\/\/[^@]+@/, '://***@')} ...`);
       try {
-        const localConn = await mongoose.connect('mongodb://localhost:27017/greennest', options);
-        console.log(`🌿 [MongoDB Local] Connected successfully to fallback local database: ${localConn.connection.host}/${localConn.connection.name}`);
+        const fallbackConnection = await mongoose.connect(fallbackUri, options);
+        console.log(`🌿 [MongoDB Local] Connected to development fallback: ${fallbackConnection.connection.host}/${fallbackConnection.connection.name}`);
         return;
-      } catch (localErr) {
-        console.error(`❌ [MongoDB Local] Local fallback failed: ${localErr.message}`);
+      } catch (fallbackError) {
+        console.error(`❌ [MongoDB] Development fallback failed: ${fallbackError.message}`);
       }
-      if (error.message.includes('whitelist') || error.message.includes('timed out') || error.message.includes('buffering')) {
-        console.error('💡 [Atlas Tip]: Please verify "Network Access" in MongoDB Atlas and ensure your IP is allowed (or Allow from anywhere: 0.0.0.0/0).');
-      }
+    }
+    if (isAtlas && (error.message.includes('whitelist') || error.message.includes('timed out') || error.message.includes('buffering') || error.message.includes('bad auth'))) {
+      console.error('💡 [Atlas Tip]: Verify the database username/password and Atlas Network Access settings.');
     }
     process.exit(1);
   }

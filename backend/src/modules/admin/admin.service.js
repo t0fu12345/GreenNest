@@ -58,9 +58,10 @@ class AdminService {
     const query = {};
     if (role && role !== 'all') query.role = role;
     if (search && search.trim()) {
+      const escapedSearch = search.trim().replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
       query.$or = [
-        { fullName: { $regex: search.trim(), $options: 'i' } },
-        { email: { $regex: search.trim(), $options: 'i' } }
+        { fullName: { $regex: escapedSearch, $options: 'i' } },
+        { email: { $regex: escapedSearch, $options: 'i' } }
       ];
     }
 

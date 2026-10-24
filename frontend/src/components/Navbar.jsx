@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-  const { user, logout, isAuthenticated, isAdmin } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const [notifOpen, setNotifOpen] = useState(false);
   const [unreadItems, setUnreadItems] = useState([1, 2, 3]);
   const notifRef = useRef(null);
@@ -50,20 +50,6 @@ const Navbar = () => {
           <li><NavLink to="/gallery">Gallery ↗</NavLink></li>
           <li><NavLink to="/about">About Us ↗</NavLink></li>
           <li><NavLink to="/user">My Garden 🌿</NavLink></li>
-          {isAdmin && (
-            <li>
-              <NavLink 
-                to="/admin" 
-                style={{ 
-                  color: '#facc15', 
-                  fontWeight: 700, 
-                  textShadow: '0 0 10px rgba(234, 179, 8, 0.4)' 
-                }}
-              >
-                👑 Admin Portal
-              </NavLink>
-            </li>
-          )}
           <li><NavLink to="/contact">Contact ↗</NavLink></li>
         </ul>
 
