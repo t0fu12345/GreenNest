@@ -9,7 +9,8 @@ class GalleryController {
         aspectRatio,
         page,
         limit,
-        userId: req.user?._id
+        userId: req.user?._id,
+        includeDrafts: req.user?.role === 'admin'
       });
 
       return successResponse(

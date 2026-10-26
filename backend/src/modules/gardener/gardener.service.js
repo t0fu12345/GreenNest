@@ -5,11 +5,12 @@ class GardenerService {
     return Gardener.find().sort({ experienceYears: -1 });
   }
 
-  async getGardenerById(id) {
-    const gardener = await Gardener.findById(id).populate(
-      'associatedPlants',
-      'name scientificName specimenId images biome careLevel'
-    );
+  async getGardenerById(id, includeDrafts = false) {
+    const gardener = await Gardener.findById(id).populate({
+      path: 'associatedPlants',
+      select: 'name scientificName specimenId images biome careLevel status',
+      match: includeDrafts ? {} : { status: 'published' }
+    });
 
     if (!gardener) {
       const error = new Error('Botanist profile not found');

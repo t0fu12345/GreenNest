@@ -13,7 +13,7 @@ import SpecimenDetail from './pages/SpecimenDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Contact from './pages/Contact';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 

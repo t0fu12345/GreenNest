@@ -15,6 +15,8 @@ const connectDB = async () => {
     uri = uri.replace('/greennest', '/GreenNest');
   }
   const isAtlas = uri.startsWith('mongodb+srv://');
+  const fallbackUri = process.env.MONGO_FALLBACK_URI || 'mongodb://127.0.0.1:27017/GreenNest';
+  const allowDevelopmentFallback = process.env.NODE_ENV !== 'production' && uri !== fallbackUri;
 
   const options = {
     serverSelectionTimeoutMS: 8000,
@@ -34,8 +36,18 @@ const connectDB = async () => {
     }
   } catch (error) {
     console.error(`❌ [MongoDB] Connection error: ${error.message}`);
-    if (isAtlas && (error.message.includes('whitelist') || error.message.includes('timed out') || error.message.includes('buffering'))) {
-      console.error('💡 [Atlas Tip]: Please verify "Network Access" in MongoDB Atlas and ensure your IP is allowed (or Allow from anywhere: 0.0.0.0/0).');
+    if (allowDevelopmentFallback) {
+      console.warn(`⚠️ [MongoDB] Development connection failed. Falling back to ${fallbackUri.replace(/:\/\/[^@]+@/, '://***@')} ...`);
+      try {
+        const fallbackConnection = await mongoose.connect(fallbackUri, options);
+        console.log(`🌿 [MongoDB Local] Connected to development fallback: ${fallbackConnection.connection.host}/${fallbackConnection.connection.name}`);
+        return;
+      } catch (fallbackError) {
+        console.error(`❌ [MongoDB] Development fallback failed: ${fallbackError.message}`);
+      }
+    }
+    if (isAtlas && (error.message.includes('whitelist') || error.message.includes('timed out') || error.message.includes('buffering') || error.message.includes('bad auth'))) {
+      console.error('💡 [Atlas Tip]: Verify the database username/password and Atlas Network Access settings.');
     }
     process.exit(1);
   }

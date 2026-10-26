@@ -13,7 +13,7 @@ class GardenerController {
 
   async getGardenerById(req, res, next) {
     try {
-      const gardener = await gardenerService.getGardenerById(req.params.id);
+      const gardener = await gardenerService.getGardenerById(req.params.id, req.user?.role === 'admin');
       return successResponse(res, gardener, 'Botanist profile retrieved successfully');
     } catch (error) {
       if (error.statusCode) {

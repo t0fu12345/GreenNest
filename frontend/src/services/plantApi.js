@@ -1,7 +1,8 @@
 import apiClient from './apiClient';
+import normalizeListResponse from './normalizeListResponse';
 
 export const plantApi = {
-  getPlants: (params = {}) => apiClient.get('/plants', { params }),
+  getPlants: async (params = {}) => normalizeListResponse(await apiClient.get('/plants', { params })),
   getPlantDetail: (idOrSlug) => apiClient.get(`/plants/${idOrSlug}`),
   getRelatedPlants: (id) => apiClient.get(`/plants/${id}/related`),
   createPlant: (data) => apiClient.post('/plants', data),

@@ -51,7 +51,7 @@ const importData = async () => {
     const createdGardeners = await Gardener.insertMany(gardenersData);
     console.log(`   -> Seeded ${createdGardeners.length} botanists`);
 
-    console.log('🌿 Seeding 20 core botanical specimens & microclimate telemetry...');
+    console.log(`🌿 Seeding ${plantsData.length} core botanical specimens & microclimate telemetry...`);
     const plantsToInsert = plantsData.map((plant, index) => {
       const gardener = createdGardeners[index % createdGardeners.length];
       return {
