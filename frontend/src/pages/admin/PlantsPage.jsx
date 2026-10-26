@@ -8,7 +8,7 @@ const fields = [
   { name: 'scientificName', label: 'Scientific name', required: true },
   { name: 'category', label: 'Category', required: true },
   { name: 'biome', label: 'Biome', type: 'select', required: true, defaultValue: 'tropical', options: ['tropical', 'subtropical', 'arid', 'temperate'].map((value) => ({ value, label: value[0].toUpperCase() + value.slice(1) })) },
-  { name: 'careLevel', label: 'Care level', type: 'select', defaultValue: 'Easy', options: ['Easy', 'Moderate', 'Challenging'].map((value) => ({ value, label: value })) },
+  { name: 'careLevel', label: 'Care level', type: 'select', defaultValue: 'Easy', options: ['Easy', 'Easy to Moderate', 'Moderate', 'Challenging'].map((value) => ({ value, label: value })) },
   { name: 'light', label: 'Light requirements', required: true },
   { name: 'watering', label: 'Watering requirements', required: true },
   { name: 'soil', label: 'Soil' },

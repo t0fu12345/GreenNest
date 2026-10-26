@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { scorePlant } from '../utils/searchPlants';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -49,10 +50,11 @@ const Plants = () => {
   const [searchQuery, setSearchQuery] = useState(initialQ);
   const [starredIds, setStarredIds] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
-  const [inspectPlant, setInspectPlant] = useState(null);
   const [apiPlants, setApiPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
+  const [gardenPlantIds, setGardenPlantIds] = useState([]);
+  const [addingPlantId, setAddingPlantId] = useState(null);
 
   // Sync state if URL search params change
   useEffect(() => {
@@ -93,11 +95,16 @@ const Plants = () => {
           const saved = res?.data?.savedPlants || [];
           const ids = saved.map(p => p.specimenId || p._id || p.id).filter(Boolean);
           setStarredIds(ids);
+
+          const garden = res?.data?.garden || [];
+          const gIds = garden.map(item => item.plant?._id || item.plant?.specimenId || item.plant?.slug || item.plant?.catalogCode).filter(Boolean);
+          setGardenPlantIds(gIds);
         } catch (e) {
           console.warn('Could not load favorite plants from the API:', e);
         }
       } else {
         setStarredIds([]);
+        setGardenPlantIds([]);
       }
     };
 
@@ -141,6 +148,57 @@ const Plants = () => {
     }
   };
 
+  const handleAddToGarden = async (plant, e) => {
+    if (e) e.stopPropagation();
+    if (!isAuthenticated) {
+      showToast('Please sign in to add specimens to your personal garden sanctuary!');
+      setTimeout(() => navigate('/login'), 1200);
+      return;
+    }
+
+    const plantIdentifier = plant._id || plant.id || plant.specimenId || plant.slug;
+    const isAlready = gardenPlantIds.includes(plant.id) ||
+                      gardenPlantIds.includes(plant._id) ||
+                      gardenPlantIds.includes(plant.specimenId) ||
+                      (plant.raw?._id && gardenPlantIds.includes(plant.raw._id));
+
+    if (isAlready) {
+      showToast(`"${plant.name}" is already in your Garden Sanctuary!`);
+      return;
+    }
+
+    try {
+      setAddingPlantId(plant.id);
+      await gardenApi.addPlant(plantIdentifier);
+      setGardenPlantIds(prev => [...prev, plant.id, plant._id, plant.specimenId].filter(Boolean));
+      showToast(`🌱 Added "${plant.name}" to My Garden!`);
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Could not add to garden';
+      if (msg.includes('already in your garden') || msg.includes('PLANT_ALREADY_IN_GARDEN')) {
+        setGardenPlantIds(prev => [...prev, plant.id, plant._id, plant.specimenId].filter(Boolean));
+        showToast(`"${plant.name}" is already in your garden sanctuary.`);
+      } else {
+        const isNetworkIssue = !err.response || msg.includes('Network Error') || err.code === 'NETWORK_ERROR';
+        if (isNetworkIssue) {
+          try {
+            const currentGarden = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+            const pId = plant.slug || plant.id || plant.specimenId;
+            if (!currentGarden.includes(pId)) {
+              currentGarden.push(pId);
+              localStorage.setItem('livingCanopyGardenPlants', JSON.stringify(currentGarden));
+            }
+            setGardenPlantIds(prev => [...prev, plant.id, plant._id, plant.specimenId, pId].filter(Boolean));
+            showToast(`🌱 Added "${plant.name}" to My Garden!`);
+            return;
+          } catch {}
+        }
+        showToast('Error: ' + msg);
+      }
+    } finally {
+      setAddingPlantId(null);
+    }
+  };
+
   const handleBiomeSelect = (biome) => {
     setActiveBiome(biome);
     setActiveTag(null);
@@ -151,26 +209,31 @@ const Plants = () => {
     if (activeTag !== tag) setActiveBiome('all');
   };
 
-  // Filter plants
-  const filteredPlants = allPlants.filter(plant => {
-    // Biome
-    if (activeBiome !== 'all' && plant.biome !== activeBiome) {
-      return false;
-    }
-    // Tag
-    if (activeTag && !plant.tags?.includes(activeTag)) {
-      return false;
-    }
-    // Search
+  // Filter plants with botanical relevance scoring
+  const filteredPlants = useMemo(() => {
+    let result = allPlants.filter(plant => {
+      // Biome
+      if (activeBiome !== 'all' && plant.biome !== activeBiome) {
+        return false;
+      }
+      // Tag
+      if (activeTag && !plant.tags?.includes(activeTag)) {
+        return false;
+      }
+      // Search
+      if (searchQuery.trim()) {
+        const score = scorePlant(plant, searchQuery);
+        if (score <= 0) return false;
+      }
+      return true;
+    });
+
     if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
-      const matchName = plant.name.toLowerCase().includes(q);
-      const matchSci = plant.scientificName.toLowerCase().includes(q);
-      const matchTag = plant.tags?.some(t => t.toLowerCase().includes(q));
-      if (!matchName && !matchSci && !matchTag) return false;
+      result.sort((a, b) => scorePlant(b, searchQuery) - scorePlant(a, searchQuery));
     }
-    return true;
-  });
+
+    return result;
+  }, [allPlants, activeBiome, activeTag, searchQuery]);
 
   // Dynamic index tags extracted from all 20 plants
   const availableIndexTags = Array.from(
@@ -304,6 +367,7 @@ const Plants = () => {
                 <article
                   key={plant.id}
                   className="specimen-card"
+                  onClick={() => navigate(`/specimen-detail?id=${encodeURIComponent(plant.id)}`)}
                   style={{
                     background: 'rgba(14, 30, 22, 0.85)',
                     border: '1px solid var(--border-glass)',
@@ -312,7 +376,8 @@ const Plants = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     boxShadow: '0 16px 36px rgba(0,0,0,0.55)',
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    cursor: 'pointer'
                   }}
                 >
                   {/* Media Wrap */}
@@ -410,74 +475,99 @@ const Plants = () => {
                     </p>
 
                     {/* Action Bar */}
-                    <div style={{ paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-                      <div style={{ display: 'flex', gap: '6px' }}>
-                        <button
-                          type="button"
-                onClick={() => {
-                  if (!isAuthenticated) {
-                    showToast('Please sign in to save specimens to your collection!');
-                    setTimeout(() => navigate('/login'), 1200);
-                    return;
-                  }
-                  setTargetSavePlantSlug(plant.slug || plant.id);
-                }}
-                title="Save specimen to collection"
-                          style={{
-                            background: 'rgba(34, 197, 94, 0.15)',
-                            border: '1px solid rgba(34, 197, 94, 0.35)',
-                            color: '#86efac',
-                            padding: '6px 10px',
-                            borderRadius: '9999px',
-                            fontSize: '0.74rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                          }}
-                        >
-                          <span>📁</span>
-                          <span>Save</span>
-                        </button>
+                    <div
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        paddingTop: '14px',
+                        borderTop: '1px solid rgba(255,255,255,0.08)',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        gap: '8px'
+                      }}
+                    >
+                      {/* Redesigned Add to Garden Button */}
+                      {(() => {
+                        const inGarden = gardenPlantIds.includes(plant.id) ||
+                                         gardenPlantIds.includes(plant._id) ||
+                                         gardenPlantIds.includes(plant.specimenId) ||
+                                         (plant.raw?._id && gardenPlantIds.includes(plant.raw._id));
+                        return (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (inGarden) {
+                                navigate('/garden');
+                              } else {
+                                handleAddToGarden(plant, e);
+                              }
+                            }}
+                            disabled={addingPlantId === plant.id}
+                            title={inGarden ? 'View in your Living Garden Sanctuary' : 'Add to personal Living Garden'}
+                            style={{
+                              background: inGarden
+                                ? 'rgba(34, 197, 94, 0.2)'
+                                : 'linear-gradient(135deg, rgba(34, 197, 94, 0.22) 0%, rgba(16, 185, 129, 0.12) 100%)',
+                              border: inGarden
+                                ? '1px solid #22c55e'
+                                : '1px solid rgba(34, 197, 94, 0.45)',
+                              color: inGarden ? '#86efac' : '#ffffff',
+                              padding: '7px 14px',
+                              borderRadius: '9999px',
+                              fontSize: '0.78rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              boxShadow: inGarden ? '0 0 12px rgba(34, 197, 94, 0.2)' : 'none',
+                              transition: 'all 0.25s ease'
+                            }}
+                          >
+                            <span>{inGarden ? '🌿' : '🌱'}</span>
+                            <span>
+                              {addingPlantId === plant.id
+                                ? 'Adding...'
+                                : inGarden
+                                  ? 'In Garden →'
+                                  : 'Add to Garden'}
+                            </span>
+                          </button>
+                        );
+                      })()}
 
-                        <button
-                          type="button"
-                          onClick={() => setInspectPlant(plant)}
-                          style={{
-                            background: 'rgba(255,255,255,0.05)',
-                            border: '1px solid var(--border-glass)',
-                            color: '#cbd5e1',
-                            padding: '6px 10px',
-                            borderRadius: '9999px',
-                            fontSize: '0.74rem',
-                            fontWeight: 500,
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Quick View
-                        </button>
-                      </div>
-
-                      <Link
-                        to={`/specimen-detail?id=${encodeURIComponent(plant.id)}`}
+                      {/* Save To Collection Button */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (!isAuthenticated) {
+                            showToast('Please sign in to save specimens to your collection!');
+                            setTimeout(() => navigate('/login'), 1200);
+                            return;
+                          }
+                          setTargetSavePlantSlug(plant.slug || plant.id);
+                        }}
+                        title="Save specimen to collection"
                         style={{
-                          background: 'rgba(34, 197, 94, 0.15)',
-                          border: '1px solid var(--border-accent)',
-                          color: '#86efac',
-                          padding: '7px 14px',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          border: '1px solid rgba(255, 255, 255, 0.12)',
+                          color: '#cbd5e1',
+                          padding: '7px 12px',
                           borderRadius: '9999px',
-                          fontSize: '0.8rem',
+                          fontSize: '0.76rem',
                           fontWeight: 600,
-                          textDecoration: 'none',
+                          cursor: 'pointer',
                           display: 'inline-flex',
                           alignItems: 'center',
-                          gap: '6px'
+                          gap: '5px',
+                          transition: 'all 0.2s ease'
                         }}
                       >
-                        <span>Full Dossier</span>
-                        <span>→</span>
-                      </Link>
+                        <span>📁</span>
+                        <span>Save</span>
+                      </button>
                     </div>
                   </div>
                 </article>
@@ -487,127 +577,7 @@ const Plants = () => {
         )}
       </main>
 
-      {/* Quick View Modal */}
-      {inspectPlant && (
-        <div
-          onClick={() => setInspectPlant(null)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(3, 8, 5, 0.88)',
-            backdropFilter: 'blur(16px)',
-            zIndex: 2500,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px'
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              background: 'rgba(14, 30, 22, 0.98)',
-              border: '1px solid var(--border-glass)',
-              borderRadius: '24px',
-              maxWidth: '680px',
-              width: '100%',
-              padding: '32px',
-              position: 'relative',
-              boxShadow: '0 25px 60px rgba(0,0,0,0.85)'
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => setInspectPlant(null)}
-              style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                background: 'rgba(255,255,255,0.08)',
-                border: 'none',
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                color: '#fff',
-                fontSize: '1rem',
-                cursor: 'pointer'
-              }}
-            >
-              ✕
-            </button>
 
-            <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-              <img
-                src={inspectPlant.image}
-                alt={inspectPlant.name}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
-                }}
-                style={{ width: '180px', height: '180px', objectFit: 'cover', borderRadius: '16px' }}
-              />
-              <div style={{ flex: 1, minWidth: '240px' }}>
-                <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--emerald-light)', fontWeight: 700 }}>
-                  {inspectPlant.biomeLabel}
-                </span>
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginTop: '4px' }}>
-                  {inspectPlant.name}
-                </h3>
-                <div style={{ fontStyle: 'italic', color: 'var(--emerald-light)', fontSize: '0.9rem', marginBottom: '12px' }}>
-                  {inspectPlant.scientificName}
-                </div>
-                <p style={{ color: '#cbd5e1', fontSize: '0.88rem', lineHeight: 1.6 }}>
-                  {inspectPlant.shortDesc}
-                </p>
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginTop: '24px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-              <div>
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Hydration:</span>
-                <div style={{ fontSize: '0.84rem', color: '#fff' }}>{inspectPlant.water}</div>
-              </div>
-              <div>
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Sunlight:</span>
-                <div style={{ fontSize: '0.84rem', color: '#fff' }}>{inspectPlant.light}</div>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>
-              <button
-                type="button"
-                onClick={() => handleToggleStar(inspectPlant.id)}
-                style={{
-                  background: starredIds.includes(inspectPlant.id) ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255,255,255,0.08)',
-                  border: starredIds.includes(inspectPlant.id) ? '1px solid #f59e0b' : '1px solid var(--border-glass)',
-                  color: starredIds.includes(inspectPlant.id) ? '#fde68a' : '#fff',
-                  borderRadius: '9999px',
-                  padding: '10px 18px',
-                  fontSize: '0.84rem',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                {starredIds.includes(inspectPlant.id) ? '★ Saved' : '★ Save to Personal Gallery'}
-              </button>
-              <Link
-                to={`/specimen-detail?id=${encodeURIComponent(inspectPlant.id)}`}
-                style={{
-                  background: 'var(--emerald-accent)',
-                  color: '#07100b',
-                  borderRadius: '9999px',
-                  padding: '10px 20px',
-                  fontSize: '0.84rem',
-                  fontWeight: 700,
-                  textDecoration: 'none'
-                }}
-              >
-                Open Full Dossier →
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Floating Toast Notification */}
       {toastMessage && (

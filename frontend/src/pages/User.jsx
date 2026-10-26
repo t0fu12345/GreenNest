@@ -3,9 +3,24 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
+import gardenApi from '../services/gardenApi';
 
 const User = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const [gardenCount, setGardenCount] = React.useState(null);
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      gardenApi.getMyGarden()
+        .then(res => {
+          const count = res?.data?.garden?.length ?? 0;
+          setGardenCount(count);
+        })
+        .catch(() => setGardenCount(null));
+    } else {
+      setGardenCount(null);
+    }
+  }, [isAuthenticated]);
   const [modalData, setModalData] = useState({
     isOpen: false,
     title: '',
@@ -238,7 +253,7 @@ const User = () => {
                   My Garden Sanctuary
                 </h2>
                 <p style={{ color: '#cbd5e1', fontSize: 'clamp(0.9rem, 1.1vw, 1rem)', fontWeight: 300, lineHeight: 1.6 }}>
-                  Your secluded private sanctuary. Monitor root zone hydration cadences, light exposure, and nurture living specimens in your personal space.
+                  {gardenCount !== null && gardenCount > 0 ? `You have ${gardenCount} living specimen${gardenCount > 1 ? 's' : ''} thriving in your sanctuary. Monitor root zone hydration cadences, light exposure, and nurture your living collection.` : 'Your secluded private sanctuary. Monitor root zone hydration cadences, light exposure, and nurture living specimens in your personal space.'}
                 </p>
               </div>
 

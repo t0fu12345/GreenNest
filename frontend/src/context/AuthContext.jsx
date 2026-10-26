@@ -201,32 +201,22 @@ export const AuthProvider = ({ children }) => {
           };
         }
       } catch (apiErr) {
-        console.warn('Backend login attempt unsuccessful, checking local credentials:', apiErr.message);
-      }
-
-      // 2. Fall back to local credentials during development or offline use
-      const localUsers = getAllUsers();
-      const matched = localUsers.find(u =>
-        u.email?.toLowerCase() === emailInput ||
-        u.nickname?.toLowerCase() === emailInput
-      );
-
-      if (matched) {
-        const mockToken = `gn_jwt_${Date.now()}`;
-        const normalized = {
-          id: matched.id || matched._id,
-          name: matched.name || matched.fullName,
-          email: matched.email,
-          role: matched.role || 'user',
-          avatar: matched.avatar || matched.avatarUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
-          token: mockToken
-        };
-        saveSession(normalized, mockToken, rememberMe);
+        console.warn('Backend login attempt unsuccessful:', apiErr.message);
+        if (apiErr.status === 401) {
+          return {
+            success: false,
+            message: apiErr.message || 'Invalid email or password.'
+          };
+        }
+        if (apiErr.code === 'NETWORK_ERROR' || !apiErr.status) {
+          return {
+            success: false,
+            message: 'Network Error: Cannot connect to backend server on http://localhost:5000.'
+          };
+        }
         return {
-          success: true,
-          isAdmin: normalized.role === 'admin',
-          user: normalized,
-          message: 'Signed in successfully!'
+          success: false,
+          message: apiErr.message || 'Login failed.'
         };
       }
 
@@ -255,7 +245,7 @@ export const AuthProvider = ({ children }) => {
         password: cleanPassword
       };
 
-      // 1. Try the backend API
+      // 1. Send registration to backend API
       try {
         const res = await authApi.register(payload);
         if (res && res.data && res.data.token) {
@@ -280,35 +270,22 @@ export const AuthProvider = ({ children }) => {
           };
         }
       } catch (apiErr) {
-        console.warn('Backend register attempt failed, falling back to local registration:', apiErr.message);
+        console.warn('Backend register attempt failed:', apiErr);
+        if (apiErr.status) {
+          return {
+            success: false,
+            message: apiErr.message || 'Registration failed on server.'
+          };
+        }
+        return {
+          success: false,
+          message: 'Network Error: Cannot connect to backend server on port 5000.'
+        };
       }
-
-      // 2. Fallback local user registration
-      const localUsers = getAllUsers();
-      if (localUsers.some(u => u.email?.toLowerCase() === cleanEmail)) {
-        return { success: false, message: 'This email is already in use! Please sign in.' };
-      }
-
-      const mockToken = `gn_jwt_${Date.now()}`;
-      const newUser = {
-        id: `usr_${Date.now()}`,
-        name: cleanName,
-        fullName: cleanName,
-        email: cleanEmail,
-        role: 'user',
-        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
-        biome: preferredBiome,
-        token: mockToken
-      };
-
-      const updated = [...localUsers, newUser];
-      localStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(updated));
-      saveSession(newUser, mockToken, true);
 
       return {
-        success: true,
-        user: newUser,
-        message: 'Account created successfully!'
+        success: false,
+        message: 'Unable to register account. Please try again.'
       };
     } catch (err) {
       return {

@@ -73,17 +73,6 @@ const Login = () => {
     }
   };
 
-  const fillDemoAccount = () => {
-    setIdentifier('minhthao');
-    setPassword('GreenCanopy2026');
-    showNotification('Filled demo member: minhthao. Ready to sign in.', 'success', 2500);
-  };
-
-  const fillAdminAccount = () => {
-    setIdentifier('admin');
-    setPassword('AdminCanopy2026!');
-    showNotification('Filled Admin account: admin. Ready to sign in.', 'success', 2500);
-  };
 
 
   return (
@@ -180,45 +169,6 @@ const Login = () => {
               />
               <span>Remember session (Cookie)</span>
             </label>
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-              <button
-                type="button"
-                onClick={fillDemoAccount}
-                style={{
-                  background: 'rgba(34, 197, 94, 0.15)',
-                  border: '1px solid rgba(34, 197, 94, 0.35)',
-                  color: '#86efac',
-                  fontSize: '0.74rem',
-                  borderRadius: '9999px',
-                  padding: '4px 10px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                title="Standard User: Nickname: minhthao / Password: GreenCanopy2026"
-              >
-                ⚡ Member
-              </button>
-
-              <button
-                type="button"
-                onClick={fillAdminAccount}
-                style={{
-                  background: 'rgba(234, 179, 8, 0.18)',
-                  border: '1px solid rgba(234, 179, 8, 0.5)',
-                  color: '#fef08a',
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
-                  borderRadius: '9999px',
-                  padding: '4px 10px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                title="Admin Account: Nickname: admin / Password: AdminCanopy2026!"
-              >
-                👑 Admin
-              </button>
-            </div>
-
           </div>
 
           <button 

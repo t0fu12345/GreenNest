@@ -1,11 +1,11 @@
-const User = require('../auth/user.model');
+﻿const User = require('../auth/user.model');
 const Plant = require('../plant/plant.model');
 
 class GardenService {
   async getGarden(userId) {
     const user = await User.findById(userId)
-      .populate('garden.plant', 'name scientificName specimenId biome images watering light careLevel')
-      .populate('savedPlants', 'name scientificName specimenId biome images');
+      .populate('garden.plant', 'name scientificName specimenId slug biome images watering light careLevel category')
+      .populate('savedPlants', 'name scientificName specimenId slug biome images');
 
     return {
       garden: user.garden || [],
@@ -20,6 +20,15 @@ class GardenService {
     }
     if (!plant) {
       plant = await Plant.findOne({ specimenId: plantIdentifier });
+    }
+    if (!plant) {
+      plant = await Plant.findOne({
+        $or: [
+          { slug: plantIdentifier },
+          { catalogCode: plantIdentifier },
+          { name: new RegExp(`^${plantIdentifier}$`, 'i') }
+        ]
+      });
     }
     if (!plant) {
       const error = new Error('Plant specimen not found');
@@ -49,19 +58,23 @@ class GardenService {
 
     user.garden.push({
       plant: plant._id,
-      customNickname: customNickname || plant.name,
+      customNickname: (customNickname && customNickname.trim()) ? customNickname.trim() : plant.name,
       addedAt: new Date(),
       checklist: defaultChecklist
     });
 
     await user.save();
-    return user.garden;
+
+    const updatedUser = await User.findById(userId)
+      .populate('garden.plant', 'name scientificName specimenId slug biome images watering light careLevel category');
+
+    return updatedUser.garden;
   }
 
   async removeFromGarden(userId, gardenItemId) {
     const user = await User.findById(userId);
     user.garden = user.garden.filter(
-      item => item._id.toString() !== gardenItemId && item.plant.toString() !== gardenItemId
+      item => item._id.toString() !== gardenItemId && item.plant?.toString() !== gardenItemId
     );
 
     await user.save();
@@ -80,7 +93,8 @@ class GardenService {
       const plant = await Plant.findOne({
         $or: [
           ...(pid.match(/^[0-9a-fA-F]{24}$/) ? [{ _id: pid }] : []),
-          { specimenId: pid }
+          { specimenId: pid },
+          { slug: pid }
         ]
       });
 
@@ -165,6 +179,15 @@ class GardenService {
     }
     if (!plant) {
       plant = await Plant.findOne({ specimenId: plantIdentifier });
+    }
+    if (!plant) {
+      plant = await Plant.findOne({
+        $or: [
+          { slug: plantIdentifier },
+          { catalogCode: plantIdentifier },
+          { name: new RegExp(`^${plantIdentifier}$`, 'i') }
+        ]
+      });
     }
     if (!plant) {
       const error = new Error('Plant specimen not found');

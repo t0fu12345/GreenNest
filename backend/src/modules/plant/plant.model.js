@@ -72,7 +72,7 @@ const PlantSchema = new mongoose.Schema({
   },
   careLevel: {
     type: String,
-    enum: ['Easy', 'Moderate', 'Challenging'],
+    enum: ['Easy', 'Easy to Moderate', 'Moderate', 'Challenging'],
     default: 'Easy'
   },
   toxicity: {

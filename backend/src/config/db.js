@@ -9,9 +9,13 @@ try {
 }
 
 const connectDB = async () => {
-  const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/greennest';
+  let uri = process.env.MONGO_URI || 'mongodb://localhost:27017/GreenNest';
+  // Safeguard: normalize database casing if 'greennest' is provided instead of 'GreenNest'
+  if (uri.includes('/greennest')) {
+    uri = uri.replace('/greennest', '/GreenNest');
+  }
   const isAtlas = uri.startsWith('mongodb+srv://');
-  const fallbackUri = process.env.MONGO_FALLBACK_URI || 'mongodb://127.0.0.1:27017/greennest';
+  const fallbackUri = process.env.MONGO_FALLBACK_URI || 'mongodb://127.0.0.1:27017/GreenNest';
   const allowDevelopmentFallback = process.env.NODE_ENV !== 'production' && uri !== fallbackUri;
 
   const options = {

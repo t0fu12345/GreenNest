@@ -167,4 +167,15 @@ describe('Admin dashboard', () => {
     expect(screen.getByRole('heading', { name: 'Add Plant' })).toBeInTheDocument();
     expect(screen.getByLabelText('Common name')).toHaveValue('Rare Fern');
   });
+
+  it('supports every care level used by the merged plant catalog', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><AdminDashboard /></MemoryRouter>);
+
+    await user.click(screen.getByRole('button', { name: /Plants/ }));
+    await user.click(await screen.findByRole('button', { name: 'Add Plant' }));
+
+    expect(screen.getByLabelText('Care level')).toHaveDisplayValue('Easy');
+    expect(screen.getByRole('option', { name: 'Easy to Moderate' })).toBeInTheDocument();
+  });
 });

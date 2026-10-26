@@ -8,7 +8,7 @@
     "dev": "nodemon src/server.js",
     "seed": "node seeder/seeder.js",
     "seed:destroy": "node seeder/seeder.js --destroy",
-    "test": "node tests/api.test.js"
+    "test": "node tests/schema.test.js && node tests/api.test.js"
   },
   "keywords": [
     "nodejs",

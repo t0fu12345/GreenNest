@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import gardenApi from '../services/gardenApi';
 import { BOTANICAL_SPECIMENS } from '../data/botanicalSpecimens';
+import AddPlantToGardenModal from '../components/garden/AddPlantToGardenModal';
 
 const Garden = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Garden = () => {
   const [loading, setLoading] = useState(true);
   const [filterQuery, setFilterQuery] = useState('');
   const [toastMessage, setToastMessage] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -29,11 +31,11 @@ const Garden = () => {
         if (gardenList.length > 0) {
           const mapped = gardenList.map(item => {
             const p = item.plant || {};
-            const staticMatch = BOTANICAL_SPECIMENS[p.specimenId] || BOTANICAL_SPECIMENS[p._id];
+            const staticMatch = BOTANICAL_SPECIMENS[p.specimenId] || BOTANICAL_SPECIMENS[p._id] || BOTANICAL_SPECIMENS[p.slug];
             const isWatered = item.checklist?.find(c => c.taskName === 'water')?.completed;
             return {
               gardenItemId: item._id,
-              id: p.specimenId || p._id || item._id,
+              id: p.specimenId || p._id || p.slug || item._id,
               dbId: p._id,
               name: item.customNickname || p.name || staticMatch?.name || 'Cultivated Specimen',
               scientificName: p.scientificName || staticMatch?.scientificName || 'Botanical flora',
@@ -45,17 +47,103 @@ const Garden = () => {
               rawPlant: p
             };
           });
-          setPlants(mapped);
+
+          // Also merge local cultivars so offline/fallback additions are visible
+          const localIds = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+          const apiSpecimenIds = new Set(mapped.flatMap(m => [m.id, m.dbId, m.rawPlant?.specimenId, m.rawPlant?.slug].filter(Boolean)));
+          const localOnly = localIds
+            .filter(id => !apiSpecimenIds.has(id))
+            .map(id => {
+              const p = BOTANICAL_SPECIMENS[id] || {};
+              return {
+                gardenItemId: `local-${id}`,
+                id: p.id || id,
+                dbId: null,
+                name: p.name || 'Cultivated Specimen',
+                scientificName: p.scientificName || 'Botanical flora',
+                biome: p.biome || 'tropical',
+                image: p.image || p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+                waterStatus: p.watering || 'Nominal Hydration',
+                isWatered: false,
+                checklist: [],
+                rawPlant: p
+              };
+            }).filter(p => p.name);
+
+          setPlants([...mapped, ...localOnly]);
         } else {
-          // No specimens in Atlas garden: leave empty to show Empty State
+          // Check local fallback
+          const localIds = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+          if (localIds.length > 0) {
+            const localMapped = localIds.map(id => {
+              const p = BOTANICAL_SPECIMENS[id] || {};
+              return {
+                gardenItemId: `local-${id}`,
+                id: p.id || id,
+                dbId: null,
+                name: p.name || 'Cultivated Specimen',
+                scientificName: p.scientificName || 'Botanical flora',
+                biome: p.biome || 'tropical',
+                image: p.image || p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+                waterStatus: p.watering || 'Nominal Hydration',
+                isWatered: false,
+                checklist: [],
+                rawPlant: p
+              };
+            }).filter(p => p.name);
+            setPlants(localMapped);
+          } else {
+            setPlants([]);
+          }
+        }
+      } else {
+        const localIds = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+        if (localIds.length > 0) {
+          const localMapped = localIds.map(id => {
+            const p = BOTANICAL_SPECIMENS[id] || {};
+            return {
+              gardenItemId: `local-${id}`,
+              id: p.id || id,
+              dbId: null,
+              name: p.name || 'Cultivated Specimen',
+              scientificName: p.scientificName || 'Botanical flora',
+              biome: p.biome || 'tropical',
+              image: p.image || p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+              waterStatus: p.watering || 'Nominal Hydration',
+              isWatered: false,
+              checklist: [],
+              rawPlant: p
+            };
+          }).filter(p => p.name);
+          setPlants(localMapped);
+        } else {
           setPlants([]);
         }
+      }
+    } catch (err) {
+      console.warn('Error loading garden from API, using local storage fallback:', err.message);
+      const localIds = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+      if (localIds.length > 0) {
+        const localMapped = localIds.map(id => {
+          const p = BOTANICAL_SPECIMENS[id] || {};
+          return {
+            gardenItemId: `local-${id}`,
+            id: p.id || id,
+            dbId: null,
+            name: p.name || 'Cultivated Specimen',
+            scientificName: p.scientificName || 'Botanical flora',
+            biome: p.biome || 'tropical',
+            image: p.image || p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+            waterStatus: p.watering || 'Nominal Hydration',
+            isWatered: false,
+            checklist: [],
+            rawPlant: p
+          };
+        }).filter(p => p.name);
+        setPlants(localMapped);
       } else {
         setPlants([]);
       }
-    } catch (err) {
-      console.warn('Error loading garden from MongoDB Atlas:', err.message);
-      setPlants([]);
     } finally {
       setLoading(false);
     }
@@ -107,10 +195,22 @@ const Garden = () => {
     if (!window.confirm(`Remove "${plant.name}" from your garden sanctuary?`)) return;
 
     if (plant.gardenItemId) {
+      if (typeof plant.gardenItemId === 'string' && plant.gardenItemId.startsWith('local-')) {
+        const rawId = plant.gardenItemId.replace('local-', '');
+        try {
+          const current = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
+          const updated = current.filter(id => id !== rawId && id !== plant.id);
+          localStorage.setItem('livingCanopyGardenPlants', JSON.stringify(updated));
+        } catch {}
+        setPlants(prev => prev.filter(p => p.gardenItemId !== plant.gardenItemId));
+        showToast(`🍃 Removed "${plant.name}" from your sanctuary garden.`);
+        return;
+      }
+
       try {
         await gardenApi.removePlant(plant.gardenItemId);
         setPlants(prev => prev.filter(p => p.gardenItemId !== plant.gardenItemId));
-        showToast(`🌿 Removed "${plant.name}" from your MongoDB Atlas garden.`);
+        showToast(`🍃 Removed "${plant.name}" from your sanctuary garden.`);
       } catch (err) {
         showToast('Could not remove plant: ' + err.message);
       }
@@ -122,7 +222,7 @@ const Garden = () => {
       <Navbar />
 
       {/* Standalone Back to Sanctuary Button outside header box */}
-      <div style={{ maxWidth: '1360px', width: '100%', margin: '0 auto', padding: '110px 24px 0', display: 'flex', justifyContent: 'flex-end' }}>
+      <div style={{ maxWidth: '1360px', width: '100%', margin: '0 auto', padding: '110px 24px 0', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <Link
           to="/user"
           style={{
@@ -140,7 +240,7 @@ const Garden = () => {
             transition: 'all 0.25s ease'
           }}
         >
-          ← Back to Sanctuary
+          ← Back to Sanctuary Portal
         </Link>
       </div>
 
@@ -211,13 +311,14 @@ const Garden = () => {
                   padding: '10px 14px',
                   color: '#fff',
                   fontSize: '0.85rem',
-                  outline: 'none'
+                  outline: 'none',
+                  boxSizing: 'border-box'
                 }}
               />
             </div>
 
             {/* List of Cultivars */}
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '420px', overflowY: 'auto' }}>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '420px', overflowY: 'auto', padding: 0, margin: 0 }}>
               {loading ? (
                 <li style={{ fontSize: '0.82rem', color: '#86efac', padding: '16px', textAlign: 'center' }}>
                   Connecting to GreenNest Atlas...
@@ -267,7 +368,7 @@ const Garden = () => {
                         borderRadius: '8px',
                         color: p.isWatered ? '#86efac' : '#94a3b8',
                         padding: '4px 8px',
-                        fontSize: '0.75rem',
+                        fontSize: '0.8rem',
                         cursor: 'pointer'
                       }}
                       title="Toggle Daily Watering Checklist"
@@ -293,27 +394,6 @@ const Garden = () => {
                 ))
               )}
             </ul>
-
-            <Link
-              to="/plants"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                padding: '10px 16px',
-                background: 'rgba(34, 197, 94, 0.15)',
-                border: '1px solid var(--border-accent)',
-                borderRadius: '9999px',
-                color: 'var(--emerald-light)',
-                textDecoration: 'none',
-                fontSize: '0.84rem',
-                fontWeight: 600,
-                textAlign: 'center'
-              }}
-            >
-              + Cultivate More Plants
-            </Link>
           </aside>
 
           {/* Right Area: Header Banner + Bento Grid */}
@@ -326,10 +406,32 @@ const Garden = () => {
                   Your private biophilic nursery. Click any specimen tile to view daily hydration intake, ambient microclimate sensors, and biological macro telemetry.
                 </p>
               </div>
-              <div className="garden-header-actions">
+              <div className="garden-header-actions" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(true)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '10px 20px',
+                    background: 'var(--emerald-accent, #22c55e)',
+                    border: 'none',
+                    borderRadius: '9999px',
+                    color: '#07100b',
+                    fontSize: '0.84rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    boxShadow: '0 8px 20px rgba(34, 197, 94, 0.35)',
+                    transition: 'all 0.25s ease'
+                  }}
+                >
+                  <span>🌱</span>
+                  <span>+ Add Plant to Garden</span>
+                </button>
                 <Link to="/plants" className="btn-garden-cta">
                   <span>Browse Directory</span>
-                  <span>↗</span>
+                  <span>→</span>
                 </Link>
               </div>
             </div>
@@ -343,15 +445,37 @@ const Garden = () => {
               </div>
             ) : plants.length === 0 ? (
               <div className="garden-empty-box">
-                <div className="garden-empty-icon">🪴</div>
-                <h3 className="garden-empty-title">Your Garden is Empty</h3>
+                <div className="garden-empty-icon">🌱</div>
+                <h3 className="garden-empty-title">Your Garden Sanctuary is Empty</h3>
                 <p className="garden-empty-desc">
-                  You haven't added any living specimens to your garden yet. Select plants from the Herbarium Directory to nurture their daily hydration and environment macros here.
+                  You haven't cultivated any living specimens in your sanctuary yet. Choose plants from our botanical catalog to nurture their daily hydration and environment macros here.
                 </p>
-                <Link to="/plants" className="btn-garden-cta" style={{ marginTop: '14px' }}>
-                  <span>Cultivate Plants in Directory</span>
-                  <span>→</span>
-                </Link>
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '16px', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    onClick={() => setIsAddModalOpen(true)}
+                    style={{
+                      background: 'var(--emerald-accent, #22c55e)',
+                      border: 'none',
+                      color: '#07100b',
+                      borderRadius: '9999px',
+                      padding: '10px 24px',
+                      fontSize: '0.88rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      boxShadow: '0 8px 20px rgba(34, 197, 94, 0.35)'
+                    }}
+                  >
+                    <span>🌱</span>
+                    <span>+ Add Your First Plant</span>
+                  </button>
+                  <Link to="/plants" className="btn-garden-cta">
+                    <span>Browse Catalog Directory →</span>
+                  </Link>
+                </div>
               </div>
             ) : filteredPlants.length === 0 ? (
               <div className="garden-empty-box">
@@ -391,7 +515,7 @@ const Garden = () => {
                           {plant.isWatered ? '💧 Watered Today' : 'View Macro Vitals'}
                         </span>
                       </div>
-                      <span style={{ fontSize: '1.1rem', color: 'var(--emerald-light)' }}>↗</span>
+                      <span style={{ fontSize: '1.1rem', color: 'var(--emerald-light)' }}>→</span>
                     </div>
                   </article>
                 ))}
@@ -401,6 +525,26 @@ const Garden = () => {
 
         </div>
       </main>
+
+      {/* Add Plant To Garden Modal */}
+      <AddPlantToGardenModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onPlantAdded={(plant, nickname) => {
+          fetchGarden();
+          showToast(`🌱 Successfully added "${nickname}" to your garden sanctuary!`);
+        }}
+        existingGardenPlantIds={plants.flatMap(p => [
+          p.dbId, 
+          p.id, 
+          p.specimenId, 
+          p.gardenItemId, 
+          typeof p.gardenItemId === 'string' ? p.gardenItemId.replace('local-', '') : null,
+          p.rawPlant?._id, 
+          p.rawPlant?.specimenId, 
+          p.rawPlant?.slug
+        ].filter(Boolean))}
+      />
 
       {/* Floating Toast Notification */}
       {toastMessage && (
@@ -413,6 +557,7 @@ const Garden = () => {
           border: '1px solid var(--emerald-accent)',
           color: '#ffffff',
           padding: '14px 22px',
+          borderRadius: '12px',
           boxShadow: '0 16px 40px rgba(0, 0, 0, 0.8), 0 0 25px var(--emerald-glow)',
           fontSize: '0.9rem',
           fontWeight: 600,

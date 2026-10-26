@@ -1,4 +1,5 @@
 const app = require('../src/server');
+const seedPlants = require('../../database/seedData/plants.json');
 
 const BASE_URL = 'http://localhost:5000/api';
 
@@ -101,7 +102,7 @@ async function runTests() {
     const resPlants = await fetch(`${BASE_URL}/plants?limit=6`);
     const plantsData = await resPlants.json();
     assert(resPlants.status === 200 && plantsData.data.length === 6, 'GET /api/plants paginates 6 items');
-    assert(plantsData.pagination.totalItems >= 20, `Total catalog specimens >= 20 (Count: ${plantsData.pagination.totalItems})`);
+    assert(plantsData.pagination.totalItems === seedPlants.length, `Total catalog specimens matches seed data (Count: ${plantsData.pagination.totalItems})`);
 
     const firstPlant = plantsData.data[0];
     const resDetail = await fetch(`${BASE_URL}/plants/${firstPlant._id}`);
@@ -219,7 +220,7 @@ async function runTests() {
     });
     const adminStatsData = await resAdminStats.json();
     assert(resAdminStats.status === 200, 'Admin retrieves Dashboard statistics successfully');
-    assert(adminStatsData.data.totalPlants >= 20, `Dashboard: ${adminStatsData.data.totalPlants} botanical plants`);
+    assert(adminStatsData.data.totalPlants === seedPlants.length, `Dashboard: ${adminStatsData.data.totalPlants} botanical plants`);
     assert(adminStatsData.data.totalGardeners === 4, `Dashboard: ${adminStatsData.data.totalGardeners} master botanists`);
     assert(adminStatsData.data.totalCollections === 4, `Dashboard: ${adminStatsData.data.totalCollections} curated collections`);
     assert(adminStatsData.data.totalGalleryImages === 20, `Dashboard: ${adminStatsData.data.totalGalleryImages} gallery photographs`);
