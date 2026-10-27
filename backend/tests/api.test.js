@@ -4,24 +4,17 @@ const BASE_URL = 'http://localhost:5000/api';
 
 let server;
 
-function ensureServerRunning() {
-  return new Promise((resolve) => {
-    fetch(`${BASE_URL}/health`)
-      .then(() => resolve())
-      .catch(() => {
-        try {
-          server = app.listen(5000, () => {
-            console.log('📡 Test runner started Express server on port 5000');
-            setTimeout(resolve, 800);
-          });
-          server.on('error', (err) => {
-            if (err.code === 'EADDRINUSE') resolve();
-          });
-        } catch (e) {
-          resolve();
-        }
-      });
-  });
+async function ensureServerRunning() {
+  try {
+    await fetch(`${BASE_URL}/health`);
+  } catch (error) {
+    try {
+      server = await app.startServer(5000);
+      console.log('📡 Test runner started Express server on port 5000');
+    } catch (startError) {
+      if (startError.code !== 'EADDRINUSE') throw startError;
+    }
+  }
 }
 
 async function runTests() {

@@ -12,9 +12,6 @@ const { notFound, errorHandler } = require('./middlewares/errorHandler.middlewar
 // Initialize Express App
 const app = express();
 
-// Connect to MongoDB Database
-connectDB();
-
 // Core Middleware Configuration
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
@@ -57,10 +54,28 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 let server;
 
-if (require.main === module) {
-  server = app.listen(PORT, () => {
-    console.log(`🌿 GreenNest Modular Backend Server is running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
+const startServer = async (port = PORT) => {
+  await connectDB();
+
+  return new Promise((resolve, reject) => {
+    const listeningServer = app.listen(port, () => {
+      console.log(`🌿 GreenNest Modular Backend Server is running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${port}`);
+      resolve(listeningServer);
+    });
+
+    listeningServer.once('error', reject);
   });
+};
+
+if (require.main === module) {
+  startServer()
+    .then((listeningServer) => {
+      server = listeningServer;
+    })
+    .catch((error) => {
+      console.error(`❌ Failed to start backend server: ${error.message}`);
+      process.exit(1);
+    });
 
   // Handle Unhandled Rejections safely
   process.on('unhandledRejection', (err) => {
@@ -70,3 +85,4 @@ if (require.main === module) {
 }
 
 module.exports = app;
+module.exports.startServer = startServer;

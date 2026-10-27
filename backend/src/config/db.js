@@ -8,12 +8,30 @@ try {
   // Ignore if environment does not allow DNS override
 }
 
-const connectDB = async () => {
-  let uri = process.env.MONGO_URI || 'mongodb://localhost:27017/GreenNest';
-  // Safeguard: normalize database casing if 'greennest' is provided instead of 'GreenNest'
-  if (uri.includes('/greennest')) {
-    uri = uri.replace('/greennest', '/GreenNest');
+const normalizeDatabasePath = (uri) => {
+  const schemeEnd = uri.indexOf('://');
+  if (schemeEnd === -1) return uri;
+
+  const authorityStart = schemeEnd + 3;
+  const queryStart = uri.search(/[?#]/);
+  const pathStart = uri.indexOf('/', authorityStart);
+  const suffixStart = queryStart === -1 ? uri.length : queryStart;
+
+  if (pathStart === -1 || pathStart > suffixStart) {
+    return `${uri.slice(0, suffixStart)}/GreenNest${uri.slice(suffixStart)}`;
   }
+
+  const databaseName = uri.slice(pathStart + 1, suffixStart);
+  if (databaseName === '' || databaseName.toLowerCase() === 'greennest') {
+    return `${uri.slice(0, pathStart + 1)}GreenNest${uri.slice(suffixStart)}`;
+  }
+
+  return uri;
+};
+
+const connectDB = async () => {
+  const configuredUri = process.env.MONGO_URI || 'mongodb://localhost:27017/GreenNest';
+  const uri = normalizeDatabasePath(configuredUri);
   const isAtlas = uri.startsWith('mongodb+srv://');
 
   const options = {
