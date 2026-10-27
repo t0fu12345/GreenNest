@@ -137,26 +137,6 @@ const User = () => {
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto', flexWrap: 'wrap' }}>
-                {user.role === 'admin' && (
-                  <Link
-                    to="/admin"
-                    style={{
-                      background: 'rgba(234, 179, 8, 0.2)',
-                      border: '1px solid rgba(234, 179, 8, 0.5)',
-                      color: '#fef08a',
-                      borderRadius: '9999px',
-                      padding: '6px 14px',
-                      fontSize: '0.8rem',
-                      fontWeight: 700,
-                      textDecoration: 'none',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}
-                  >
-                    👑 Admin Portal →
-                  </Link>
-                )}
                 <button
                   type="button"
                   onClick={logout}

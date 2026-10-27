@@ -4,7 +4,7 @@ const { successResponse, errorResponse } = require('../../utils/apiResponse');
 class CollectionController {
   async getCollections(req, res, next) {
     try {
-      const collections = await collectionService.getCollections(req.query.season);
+      const collections = await collectionService.getCollections(req.query.season, req.user?.role === 'admin');
       return successResponse(res, collections, 'Curated collections retrieved successfully');
     } catch (error) {
       next(error);
@@ -13,7 +13,7 @@ class CollectionController {
 
   async getCollectionById(req, res, next) {
     try {
-      const collection = await collectionService.getCollectionById(req.params.id);
+      const collection = await collectionService.getCollectionById(req.params.id, req.user?.role === 'admin');
       return successResponse(res, collection, 'Curated collection details retrieved successfully');
     } catch (error) {
       if (error.statusCode) {

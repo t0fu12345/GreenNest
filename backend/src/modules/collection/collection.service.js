@@ -1,7 +1,7 @@
 const Collection = require('./collection.model');
 
 class CollectionService {
-  async getCollections(season) {
+  async getCollections(season, includeDrafts = false) {
     const query = {};
 
     if (season && season !== 'all') {
@@ -9,16 +9,16 @@ class CollectionService {
     }
 
     return Collection.find(query)
-      .populate('plants', 'name scientificName specimenId images biome')
+      .populate({ path: 'plants', select: 'name scientificName specimenId images biome status', match: includeDrafts ? {} : { status: 'published' } })
       .sort({ isFeatured: -1, createdAt: -1 });
   }
 
-  async getCollectionById(id) {
+  async getCollectionById(id, includeDrafts = false) {
     let collection;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      collection = await Collection.findById(id).populate('plants');
+      collection = await Collection.findById(id).populate({ path: 'plants', match: includeDrafts ? {} : { status: 'published' } });
     } else {
-      collection = await Collection.findOne({ slug: id }).populate('plants');
+      collection = await Collection.findOne({ slug: id }).populate({ path: 'plants', match: includeDrafts ? {} : { status: 'published' } });
     }
 
     if (!collection) {

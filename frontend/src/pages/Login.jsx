@@ -57,7 +57,7 @@ const Login = () => {
 
     if (result.success) {
       if (result.isAdmin) {
-        showNotification(`Authentication successful! Administrator clearance verified. Entering Admin Portal...`, 'success');
+        showNotification('Authentication successful! Administrator clearance verified. Opening the admin dashboard...', 'success');
         setTimeout(() => {
           navigate('/admin');
         }, 900);

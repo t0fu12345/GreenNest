@@ -53,6 +53,18 @@ class ContactController {
       next(error);
     }
   }
+
+  async deleteMessage(req, res, next) {
+    try {
+      await contactService.deleteMessage(req.params.id);
+      return successResponse(res, null, 'Contact message deleted successfully');
+    } catch (error) {
+      if (error.statusCode) {
+        return errorResponse(res, error.message, error.statusCode, error.errorCode);
+      }
+      next(error);
+    }
+  }
 }
 
 module.exports = new ContactController();
