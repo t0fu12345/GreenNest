@@ -1,20 +1,28 @@
 ﻿import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { BOTANICAL_SPECIMENS, CANONICAL_PLANT_SLUGS } from '../data/botanicalSpecimens';
+import { useNavigate } from 'react-router-dom';
+import plantApi from '../services/plantApi';
+import { toPlantViewModels } from '../utils/plantAdapter';
 import { filterAndRankPlants } from '../utils/searchPlants';
-
-const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
 
 const Hero = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [allPlants, setAllPlants] = useState([]);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
 
-  const allPlants = useMemo(() => {
-    return CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean);
+  useEffect(() => {
+    let active = true;
+    plantApi.getPlants({ limit: 100 })
+      .then(response => {
+        if (active) setAllPlants(toPlantViewModels(Array.isArray(response?.data) ? response.data : []));
+      })
+      .catch(() => {
+        if (active) setAllPlants([]);
+      });
+    return () => { active = false; };
   }, []);
 
   // Filter and rank matching plants with intelligent botanical relevance scoring
@@ -217,7 +225,7 @@ const Hero = () => {
                           alt={plant.name}
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = FALLBACK_IMAGE;
+                            e.currentTarget.style.visibility = 'hidden';
                           }}
                         />
                         <div className="suggestion-info">

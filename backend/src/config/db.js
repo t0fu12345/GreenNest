@@ -1,41 +1,48 @@
-const dns = require('dns');
 const mongoose = require('mongoose');
 
-// Route DNS queries through Google/Cloudflare DNS to prevent querySrv ECONNREFUSED on Windows/ISP networks
-try {
-  dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
-} catch (e) {
-  // Ignore if environment does not allow DNS override
-}
+const LOOPBACK_HOSTS = new Set(['127.0.0.1', 'localhost', '[::1]']);
 
-const normalizeDatabasePath = (uri) => {
-  const schemeEnd = uri.indexOf('://');
-  if (schemeEnd === -1) return uri;
-
-  const authorityStart = schemeEnd + 3;
-  const queryStart = uri.search(/[?#]/);
-  const pathStart = uri.indexOf('/', authorityStart);
-  const suffixStart = queryStart === -1 ? uri.length : queryStart;
-
-  if (pathStart === -1 || pathStart > suffixStart) {
-    return `${uri.slice(0, suffixStart)}/GreenNest${uri.slice(suffixStart)}`;
+const getLocalUri = () => {
+  const uri = process.env.MONGO_URI?.trim();
+  if (!uri) {
+    throw new Error('MONGO_URI is required and must point to local MongoDB');
   }
 
-  const databaseName = uri.slice(pathStart + 1, suffixStart);
-  if (databaseName === '' || databaseName.toLowerCase() === 'greennest') {
-    return `${uri.slice(0, pathStart + 1)}GreenNest${uri.slice(suffixStart)}`;
+  let parsed;
+  try {
+    parsed = new URL(uri);
+  } catch {
+    throw new Error('MONGO_URI must be a valid local MongoDB URI');
+  }
+
+  if (parsed.protocol !== 'mongodb:') {
+    throw new Error('MONGO_URI must be a local MongoDB URI using mongodb://');
+  }
+  if (!LOOPBACK_HOSTS.has(parsed.hostname.toLowerCase())) {
+    throw new Error('MONGO_URI must use a loopback host');
+  }
+  const expectedDatabase = process.env.NODE_ENV === 'test' ? '/GreenNestTest' : '/GreenNest';
+  if (parsed.pathname !== expectedDatabase) {
+    const databaseName = expectedDatabase.slice(1);
+    throw new Error(`MONGO_URI must target the ${databaseName} database`);
   }
 
   return uri;
 };
 
-const connectDB = async () => {
-  const configuredUri = process.env.MONGO_URI || 'mongodb://localhost:27017/GreenNest';
-  const uri = normalizeDatabasePath(configuredUri);
-  const isAtlas = uri.startsWith('mongodb+srv://');
-  const fallbackUri = process.env.MONGO_FALLBACK_URI || 'mongodb://127.0.0.1:27017/GreenNest';
-  const allowDevelopmentFallback = process.env.NODE_ENV !== 'production' && uri !== fallbackUri;
+const sanitizeConnectionError = (error, uri) => {
+  const redactedUri = uri.replace(/\/\/[^@/]+@/, '//[REDACTED]@');
+  const safeMessage = String(error?.message || 'Local MongoDB connection failed')
+    .split(uri).join(redactedUri)
+    .replace(/mongodb(?:\+srv)?:\/\/[^\s@/]+@/gi, 'mongodb://[REDACTED]@');
+  const safeError = new Error(safeMessage);
+  safeError.name = error?.name || 'MongoDBConnectionError';
+  if (error?.code !== undefined) safeError.code = error.code;
+  return safeError;
+};
 
+const connectDB = async () => {
+  const uri = getLocalUri();
   const options = {
     serverSelectionTimeoutMS: 8000,
     maxPoolSize: 10,
@@ -43,50 +50,30 @@ const connectDB = async () => {
   };
 
   try {
-    const conn = await mongoose.connect(uri, options);
-    const host = conn.connection.host;
-    const dbName = conn.connection.name;
-
-    if (isAtlas) {
-      console.log(`🍃 [MongoDB Atlas] Connected successfully to Cloud Cluster: ${host}/${dbName}`);
-    } else {
-      console.log(`🌿 [MongoDB Local] Connected successfully to local database: ${host}/${dbName}`);
-    }
+    const connection = await mongoose.connect(uri, options);
+    console.log(`[MongoDB Local] Connected successfully: ${connection.connection.host}/${connection.connection.name}`);
+    return connection;
   } catch (error) {
-    console.error(`❌ [MongoDB] Connection error: ${error.message}`);
-    if (allowDevelopmentFallback) {
-      console.warn(`⚠️ [MongoDB] Development connection failed. Falling back to ${fallbackUri.replace(/:\/\/[^@]+@/, '://***@')} ...`);
-      try {
-        const fallbackConnection = await mongoose.connect(fallbackUri, options);
-        console.log(`🌿 [MongoDB Local] Connected to development fallback: ${fallbackConnection.connection.host}/${fallbackConnection.connection.name}`);
-        return;
-      } catch (fallbackError) {
-        console.error(`❌ [MongoDB] Development fallback failed: ${fallbackError.message}`);
-      }
-    }
-    if (isAtlas && (error.message.includes('whitelist') || error.message.includes('timed out') || error.message.includes('buffering') || error.message.includes('bad auth'))) {
-      console.error('💡 [Atlas Tip]: Verify the database username/password and Atlas Network Access settings.');
-    }
-    process.exit(1);
+    const safeError = sanitizeConnectionError(error, uri);
+    console.error(`[MongoDB Local] Connection failed: ${safeError.message}`);
+    throw safeError;
   }
 };
 
-// Register Mongoose connection event listeners
 mongoose.connection.on('disconnected', () => {
-  console.warn('⚠️ [MongoDB] Database connection lost. Attempting to reconnect...');
+  console.warn('[MongoDB Local] Database connection lost. Mongoose will attempt to reconnect.');
 });
 
-mongoose.connection.on('error', (err) => {
-  console.error(`❌ [MongoDB Error]: ${err.message}`);
+mongoose.connection.on('error', (error) => {
+  console.error(`[MongoDB Local] Connection error: ${error.message}`);
 });
 
-// Graceful Shutdown handling
 const handleGracefulShutdown = async (signal) => {
   try {
     await mongoose.connection.close();
-    console.log(`🛑 [MongoDB] Connection closed gracefully after signal ${signal}`);
-  } catch (err) {
-    console.error(`Error closing MongoDB connection: ${err.message}`);
+    console.log(`[MongoDB Local] Connection closed after ${signal}`);
+  } catch (error) {
+    console.error(`[MongoDB Local] Failed to close connection: ${error.message}`);
   }
 };
 

@@ -26,16 +26,6 @@ const Register = () => {
     }, duration);
   };
 
-  const handleSocialRegister = (provider) => {
-    setSubmitting(true);
-    showNotification(`Connected with ${provider}! Welcome to GreenNest.`, 'success');
-    loginWithGoogle();
-    setTimeout(() => {
-      navigate('/');
-    }, 950);
-  };
-
-
   const handleEmailRegister = async (e) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !password.trim()) {

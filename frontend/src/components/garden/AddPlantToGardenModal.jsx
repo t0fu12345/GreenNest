@@ -16,7 +16,7 @@ const AddPlantToGardenModal = ({ isOpen, onClose, onPlantAdded, existingGardenPl
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Load all available plants from MongoDB Atlas API, fallback to canonical specimens
+  // Legacy modal retained until the local catalog is populated.
   useEffect(() => {
     if (!isOpen) return;
 

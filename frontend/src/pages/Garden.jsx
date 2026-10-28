@@ -292,7 +292,7 @@ const Garden = () => {
               alignItems: 'center',
               justifyContent: 'space-between'
             }}>
-              <span>☁️ Cloud Synced (MongoDB Atlas)</span>
+              <span>Database synchronized</span>
               <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Live Database</span>
             </div>
 
@@ -321,7 +321,7 @@ const Garden = () => {
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '420px', overflowY: 'auto', padding: 0, margin: 0 }}>
               {loading ? (
                 <li style={{ fontSize: '0.82rem', color: '#86efac', padding: '16px', textAlign: 'center' }}>
-                  Connecting to GreenNest Atlas...
+                  Connecting to the GreenNest database...
                 </li>
               ) : filteredPlants.length === 0 ? (
                 <li style={{ fontSize: '0.82rem', color: '#94a3b8', padding: '12px', textAlign: 'center' }}>
@@ -441,7 +441,7 @@ const Garden = () => {
               <div className="garden-empty-box">
                 <div className="garden-empty-icon">⏳</div>
                 <h3 className="garden-empty-title">Loading Botanical Telemetry...</h3>
-                <p className="garden-empty-desc">Fetching live plant sensors from MongoDB Atlas.</p>
+                <p className="garden-empty-desc">Fetching live plant sensors from the database.</p>
               </div>
             ) : plants.length === 0 ? (
               <div className="garden-empty-box">

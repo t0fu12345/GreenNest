@@ -3,43 +3,16 @@ import { scorePlant } from '../utils/searchPlants';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import {
-  BOTANICAL_SPECIMENS,
-  CANONICAL_PLANT_SLUGS
-} from '../data/botanicalSpecimens';
-import SaveToCollectionModal from '../components/gallery/SaveToCollectionModal';
+import SaveToCollectionModal from '../components/gallery/AtlasCollectionModal';
 import { useAuth } from '../context/AuthContext';
 import plantApi from '../services/plantApi';
 import gardenApi from '../services/gardenApi';
-
-const normalizePlant = (p) => ({
-  id: p.specimenId || p._id,
-  _id: p._id,
-  catalogCode: p.specimenId || 'CANOPY-001',
-  name: p.name,
-  scientificName: p.scientificName || p.botanicalName || '',
-  biome: p.biome || 'tropical',
-  biomeLabel: p.biome ? p.biome.toUpperCase() : 'Botanical Cultivar',
-  image: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
-  tags: p.tags?.length ? p.tags : [`#${p.category || 'Foliage'}`, `#${p.biome || 'Indoor'}`],
-  taxonomyTags: [p.category, p.biome, 'Plantae'].filter(Boolean),
-  traits: [p.light, p.watering, p.careLevel].filter(Boolean),
-  shortDesc: p.description || p.shortDesc || '',
-  origin: p.origin || 'GreenNest Sanctuary Nursery',
-  water: p.watering || 'Weekly',
-  light: p.light || 'Bright indirect',
-  soil: p.careGuide?.soil || 'Loose, well-draining soil',
-  humidity: p.careGuide?.humidity || '60% - 80%',
-  temp: '20°C – 28°C',
-  growth: p.careLevel || 'Moderate',
-  toxicity: p.toxicity?.isToxicToPets ? 'Pet Caution' : 'Pet Safe',
-  raw: p
-});
+import { toPlantViewModels } from '../utils/plantAdapter';
 
 const Plants = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const initialQ = searchParams.get('q') || searchParams.get('search') || '';
   const initialTag = searchParams.get('tag') || null;
@@ -52,6 +25,7 @@ const Plants = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [apiPlants, setApiPlants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
   const [targetSavePlantSlug, setTargetSavePlantSlug] = useState(null);
   const [gardenPlantIds, setGardenPlantIds] = useState([]);
   const [addingPlantId, setAddingPlantId] = useState(null);
@@ -77,12 +51,12 @@ const Plants = () => {
     const fetchPlants = async () => {
       try {
         setLoading(true);
+        setLoadError('');
         const res = await plantApi.getPlants({ limit: 100 });
-        if (res?.data?.plants && Array.isArray(res.data.plants)) {
-          setApiPlants(res.data.plants.map(normalizePlant));
-        }
+        setApiPlants(toPlantViewModels(Array.isArray(res?.data) ? res.data : []));
       } catch (err) {
-        console.warn('Could not connect to the Plants API; using fallback data:', err.message);
+        setApiPlants([]);
+        setLoadError(err.message || 'Unable to load plants from the database.');
       } finally {
         setLoading(false);
       }
@@ -112,10 +86,7 @@ const Plants = () => {
     fetchUserSaved();
   }, [isAuthenticated]);
 
-  const fallbackPlants = CANONICAL_PLANT_SLUGS?.length
-    ? CANONICAL_PLANT_SLUGS.map(slug => BOTANICAL_SPECIMENS[slug]).filter(Boolean)
-    : Object.values(BOTANICAL_SPECIMENS);
-  const allPlants = apiPlants.length > 0 ? apiPlants : fallbackPlants;
+  const allPlants = apiPlants;
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -130,7 +101,7 @@ const Plants = () => {
       return;
     }
 
-    const plant = allPlants.find(p => p.id === plantId || p._id === plantId) || BOTANICAL_SPECIMENS[plantId];
+    const plant = allPlants.find(p => p.id === plantId || p._id === plantId);
     const identifier = plant?._id || plant?.id || plantId;
 
     try {
@@ -178,20 +149,6 @@ const Plants = () => {
         setGardenPlantIds(prev => [...prev, plant.id, plant._id, plant.specimenId].filter(Boolean));
         showToast(`"${plant.name}" is already in your garden sanctuary.`);
       } else {
-        const isNetworkIssue = !err.response || msg.includes('Network Error') || err.code === 'NETWORK_ERROR';
-        if (isNetworkIssue) {
-          try {
-            const currentGarden = JSON.parse(localStorage.getItem('livingCanopyGardenPlants') || '[]');
-            const pId = plant.slug || plant.id || plant.specimenId;
-            if (!currentGarden.includes(pId)) {
-              currentGarden.push(pId);
-              localStorage.setItem('livingCanopyGardenPlants', JSON.stringify(currentGarden));
-            }
-            setGardenPlantIds(prev => [...prev, plant.id, plant._id, plant.specimenId, pId].filter(Boolean));
-            showToast(`🌱 Added "${plant.name}" to My Garden!`);
-            return;
-          } catch {}
-        }
         showToast('Error: ' + msg);
       }
     } finally {
@@ -342,6 +299,10 @@ const Plants = () => {
             <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>🌿</div>
             <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading botanical profiles from the GreenNest server...</div>
           </div>
+        ) : loadError ? (
+          <div role="alert" style={{ textAlign: 'center', padding: '75px 24px', color: '#fca5a5' }}>
+            {loadError}
+          </div>
         ) : filteredPlants.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '75px 24px', background: 'rgba(14, 30, 22, 0.75)', border: '1.5px dashed rgba(245, 158, 11, 0.45)', borderRadius: '28px', maxWidth: '820px', margin: '0 auto' }}>
             <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🌱</div>
@@ -390,7 +351,7 @@ const Plants = () => {
                       alt={plant.name}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80';
+                        e.currentTarget.style.visibility = 'hidden';
                       }}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />

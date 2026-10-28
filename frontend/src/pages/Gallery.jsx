@@ -4,13 +4,13 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import galleryApi from '../services/galleryApi';
-import fallbackGallery from '../data/gallerySeed.json';
 
 const Gallery = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const [items, setItems] = useState(fallbackGallery);
-  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
   const [activeLightboxIndex, setActiveLightboxIndex] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
   const [filterQuery, setFilterQuery] = useState('');
@@ -20,19 +20,18 @@ const Gallery = () => {
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  // Load the image list from MongoDB Atlas
+  // Load the image list from the GreenNest API
   const fetchGallery = useCallback(async () => {
     try {
+      setLoadError('');
       const res = await galleryApi.getGallery({ limit: 50 });
       const galleryList = Array.isArray(res?.data) 
         ? res.data 
         : (Array.isArray(res?.data?.items) ? res.data.items : []);
-      if (galleryList.length > 0) {
-        setItems(galleryList);
-      }
+      setItems(galleryList);
     } catch (err) {
-      console.warn('Could not load the gallery from MongoDB Atlas; using fallback data:', err.message);
-      setItems(fallbackGallery);
+      setItems([]);
+      setLoadError(err.message || 'Unable to load the gallery from the database.');
     } finally {
       setLoading(false);
     }
@@ -149,7 +148,7 @@ const Gallery = () => {
             Interactive Botanical Gallery
           </h1>
           <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '680px', margin: '0 auto 28px', lineHeight: 1.65 }}>
-            Curated photographic exhibition of tropical aroids, living foliage, and biophilic interior spaces synchronized with MongoDB Atlas. Click any image to open the high-resolution interactive Lightbox.
+            Curated photographic exhibition of tropical aroids, living foliage, and biophilic interior spaces from the GreenNest catalog. Click any image to open the high-resolution interactive Lightbox.
           </p>
 
           {/* Quick Search in Gallery */}
@@ -178,7 +177,11 @@ const Gallery = () => {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '100px 24px', color: '#86efac' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '14px' }}>🖼️</div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading works from MongoDB Atlas...</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Loading gallery...</div>
+          </div>
+        ) : loadError ? (
+          <div role="alert" style={{ textAlign: 'center', padding: '60px 20px', color: '#fca5a5' }}>
+            <p>{loadError}</p>
           </div>
         ) : filteredItems.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: '#94a3b8' }}>

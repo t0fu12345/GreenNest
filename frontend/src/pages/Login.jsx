@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth, getCookie } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const { login, STORAGE_KEYS } = useAuth();
@@ -18,7 +18,7 @@ const Login = () => {
   // If user previously checked remember me, prefill remembered nickname (if available)
   useEffect(() => {
     try {
-      const remembered = localStorage.getItem(STORAGE_KEYS.REMEMBERED_EMAIL) || getCookie(STORAGE_KEYS.REMEMBERED_EMAIL);
+      const remembered = localStorage.getItem(STORAGE_KEYS.REMEMBERED_EMAIL);
       if (remembered) {
         setIdentifier(remembered);
       }
@@ -33,16 +33,6 @@ const Login = () => {
       setIsToastActive(false);
     }, duration);
   };
-
-  const handleSocialLogin = (provider) => {
-    setSubmitting(true);
-    showNotification(`Connecting via ${provider}... Authentication successful!`, 'success');
-    loginWithGoogle();
-    setTimeout(() => {
-      navigate('/');
-    }, 900);
-  };
-
 
   const handleLogin = async (e) => {
     e.preventDefault();

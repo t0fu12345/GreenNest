@@ -1,65 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import gardenerApi from '../services/gardenerApi';
-
-const FALLBACK_CURATORS = [
-  {
-    name: 'Dr. Elena Vance',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
-    specialization: 'Lead Curator of Tropical Flora & Araceae',
-    bio: 'Over 12 years investigating the Araceae family in Southeast Asian equatorial canopies. Specializes in fenestrated leaf adaptations of Monstera and Philodendron in urban interiors.',
-    experienceYears: 12,
-    contactEmail: 'elena.vance@greennest.vn',
-    biomeBadge: '🌴 Tropical Rainforest'
-  },
-  {
-    name: 'Marcus Thorne',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80',
-    specialization: 'Highland Ecology & Pteridophyte Specialist',
-    bio: 'Forestry graduate leading cloud-forest botanical inquiries. Pioneered aerated moisture-retentive substrate formulations enabling delicate ferns to thrive within air-conditioned rooms.',
-    experienceYears: 9,
-    contactEmail: 'marcus.thorne@greennest.vn',
-    biomeBadge: '🌲 Subtropical Highlands'
-  },
-  {
-    name: 'M.Sc. Mai Nguyen',
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
-    specialization: 'Plant Pathology & Bio-Organic Substrates',
-    bio: 'Conducts research on rhizosphere microflora and organic pest balance mechanisms, guaranteeing care safety protocols for environments with young children and pets.',
-    experienceYears: 8,
-    contactEmail: 'mai.nguyen@greennest.vn',
-    biomeBadge: '🔬 Plant Pathology'
-  },
-  {
-    name: 'David Sterling',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80',
-    specialization: 'Succulent Biology & Drought Adaptation Advisor',
-    bio: 'Renowned researcher focusing on Crassulacean Acid Metabolism (CAM) in desert succulents. Develops full-spectrum photoperiod guidelines for desktop succulent cultivation.',
-    experienceYears: 14,
-    contactEmail: 'david.sterling@greennest.vn',
-    biomeBadge: '🏜️ Xerophyte & Succulents'
-  }
-];
 
 const About = () => {
   const [filter, setFilter] = useState('all');
   const [lightboxData, setLightboxData] = useState(null);
   const [gardeners, setGardeners] = useState([]);
   const [loadingGardeners, setLoadingGardeners] = useState(true);
+  const [gardenerError, setGardenerError] = useState('');
 
   useEffect(() => {
     const fetchGardeners = async () => {
       try {
         setLoadingGardeners(true);
+        setGardenerError('');
         const res = await gardenerApi.getGardeners();
         const list = Array.isArray(res?.data) ? res.data : (res?.data?.gardeners || []);
-        if (list && list.length > 0) {
-          setGardeners(list);
-        }
-      } catch (err) {
-        console.warn('Unable to load botanists from MongoDB Atlas, using fallback data:', err.message);
+        setGardeners(list);
+      } catch {
+        setGardeners([]);
+        setGardenerError('Unable to load botanists from the database.');
       } finally {
         setLoadingGardeners(false);
       }
@@ -67,7 +28,7 @@ const About = () => {
     fetchGardeners();
   }, []);
 
-  const displayGardeners = gardeners.length > 0 ? gardeners : FALLBACK_CURATORS;
+  const displayGardeners = gardeners;
 
   const openLightbox = (src, title, desc) => {
     setLightboxData({ src, title, desc });
@@ -210,6 +171,9 @@ const About = () => {
           </p>
         </div>
 
+        {loadingGardeners && <p>Loading botanists...</p>}
+        {gardenerError && <p role="alert">{gardenerError}</p>}
+        {!loadingGardeners && !gardenerError && displayGardeners.length === 0 && <p>No botanist profiles are available.</p>}
         <div className="botanists-grid">
           {displayGardeners.map((curator, idx) => {
             const badges = [

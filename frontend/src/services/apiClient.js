@@ -13,7 +13,7 @@ const apiClient = axios.create({
 // Request Interceptor: Automatically attach JWT Bearer Token
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('greennest_token') || localStorage.getItem('token');
+    const token = localStorage.getItem('greennest_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

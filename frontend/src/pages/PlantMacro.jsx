@@ -26,7 +26,7 @@ const normalizePlantTelemetry = (raw, staticFallback = {}) => {
     biome,
     biomeLabel: biome.toUpperCase(),
     image: p.images?.[0]?.url || s.image || 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1200&q=80',
-    notifMsg: s.notifMsg || `${name} telemetry readings are running within nominal baseline parameters on MongoDB Atlas.`,
+    notifMsg: s.notifMsg || `${name} telemetry readings are running within nominal baseline parameters.`,
     
     // Macro 1: Water
     waterVal: s.waterVal || (p.watering?.toLowerCase().includes('daily') ? '150 ml' : '350 ml'),
@@ -95,7 +95,7 @@ const PlantMacro = () => {
     fetchCatalog();
   }, []);
 
-  // Fetch Live Plant Telemetry from Atlas
+  // Fetch live plant telemetry from the GreenNest API
   const fetchPlantTelemetry = useCallback(async () => {
     const staticFallback = BOTANICAL_SPECIMENS[targetId] || null;
     try {
@@ -108,7 +108,7 @@ const PlantMacro = () => {
         setPlant(normalizePlantTelemetry(null, staticFallback));
       }
     } catch (err) {
-      console.warn('Cannot fetch live telemetry from Atlas, using static fallback:', err.message);
+      console.warn('Cannot fetch live telemetry from the database:', err.message);
       if (staticFallback) {
         setPlant(normalizePlantTelemetry(null, staticFallback));
       }

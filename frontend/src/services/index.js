@@ -2,6 +2,7 @@ export { default as apiClient } from './apiClient';
 export { default as authApi } from './authApi';
 export { default as plantApi } from './plantApi';
 export { default as gardenApi } from './gardenApi';
+export { default as personalCollectionApi } from './personalCollectionApi';
 export { default as galleryApi } from './galleryApi';
 export { default as collectionApi } from './collectionApi';
 export { default as gardenerApi } from './gardenerApi';

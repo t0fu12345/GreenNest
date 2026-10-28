@@ -1,7 +1,13 @@
-const app = require('../src/server');
-const seedPlants = require('../../database/seedData/plants.json');
+require('dotenv').config();
+const { validateTestDatabaseUri } = require('./utils/testDatabaseGuard');
+const mongoose = require('mongoose');
+const { resetTestDatabase, clearTestDatabase } = require('./utils/testFixtures');
 
-const BASE_URL = 'http://localhost:5000/api';
+process.env.NODE_ENV = 'test';
+process.env.MONGO_URI = validateTestDatabaseUri(process.env.MONGO_URI, process.env.MONGO_TEST_URI);
+const app = require('../src/server');
+
+let BASE_URL;
 
 let server;
 
@@ -10,12 +16,22 @@ async function ensureServerRunning() {
     await fetch(`${BASE_URL}/health`);
   } catch (error) {
     try {
-      server = await app.startServer(5000);
+      server = await app.startServer(0);
+      BASE_URL = `http://127.0.0.1:${server.address().port}/api`;
+      await resetTestDatabase();
       console.log('📡 Test runner started Express server on port 5000');
     } catch (startError) {
       if (startError.code !== 'EADDRINUSE') throw startError;
     }
   }
+}
+
+async function cleanup() {
+  await clearTestDatabase();
+  if (server?.listening) {
+    await new Promise((resolve) => server.close(resolve));
+  }
+  await mongoose.disconnect();
 }
 
 async function runTests() {
@@ -95,7 +111,7 @@ async function runTests() {
     const resPlants = await fetch(`${BASE_URL}/plants?limit=6`);
     const plantsData = await resPlants.json();
     assert(resPlants.status === 200 && plantsData.data.length === 6, 'GET /api/plants paginates 6 items');
-    assert(plantsData.pagination.totalItems === seedPlants.length, `Total catalog specimens matches seed data (Count: ${plantsData.pagination.totalItems})`);
+    assert(plantsData.pagination.totalItems > 0, `Local test catalog contains botanical specimens (Count: ${plantsData.pagination.totalItems})`);
 
     const firstPlant = plantsData.data[0];
     const resDetail = await fetch(`${BASE_URL}/plants/${firstPlant._id}`);
@@ -106,17 +122,53 @@ async function runTests() {
     const relatedData = await resRelated.json();
     assert(resRelated.status === 200 && Array.isArray(relatedData.data), 'GET /api/plants/:id/related returns affiliated species');
 
+    const resCreatePersonalCollection = await fetch(`${BASE_URL}/personal-collections`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userToken}`
+      },
+      body: JSON.stringify({ name: 'My Atlas Plants', description: 'Integration fixture' })
+    });
+    const personalCollectionData = await resCreatePersonalCollection.json();
+    assert(resCreatePersonalCollection.status === 201, 'User creates a personal collection');
+
+    const personalCollectionId = personalCollectionData.data._id;
+    const resAddPersonalPlant = await fetch(`${BASE_URL}/personal-collections/${personalCollectionId}/plants`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userToken}`
+      },
+      body: JSON.stringify({ plantId: firstPlant._id })
+    });
+    const addedPersonalPlantData = await resAddPersonalPlant.json();
+    assert(
+      resAddPersonalPlant.status === 200 && addedPersonalPlantData.data.plants.length === 1,
+      'User saves a published plant to their personal collection'
+    );
+
+    const resOwnerIsolation = await fetch(`${BASE_URL}/personal-collections/${personalCollectionId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminToken}`
+      },
+      body: JSON.stringify({ name: 'Not owned by admin' })
+    });
+    assert(resOwnerIsolation.status === 404, 'Personal collections are isolated by owner');
+
     // 5. Gardeners Module
     console.log('\n▶ [5/10] Botanists & Gardeners Module');
     const resGardeners = await fetch(`${BASE_URL}/gardeners`);
     const gardenersData = await resGardeners.json();
-    assert(resGardeners.status === 200 && gardenersData.data.length === 4, 'GET /api/gardeners returns 4 master botanists');
+    assert(resGardeners.status === 200 && gardenersData.data.length > 0, 'GET /api/gardeners returns fixture botanists');
 
     // 6. Collections Module
     console.log('\n▶ [6/10] Curated Seasonal Collections Module');
     const resCollections = await fetch(`${BASE_URL}/collections`);
     const collectionsData = await resCollections.json();
-    assert(resCollections.status === 200 && collectionsData.data.length === 4, 'GET /api/collections returns 4 seasonal collections');
+    assert(resCollections.status === 200 && collectionsData.data.length > 0, 'GET /api/collections returns fixture collections');
 
     // 7. Gallery Module - Lightbox & Likes
     console.log('\n▶ [7/10] Botanical Gallery Module');
@@ -213,10 +265,10 @@ async function runTests() {
     });
     const adminStatsData = await resAdminStats.json();
     assert(resAdminStats.status === 200, 'Admin retrieves Dashboard statistics successfully');
-    assert(adminStatsData.data.totalPlants === seedPlants.length, `Dashboard: ${adminStatsData.data.totalPlants} botanical plants`);
-    assert(adminStatsData.data.totalGardeners === 4, `Dashboard: ${adminStatsData.data.totalGardeners} master botanists`);
-    assert(adminStatsData.data.totalCollections === 4, `Dashboard: ${adminStatsData.data.totalCollections} curated collections`);
-    assert(adminStatsData.data.totalGalleryImages === 20, `Dashboard: ${adminStatsData.data.totalGalleryImages} gallery photographs`);
+    assert(adminStatsData.data.totalPlants === plantsData.pagination.totalItems, `Dashboard: ${adminStatsData.data.totalPlants} botanical plants`);
+    assert(adminStatsData.data.totalGardeners === gardenersData.data.length, `Dashboard: ${adminStatsData.data.totalGardeners} master botanists`);
+    assert(adminStatsData.data.totalCollections === collectionsData.data.length, `Dashboard: ${adminStatsData.data.totalCollections} curated collections`);
+    assert(adminStatsData.data.totalGalleryImages === galleryData.pagination.totalItems, `Dashboard: ${adminStatsData.data.totalGalleryImages} gallery photographs`);
     assert(typeof adminStatsData.data.publishedPlants === 'number', 'Dashboard exposes published plant count');
     assert(typeof adminStatsData.data.draftPlants === 'number', 'Dashboard exposes draft plant count');
     assert(typeof adminStatsData.data.totalAccounts === 'number', 'Dashboard exposes total account count');
@@ -368,17 +420,19 @@ async function runTests() {
     }
     console.log('========================================================\n');
 
-    if (server && server.listening) {
-      server.close();
-    }
+    await cleanup();
     process.exit(failed === 0 ? 0 : 1);
   } catch (error) {
     console.error('💥 Exception during test execution:', error);
-    if (server && server.listening) {
-      server.close();
-    }
+    await cleanup().catch(() => {});
     process.exit(1);
   }
 }
 
-setTimeout(runTests, 1000);
+setTimeout(() => {
+  runTests().catch(async (error) => {
+    console.error('API test setup failed:', error.message);
+    await cleanup().catch(() => {});
+    process.exit(1);
+  });
+}, 1000);

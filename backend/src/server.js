@@ -41,6 +41,7 @@ app.use('/api/plants', require('./modules/plant/plant.routes'));
 app.use('/api/garden', require('./modules/user/garden.routes'));
 app.use('/api/gardeners', require('./modules/gardener/gardener.routes'));
 app.use('/api/collections', require('./modules/collection/collection.routes'));
+app.use('/api/personal-collections', require('./modules/personalCollection/personalCollection.routes'));
 app.use('/api/gallery', require('./modules/gallery/gallery.routes'));
 app.use('/api/contact', require('./modules/contact/contact.routes'));
 app.use('/api/admin', require('./modules/admin/admin.routes'));
@@ -54,8 +55,8 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 let server;
 
-const startServer = async (port = PORT) => {
-  await connectDB();
+const startServer = async (port = PORT, connect = connectDB) => {
+  await connect();
 
   return new Promise((resolve, reject) => {
     const listeningServer = app.listen(port, () => {
