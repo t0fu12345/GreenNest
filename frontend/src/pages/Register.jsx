@@ -8,7 +8,6 @@ const Register = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
-  const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(true);
@@ -33,6 +32,11 @@ const Register = () => {
       return;
     }
 
+    if (name.trim().length < 2) {
+      showNotification('Full name must be at least 2 characters.', 'error');
+      return;
+    }
+
     if (password.length < 6) {
       showNotification('Password must be at least 6 characters for security.', 'error');
       return;
@@ -46,7 +50,6 @@ const Register = () => {
     setSubmitting(true);
     const result = await register({
       name,
-      nickname,
       email,
       password
     });
@@ -63,7 +66,7 @@ const Register = () => {
   };
 
   return (
-    <>
+    <div className="auth-page-shell">
       {/* Background Nature Layers with Cinematic Vignette Fade */}
       <div className="nature-bg-layer"></div>
       <div className="nature-fade-overlay"></div>
@@ -109,24 +112,10 @@ const Register = () => {
                 className="input-field" 
                 placeholder="e.g. Alex Morgan" 
                 required 
+                minLength={2}
                 value={name}
                 onChange={(e) => setName(e.target.value)} 
                 autoComplete="name"
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="regNickname" className="form-label">Username / Nickname (for login)</label>
-            <div className="input-wrapper">
-              <input 
-                type="text" 
-                id="regNickname" 
-                className="input-field" 
-                placeholder="e.g. alexmorgan or botanist" 
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)} 
-                autoComplete="username"
               />
             </div>
           </div>
@@ -168,7 +157,7 @@ const Register = () => {
                 title="Toggle password visibility"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8 -4 8 -11 8 -11-8z"></path>
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
               </button>
@@ -222,7 +211,7 @@ const Register = () => {
       <div className="auth-page-credits">
         © 2026 The Living Canopy & GreenNest Consortium. All rights reserved.
       </div>
-    </>
+    </div>
   );
 };
 

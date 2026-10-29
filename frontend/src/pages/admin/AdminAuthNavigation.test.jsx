@@ -38,7 +38,7 @@ describe('admin authentication navigation', () => {
     vi.spyOn(AuthContext, 'useAuth').mockReturnValue({ login, isAuthenticated: false, isAdmin: false, user: null });
     const user = userEvent.setup();
     render(<MemoryRouter initialEntries={['/login']}><Routes><Route path="/login" element={<Login />} /><Route path={path} element={<div>{destination}</div>} /></Routes></MemoryRouter>);
-    await user.type(screen.getByLabelText(/Your Nickname/i), 'greennest');
+    await user.type(screen.getByLabelText(/Email Address/i), 'member@example.com');
     await user.type(screen.getByLabelText(/^Password/i), 'secret123');
     await user.click(screen.getByRole('button', { name: /Sign In to Sanctuary/i }));
     await waitFor(() => expect(screen.getByText(destination)).toBeInTheDocument(), { timeout: 2500 });

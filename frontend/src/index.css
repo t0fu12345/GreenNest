@@ -5335,17 +5335,19 @@
       padding: 0;
     }
 
-    body {
+    .auth-page-shell {
       background-color: var(--bg-dark);
       color: var(--text-primary);
       font-family: var(--font-sans);
       min-height: 100vh;
+      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       position: relative;
       overflow-x: hidden;
+      overflow-y: auto;
       padding: 30px 20px;
     }
 
@@ -5787,17 +5789,19 @@
       padding: 0;
     }
 
-    body {
+    .auth-page-shell {
       background-color: var(--bg-dark);
       color: var(--text-primary);
       font-family: var(--font-sans);
       min-height: 100vh;
+      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       position: relative;
       overflow-x: hidden;
+      overflow-y: auto;
       padding: 40px 20px;
     }
 
@@ -9656,6 +9660,19 @@
 .login-status-toast,
 .biome-radio-label {
   border-radius: 0px !important;
+}
+
+/* Keep authentication cards reachable when the viewport is short, such as
+   mobile landscape, split-screen windows, or a browser with docked tools. */
+@media (max-height: 900px) {
+  .auth-page-shell {
+    justify-content: flex-start;
+    padding-top: 88px;
+  }
+
+  .auth-page-shell .auth-container {
+    flex-shrink: 0;
+  }
 }
 
 /* ==========================================================================
