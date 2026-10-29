@@ -15,7 +15,7 @@ const Login = () => {
   const [isToastActive, setIsToastActive] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // If user previously checked remember me, prefill remembered nickname (if available)
+  // If user previously checked remember me, prefill the remembered email.
   useEffect(() => {
     try {
       const remembered = localStorage.getItem(STORAGE_KEYS.REMEMBERED_EMAIL);
@@ -37,7 +37,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!identifier.trim() || !password.trim()) {
-      showNotification('Please enter both your Nickname (or Email) and Password.', 'error');
+      showNotification('Please enter both your Email Address and Password.', 'error');
 
       return;
     }
@@ -66,7 +66,7 @@ const Login = () => {
 
 
   return (
-    <>
+    <div className="auth-page-shell">
       {/* Background Nature Layers with Cinematic Vignette Fade */}
       <div className="nature-bg-layer"></div>
       <div className="nature-fade-overlay"></div>
@@ -100,17 +100,17 @@ const Login = () => {
         </div>
 
 
-        {/* Nickname & Password Form */}
+        {/* Email & Password Form */}
         <form className="auth-form" id="loginForm" onSubmit={handleLogin}>
           
           <div className="form-group">
-            <label htmlFor="loginNickname" className="form-label">Your Nickname</label>
+            <label htmlFor="loginEmail" className="form-label">Email Address</label>
             <div className="input-wrapper">
               <input 
                 type="text" 
-                id="loginNickname" 
-                className="input-field" 
-                placeholder="e.g. admin or minhthao" 
+                id="loginEmail"
+                className="input-field"
+                placeholder="you@domain.com"
                 required 
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)} 
@@ -142,7 +142,7 @@ const Login = () => {
                 title="Toggle password visibility"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8 -4 8 -11 8 -11-8z"></path>
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
               </button>
@@ -196,7 +196,7 @@ const Login = () => {
       <div className="auth-page-credits">
         © 2026 The Living Canopy & GreenNest Consortium. All rights reserved.
       </div>
-    </>
+    </div>
   );
 };
 

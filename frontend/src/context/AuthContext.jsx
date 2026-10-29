@@ -198,9 +198,12 @@ export const AuthProvider = ({ children }) => {
       } catch (apiErr) {
         console.warn('Backend register attempt failed:', apiErr);
         if (apiErr.status) {
+          const fieldMessage = Array.isArray(apiErr.details)
+            ? apiErr.details.find(detail => detail?.message)?.message
+            : null;
           return {
             success: false,
-            message: apiErr.message || 'Registration failed on server.'
+            message: fieldMessage || apiErr.message || 'Registration failed on server.'
           };
         }
         return {

@@ -1,4 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { useState } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthProvider, useAuth } from './AuthContext';
 import authApi from '../services/authApi';
@@ -14,6 +16,30 @@ vi.mock('../services/authApi', () => ({
 const Probe = () => {
   const { isAuthenticated, loading } = useAuth();
   return <div>{loading ? 'loading' : isAuthenticated ? 'authenticated' : 'signed-out'}</div>;
+};
+
+const RegisterProbe = () => {
+  const { register } = useAuth();
+  const [message, setMessage] = useState('');
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={async () => {
+          const result = await register({
+            name: 'Q',
+            email: 'q@example.com',
+            password: 'secret123',
+          });
+          setMessage(result.message);
+        }}
+      >
+        Register probe
+      </button>
+      <span>{message}</span>
+    </>
+  );
 };
 
 describe('AuthProvider Atlas-only session restoration', () => {
@@ -56,5 +82,24 @@ describe('AuthProvider Atlas-only session restoration', () => {
 
     await waitFor(() => expect(screen.getByText('authenticated')).toBeInTheDocument());
     expect(authApi.getMe).toHaveBeenCalledOnce();
+  });
+
+  it('returns the first field-level registration error from the API', async () => {
+    authApi.register.mockRejectedValue({
+      status: 422,
+      message: 'Registration validation failed',
+      details: [{
+        field: 'fullName',
+        message: 'Full name is required and must be at least 2 characters',
+      }],
+    });
+    const user = userEvent.setup();
+
+    render(<AuthProvider><RegisterProbe /></AuthProvider>);
+    await user.click(screen.getByRole('button', { name: /register probe/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Full name is required and must be at least 2 characters')).toBeInTheDocument();
+    });
   });
 });
