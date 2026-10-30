@@ -16,6 +16,7 @@ import Contact from './pages/Contact';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
+import ChatbotWidget from './components/chatbot/ChatbotWidget';
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
             } 
           />
         </Routes>
+        <ChatbotWidget />
       </Router>
     </AuthProvider>
   );
