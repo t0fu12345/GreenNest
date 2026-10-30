@@ -1,10 +1,230 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import gardenApi from '../services/gardenApi';
 import plantApi from '../services/plantApi';
 import { toPlantViewModel, toPlantViewModels } from '../utils/plantAdapter';
+
+// Custom Botanical Combobox Dropdown
+const PlantSelectCombobox = ({ catalog, existingIds, selectedId, onSelect }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const dropdownRef = useRef(null);
+
+  // Available plants not yet added to the user's sanctuary
+  const availablePlants = useMemo(() => {
+    return catalog.filter(p => !existingIds.has(p._id));
+  }, [catalog, existingIds]);
+
+  // Filtered by search query
+  const filteredPlants = useMemo(() => {
+    if (!search.trim()) return availablePlants;
+    const q = search.toLowerCase();
+    return availablePlants.filter(p =>
+      p.name?.toLowerCase().includes(q) ||
+      p.scientificName?.toLowerCase().includes(q) ||
+      p.category?.toLowerCase().includes(q)
+    );
+  }, [availablePlants, search]);
+
+  const selectedPlant = useMemo(() => {
+    return catalog.find(p => p._id === selectedId);
+  }, [catalog, selectedId]);
+
+  // Click outside listener to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={dropdownRef} style={{ position: 'relative', flex: 1, minWidth: 280 }}>
+      {/* Trigger Bar */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 12,
+          background: 'rgba(7, 16, 11, 0.9)',
+          border: isOpen ? '1px solid #22c55e' : '1px solid rgba(34, 197, 94, 0.35)',
+          borderRadius: 14,
+          padding: '10px 16px',
+          color: selectedPlant ? '#ffffff' : '#94a3b8',
+          fontSize: '0.92rem',
+          cursor: 'pointer',
+          textAlign: 'left',
+          boxShadow: isOpen ? '0 0 20px rgba(34, 197, 94, 0.22)' : 'none',
+          transition: 'all 0.25s ease'
+        }}
+      >
+        {selectedPlant ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, overflow: 'hidden' }}>
+            <img
+              src={selectedPlant.image}
+              alt={selectedPlant.name}
+              style={{ width: 34, height: 34, borderRadius: 8, objectFit: 'cover', background: '#0a1610' }}
+            />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontWeight: 600, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {selectedPlant.name}
+              </div>
+              {selectedPlant.scientificName && (
+                <div style={{ fontSize: '0.75rem', color: '#86efac', fontStyle: 'italic', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {selectedPlant.scientificName}
+                </div>
+              )}
+            </div>
+            {selectedPlant.category && (
+              <span style={{ fontSize: '0.7rem', padding: '2px 8px', borderRadius: 9999, background: 'rgba(34, 197, 94, 0.15)', color: '#86efac', border: '1px solid rgba(34, 197, 94, 0.3)' }}>
+                {selectedPlant.category}
+              </span>
+            )}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#94a3b8' }}>
+            <span style={{ fontSize: '1.1rem' }}>🌿</span>
+            <span>Choose a botanical specimen to cultivate...</span>
+          </div>
+        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {selectedPlant && (
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelect('');
+              }}
+              title="Clear selection"
+              style={{ padding: '2px 6px', borderRadius: 9999, background: 'rgba(255,255,255,0.1)', color: '#94a3b8', fontSize: '0.75rem' }}
+            >
+              ✕
+            </span>
+          )}
+          <span style={{ fontSize: '0.75rem', color: '#86efac', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>
+            ▼
+          </span>
+        </div>
+      </button>
+
+      {/* Custom Animated Popup Panel */}
+      {isOpen && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 8px)',
+            left: 0,
+            right: 0,
+            zIndex: 999,
+            background: 'rgba(8, 20, 14, 0.98)',
+            backdropFilter: 'blur(24px)',
+            border: '1px solid rgba(34, 197, 94, 0.4)',
+            borderRadius: 18,
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.75), 0 0 25px rgba(34, 197, 94, 0.15)',
+            padding: '12px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8
+          }}
+        >
+          {/* Search Box */}
+          <div style={{ position: 'relative' }}>
+            <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#86efac', fontSize: '0.85rem' }}>
+              🔍
+            </span>
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search by name, scientific, or category..."
+              autoFocus
+              style={{
+                width: '100%',
+                background: 'rgba(5, 12, 8, 0.9)',
+                border: '1px solid rgba(34, 197, 94, 0.25)',
+                borderRadius: 10,
+                padding: '9px 12px 9px 34px',
+                color: '#ffffff',
+                fontSize: '0.86rem',
+                outline: 'none'
+              }}
+            />
+          </div>
+
+          {/* Plant Options List */}
+          <div style={{ maxHeight: 280, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 4, paddingRight: 4 }}>
+            {filteredPlants.length === 0 ? (
+              <div style={{ padding: '24px 12px', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>
+                No available specimens match your search.
+              </div>
+            ) : (
+              filteredPlants.map(plant => (
+                <div
+                  key={plant._id}
+                  onClick={() => {
+                    onSelect(plant._id);
+                    setIsOpen(false);
+                    setSearch('');
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    padding: '8px 12px',
+                    borderRadius: 12,
+                    cursor: 'pointer',
+                    background: selectedId === plant._id ? 'rgba(34, 197, 94, 0.2)' : 'transparent',
+                    border: selectedId === plant._id ? '1px solid #22c55e' : '1px solid transparent',
+                    transition: 'all 0.18s ease'
+                  }}
+                  onMouseEnter={e => {
+                    if (selectedId !== plant._id) {
+                      e.currentTarget.style.background = 'rgba(34, 197, 94, 0.12)';
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (selectedId !== plant._id) {
+                      e.currentTarget.style.background = 'transparent';
+                    }
+                  }}
+                >
+                  <img
+                    src={plant.image}
+                    alt={plant.name}
+                    style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'cover', background: '#0a1610' }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, color: '#ffffff', fontSize: '0.92rem' }}>
+                      {plant.name}
+                    </div>
+                    {plant.scientificName && (
+                      <div style={{ fontSize: '0.76rem', color: '#86efac', fontStyle: 'italic' }}>
+                        {plant.scientificName}
+                      </div>
+                    )}
+                  </div>
+                  {plant.category && (
+                    <span style={{ fontSize: '0.7rem', padding: '3px 8px', borderRadius: 9999, background: 'rgba(34, 197, 94, 0.1)', color: '#86efac', border: '1px solid rgba(34, 197, 94, 0.25)', whiteSpace: 'nowrap' }}>
+                      {plant.category}
+                    </span>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const AtlasGarden = () => {
   const navigate = useNavigate();
@@ -151,7 +371,7 @@ const AtlasGarden = () => {
           </p>
         )}
 
-        {/* Redesigned Add Plant Form Card */}
+        {/* Custom Botanical Specimen Selection Form */}
         <section
           style={{
             background: 'rgba(14, 30, 22, 0.75)',
@@ -168,40 +388,20 @@ const AtlasGarden = () => {
               <span>🌱</span> Add New Specimen to Sanctuary
             </h2>
             <p style={{ color: '#94a3b8', fontSize: '0.88rem', margin: 0 }}>
-              Select from available botanical species in the catalog to begin tracking its watering and microclimate care.
+              Search and select from curated botanical species in the catalog to track watering and microclimate telemetry.
             </p>
           </div>
 
           <form onSubmit={addPlant} style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-            <div style={{ position: 'relative', flex: 1, minWidth: 260 }}>
-              <select
-                value={selectedPlant}
-                onChange={event => setSelectedPlant(event.target.value)}
-                style={{
-                  width: '100%',
-                  background: 'rgba(7, 16, 11, 0.85)',
-                  border: '1px solid rgba(34, 197, 94, 0.35)',
-                  borderRadius: 12,
-                  padding: '13px 18px',
-                  color: selectedPlant ? '#ffffff' : '#94a3b8',
-                  fontSize: '0.95rem',
-                  outline: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                <option value="" style={{ background: '#0a1610', color: '#94a3b8' }}>
-                  Choose a botanical specimen to cultivate...
-                </option>
-                {catalog
-                  .filter(plant => !existingIds.has(plant._id))
-                  .map(plant => (
-                    <option key={plant._id} value={plant._id} style={{ background: '#0a1610', color: '#ffffff' }}>
-                      {plant.name} {plant.scientificName ? `(${plant.scientificName})` : ''} — {plant.category || 'Foliage'}
-                    </option>
-                  ))}
-              </select>
-            </div>
+            {/* Custom Interactive Combobox */}
+            <PlantSelectCombobox
+              catalog={catalog}
+              existingIds={existingIds}
+              selectedId={selectedPlant}
+              onSelect={setSelectedPlant}
+            />
 
+            {/* Submit Action Button */}
             <button
               type="submit"
               disabled={!selectedPlant}
@@ -213,14 +413,15 @@ const AtlasGarden = () => {
                 fontWeight: 700,
                 fontSize: '0.92rem',
                 padding: '13px 28px',
-                borderRadius: 12,
+                borderRadius: 14,
                 border: 'none',
                 cursor: selectedPlant ? 'pointer' : 'not-allowed',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
                 boxShadow: selectedPlant ? '0 4px 18px rgba(16, 185, 129, 0.35)' : 'none',
-                transition: 'all 0.25s ease'
+                transition: 'all 0.25s ease',
+                height: 48
               }}
             >
               <span>🌱</span>
