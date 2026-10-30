@@ -174,7 +174,7 @@ class ChatbotService {
   }
 
   /**
-   * Main reply generator using Gemini 1.5 Flash (with fallback)
+   * Main reply generator using Gemini 2.5 Flash (with fallback)
    */
   async generateReply({ message = '', image = null, history = [] }) {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -239,7 +239,7 @@ ${catalogContext}
         }
       };
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestPayload)

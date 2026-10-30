@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: require('path').join(__dirname, '../.env') });
 
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middlewares/errorHandler.middleware');
