@@ -3,7 +3,9 @@ const generateToken = require('../../utils/generateToken');
 
 class AuthService {
   async register({ fullName, email, password }) {
-    const userExists = await User.findOne({ email });
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const cleanName = (fullName || '').trim();
+    const userExists = await User.findOne({ email: cleanEmail });
     if (userExists) {
       const error = new Error('This email address is already registered in the system');
       error.statusCode = 409;
@@ -12,8 +14,8 @@ class AuthService {
     }
 
     const user = await User.create({
-      fullName,
-      email,
+      fullName: cleanName,
+      email: cleanEmail,
       password
     });
 
@@ -32,7 +34,8 @@ class AuthService {
   }
 
   async login({ email, password }) {
-    const user = await User.findOne({ email }).select('+password');
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const user = await User.findOne({ email: cleanEmail }).select('+password');
     if (!user) {
       const error = new Error('Invalid email or password');
       error.statusCode = 401;

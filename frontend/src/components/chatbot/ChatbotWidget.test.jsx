@@ -43,7 +43,7 @@ describe('ChatbotWidget Component', () => {
   it('sends user message, calls chatbotApi, and renders bot response with plant cards', async () => {
     const user = userEvent.setup();
     const mockReply = {
-      reply: 'Lá cây bị vàng là do thừa nước.',
+      reply: 'Yellow leaves are usually caused by overwatering.',
       suggestedPlants: [
         {
           _id: 'plant-1',
@@ -62,14 +62,14 @@ describe('ChatbotWidget Component', () => {
     renderWidget();
     await user.click(screen.getByRole('button', { name: /ask ai botanist/i }));
 
-    const input = screen.getByPlaceholderText(/hỏi về chăm sóc cây, chẩn đoán bệnh/i);
-    await user.type(input, 'Tại sao cây bị vàng lá?');
-    await user.click(screen.getByRole('button', { name: /gửi tin nhắn/i }));
+    const input = screen.getByPlaceholderText(/ask about plant care, diagnosis/i);
+    await user.type(input, 'Why are my plant leaves turning yellow?');
+    await user.click(screen.getByRole('button', { name: /send message/i }));
 
-    expect(screen.getByText('Tại sao cây bị vàng lá?')).toBeInTheDocument();
+    expect(screen.getByText('Why are my plant leaves turning yellow?')).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByText(/Lá cây bị vàng là do thừa nước/i)).toBeInTheDocument();
+      expect(screen.getByText(/Yellow leaves are usually caused by overwatering/i)).toBeInTheDocument();
       expect(screen.getByText('Snake Plant')).toBeInTheDocument();
     });
   });

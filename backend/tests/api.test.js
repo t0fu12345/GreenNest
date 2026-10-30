@@ -422,7 +422,7 @@ async function runTests() {
     const resBotCare = await fetch(`${BASE_URL}/chatbot/message`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Tư vấn cách tưới cây lưỡi hổ' })
+      body: JSON.stringify({ message: 'How often should I water my Snake Plant?' })
     });
     const botCareData = await resBotCare.json();
     assert(resBotCare.status === 200 && botCareData.success === true, 'POST /api/chatbot/message returns 200 OK');
@@ -433,7 +433,7 @@ async function runTests() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: 'Lá cây bị đốm nâu',
+        message: 'My plant leaves have brown spots',
         image: {
           data: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP...',
           mimeType: 'image/jpeg'
