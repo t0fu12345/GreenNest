@@ -11,7 +11,7 @@ describe('chatbotApi Service', () => {
     const mockResponse = {
       success: true,
       data: {
-        reply: 'Cây của bạn có dấu hiệu thiếu nước',
+        reply: 'Your plant shows symptoms of underwatering.',
         suggestedPlants: [],
         source: 'fallback'
       }
@@ -20,7 +20,7 @@ describe('chatbotApi Service', () => {
     const postSpy = vi.spyOn(apiClient, 'post').mockResolvedValueOnce(mockResponse);
 
     const result = await chatbotApi.sendMessage({
-      message: 'Lá cây bị héo',
+      message: 'Wilting foliage symptom',
       image: null,
       history: []
     });
@@ -28,7 +28,7 @@ describe('chatbotApi Service', () => {
     expect(postSpy).toHaveBeenCalledWith(
       '/chatbot/message',
       {
-        message: 'Lá cây bị héo',
+        message: 'Wilting foliage symptom',
         image: null,
         history: []
       },

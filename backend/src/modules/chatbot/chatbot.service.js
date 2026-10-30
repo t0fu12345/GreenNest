@@ -1,70 +1,70 @@
 const mongoose = require('mongoose');
 const Plant = require('../plant/plant.model');
 
-// Bilingual dictionary mapping Vietnamese botanical terms to GreenNest English catalog names
+// Bilingual dictionary mapping botanical terms to GreenNest catalog names
 const BILINGUAL_PLANT_MAP = [
-  { keywords: ['lưỡi hổ', 'luoi ho', 'snake plant', 'sansevieria', 'dracaena'], catalogName: 'Snake Plant' },
-  { keywords: ['trầu bà', 'trau ba', 'lá xẻ', 'la xe', 'monstera', 'swiss cheese'], catalogName: 'Swiss Cheese Plant' },
-  { keywords: ['lan ý', 'lan y', 'huệ hòa bình', 'peace lily', 'spathiphyllum'], catalogName: 'Peace Lily Plant' },
-  { keywords: ['sen đá', 'sen da', 'xương rồng', 'xuong rong', 'agave'], catalogName: 'Agave' },
-  { keywords: ['sứ sa mạc', 'hoa sứ', 'hoa su', 'desert rose', 'adenium'], catalogName: 'Desert Rose' },
-  { keywords: ['cẩm nhung', 'cam nhung', 'lá gấm', 'caladium', 'môn kiểng', 'heart of jesus'], catalogName: 'Caladium' },
-  { keywords: ['thường xuân', 'thuong xuan', 'english ivy', 'hedera'], catalogName: 'English Ivy' },
-  { keywords: ['cây dù', 'dwarf umbrella', 'schefflera', 'chân chim'], catalogName: 'Dwarf Umbrella Plant' },
-  { keywords: ['hoa đại', 'hoa dai', 'sứ trắng', 'frangipani', 'plumeria'], catalogName: 'Frangipani' },
-  { keywords: ['thu hải đường', 'thu hai duong', 'begonia'], catalogName: 'Begonia' },
-  { keywords: ['cỏ lưỡi hổ', 'ajuga', 'cỏ giáp thảo'], catalogName: 'Ajuga' },
-  { keywords: ['lá khiên ba tư', 'persian shield', 'strobilanthes'], catalogName: 'Persian Shield' },
-  { keywords: ['tú cầu lá sồi', 'oakleaf hydrangea', 'hydrangea'], catalogName: 'Oakleaf Hydrangea' },
-  { keywords: ['thảo biển', 'armeria', 'sea thrift'], catalogName: 'Armeria' }
+  { keywords: ['snake plant', 'sansevieria', 'dracaena', 'lưỡi hổ', 'luoi ho'], catalogName: 'Snake Plant' },
+  { keywords: ['swiss cheese plant', 'monstera', 'monstera deliciosa', 'trầu bà', 'trau ba', 'lá xẻ', 'la xe'], catalogName: 'Swiss Cheese Plant' },
+  { keywords: ['peace lily', 'peace lily plant', 'spathiphyllum', 'lan ý', 'lan y', 'huệ hòa bình'], catalogName: 'Peace Lily Plant' },
+  { keywords: ['agave', 'succulent', 'cactus', 'sen đá', 'sen da', 'xương rồng'], catalogName: 'Agave' },
+  { keywords: ['desert rose', 'adenium', 'sứ sa mạc', 'hoa sứ', 'hoa su'], catalogName: 'Desert Rose' },
+  { keywords: ['caladium', 'heart of jesus', 'cẩm nhung', 'cam nhung', 'lá gấm', 'môn kiểng'], catalogName: 'Caladium' },
+  { keywords: ['english ivy', 'hedera', 'ivy', 'thường xuân', 'thuong xuan'], catalogName: 'English Ivy' },
+  { keywords: ['dwarf umbrella plant', 'dwarf umbrella', 'schefflera', 'umbrella tree', 'cây dù', 'chân chim'], catalogName: 'Dwarf Umbrella Plant' },
+  { keywords: ['frangipani', 'plumeria', 'hoa đại', 'hoa dai', 'sứ trắng'], catalogName: 'Frangipani' },
+  { keywords: ['begonia', 'thu hải đường', 'thu hai duong'], catalogName: 'Begonia' },
+  { keywords: ['ajuga', 'bugleweed', 'carpet bugle', 'cỏ lưỡi hổ'], catalogName: 'Ajuga' },
+  { keywords: ['persian shield', 'strobilanthes', 'lá khiên ba tư'], catalogName: 'Persian Shield' },
+  { keywords: ['oakleaf hydrangea', 'hydrangea', 'tú cầu lá sồi'], catalogName: 'Oakleaf Hydrangea' },
+  { keywords: ['armeria', 'sea thrift', 'thrift', 'thảo biển'], catalogName: 'Armeria' }
 ];
 
-// Fallback botanical rules when Gemini API is unavailable or offline
+// Fallback botanical rules when Gemini API is unavailable or offline (English)
 const FALLBACK_KNOWLEDGE = [
   {
-    triggers: ['vàng lá', 'vang la', 'yellow leaf', 'yellowing'],
-    title: 'Xử lý triệu chứng vàng lá ở cây trồng',
-    diagnosis: 'Vàng lá là triệu chứng phổ biến nhất ở cây nội thất. Nguyên nhân thường gặp nhất (chiếm 70%) là **thừa nước dẫn đến úng rễ**, tiếp theo là **thiếu ánh sáng** hoặc **thiếu dinh dưỡng (vi lượng sắt, đạm)**.',
+    triggers: ['yellow leaf', 'yellow leaves', 'yellowing', 'chlorosis', 'vàng lá', 'vang la'],
+    title: 'Treating Yellowing Foliage in Indoor Plants',
+    diagnosis: 'Yellow leaves are the most common stress signal in indoor houseplants. The predominant cause (approx. 70%) is **overwatering leading to root rot and oxygen deprivation**, followed by **insufficient natural light** or **micronutrient deficiency (iron, nitrogen)**.',
     actionSteps: [
-      'Kiểm tra độ ẩm đất: Dùng ngón tay hoặc que gỗ cắm sâu 3-5cm vào chậu. Nếu đất còn ướt sũng, ngưng tưới ngay.',
-      'Đảm bảo chậu có lỗ thoát nước tốt, không để nước đọng dưới đĩa lót quá 15 phút sau khi tưới.',
-      'Di chuyển cây đến vị trí có ánh sáng tán xạ nhẹ (cách cửa sổ 1-2m), tránh nắng gắt trực tiếp làm cháy lá.',
-      'Cắt bỏ những lá đã vàng úa hoàn toàn sát gốc cuống để cây dồn sức nuôi chồi mới.'
+      'Check soil moisture: Probe 3–5 cm into the potting mix. If soggy or waterlogged, pause watering immediately.',
+      'Ensure the container has active drainage holes and never allow standing water in the saucer for over 15 minutes.',
+      'Relocate the plant to a spot with bright, indirect daylight (1–2 meters from an unobstructed window).',
+      'Prune severely yellowed or decaying leaves at the stem base with sterile shears to channel energy to new growth.'
     ],
     relatedPlant: 'Snake Plant'
   },
   {
-    triggers: ['đốm nâu', 'dom nau', 'đốm đen', 'cháy lá', 'chay la', 'brown spot', 'leaf spot'],
-    title: 'Chẩn đoán đốm nâu và cháy rìa lá',
-    diagnosis: 'Đốm nâu có quầng vàng xung quanh thường là dấu hiệu của **nhiễm nấm lá hoặc vi khuẩn** do độ ẩm quá cao và không khí bí bách. Nếu rìa lá khô giòn màu nâu thì thường do **không khí quá khô (thiếu độ ẩm)** hoặc **cháy nắng/nước máy có nhiều clo**.',
+    triggers: ['brown spot', 'leaf spot', 'burned leaves', 'crispy edges', 'đốm nâu', 'dom nau', 'đốm đen', 'cháy lá'],
+    title: 'Diagnosing Brown Spots and Crispy Leaf Margins',
+    diagnosis: 'Brown spots surrounded by a yellow halo typically indicate **fungal or bacterial leaf spot infection** caused by overhead moisture and poor air circulation. Dry, crispy leaf edges usually stem from **low ambient humidity**, **excess direct sun**, or **tap water minerals (chlorine/fluoride)**.',
     actionSteps: [
-      'Tránh tưới nước phun trực tiếp lên bề mặt lá vào buổi tối.',
-      'Tăng cường độ thông thoáng gió xung quanh chậu cây.',
-      'Dùng kéo đã khử trùng cồn cắt bỏ phần rìa bị thối hoặc lá bệnh nặng.',
-      'Để nước máy lắng qua đêm trước khi tưới để bay hơi bớt clo và flo.'
+      'Never mist or splash foliage late in the day; keep leaves dry going into the evening.',
+      'Increase gentle air circulation around your plant containers.',
+      'Sterilize shears with rubbing alcohol and prune heavily affected diseased leaves.',
+      'Allow tap water to sit in an open container for 24 hours prior to watering to dissipate chlorine.'
     ],
     relatedPlant: 'Peace Lily Plant'
   },
   {
-    triggers: ['tưới nước', 'tuoi nuoc', 'bao lâu tưới', 'watering', 'water schedule'],
-    title: 'Nguyên tắc tưới nước cho cây nội thất',
-    diagnosis: 'Nguyên tắc vàng: **"Thà để cây chịu hạn một chút còn hơn tưới quá nhiều"**. Đa số các loại cây nội thất thích chu kỳ khô nhẹ giữa hai lần tưới hơn là đất luôn ẩm ướt.',
+    triggers: ['watering', 'water schedule', 'how often to water', 'hydration', 'tưới nước', 'tuoi nuoc'],
+    title: 'Essential Plant Hydration Guidelines',
+    diagnosis: 'Horticultural golden rule: **"It is far safer to underwater than overwater"**. Most indoor flora flourish when allowed a gentle drying interval between deep soakings rather than residing in continuously wet soil.',
     actionSteps: [
-      'Chỉ tưới khi lớp đất bề mặt (2-3cm) đã khô ráo hoàn toàn.',
-      'Tưới đẫm cho đến khi thấy nước chảy ra từ đáy chậu, sau đó đổ bỏ nước thừa ở đĩa hứng.',
-      'Giảm tần suất tưới vào mùa mưa, mùa đông hoặc trong phòng máy lạnh kín.',
-      'Cây mọng nước (xương rồng, sen đá, lưỡi hổ): 2-3 tuần mới tưới một lần.'
+      'Water only when the top 2–3 cm of potting substrate feels completely dry to the touch.',
+      'Soak thoroughly until water streams freely from the base drainage holes, then discard excess tray runoff.',
+      'Reduce watering frequency by 50% during colder winter months or in air-conditioned environments.',
+      'Drought-tolerant specimens (succulents, snake plants, cacti) generally need water only every 2–3 weeks.'
     ],
     relatedPlant: 'Snake Plant'
   },
   {
-    triggers: ['thú cưng', 'thu cung', 'mèo', 'chó', 'meo', 'cho', 'pet', 'toxic'],
-    title: 'Chọn cây cảnh an toàn cho thú cưng (Pet-friendly)',
-    diagnosis: 'Nhiều loài cây họ Ráy (Araceae) như Trầu Bà (Monstera), Vạn Niên Thanh, Lan Ý có chứa tinh thể Canxi Oxalate có thể gây kích ứng khoang miệng và đường tiêu hóa của chó mèo nếu chúng cắn phải.',
+    triggers: ['pet', 'pets', 'cat', 'cats', 'dog', 'dogs', 'toxic', 'poisonous', 'thú cưng', 'mèo', 'chó'],
+    title: 'Pet-Friendly & Non-Toxic Houseplants',
+    diagnosis: 'Many popular Araceae family species (Monstera, Dieffenbachia, Peace Lily) contain insoluble calcium oxalate crystals which can induce mouth pain and digestive upset if ingested by cats or dogs.',
     actionSteps: [
-      'Nên chọn các loài cây an toàn: Dương Xỉ (Ferns), Cây Dây Nhện (Spider Plant), Cọ Lá Tre, Hoa Lan.',
-      'Nếu trồng cây có độc tính nhẹ như Trầu Bà hay Lưỡi Hổ: Hãy đặt trên kệ cao, giá treo hoặc chậu đứng cao ngoài tầm với của thú cưng.',
-      'Quan sát nếu thú cưng có thói quen gặm lá để có biện pháp cách ly an toàn.'
+      'Safe non-toxic recommendations: Boston Ferns, Spider Plants, Calatheas, and Phalaenopsis Orchids.',
+      'If growing mildly toxic species like Monstera or Snake Plant: Position on high pedestals or wall mounts out of reach.',
+      'Deter curious pets by providing pet grass or non-toxic catnip alternatives.'
     ],
     relatedPlant: 'Caladium'
   }
@@ -149,7 +149,7 @@ class ChatbotService {
     let targetPlantName = null;
 
     if (image && !text) {
-      reply = `🌿 **Trợ lý Thực vật GreenNest (Chế độ ngoại tuyến)**\n\nTôi đã nhận được hình ảnh cây của bạn! Hiện tại hệ thống đang chạy ở chế độ ngoại tuyến (chưa kết nối Gemini Vision API).\n\nĐể tôi hỗ trợ tốt nhất, bạn vui lòng **mô tả thêm các triệu chứng** bạn thấy (ví dụ: *lá bị vàng, có đốm nâu, lá bị héo rũ, rệp trắng ở nách lá*) hoặc gõ tên cây để tôi hướng dẫn cách chăm sóc và cứu cây ngay nhé!`;
+      reply = `🌿 **GreenNest AI Botanist (Offline Mode)**\n\nI have received your plant image! The system is currently running in offline fallback mode (Gemini Vision API disconnected).\n\nTo give you the most accurate botanical advice, please **describe any visible symptoms** you notice (e.g., *yellow leaves, brown tips, wilting foliage, webbings, or pests*) or provide the plant's name!`;
     } else {
       // Find matching knowledge rule
       const matchedRule = FALLBACK_KNOWLEDGE.find((rule) =>
@@ -159,9 +159,9 @@ class ChatbotService {
       if (matchedRule) {
         targetPlantName = matchedRule.relatedPlant;
         const stepsFormatted = matchedRule.actionSteps.map((s, idx) => `${idx + 1}. ${s}`).join('\n');
-        reply = `🌿 **${matchedRule.title}**\n\n${matchedRule.diagnosis}\n\n**Các bước xử lý khuyến nghị:**\n${stepsFormatted}\n\n*Nếu bạn có thêm câu hỏi cụ thể về loài cây nào, hãy cho tôi biết nhé!*`;
+        reply = `🌿 **${matchedRule.title}**\n\n${matchedRule.diagnosis}\n\n**Recommended Action Steps:**\n${stepsFormatted}\n\n*If you have specific questions about any specimen, let me know!*`;
       } else {
-        reply = `🌿 **Trợ lý Thực vật GreenNest**\n\nChào bạn! Tôi là chuyên gia chăm sóc cây cảnh GreenNest. Tôi có thể hỗ trợ bạn:\n- Chẩn đoán tình trạng lá vàng, đốm nâu, úng rễ, sâu bệnh.\n- Hướng dẫn chế độ tưới nước, ánh sáng và nhiệt độ thích hợp cho từng loài cây.\n- Gợi ý cây cảnh lọc không khí và an toàn cho gia đình có trẻ nhỏ/thú cưng.\n\n*Bạn hãy mô tả cụ thể tình trạng cây hoặc gửi ảnh chụp để tôi tư vấn chi tiết nhé!*`;
+        reply = `🌿 **GreenNest AI Botanist**\n\nHello! I am your GreenNest botanical care specialist. I can assist you with:\n- Diagnosing yellowing foliage, leaf spots, root rot, and pest infestations.\n- Recommending optimal hydration, light exposure, and humidity for your plants.\n- Finding air-purifying and non-toxic species for homes with children or pets.\n\n*Please describe your plant's symptoms or upload a photo to begin diagnosis!*`;
       }
     }
 
@@ -187,16 +187,16 @@ class ChatbotService {
     try {
       const catalogPlants = await this.findCatalogMatches(message);
       const catalogContext = catalogPlants.map(p => 
-        `- ${p.name} (${p.scientificName}) | Phân loại: ${p.category} | Ánh sáng: ${p.light} | Tưới: ${p.watering} | Độc tính thú cưng: ${p.toxicity?.isToxicToPets ? 'Có độc' : 'An toàn'}`
+        `- ${p.name} (${p.scientificName}) | Category: ${p.category} | Light: ${p.light} | Watering: ${p.watering} | Pet Safety: ${p.toxicity?.isToxicToPets ? 'Toxic' : 'Pet-Friendly'}`
       ).join('\n');
 
-      const systemInstruction = `Bạn là GreenNest Chief Botanist - Chuyên gia thực vật học và chăm sóc cây cảnh thông minh của nền tảng GreenNest.
-Vai trò của bạn:
-1. Tư vấn chăm sóc cây trồng, chẩn đoán bệnh cây qua mô tả triệu chứng hoặc ảnh chụp một cách chuyên nghiệp, tận tâm và khoa học.
-2. Khi người dùng gửi ảnh cây: Hãy quan sát cẩn thận màu sắc lá, thân, dấu hiệu sâu bệnh/úng rễ, nêu tên bệnh hoặc nguyên nhân và đưa ra các bước khắc phục cụ thể theo thứ tự 1, 2, 3.
-3. Khi đề cập đến cây cảnh, hãy ưu tiên liên hệ với các loài cây trong bộ sưu tập GreenNest nếu phù hợp:
+      const systemInstruction = `You are GreenNest Chief Botanist - an expert AI botanist, horticulturist, and plant care specialist on the GreenNest platform.
+Your responsibilities:
+1. Provide caring, scientifically grounded, and actionable plant care advice and disease diagnosis in English based on user symptoms or uploaded photos.
+2. When analyzing plant images: Examine leaf coloration, stem integrity, and signs of pest infestation or root distress. State the diagnosis clearly and outline step-by-step treatment in numbered points (1, 2, 3).
+3. Connect recommendations to GreenNest catalog botanical specimens where appropriate:
 ${catalogContext}
-4. Giữ giọng văn thân thiện, súc tích, định dạng markdown rõ ràng với gạch đầu dòng hoặc in đậm. Trả lời bằng ngôn ngữ người dùng hỏi (chủ yếu là tiếng Việt).`;
+4. Maintain a warm, encouraging, and authoritative tone using structured markdown (bold headings, bullet points). Always respond in clear, professional English.`;
 
       // Build Gemini request payload
       const parts = [];
@@ -211,7 +211,7 @@ ${catalogContext}
         });
       }
 
-      const promptText = message?.trim() || (image ? 'Hãy quan sát ảnh cây này và chẩn đoán tình trạng sức khỏe, tên bệnh và hướng dẫn cách điều trị giúp tôi.' : 'Xin chào');
+      const promptText = message?.trim() || (image ? 'Please examine this plant photograph, diagnose its health condition, identify any pests or diseases, and provide clear step-by-step treatment instructions.' : 'Hello');
       parts.push({ text: promptText });
 
       // Build conversation contents including history

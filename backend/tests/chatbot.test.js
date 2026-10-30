@@ -48,7 +48,7 @@ test('Chatbot Module Unit & Integration Tests', async (t) => {
 
   await t.test('ChatbotService fallback handles general care question in fallback mode', async () => {
     const response = await chatbotService.generateReply({
-      message: 'Cây của tôi bị vàng lá thì phải làm sao?'
+      message: 'Why are the leaves on my indoor plant turning yellow?'
     });
 
     assert.equal(typeof response.reply, 'string');
@@ -57,17 +57,21 @@ test('Chatbot Module Unit & Integration Tests', async (t) => {
     assert.ok(Array.isArray(response.suggestedPlants));
   });
 
-  await t.test('ChatbotService identifies Vietnamese plant keywords for catalog matching', async () => {
-    const matches = chatbotService.matchCatalogKeywords('Tôi muốn tìm hiểu về cây lưỡi hổ và trầu bà');
-    assert.ok(Array.isArray(matches));
-    assert.ok(matches.some(m => m.toLowerCase().includes('snake')));
+  await t.test('ChatbotService identifies plant keywords for catalog matching', async () => {
+    const matchesEn = chatbotService.matchCatalogKeywords('I want to learn about Snake Plant and Monstera');
+    assert.ok(Array.isArray(matchesEn));
+    assert.ok(matchesEn.some(m => m.toLowerCase().includes('snake')));
+
+    const matchesVn = chatbotService.matchCatalogKeywords('Tôi muốn tìm hiểu về cây lưỡi hổ và trầu bà');
+    assert.ok(Array.isArray(matchesVn));
+    assert.ok(matchesVn.some(m => m.toLowerCase().includes('snake')));
   });
 
   await t.test('POST /api/chatbot/message accepts valid message and returns 200 with expected shape', async () => {
     const res = await fetch(`${baseUrl}/message`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Tư vấn giúp tôi cách tưới nước cho cây trong nhà' })
+      body: JSON.stringify({ message: 'Please advise me on optimal watering frequency for indoor foliage.' })
     });
 
     const body = await res.json();
@@ -88,7 +92,7 @@ test('Chatbot Module Unit & Integration Tests', async (t) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: 'Lá cây này có đốm nâu lạ',
+        message: 'My plant leaves show unfamiliar brown spots',
         image: dummyImage
       })
     });

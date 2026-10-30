@@ -5,15 +5,15 @@ import chatbotApi from '../../services/chatbotApi';
 import './ChatbotWidget.css';
 
 const QUICK_PROMPTS = [
-  'Cứu cây bị vàng lá',
-  'Cây nào an toàn cho mèo?',
-  'Cây lọc không khí tốt trong nhà',
-  'Bao lâu nên tưới nước 1 lần?'
+  'How to treat yellow leaves?',
+  'Pet-safe indoor species',
+  'Best air-purifying plants',
+  'How often should I water?'
 ];
 
 const INITIAL_BOT_MESSAGE = {
   role: 'model',
-  text: 'Xin chào! Tôi là **GreenNest AI Botanist** 🌿.\nTôi có thể tư vấn chăm sóc cây trồng, gợi ý cây phù hợp không gian sống hoặc chẩn đoán bệnh qua ảnh chụp lá cây.\n\n*Bạn cần hỗ trợ gì cho khu vườn hôm nay?*',
+  text: 'Hello! I am **GreenNest AI Botanist** 🌿.\nI can provide expert care guidance, suggest ideal specimens for your home, or diagnose plant issues from foliage photos.\n\n*How can I assist your green sanctuary today?*',
   suggestedPlants: [],
   source: 'bot'
 };
@@ -45,7 +45,7 @@ const ChatbotWidget = () => {
     if (!file) return;
 
     if (file.size > 4 * 1024 * 1024) {
-      alert('Vui lòng chọn ảnh có kích thước dưới 4MB.');
+      alert('Please choose an image under 4MB.');
       return;
     }
 
@@ -97,7 +97,7 @@ const ChatbotWidget = () => {
 
       const botReply = {
         role: 'model',
-        text: response?.reply || 'Xin lỗi, hiện tại tôi chưa thể phản hồi câu hỏi này. Bạn vui lòng thử lại nhé!',
+        text: response?.reply || 'I apologize, I am temporarily unable to respond to this inquiry. Please try again!',
         suggestedPlants: response?.suggestedPlants || [],
         source: response?.source || 'gemini'
       };
@@ -108,7 +108,7 @@ const ChatbotWidget = () => {
         ...prev,
         {
           role: 'model',
-          text: `⚠️ **Không thể kết nối đến máy chủ:** ${error.message || 'Vui lòng kiểm tra lại kết nối mạng hoặc thử lại sau.'}`,
+          text: `⚠️ **Unable to connect to server:** ${error.message || 'Please check your connection and try again.'}`,
           suggestedPlants: [],
           source: 'error'
         }
@@ -190,7 +190,7 @@ const ChatbotWidget = () => {
                 <h3 className="gn-chatbot-title">GreenNest AI Botanist</h3>
                 <p className="gn-chatbot-subtitle">
                   <span className="gn-chatbot-status-dot"></span>
-                  Trợ lý Cây cảnh Xanh
+                  Botanical Care Specialist
                 </p>
               </div>
             </div>
@@ -215,7 +215,7 @@ const ChatbotWidget = () => {
                 {msg.image && (
                   <img
                     src={msg.image}
-                    alt="Cây cần chẩn đoán"
+                    alt="Specimen photo"
                     className="gn-chat-msg-image"
                   />
                 )}
@@ -225,7 +225,7 @@ const ChatbotWidget = () => {
 
                 {/* Source indicator for Bot */}
                 {msg.role === 'model' && msg.source === 'fallback' && (
-                  <span className="gn-chat-msg-source">⚡ Chế độ tri thức ngoại tuyến</span>
+                  <span className="gn-chat-msg-source">⚡ Offline Knowledge Mode</span>
                 )}
 
                 {/* Plant Cards if suggested */}
@@ -253,7 +253,7 @@ const ChatbotWidget = () => {
                           className="gn-chat-plant-link"
                           onClick={() => setIsOpen(false)}
                         >
-                          Chi tiết
+                          View Details
                         </Link>
                       </div>
                     ))}
@@ -295,7 +295,7 @@ const ChatbotWidget = () => {
               <div className="gn-chat-preview-wrap">
                 <img
                   src={selectedImage.data}
-                  alt="Ảnh đã chọn"
+                  alt="Selected specimen"
                   className="gn-chat-preview-img"
                 />
                 <span className="gn-chat-preview-name">{selectedImage.name}</span>
@@ -304,7 +304,7 @@ const ChatbotWidget = () => {
                 type="button"
                 className="gn-chat-preview-remove"
                 onClick={handleRemoveImage}
-                title="Bỏ chọn ảnh"
+                title="Remove image"
               >
                 ✕
               </button>
@@ -333,8 +333,8 @@ const ChatbotWidget = () => {
               type="button"
               className="gn-chat-file-btn"
               onClick={() => fileInputRef.current?.click()}
-              title="Đính kèm ảnh cây để chẩn đoán bệnh"
-              aria-label="Đính kèm ảnh cây"
+              title="Attach plant photo for health diagnosis"
+              aria-label="Attach plant photo"
             >
               <Paperclip size={18} />
             </button>
@@ -343,7 +343,7 @@ const ChatbotWidget = () => {
             <input
               type="text"
               className="gn-chat-input"
-              placeholder="Hỏi về chăm sóc cây, chẩn đoán bệnh..."
+              placeholder="Ask about plant care, diagnosis, or upload photo..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -355,7 +355,7 @@ const ChatbotWidget = () => {
               type="submit"
               className="gn-chat-send-btn"
               disabled={loading || (!inputValue.trim() && !selectedImage)}
-              aria-label="Gửi tin nhắn"
+              aria-label="Send message"
             >
               <Send size={16} />
             </button>
