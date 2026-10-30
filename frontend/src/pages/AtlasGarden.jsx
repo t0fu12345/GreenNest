@@ -44,7 +44,7 @@ const PlantSelectCombobox = ({ catalog, existingIds, selectedId, onSelect }) => 
   }, []);
 
   return (
-    <div ref={dropdownRef} style={{ position: 'relative', flex: 1, minWidth: 280 }}>
+    <div ref={dropdownRef} style={{ position: 'relative', flex: 1, minWidth: 280, zIndex: isOpen ? 1000 : 10 }}>
       {/* Trigger Bar */}
       <button
         type="button"
@@ -55,7 +55,7 @@ const PlantSelectCombobox = ({ catalog, existingIds, selectedId, onSelect }) => 
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 12,
-          background: 'rgba(7, 16, 11, 0.9)',
+          background: 'rgba(7, 16, 11, 0.95)',
           border: isOpen ? '1px solid #22c55e' : '1px solid rgba(34, 197, 94, 0.35)',
           borderRadius: 14,
           padding: '10px 16px',
@@ -63,7 +63,7 @@ const PlantSelectCombobox = ({ catalog, existingIds, selectedId, onSelect }) => 
           fontSize: '0.92rem',
           cursor: 'pointer',
           textAlign: 'left',
-          boxShadow: isOpen ? '0 0 20px rgba(34, 197, 94, 0.22)' : 'none',
+          boxShadow: isOpen ? '0 0 20px rgba(34, 197, 94, 0.25)' : 'none',
           transition: 'all 0.25s ease'
         }}
       >
@@ -115,7 +115,7 @@ const PlantSelectCombobox = ({ catalog, existingIds, selectedId, onSelect }) => 
         </div>
       </button>
 
-      {/* Custom Animated Popup Panel */}
+      {/* Custom Animated Popup Panel with Solid Opaque Background & Stacking Priority */}
       {isOpen && (
         <div
           style={{
@@ -123,12 +123,11 @@ const PlantSelectCombobox = ({ catalog, existingIds, selectedId, onSelect }) => 
             top: 'calc(100% + 8px)',
             left: 0,
             right: 0,
-            zIndex: 999,
-            background: 'rgba(8, 20, 14, 0.98)',
-            backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(34, 197, 94, 0.4)',
+            zIndex: 99999,
+            background: '#07160e',
+            border: '1px solid #22c55e',
             borderRadius: 18,
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.75), 0 0 25px rgba(34, 197, 94, 0.15)',
+            boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(34, 197, 94, 0.25)',
             padding: '12px',
             display: 'flex',
             flexDirection: 'column',
@@ -148,19 +147,31 @@ const PlantSelectCombobox = ({ catalog, existingIds, selectedId, onSelect }) => 
               autoFocus
               style={{
                 width: '100%',
-                background: 'rgba(5, 12, 8, 0.9)',
-                border: '1px solid rgba(34, 197, 94, 0.25)',
+                background: '#030c07',
+                border: '1px solid rgba(34, 197, 94, 0.35)',
                 borderRadius: 10,
                 padding: '9px 12px 9px 34px',
                 color: '#ffffff',
                 fontSize: '0.86rem',
-                outline: 'none'
+                outline: 'none',
+                boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)'
               }}
             />
           </div>
 
           {/* Plant Options List */}
-          <div style={{ maxHeight: 280, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 4, paddingRight: 4 }}>
+          <div
+            style={{
+              maxHeight: 280,
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 5,
+              paddingRight: 4,
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#22c55e #07160e'
+            }}
+          >
             {filteredPlants.length === 0 ? (
               <div style={{ padding: '24px 12px', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>
                 No available specimens match your search.
@@ -181,19 +192,17 @@ const PlantSelectCombobox = ({ catalog, existingIds, selectedId, onSelect }) => 
                     padding: '8px 12px',
                     borderRadius: 12,
                     cursor: 'pointer',
-                    background: selectedId === plant._id ? 'rgba(34, 197, 94, 0.2)' : 'transparent',
+                    background: selectedId === plant._id ? 'rgba(34, 197, 94, 0.22)' : 'rgba(255, 255, 255, 0.02)',
                     border: selectedId === plant._id ? '1px solid #22c55e' : '1px solid transparent',
                     transition: 'all 0.18s ease'
                   }}
                   onMouseEnter={e => {
-                    if (selectedId !== plant._id) {
-                      e.currentTarget.style.background = 'rgba(34, 197, 94, 0.12)';
-                    }
+                    e.currentTarget.style.background = 'rgba(34, 197, 94, 0.18)';
+                    e.currentTarget.style.borderColor = 'rgba(34, 197, 94, 0.4)';
                   }}
                   onMouseLeave={e => {
-                    if (selectedId !== plant._id) {
-                      e.currentTarget.style.background = 'transparent';
-                    }
+                    e.currentTarget.style.background = selectedId === plant._id ? 'rgba(34, 197, 94, 0.22)' : 'rgba(255, 255, 255, 0.02)';
+                    e.currentTarget.style.borderColor = selectedId === plant._id ? '#22c55e' : 'transparent';
                   }}
                 >
                   <img
@@ -212,7 +221,7 @@ const PlantSelectCombobox = ({ catalog, existingIds, selectedId, onSelect }) => 
                     )}
                   </div>
                   {plant.category && (
-                    <span style={{ fontSize: '0.7rem', padding: '3px 8px', borderRadius: 9999, background: 'rgba(34, 197, 94, 0.1)', color: '#86efac', border: '1px solid rgba(34, 197, 94, 0.25)', whiteSpace: 'nowrap' }}>
+                    <span style={{ fontSize: '0.7rem', padding: '3px 8px', borderRadius: 9999, background: 'rgba(34, 197, 94, 0.12)', color: '#86efac', border: '1px solid rgba(34, 197, 94, 0.3)', whiteSpace: 'nowrap' }}>
                       {plant.category}
                     </span>
                   )}
@@ -374,9 +383,11 @@ const AtlasGarden = () => {
         {/* Custom Botanical Specimen Selection Form */}
         <section
           style={{
-            background: 'rgba(14, 30, 22, 0.75)',
+            position: 'relative',
+            zIndex: 100,
+            background: 'rgba(14, 30, 22, 0.85)',
             backdropFilter: 'blur(16px)',
-            border: '1px solid rgba(34, 197, 94, 0.25)',
+            border: '1px solid rgba(34, 197, 94, 0.3)',
             borderRadius: 22,
             padding: '26px 30px',
             marginBottom: 36,
@@ -515,6 +526,8 @@ const AtlasGarden = () => {
         ) : garden.length === 0 ? (
           <section
             style={{
+              position: 'relative',
+              zIndex: 1,
               textAlign: 'center',
               padding: '80px 24px',
               background: 'rgba(14, 30, 22, 0.45)',
@@ -549,11 +562,11 @@ const AtlasGarden = () => {
             </Link>
           </section>
         ) : filteredGarden.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 20px', color: '#94a3b8' }}>
+          <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: '60px 20px', color: '#94a3b8' }}>
             <p>No specimens match the selected hydration filter.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
+          <div style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
             {filteredGarden.map(item => {
               const plant = toPlantViewModel(item.plant);
               const watered = item.checklist?.find(entry => entry.taskName === 'water')?.completed;
