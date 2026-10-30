@@ -2,45 +2,93 @@
    GreenNest AI Botanist Floating Widget Styles
    ========================================== */
 
-.gn-chatbot-fab {
+.gn-chatbot-fab-container {
   position: fixed;
   bottom: 24px;
   right: 24px;
   z-index: 9999;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #1e3a17 0%, #2e5927 100%);
+  gap: 12px;
+}
+
+.gn-chatbot-fab {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1b3815 0%, #2a5523 100%);
   color: #f0fdf4;
-  border: 1px solid rgba(134, 239, 172, 0.35);
-  box-shadow: 0 8px 24px rgba(10, 30, 15, 0.45), 0 0 16px rgba(46, 89, 39, 0.3);
-  padding: 12px 18px;
-  border-radius: 9999px;
+  border: 1.5px solid rgba(134, 239, 172, 0.45);
+  box-shadow: 0 8px 24px rgba(10, 30, 15, 0.5), 0 0 16px rgba(46, 89, 39, 0.35);
   cursor: pointer;
-  font-family: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
 }
 
 .gn-chatbot-fab:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(10, 30, 15, 0.6), 0 0 20px rgba(74, 222, 128, 0.4);
-  background: linear-gradient(135deg, #24461b 0%, #36692e 100%);
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 12px 30px rgba(10, 30, 15, 0.65), 0 0 24px rgba(74, 222, 128, 0.5);
+  border-color: #86efac;
+  background: linear-gradient(135deg, #22471a 0%, #356b2c 100%);
 }
 
 .gn-chatbot-fab svg {
   flex-shrink: 0;
+  transition: transform 0.25s ease;
 }
 
-.gn-chatbot-fab-badge {
-  background: #86efac;
-  color: #052e16;
-  font-size: 0.72rem;
-  padding: 2px 7px;
-  border-radius: 9999px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+.gn-chatbot-fab:hover svg {
+  transform: scale(1.08);
+}
+
+/* Tooltip message when user hovers */
+.gn-chatbot-tooltip {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+  pointer-events: none;
+  background: #0d1e13;
+  color: #f0fdf4;
+  border: 1px solid rgba(134, 239, 172, 0.3);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45), 0 0 12px rgba(74, 222, 128, 0.15);
+  position: relative;
+}
+
+.gn-chatbot-tooltip::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 6px solid #0d1e13;
+}
+
+.gn-chatbot-fab-container:hover .gn-chatbot-tooltip,
+.gn-chatbot-fab-container:focus-within .gn-chatbot-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+@media (max-width: 640px) {
+  .gn-chatbot-tooltip {
+    display: none;
+  }
 }
 
 /* Chat Dialog Window */
@@ -478,3 +526,4 @@
     border-radius: 0;
   }
 }
+

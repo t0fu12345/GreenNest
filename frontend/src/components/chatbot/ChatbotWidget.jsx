@@ -161,16 +161,20 @@ const ChatbotWidget = () => {
     <>
       {/* Floating Action Button (Collapsed) */}
       {!isOpen && (
-        <button
-          type="button"
-          className="gn-chatbot-fab"
-          onClick={() => setIsOpen(true)}
-          aria-label="Ask AI Botanist"
-        >
-          <Sprout size={19} color="#86efac" />
-          <span>AI Botanist</span>
-          <span className="gn-chatbot-fab-badge">AI</span>
-        </button>
+        <div className="gn-chatbot-fab-container">
+          <div className="gn-chatbot-tooltip" role="tooltip">
+            Have any questions? Ask our AI plant expert now
+          </div>
+          <button
+            type="button"
+            className="gn-chatbot-fab"
+            onClick={() => setIsOpen(true)}
+            aria-label="Ask AI Botanist"
+            title="Have any questions? Ask our AI plant expert now"
+          >
+            <Bot size={26} color="#86efac" />
+          </button>
+        </div>
       )}
 
       {/* Floating Chat Window (Expanded) */}

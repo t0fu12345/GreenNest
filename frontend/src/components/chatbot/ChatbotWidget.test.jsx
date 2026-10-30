@@ -17,11 +17,12 @@ describe('ChatbotWidget Component', () => {
       </MemoryRouter>
     );
 
-  it('renders the floating trigger button by default in collapsed state', () => {
+  it('renders the floating trigger button by default in collapsed state with hover tooltip', () => {
     renderWidget();
     const triggerBtn = screen.getByRole('button', { name: /ask ai botanist/i });
     expect(triggerBtn).toBeInTheDocument();
-    expect(screen.queryByText(/greennest ai botanist/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/Have any questions\? Ask our AI plant expert now/i)).toBeInTheDocument();
+    expect(screen.queryByRole('dialog', { name: /greennest ai botanist/i })).not.toBeInTheDocument();
   });
 
   it('expands chat dialog when clicking trigger button and closes on close button', async () => {
