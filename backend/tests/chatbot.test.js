@@ -58,13 +58,10 @@ test('Chatbot Module Unit & Integration Tests', async (t) => {
   });
 
   await t.test('ChatbotService identifies plant keywords for catalog matching', async () => {
-    const matchesEn = chatbotService.matchCatalogKeywords('I want to learn about Snake Plant and Monstera');
-    assert.ok(Array.isArray(matchesEn));
-    assert.ok(matchesEn.some(m => m.toLowerCase().includes('snake')));
-
-    const matchesVn = chatbotService.matchCatalogKeywords('Tôi muốn tìm hiểu về cây lưỡi hổ và trầu bà');
-    assert.ok(Array.isArray(matchesVn));
-    assert.ok(matchesVn.some(m => m.toLowerCase().includes('snake')));
+    const matches = chatbotService.matchCatalogKeywords('I want to learn about Snake Plant and Monstera');
+    assert.ok(Array.isArray(matches));
+    assert.ok(matches.some(m => m.toLowerCase().includes('snake')));
+    assert.ok(matches.some(m => m.toLowerCase().includes('cheese')));
   });
 
   await t.test('POST /api/chatbot/message accepts valid message and returns 200 with expected shape', async () => {

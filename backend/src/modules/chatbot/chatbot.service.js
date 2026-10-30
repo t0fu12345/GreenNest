@@ -1,28 +1,28 @@
 const mongoose = require('mongoose');
 const Plant = require('../plant/plant.model');
 
-// Bilingual dictionary mapping botanical terms to GreenNest catalog names
-const BILINGUAL_PLANT_MAP = [
-  { keywords: ['snake plant', 'sansevieria', 'dracaena', 'lưỡi hổ', 'luoi ho'], catalogName: 'Snake Plant' },
-  { keywords: ['swiss cheese plant', 'monstera', 'monstera deliciosa', 'trầu bà', 'trau ba', 'lá xẻ', 'la xe'], catalogName: 'Swiss Cheese Plant' },
-  { keywords: ['peace lily', 'peace lily plant', 'spathiphyllum', 'lan ý', 'lan y', 'huệ hòa bình'], catalogName: 'Peace Lily Plant' },
-  { keywords: ['agave', 'succulent', 'cactus', 'sen đá', 'sen da', 'xương rồng'], catalogName: 'Agave' },
-  { keywords: ['desert rose', 'adenium', 'sứ sa mạc', 'hoa sứ', 'hoa su'], catalogName: 'Desert Rose' },
-  { keywords: ['caladium', 'heart of jesus', 'cẩm nhung', 'cam nhung', 'lá gấm', 'môn kiểng'], catalogName: 'Caladium' },
-  { keywords: ['english ivy', 'hedera', 'ivy', 'thường xuân', 'thuong xuan'], catalogName: 'English Ivy' },
-  { keywords: ['dwarf umbrella plant', 'dwarf umbrella', 'schefflera', 'umbrella tree', 'cây dù', 'chân chim'], catalogName: 'Dwarf Umbrella Plant' },
-  { keywords: ['frangipani', 'plumeria', 'hoa đại', 'hoa dai', 'sứ trắng'], catalogName: 'Frangipani' },
-  { keywords: ['begonia', 'thu hải đường', 'thu hai duong'], catalogName: 'Begonia' },
-  { keywords: ['ajuga', 'bugleweed', 'carpet bugle', 'cỏ lưỡi hổ'], catalogName: 'Ajuga' },
-  { keywords: ['persian shield', 'strobilanthes', 'lá khiên ba tư'], catalogName: 'Persian Shield' },
-  { keywords: ['oakleaf hydrangea', 'hydrangea', 'tú cầu lá sồi'], catalogName: 'Oakleaf Hydrangea' },
-  { keywords: ['armeria', 'sea thrift', 'thrift', 'thảo biển'], catalogName: 'Armeria' }
+// Botanical keywords dictionary mapping colloquial terms to GreenNest catalog names
+const BOTANICAL_PLANT_MAP = [
+  { keywords: ['snake plant', 'sansevieria', 'dracaena', 'mother in laws tongue'], catalogName: 'Snake Plant' },
+  { keywords: ['swiss cheese plant', 'monstera', 'monstera deliciosa', 'split leaf'], catalogName: 'Swiss Cheese Plant' },
+  { keywords: ['peace lily', 'peace lily plant', 'spathiphyllum', 'white flower'], catalogName: 'Peace Lily Plant' },
+  { keywords: ['agave', 'succulent', 'cactus', 'desert plant'], catalogName: 'Agave' },
+  { keywords: ['desert rose', 'adenium', 'flowering succulent'], catalogName: 'Desert Rose' },
+  { keywords: ['caladium', 'heart of jesus', 'angel wings'], catalogName: 'Caladium' },
+  { keywords: ['english ivy', 'hedera', 'ivy vine', 'climbing ivy'], catalogName: 'English Ivy' },
+  { keywords: ['dwarf umbrella plant', 'dwarf umbrella', 'schefflera', 'umbrella tree'], catalogName: 'Dwarf Umbrella Plant' },
+  { keywords: ['frangipani', 'plumeria', 'tropical flower'], catalogName: 'Frangipani' },
+  { keywords: ['begonia', 'wax begonia', 'polka dot begonia'], catalogName: 'Begonia' },
+  { keywords: ['ajuga', 'bugleweed', 'carpet bugle'], catalogName: 'Ajuga' },
+  { keywords: ['persian shield', 'strobilanthes', 'purple leaf'], catalogName: 'Persian Shield' },
+  { keywords: ['oakleaf hydrangea', 'hydrangea', 'white hydrangea'], catalogName: 'Oakleaf Hydrangea' },
+  { keywords: ['armeria', 'sea thrift', 'thrift flower'], catalogName: 'Armeria' }
 ];
 
 // Fallback botanical rules when Gemini API is unavailable or offline (English)
 const FALLBACK_KNOWLEDGE = [
   {
-    triggers: ['yellow leaf', 'yellow leaves', 'yellowing', 'chlorosis', 'vàng lá', 'vang la'],
+    triggers: ['yellow leaf', 'yellow leaves', 'yellowing', 'chlorosis'],
     title: 'Treating Yellowing Foliage in Indoor Plants',
     diagnosis: 'Yellow leaves are the most common stress signal in indoor houseplants. The predominant cause (approx. 70%) is **overwatering leading to root rot and oxygen deprivation**, followed by **insufficient natural light** or **micronutrient deficiency (iron, nitrogen)**.',
     actionSteps: [
@@ -34,7 +34,7 @@ const FALLBACK_KNOWLEDGE = [
     relatedPlant: 'Snake Plant'
   },
   {
-    triggers: ['brown spot', 'leaf spot', 'burned leaves', 'crispy edges', 'đốm nâu', 'dom nau', 'đốm đen', 'cháy lá'],
+    triggers: ['brown spot', 'leaf spot', 'burned leaves', 'crispy edges', 'brown tips'],
     title: 'Diagnosing Brown Spots and Crispy Leaf Margins',
     diagnosis: 'Brown spots surrounded by a yellow halo typically indicate **fungal or bacterial leaf spot infection** caused by overhead moisture and poor air circulation. Dry, crispy leaf edges usually stem from **low ambient humidity**, **excess direct sun**, or **tap water minerals (chlorine/fluoride)**.',
     actionSteps: [
@@ -46,7 +46,7 @@ const FALLBACK_KNOWLEDGE = [
     relatedPlant: 'Peace Lily Plant'
   },
   {
-    triggers: ['watering', 'water schedule', 'how often to water', 'hydration', 'tưới nước', 'tuoi nuoc'],
+    triggers: ['watering', 'water schedule', 'how often to water', 'hydration', 'thirsty'],
     title: 'Essential Plant Hydration Guidelines',
     diagnosis: 'Horticultural golden rule: **"It is far safer to underwater than overwater"**. Most indoor flora flourish when allowed a gentle drying interval between deep soakings rather than residing in continuously wet soil.',
     actionSteps: [
@@ -58,7 +58,7 @@ const FALLBACK_KNOWLEDGE = [
     relatedPlant: 'Snake Plant'
   },
   {
-    triggers: ['pet', 'pets', 'cat', 'cats', 'dog', 'dogs', 'toxic', 'poisonous', 'thú cưng', 'mèo', 'chó'],
+    triggers: ['pet', 'pets', 'cat', 'cats', 'dog', 'dogs', 'toxic', 'poisonous', 'safe for cats'],
     title: 'Pet-Friendly & Non-Toxic Houseplants',
     diagnosis: 'Many popular Araceae family species (Monstera, Dieffenbachia, Peace Lily) contain insoluble calcium oxalate crystals which can induce mouth pain and digestive upset if ingested by cats or dogs.',
     actionSteps: [
@@ -79,7 +79,7 @@ class ChatbotService {
     const normalized = text.toLowerCase();
     const matchedNames = new Set();
 
-    for (const item of BILINGUAL_PLANT_MAP) {
+    for (const item of BOTANICAL_PLANT_MAP) {
       if (item.keywords.some((kw) => normalized.includes(kw))) {
         matchedNames.add(item.catalogName);
       }
@@ -106,7 +106,7 @@ class ChatbotService {
       }
 
       // Check if user is asking for pet-friendly plants
-      if (text && /thú cưng|chó|mèo|pet/i.test(text)) {
+      if (text && /pet|toxic|cat|dog/i.test(text)) {
         const safePlants = await Plant.find({
           'toxicity.isToxicToPets': false,
           status: 'published'
