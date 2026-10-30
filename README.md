@@ -185,6 +185,7 @@ All endpoints use the `/api` prefix.
 | `/contact` | Contact submission and inbox management | Public submit / admin manage |
 | `/admin` | Dashboard statistics and user management | Admin |
 | `/metadata` | Plant-filter metadata | Public |
+| `/chatbot` | AI Botanist consultation & plant disease diagnosis via photo | Public |
 
 Protected requests use:
 

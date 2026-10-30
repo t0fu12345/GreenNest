@@ -410,6 +410,39 @@ async function runTests() {
     });
     assert(resDeleteContact.status === 200, 'Admin deletes a contact inquiry successfully');
 
+    // 11. AI Botanist & Plant Diagnosis Chatbot Module
+    console.log('\n▶ [11/11] AI Botanist & Plant Diagnosis Chatbot Module');
+    const resBotEmpty = await fetch(`${BASE_URL}/chatbot/message`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+    assert(resBotEmpty.status === 400, 'POST /api/chatbot/message validates empty payload');
+
+    const resBotCare = await fetch(`${BASE_URL}/chatbot/message`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Tư vấn cách tưới cây lưỡi hổ' })
+    });
+    const botCareData = await resBotCare.json();
+    assert(resBotCare.status === 200 && botCareData.success === true, 'POST /api/chatbot/message returns 200 OK');
+    assert(typeof botCareData.data?.reply === 'string' && botCareData.data.reply.length > 0, 'Chatbot returns botanical advice');
+    assert(Array.isArray(botCareData.data?.suggestedPlants), 'Chatbot returns suggested plants array');
+
+    const resBotImage = await fetch(`${BASE_URL}/chatbot/message`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'Lá cây bị đốm nâu',
+        image: {
+          data: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP...',
+          mimeType: 'image/jpeg'
+        }
+      })
+    });
+    const botImageData = await resBotImage.json();
+    assert(resBotImage.status === 200 && botImageData.success === true, 'POST /api/chatbot/message processes image diagnosis payload');
+
     // Summary
     console.log('\n========================================================');
     console.log(`🏁 TEST EXECUTION SUMMARY: ${passed} PASS / ${failed} FAIL`);

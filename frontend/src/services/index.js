@@ -8,3 +8,4 @@ export { default as collectionApi } from './collectionApi';
 export { default as gardenerApi } from './gardenerApi';
 export { default as contactApi } from './contactApi';
 export { default as adminApi } from './adminApi';
+export { default as chatbotApi } from './chatbotApi';

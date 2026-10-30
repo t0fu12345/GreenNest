@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: require('path').join(__dirname, '../.env') });
 
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middlewares/errorHandler.middleware');
@@ -17,8 +17,8 @@ app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -46,6 +46,7 @@ app.use('/api/gallery', require('./modules/gallery/gallery.routes'));
 app.use('/api/contact', require('./modules/contact/contact.routes'));
 app.use('/api/admin', require('./modules/admin/admin.routes'));
 app.use('/api/metadata', require('./modules/metadata/metadata.routes'));
+app.use('/api/chatbot', require('./modules/chatbot/chatbot.routes'));
 
 // Centralized Error Handling Middlewares
 app.use(notFound);
