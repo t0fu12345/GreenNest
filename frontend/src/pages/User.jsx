@@ -124,7 +124,7 @@ const User = () => {
               backdropFilter: 'blur(12px)'
             }}>
               <img 
-                src={user.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"} 
+                src={user.avatar || '/images/facebook-default-avatar.svg'}
                 alt={user.name}
                 style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #22c55e' }}
               />

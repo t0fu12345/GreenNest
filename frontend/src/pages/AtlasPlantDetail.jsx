@@ -198,6 +198,7 @@ const AtlasPlantDetail = () => {
                 <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
                   <button
                     type="button"
+                    className="gn-interactive-button"
                     onClick={addToGarden}
                     disabled={addingToGarden}
                     style={{
@@ -224,6 +225,7 @@ const AtlasPlantDetail = () => {
 
                   <button
                     type="button"
+                    className="gn-interactive-button"
                     onClick={() => isAuthenticated ? setSaveOpen(true) : navigate('/login')}
                     style={{
                       background: 'rgba(255, 255, 255, 0.06)',
@@ -281,6 +283,7 @@ const AtlasPlantDetail = () => {
                     <Link
                       key={item._id}
                       to={`/specimen-detail?id=${encodeURIComponent(item.slug || item.id)}`}
+                      className="gn-related-plant"
                       style={{
                         background: 'rgba(14, 30, 22, 0.55)',
                         border: '1px solid rgba(40, 82, 61, 0.5)',

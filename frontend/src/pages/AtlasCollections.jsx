@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
@@ -111,8 +112,9 @@ const AtlasCollections = () => {
             <p style={{ color: '#94a3b8', maxWidth: 460, margin: '0 auto 24px' }}>
               Sign in to view and manage your curated collections, arrange flora groups, and save specimens.
             </p>
-            <a
-              href="/login"
+            <Link
+              to="/login"
+              className="gn-interactive-button"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -127,7 +129,7 @@ const AtlasCollections = () => {
               }}
             >
               Sign in to GreenNest
-            </a>
+            </Link>
           </section>
         ) : (
           <>
@@ -179,8 +181,7 @@ const AtlasCollections = () => {
                     borderRadius: 12,
                     padding: '13px 18px',
                     color: '#ffffff',
-                    fontSize: '0.95rem',
-                    outline: 'none'
+                    fontSize: '0.95rem'
                   }}
                 />
                 <input
@@ -194,8 +195,7 @@ const AtlasCollections = () => {
                     borderRadius: 12,
                     padding: '13px 18px',
                     color: '#ffffff',
-                    fontSize: '0.95rem',
-                    outline: 'none'
+                    fontSize: '0.95rem'
                   }}
                 />
               </div>
@@ -203,6 +203,7 @@ const AtlasCollections = () => {
               <div style={{ marginTop: 18, display: 'flex', justifyContent: 'flex-end' }}>
                 <button
                   type="submit"
+                  className="gn-interactive-button"
                   aria-label={editing ? 'Save changes' : 'Create collection'}
                   style={{
                     background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
@@ -249,7 +250,7 @@ const AtlasCollections = () => {
                     return (
                       <article
                         key={collection._id}
-                        onClick={() => setSelectedId(collection._id)}
+                        className="gn-collection-card"
                         style={{
                           background: isSelected
                             ? 'linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(14, 30, 22, 0.9) 100%)'
@@ -257,27 +258,35 @@ const AtlasCollections = () => {
                           border: isSelected ? '1px solid #22c55e' : '1px solid rgba(40, 82, 61, 0.5)',
                           borderRadius: 18,
                           padding: '18px 20px',
-                          cursor: 'pointer',
-                          transition: 'all 0.25s ease',
                           boxShadow: isSelected ? '0 0 24px rgba(34, 197, 94, 0.16)' : 'none'
                         }}
                       >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 8 }}>
-                          <h2 style={{ fontFamily: 'var(--font-serif, Georgia, serif)', fontSize: '1.25rem', fontWeight: 600, color: '#ffffff', margin: 0 }}>
+                        <button
+                          type="button"
+                          className="gn-collection-select"
+                          onClick={() => setSelectedId(collection._id)}
+                          aria-pressed={isSelected}
+                          aria-label={`Select ${collection.name} collection`}
+                          style={{ display: 'block', width: '100%', background: 'transparent', border: 0, padding: 0, textAlign: 'left', color: 'inherit', cursor: 'pointer' }}
+                        >
+                        <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 8 }}>
+                          <span style={{ fontFamily: 'var(--font-serif, Georgia, serif)', fontSize: '1.25rem', fontWeight: 600, color: '#ffffff' }}>
                             {collection.name}
-                          </h2>
+                          </span>
                           <span style={{ fontSize: '0.74rem', fontWeight: 600, padding: '3px 10px', borderRadius: 9999, background: 'rgba(34, 197, 94, 0.15)', color: '#86efac', border: '1px solid rgba(34, 197, 94, 0.3)', whiteSpace: 'nowrap' }}>
                             🌱 {plantCount} {plantCount === 1 ? 'specimen' : 'specimens'}
                           </span>
-                        </div>
+                        </span>
                         {collection.description && (
-                          <p style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.5, margin: '0 0 14px 0' }}>
+                          <span style={{ display: 'block', color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.5, margin: '0 0 14px 0' }}>
                             {collection.description}
-                          </p>
+                          </span>
                         )}
+                        </button>
                         <div style={{ display: 'flex', gap: 10, paddingTop: 10, borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
                           <button
                             type="button"
+                            className="gn-interactive-button"
                             onClick={event => { event.stopPropagation(); startEdit(collection); }}
                             style={{
                               background: 'rgba(34, 197, 94, 0.12)',
@@ -297,6 +306,7 @@ const AtlasCollections = () => {
                           </button>
                           <button
                             type="button"
+                            className="gn-interactive-button"
                             onClick={event => { event.stopPropagation(); removeCollection(collection); }}
                             style={{
                               background: 'rgba(239, 68, 68, 0.1)',
@@ -347,8 +357,9 @@ const AtlasCollections = () => {
                             </p>
                           )}
                         </div>
-                        <a
-                          href="/plants"
+                        <Link
+                          to="/plants"
+                          className="gn-interactive-button"
                           style={{
                             background: 'rgba(34, 197, 94, 0.15)',
                             border: '1px solid rgba(34, 197, 94, 0.35)',
@@ -364,7 +375,7 @@ const AtlasCollections = () => {
                           }}
                         >
                           <span>🌱</span> Add More Plants
-                        </a>
+                        </Link>
                       </div>
 
                       {plants.length === 0 ? (
@@ -374,8 +385,9 @@ const AtlasCollections = () => {
                           <p style={{ fontSize: '0.9rem', maxWidth: 400, margin: '0 auto 20px' }}>
                             Browse the botanical catalog and click "Save to collection" to add specimens here.
                           </p>
-                          <a
-                            href="/plants"
+                          <Link
+                            to="/plants"
+                            className="gn-interactive-button"
                             style={{
                               display: 'inline-flex',
                               alignItems: 'center',
@@ -390,7 +402,7 @@ const AtlasCollections = () => {
                             }}
                           >
                             Explore Botanical Catalog
-                          </a>
+                          </Link>
                         </div>
                       ) : (
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20 }}>
@@ -407,24 +419,27 @@ const AtlasCollections = () => {
                                 transition: 'transform 0.2s ease, border-color 0.2s ease'
                               }}
                             >
-                              <div
-                                style={{ width: '100%', aspectRatio: '4/3', overflow: 'hidden', cursor: 'pointer', background: '#0a1610' }}
-                                onClick={() => { window.location.href = `/specimen-detail?id=${encodeURIComponent(plant.slug || plant.id)}`; }}
+                              <Link
+                                to={`/specimen-detail?id=${encodeURIComponent(plant.slug || plant.id)}`}
+                                className="gn-plant-link"
+                                aria-label={`View ${plant.name}`}
+                                style={{ width: '100%', aspectRatio: '4/3', overflow: 'hidden', cursor: 'pointer', background: '#0a1610', display: 'block' }}
                               >
                                 <img
                                   src={plant.image}
                                   alt={plant.name}
                                   style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease' }}
                                 />
-                              </div>
+                              </Link>
                               <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                                 <div>
-                                  <strong
-                                    onClick={() => { window.location.href = `/specimen-detail?id=${encodeURIComponent(plant.slug || plant.id)}`; }}
-                                    style={{ display: 'block', fontSize: '1.05rem', color: '#ffffff', cursor: 'pointer', marginBottom: 2 }}
+                                  <Link
+                                    to={`/specimen-detail?id=${encodeURIComponent(plant.slug || plant.id)}`}
+                                    className="gn-plant-name-link"
+                                    style={{ display: 'block', fontSize: '1.05rem', color: '#ffffff', cursor: 'pointer', marginBottom: 2, textDecoration: 'none' }}
                                   >
                                     {plant.name}
-                                  </strong>
+                                  </Link>
                                   {plant.scientificName && (
                                     <span style={{ fontSize: '0.8rem', color: '#86efac', fontStyle: 'italic', display: 'block', marginBottom: 12 }}>
                                       {plant.scientificName}
@@ -432,8 +447,9 @@ const AtlasCollections = () => {
                                   )}
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                                  <a
-                                    href={`/specimen-detail?id=${encodeURIComponent(plant.slug || plant.id)}`}
+                                  <Link
+                                    to={`/specimen-detail?id=${encodeURIComponent(plant.slug || plant.id)}`}
+                                    className="gn-interactive-button"
                                     style={{
                                       background: 'transparent',
                                       border: 'none',
@@ -446,9 +462,10 @@ const AtlasCollections = () => {
                                     }}
                                   >
                                     View →
-                                  </a>
+                                  </Link>
                                   <button
                                     type="button"
+                                    className="gn-interactive-button"
                                     onClick={() => removePlant(plant)}
                                     style={{
                                       background: 'rgba(239, 68, 68, 0.1)',

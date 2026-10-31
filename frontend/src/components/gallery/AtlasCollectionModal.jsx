@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import personalCollectionApi from '../../services/personalCollectionApi';
@@ -14,6 +14,60 @@ const AtlasCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isClosing, setIsClosing] = useState(false);
+  const closeButtonRef = useRef(null);
+  const dialogRef = useRef(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setIsClosing(false);
+      return;
+    }
+    if (!shouldRender) return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      setShouldRender(false);
+      return;
+    }
+    setIsClosing(true);
+    const timeout = window.setTimeout(() => setShouldRender(false), 120);
+    return () => window.clearTimeout(timeout);
+  }, [isOpen, shouldRender]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousFocus = document.activeElement;
+    closeButtonRef.current?.focus();
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') {
+        onCloseRef.current();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = [...(dialogRef.current?.querySelectorAll('button:not(:disabled), input:not(:disabled)') || [])];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      previousFocus?.focus?.();
+    };
+  }, [isOpen]);
 
   const load = async () => {
     if (!plantSlug || !isAuthenticated) return;
@@ -43,7 +97,7 @@ const AtlasCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
     load();
   }, [isOpen, isAuthenticated, plantSlug]);
 
-  if (!isOpen || !isAuthenticated) return null;
+  if (!shouldRender || !isAuthenticated) return null;
 
   const containsPlant = collection => collection.plants?.some(item => {
     const id = typeof item === 'string' ? item : item?._id;
@@ -80,19 +134,21 @@ const AtlasCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" onClick={onClose}>
-      <section className="w-full max-w-lg rounded-3xl border border-emerald-500/25 bg-[#0a1811] p-6 text-white shadow-2xl" onClick={event => event.stopPropagation()}>
-        <div className="mb-5 flex items-start justify-between gap-4">
+    <div className="collection-modal-backdrop fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" data-closing={isClosing} onClick={onClose}>
+      <section ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="collection-modal-title" className="collection-modal-panel max-h-[calc(100vh-2rem)] w-full max-w-lg overflow-y-auto rounded-3xl border border-emerald-500/25 bg-[#0a1811] p-6 text-white shadow-2xl" onClick={event => event.stopPropagation()}>
+        <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400">
               <span>📁</span> Personal Collections
             </span>
-            <h2 className="mt-1 text-2xl font-bold font-serif">Save {plant?.name || 'Specimen'}</h2>
+            <h2 id="collection-modal-title" className="mt-1 text-2xl font-bold font-serif">Save {plant?.name || 'Specimen'}</h2>
           </div>
           <button
+            ref={closeButtonRef}
             type="button"
+            aria-label="Close collection dialog"
             onClick={onClose}
-            className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-slate-300 hover:bg-white/10 hover:text-white transition"
+            className="gn-interactive-button rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-slate-300 hover:bg-white/10 hover:text-white transition"
           >
             ✕
           </button>
@@ -107,7 +163,7 @@ const AtlasCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
         {loading ? (
           <p className="py-8 text-center text-emerald-300">Loading your collections...</p>
         ) : (
-          <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
+          <div className="flex max-h-56 flex-col gap-3 overflow-y-auto pr-1">
             {collections.length === 0 && (
               <p className="text-sm text-slate-400 py-3 text-center">No personal collections yet. Create your first one below!</p>
             )}
@@ -118,7 +174,7 @@ const AtlasCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
                   key={collection._id}
                   type="button"
                   onClick={() => togglePlant(collection)}
-                  className="flex w-full items-center justify-between rounded-xl border border-emerald-900/50 bg-[#0d2217]/50 px-4 py-3 text-left hover:border-emerald-400/60 transition"
+                  className="gn-interactive-button flex w-full items-center justify-between rounded-xl border border-emerald-900/50 bg-[#0d2217]/50 px-4 py-3 text-left hover:border-emerald-400/60 transition"
                 >
                   <span className="font-medium text-slate-200 flex items-center gap-2">
                     <span>📁</span> {collection.name}
@@ -138,7 +194,7 @@ const AtlasCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
           </div>
         )}
 
-        <form onSubmit={createCollection} className="mt-6 space-y-3 border-t border-white/10 pt-5">
+        <form onSubmit={createCollection} className="mt-7 flex flex-col gap-3 border-t border-white/10 pt-6">
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Or Create New Collection</p>
           <input
             value={name}
@@ -158,7 +214,7 @@ const AtlasCollectionModal = ({ isOpen, onClose, plantSlug, onSaved }) => {
           <button
             type="submit"
             disabled={loading || !plant}
-            className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 font-bold text-white shadow-lg shadow-emerald-500/20 hover:from-emerald-400 hover:to-emerald-500 disabled:opacity-50 transition"
+            className="gn-interactive-button w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 font-bold text-white shadow-lg shadow-emerald-500/20 hover:from-emerald-400 hover:to-emerald-500 disabled:opacity-50 transition"
           >
             Create and Save Specimen
           </button>
