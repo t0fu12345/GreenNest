@@ -86,6 +86,11 @@
       --font-display: 'Cinzel', serif;
       --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      --motion-press: 120ms;
+      --motion-hover: 180ms;
+      --motion-route: 220ms;
+      --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --motion-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
     }
 
     /* Reset & Base Setup */
@@ -142,11 +147,6 @@
       transition: var(--transition-smooth);
       position: relative;
       white-space: nowrap;
-    }
-
-    .navbar-pill:hover {
-      border-color: rgba(34, 197, 94, 0.4);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), var(--shadow-glow);
     }
 
     .brand-logo {
@@ -222,10 +222,6 @@
       line-height: 1.2;
     }
 
-    .nav-links a:hover, .nav-links a.active {
-      color: #ffffff;
-    }
-
     .nav-links a::after {
       content: '';
       position: absolute;
@@ -237,10 +233,6 @@
       border-radius: 2px;
       transition: all 0.3s ease;
       transform: translateX(-50%);
-    }
-
-    .nav-links a:hover::after, .nav-links a.active::after {
-      width: 100%;
     }
 
     .nav-actions {
@@ -2369,11 +2361,6 @@
       position: relative;
     }
 
-    .navbar-pill:hover {
-      border-color: rgba(34, 197, 94, 0.45);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), var(--shadow-glow);
-    }
-
     .brand-logo {
       display: flex;
       align-items: center;
@@ -2441,10 +2428,6 @@
       padding: 6px 2px;
       white-space: nowrap;
       display: inline-block;
-    }
-
-    .nav-links a:hover, .nav-links a.active {
-      color: #ffffff;
     }
 
     .nav-links a.active::after {
@@ -3644,11 +3627,6 @@
       position: relative;
     }
 
-    .navbar-pill:hover {
-      border-color: rgba(34, 197, 94, 0.4);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), var(--shadow-glow);
-    }
-
     .brand-logo {
       display: flex;
       align-items: center;
@@ -3716,10 +3694,6 @@
       padding: 6px 2px;
       white-space: nowrap;
       display: inline-block;
-    }
-
-    .nav-links a:hover, .nav-links a.active {
-      color: #ffffff;
     }
 
     .nav-links a.active::after {
@@ -4704,11 +4678,6 @@
       white-space: nowrap;
     }
 
-    .navbar-pill:hover {
-      border-color: rgba(34, 197, 94, 0.45);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), var(--shadow-glow);
-    }
-
     .brand-logo {
       display: flex;
       align-items: center;
@@ -4761,13 +4730,6 @@
       transition: var(--transition-smooth);
       padding: 6px 12px;
       border-radius: 9999px;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #ffffff;
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.35);
     }
 
     .nav-actions {
@@ -6338,11 +6300,6 @@
       white-space: nowrap;
     }
 
-    .navbar-pill:hover {
-      border-color: rgba(34, 197, 94, 0.45);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75);
-    }
-
     .brand-logo {
       display: flex;
       align-items: center;
@@ -6396,13 +6353,6 @@
       font-weight: 500;
       transition: var(--transition-smooth);
       padding: 5px 8px;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #ffffff;
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.35);
     }
 
     .nav-actions {
@@ -6948,11 +6898,6 @@
       white-space: nowrap;
     }
 
-    .navbar-pill:hover {
-      border-color: rgba(34, 197, 94, 0.45);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), 0 0 35px -5px rgba(34, 197, 94, 0.35);
-    }
-
     .brand-logo {
       display: flex;
       align-items: center;
@@ -7007,11 +6952,6 @@
       transition: var(--transition-smooth);
       position: relative;
       padding: 4px 0;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #ffffff;
     }
 
     .nav-links a.active::after {
@@ -7949,11 +7889,6 @@
       white-space: nowrap;
     }
 
-    .navbar-pill:hover {
-      border-color: rgba(34, 197, 94, 0.45);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75);
-    }
-
     .brand-logo {
       display: flex;
       align-items: center;
@@ -8007,12 +7942,6 @@
       font-weight: 500;
       transition: var(--transition-smooth);
       padding: 5px 8px;
-    }
-
-    .nav-links a:hover {
-      color: #ffffff;
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.35);
     }
 
     .nav-actions {
@@ -8546,11 +8475,6 @@
       width: 100%;
       transition: var(--transition-smooth);
       white-space: nowrap;
-    }
-
-    .navbar-pill:hover {
-      border-color: rgba(34, 197, 94, 0.4);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), var(--shadow-glow);
     }
 
     .brand-logo {
@@ -9853,5 +9777,197 @@ body.admin-page-active .admin-shell {
 @media (max-width: 960px) {
   .navbar-pill .nav-links {
     display: none !important;
+  }
+}
+
+/* Public interaction layer. Admin controls keep their existing styles. */
+body:not(.admin-page-active) #root,
+.public-app {
+  width: 100%;
+  min-width: 0;
+}
+
+.public-app :is(a, button, input, textarea, select, [role="button"]):focus-visible {
+  outline: 2px solid #86efac !important;
+  outline-offset: 3px !important;
+}
+
+.public-app .navbar-pill:hover {
+  border-color: rgba(34, 197, 94, 0.4) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65) !important;
+}
+
+.public-app .navbar-pill {
+  transition: border-color var(--motion-hover) var(--motion-ease-out) !important;
+}
+
+.public-app .navbar-pill .nav-links a {
+  transition: background-color var(--motion-hover) var(--motion-ease-out), color var(--motion-hover) var(--motion-ease-out) !important;
+}
+
+.public-app .navbar-pill .nav-links a:hover,
+.public-app .navbar-pill .nav-links a.active,
+.public-app .navbar-pill .nav-links a:focus-visible {
+  border: 0 !important;
+  box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.35);
+}
+
+.public-app .navbar-pill .nav-links a:hover::after,
+.public-app .navbar-pill .nav-links a:focus-visible::after {
+  display: none !important;
+}
+
+.public-app .btn-nav-signout {
+  transition: background-color var(--motion-hover) var(--motion-ease-out), color var(--motion-hover) var(--motion-ease-out), border-color var(--motion-hover) var(--motion-ease-out) !important;
+}
+
+.public-app .btn-nav-signout:hover {
+  box-shadow: none !important;
+}
+
+.public-app .gn-interactive-button,
+.public-app .gn-collection-card,
+.public-app .gn-related-plant,
+.public-app .gn-plant-link img {
+  transition: transform var(--motion-hover) var(--motion-ease-out), opacity var(--motion-hover) var(--motion-ease-out) !important;
+}
+
+.public-app .gn-interactive-button:hover:not(:disabled),
+.public-app .gn-interactive-button:focus-visible,
+.public-app .gn-related-plant:hover,
+.public-app .gn-related-plant:focus-visible,
+.public-app .gn-collection-card:hover,
+.public-app .gn-collection-card:focus-within {
+  transform: translateY(-2px);
+}
+
+.public-app .gn-interactive-button:active:not(:disabled),
+.public-app .gn-collection-card:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: var(--motion-press) !important;
+}
+
+.public-app .gn-interactive-button:disabled {
+  cursor: not-allowed;
+}
+
+.public-app .gn-plant-link:hover img,
+.public-app .gn-plant-link:focus-visible img {
+  transform: scale(1.04);
+}
+
+.public-app .gn-plant-name-link:hover,
+.public-app .gn-plant-name-link:focus-visible {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+.public-app .collection-modal-backdrop {
+  animation: gn-modal-backdrop-in var(--motion-hover) var(--motion-ease-out) both;
+}
+
+.public-app .collection-modal-panel {
+  animation: gn-modal-panel-in var(--motion-hover) var(--motion-ease-out) both;
+}
+
+.public-app .collection-modal-backdrop[data-closing="true"] {
+  pointer-events: none;
+  animation: gn-modal-backdrop-out var(--motion-press) var(--motion-ease-in) both;
+}
+
+.public-app .collection-modal-backdrop[data-closing="true"] .collection-modal-panel {
+  animation: gn-modal-panel-out var(--motion-press) var(--motion-ease-in) both;
+}
+
+@keyframes gn-modal-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gn-modal-backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes gn-modal-panel-in { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes gn-modal-panel-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(4px) scale(0.98); } }
+
+/* Keep the initial hierarchy clear without a long stagger or ambient loops. */
+.public-app .hero-section::before,
+.public-app .kicker-dot {
+  animation: none;
+}
+
+.public-app .hero-kicker-wrap,
+.public-app .hero-title,
+.public-app .hero-subtitle,
+.public-app .search-hero-container,
+.public-app .facets-hero-wrap,
+.public-app .hero-actions-row {
+  animation-duration: 420ms;
+  animation-delay: 0ms;
+}
+
+@media (max-width: 600px) {
+  .public-app .archive-section .section-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .public-app .archive-section .btn-cta-pill,
+  .public-app .about-section .btn-cta-pill {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .public-app .about-grid-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .public-app .about-text-wrap,
+  .public-app .about-text-wrap > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .public-app .quote-author {
+    overflow-wrap: anywhere;
+  }
+
+  .public-app .hero-content,
+  .public-app .hero-content > * {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .public-app .hero-kicker-wrap {
+    justify-content: center;
+    padding-inline: 12px;
+  }
+
+  .public-app .kicker-folio,
+  .public-app .search-shortcut-pill {
+    display: none;
+  }
+
+  .public-app .hero-title {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+    overflow-wrap: anywhere;
+  }
+
+  .public-app .search-input-field {
+    min-width: 0;
+    font-size: 1rem;
+  }
+
+  .public-app .search-submit-btn {
+    padding-inline: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  .public-app *,
+  .public-app *::before,
+  .public-app *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

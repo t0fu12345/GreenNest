@@ -24,6 +24,7 @@ const LEGACY_DOMAIN_KEYS = [
 ];
 
 const AuthContext = createContext(null);
+const DEFAULT_AVATAR = '/images/facebook-default-avatar.svg';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -69,7 +70,7 @@ export const AuthProvider = ({ children }) => {
               name: userData.fullName || userData.name,
               email: userData.email,
               role: userData.role || 'user',
-              avatar: userData.avatarUrl || userData.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+              avatar: userData.avatarUrl || userData.avatar || DEFAULT_AVATAR,
               token: savedToken
             });
             return;
@@ -114,7 +115,7 @@ export const AuthProvider = ({ children }) => {
             name: userVal.fullName,
             email: userVal.email,
             role: userVal.role,
-            avatar: userVal.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+            avatar: userVal.avatarUrl || DEFAULT_AVATAR,
             token: tokenVal
           };
 
@@ -183,7 +184,7 @@ export const AuthProvider = ({ children }) => {
             name: userVal.fullName,
             email: userVal.email,
             role: userVal.role || 'user',
-            avatar: userVal.avatarUrl || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            avatar: userVal.avatarUrl || DEFAULT_AVATAR,
             token: tokenVal
           };
 

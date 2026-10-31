@@ -187,53 +187,6 @@ const Login = () => {
 
         </form>
 
-        {/* Quick Demo Access Bar */}
-        <div style={{ marginTop: 18, marginBottom: 12, padding: '12px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <span style={{ fontSize: '0.74rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
-            Demo Credentials (1-Click Fill):
-          </span>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button
-              type="button"
-              onClick={() => {
-                setIdentifier('alex.pham@example.com');
-                setPassword('GreenCanopy2026');
-              }}
-              style={{
-                background: 'rgba(34, 197, 94, 0.12)',
-                border: '1px solid rgba(34, 197, 94, 0.35)',
-                color: '#86efac',
-                padding: '6px 12px',
-                borderRadius: 8,
-                fontSize: '0.76rem',
-                fontWeight: 600,
-                cursor: 'pointer'
-              }}
-            >
-              🌿 Alex Pham (Curator)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIdentifier('admin@greennest.com');
-                setPassword('AdminCanopy2026!');
-              }}
-              style={{
-                background: 'rgba(16, 185, 129, 0.12)',
-                border: '1px solid rgba(16, 185, 129, 0.35)',
-                color: '#6ee7b7',
-                padding: '6px 12px',
-                borderRadius: 8,
-                fontSize: '0.76rem',
-                fontWeight: 600,
-                cursor: 'pointer'
-              }}
-            >
-              👑 Admin Elena
-            </button>
-          </div>
-        </div>
-
         <div className="auth-footer">
           Don't have a GreenNest account yet?{' '}
           <Link to="/register">Create a new account now →</Link>

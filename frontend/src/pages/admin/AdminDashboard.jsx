@@ -39,7 +39,7 @@ export default function AdminDashboard() {
   useEffect(() => { if (!toast) return undefined; const timer = window.setTimeout(() => setToast(null), 3500); return () => window.clearTimeout(timer); }, [toast]);
 
   const showToast = useCallback((message, type = 'success') => setToast({ message, type }), []);
-  const handleLogout = async () => { await logout(); navigate('/login', { replace: true }); };
+  const handleLogout = () => { logout(); navigate('/', { replace: true }); };
   const badges = useMemo(() => ({ plants: stats?.totalPlants ?? 0, gardeners: stats?.totalGardeners ?? 0, collections: stats?.totalCollections ?? 0, gallery: stats?.totalGalleryImages ?? 0, contacts: stats?.pendingContacts ?? 0, users: stats?.totalAccounts ?? 0 }), [stats]);
   const Page = pages[active];
 

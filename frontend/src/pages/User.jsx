@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
@@ -7,6 +7,11 @@ import gardenApi from '../services/gardenApi';
 
 const User = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate('/', { replace: true });
+  };
   const [gardenCount, setGardenCount] = React.useState(null);
 
   React.useEffect(() => {
@@ -124,7 +129,7 @@ const User = () => {
               backdropFilter: 'blur(12px)'
             }}>
               <img 
-                src={user.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"} 
+                src={user.avatar || '/images/facebook-default-avatar.svg'}
                 alt={user.name}
                 style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #22c55e' }}
               />
@@ -139,7 +144,7 @@ const User = () => {
               <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto', flexWrap: 'wrap' }}>
                 <button
                   type="button"
-                  onClick={logout}
+                  onClick={handleLogout}
                   style={{
                     background: 'rgba(239, 68, 68, 0.15)',
                     border: '1px solid rgba(239, 68, 68, 0.4)',

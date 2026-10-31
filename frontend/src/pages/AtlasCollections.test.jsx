@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import AtlasCollections from './AtlasCollections';
 import personalCollectionApi from '../services/personalCollectionApi';
@@ -15,6 +16,15 @@ vi.mock('../services/personalCollectionApi', () => ({
     removePlant: vi.fn(),
   },
 }));
+
+const renderCollections = () => render(
+  <MemoryRouter initialEntries={['/collections']}>
+    <Routes>
+      <Route path="/collections" element={<AtlasCollections />} />
+      <Route path="/specimen-detail" element={<div>Plant detail route</div>} />
+    </Routes>
+  </MemoryRouter>
+);
 
 describe('API-backed personal collections', () => {
   beforeEach(() => {
@@ -36,7 +46,7 @@ describe('API-backed personal collections', () => {
   });
 
   it('renders personal collections and their published plants from the API', async () => {
-    render(<AtlasCollections />);
+    renderCollections();
 
     const collection = await screen.findByText('Indoor plants');
     fireEvent.click(collection);
@@ -49,7 +59,7 @@ describe('API-backed personal collections', () => {
   it('creates collections through the API and never writes a local fallback', async () => {
     personalCollectionApi.createCollection.mockResolvedValue({ data: { _id: 'collection-2' } });
     const storageSpy = vi.spyOn(Storage.prototype, 'setItem');
-    render(<AtlasCollections />);
+    renderCollections();
 
     await screen.findByText('Indoor plants');
     fireEvent.change(screen.getByPlaceholderText('Collection name'), { target: { value: 'New collection' } });
@@ -65,9 +75,17 @@ describe('API-backed personal collections', () => {
 
   it('shows the database error instead of rendering sample collections', async () => {
     personalCollectionApi.getCollections.mockRejectedValue(new Error('Database offline'));
-    render(<AtlasCollections />);
+    renderCollections();
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Database offline');
     expect(screen.queryByText('Indoor plants')).not.toBeInTheDocument();
+  });
+
+  it('opens a specimen through client-side navigation', async () => {
+    renderCollections();
+    fireEvent.click(await screen.findByText('Indoor plants'));
+    fireEvent.click(await screen.findByRole('link', { name: 'View Boston Fern' }));
+
+    expect(screen.getByText('Plant detail route')).toBeInTheDocument();
   });
 });

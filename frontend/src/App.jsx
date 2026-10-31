@@ -17,11 +17,13 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 import ChatbotWidget from './components/chatbot/ChatbotWidget';
+import PublicRouteMotion from './components/PublicRouteMotion';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <PublicRouteMotion>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/plants" element={<Plants />} />
@@ -59,6 +61,7 @@ function App() {
             } 
           />
         </Routes>
+        </PublicRouteMotion>
         <ChatbotWidget />
       </Router>
     </AuthProvider>

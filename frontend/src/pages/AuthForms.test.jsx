@@ -35,6 +35,13 @@ describe('authentication forms', () => {
     expect(screen.queryByLabelText(/nickname/i)).not.toBeInTheDocument();
   });
 
+  it('does not display sample accounts on the login screen', () => {
+    renderPage(Login);
+
+    expect(screen.queryByText(/Demo Credentials/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Alex Pham|Admin Elena/i })).not.toBeInTheDocument();
+  });
+
   it('rejects a one-character full name before calling the backend', async () => {
     const user = userEvent.setup();
     renderPage(Register);

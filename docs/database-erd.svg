@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="1060" viewBox="0 0 1680 1060" role="img" aria-labelledby="title desc">
+  <title id="title">GreenNest MongoDB entity relationship diagram</title>
+  <desc id="desc">Seven MongoDB collections with ObjectId references. GardenItem and CareTask are embedded inside User.</desc>
+  <style>
+    .bg { fill: #f7f8f4; }
+    .card { fill: #ffffff; stroke: #d6dfd5; stroke-width: 2; }
+    .head { fill: #164a3b; }
+    .headText { fill: #ffffff; font: bold 21px Arial, sans-serif; }
+    .type { fill: #658073; font: 13px Arial, sans-serif; }
+    .field { fill: #263c34; font: 16px Consolas, monospace; }
+    .muted { fill: #5d7066; font: 14px Arial, sans-serif; }
+    .title { fill: #173c31; font: bold 36px Arial, sans-serif; }
+    .subtitle { fill: #52675c; font: 17px Arial, sans-serif; }
+    .link { fill: none; stroke: #4b8774; stroke-width: 3; }
+    .embed { fill: #f0f6ec; stroke: #9bbd99; stroke-width: 1.5; }
+    .labelBg { fill: #f7f8f4; }
+    .label { fill: #306252; font: bold 14px Arial, sans-serif; }
+  </style>
+  <rect class="bg" x="0" y="0" width="1680" height="1060"/>
+  <text class="title" x="64" y="64">GreenNest · Database ERD</text>
+  <text class="subtitle" x="65" y="97">MongoDB / Mongoose · 7 collections · ObjectId references</text>
+
+  <!-- Links are drawn behind cards. -->
+  <path class="link" d="M 450 270 H 625"/>
+  <rect class="labelBg" x="485" y="247" width="108" height="28"/>
+  <text class="label" x="496" y="266">savedPlants</text>
+
+  <path class="link" d="M 450 328 H 541 V 390 H 625"/>
+  <rect class="labelBg" x="466" y="360" width="141" height="27"/>
+  <text class="label" x="476" y="379">garden[].plant</text>
+
+  <path class="link" d="M 238 590 V 672"/>
+  <rect class="labelBg" x="251" y="616" width="60" height="27"/>
+  <text class="label" x="259" y="635">owner</text>
+
+  <path class="link" d="M 450 785 H 525 V 495 H 625"/>
+  <rect class="labelBg" x="461" y="756" width="54" height="27"/>
+  <text class="label" x="468" y="775">plants</text>
+
+  <path class="link" d="M 835 689 V 546"/>
+  <rect class="labelBg" x="847" y="592" width="54" height="27"/>
+  <text class="label" x="854" y="611">plants</text>
+
+  <path class="link" d="M 1045 295 H 1120 V 260 H 1160"/>
+  <rect class="labelBg" x="1056" y="266" width="89" height="27"/>
+  <text class="label" x="1063" y="285">gardener</text>
+
+  <path class="link" d="M 1045 348 H 1085 V 223 H 1160" stroke-dasharray="7 6"/>
+  <rect class="labelBg" x="1055" y="190" width="103" height="27"/>
+  <text class="label" x="1062" y="209">associated</text>
+
+  <path class="link" d="M 1045 435 H 1160"/>
+  <rect class="labelBg" x="1074" y="407" width="55" height="27"/>
+  <text class="label" x="1081" y="426">plant</text>
+
+  <path class="link" d="M 450 220 H 551 V 135 H 1107 V 510 H 1160"/>
+  <rect class="labelBg" x="1035" y="108" width="62" height="27"/>
+  <text class="label" x="1042" y="127">likedBy</text>
+
+  <!-- User -->
+  <g transform="translate(64 170)">
+    <rect class="card" width="386" height="420" rx="18"/>
+    <path class="head" d="M18 0 H368 Q386 0 386 18 V62 H0 V18 Q0 0 18 0 Z"/>
+    <text class="headText" x="22" y="40">User</text><text class="type" x="274" y="39" fill="#dcece2">collection</text>
+    <text class="field" x="22" y="96">_id : ObjectId</text>
+    <text class="field" x="22" y="126">fullName : String</text>
+    <text class="field" x="22" y="156">email : String (unique)</text>
+    <text class="field" x="22" y="186">role : user | admin</text>
+    <text class="field" x="22" y="216">savedPlants : Plant[]</text>
+    <rect class="embed" x="18" y="239" width="350" height="155" rx="12"/>
+    <text class="label" x="34" y="266">garden[] · embedded GardenItem</text>
+    <text class="field" x="34" y="296">plant : Plant</text>
+    <text class="field" x="34" y="326">customNickname : String</text>
+    <text class="muted" x="34" y="362">checklist[] → embedded CareTask</text>
+  </g>
+
+  <!-- Plant -->
+  <g transform="translate(625 190)">
+    <rect class="card" width="420" height="356" rx="18"/>
+    <path class="head" d="M18 0 H402 Q420 0 420 18 V62 H0 V18 Q0 0 18 0 Z"/>
+    <text class="headText" x="22" y="40">Plant</text><text class="type" x="310" y="39" fill="#dcece2">collection</text>
+    <text class="field" x="22" y="96">_id : ObjectId</text>
+    <text class="field" x="22" y="126">specimenId : String (unique)</text>
+    <text class="field" x="22" y="156">name : String</text>
+    <text class="field" x="22" y="186">scientificName : String</text>
+    <text class="field" x="22" y="216">category, biome, status</text>
+    <text class="field" x="22" y="246">gardener : Gardener?</text>
+    <text class="muted" x="22" y="284">Also: care, taxonomy, images,</text>
+    <text class="muted" x="22" y="309">telemetry, toxicity, timestamps</text>
+  </g>
+
+  <!-- Gardener -->
+  <g transform="translate(1160 145)">
+    <rect class="card" width="450" height="200" rx="18"/>
+    <path class="head" d="M18 0 H432 Q450 0 450 18 V62 H0 V18 Q0 0 18 0 Z"/>
+    <text class="headText" x="22" y="40">Gardener</text><text class="type" x="339" y="39" fill="#dcece2">collection</text>
+    <text class="field" x="22" y="96">_id : ObjectId</text>
+    <text class="field" x="22" y="126">name, specialization</text>
+    <text class="field" x="22" y="156">associatedPlants : Plant[]</text>
+  </g>
+
+  <!-- PersonalCollection -->
+  <g transform="translate(64 672)">
+    <rect class="card" width="386" height="211" rx="18"/>
+    <path class="head" d="M18 0 H368 Q386 0 386 18 V62 H0 V18 Q0 0 18 0 Z"/>
+    <text class="headText" x="22" y="40">PersonalCollection</text>
+    <text class="field" x="22" y="96">_id : ObjectId</text>
+    <text class="field" x="22" y="126">owner : User (required)</text>
+    <text class="field" x="22" y="156">name, description</text>
+    <text class="field" x="22" y="186">plants : Plant[]</text>
+  </g>
+
+  <!-- Collection -->
+  <g transform="translate(625 689)">
+    <rect class="card" width="420" height="211" rx="18"/>
+    <path class="head" d="M18 0 H402 Q420 0 420 18 V62 H0 V18 Q0 0 18 0 Z"/>
+    <text class="headText" x="22" y="40">Collection</text><text class="type" x="310" y="39" fill="#dcece2">collection</text>
+    <text class="field" x="22" y="96">_id : ObjectId</text>
+    <text class="field" x="22" y="126">title, slug, season</text>
+    <text class="field" x="22" y="156">isFeatured : Boolean</text>
+    <text class="field" x="22" y="186">plants : Plant[]</text>
+  </g>
+
+  <!-- Gallery -->
+  <g transform="translate(1160 390)">
+    <rect class="card" width="450" height="230" rx="18"/>
+    <path class="head" d="M18 0 H432 Q450 0 450 18 V62 H0 V18 Q0 0 18 0 Z"/>
+    <text class="headText" x="22" y="40">Gallery</text><text class="type" x="339" y="39" fill="#dcece2">collection</text>
+    <text class="field" x="22" y="96">_id : ObjectId</text>
+    <text class="field" x="22" y="126">imageUrl, alt, caption</text>
+    <text class="field" x="22" y="156">plant : Plant?</text>
+    <text class="field" x="22" y="186">likedBy : User[]</text>
+    <text class="field" x="22" y="216">likesCount : Number</text>
+  </g>
+
+  <!-- ContactMessage -->
+  <g transform="translate(1160 720)">
+    <rect class="card" width="450" height="182" rx="18"/>
+    <path class="head" d="M18 0 H432 Q450 0 450 18 V62 H0 V18 Q0 0 18 0 Z"/>
+    <text class="headText" x="22" y="40">ContactMessage</text>
+    <text class="field" x="22" y="96">_id : ObjectId</text>
+    <text class="field" x="22" y="126">fullName, email, subject</text>
+    <text class="field" x="22" y="156">message, status</text>
+  </g>
+
+  <text class="muted" x="64" y="975">Lines: ObjectId references · Plant? means optional · [] means an array · Dashed line: reverse Gardener reference</text>
+  <text class="muted" x="64" y="1002">Embedded GardenItem and CareTask are stored within User documents. ContactMessage has no model reference.</text>
+  <text class="muted" x="64" y="1029">Source: backend/src/modules/*/*.model.js · Full schema and Mermaid source: docs/database-erd.md</text>
+</svg>
