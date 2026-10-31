@@ -1,8 +1,14 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/', { replace: true });
+  };
 
   return (
     <header className="header-floating-wrap">
@@ -37,7 +43,7 @@ const Navbar = () => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <button
                 type="button"
-                onClick={logout}
+                onClick={handleLogout}
                 className="btn-nav-signout"
                 title={`Logged in as ${user.name || user.email || 'User'}. Click to sign out.`}
               >

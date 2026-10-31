@@ -132,12 +132,12 @@ describe('Admin dashboard', () => {
     expect(screen.getByRole('button', { name: 'Add Plant' })).toBeDisabled();
   });
 
-  it('logs out and returns to the login screen', async () => {
+  it('logs out and returns to the public overview', async () => {
     const user = userEvent.setup();
-    render(<MemoryRouter initialEntries={['/admin']}><Routes><Route path="/admin" element={<AdminDashboard />} /><Route path="/login" element={<div>Login destination</div>} /></Routes></MemoryRouter>);
+    render(<MemoryRouter initialEntries={['/admin']}><Routes><Route path="/admin" element={<AdminDashboard />} /><Route path="/" element={<div>Overview destination</div>} /></Routes></MemoryRouter>);
     await user.click(screen.getByRole('button', { name: 'Log out' }));
     await waitFor(() => expect(logout).toHaveBeenCalledOnce());
-    expect(screen.getByText('Login destination')).toBeInTheDocument();
+    expect(screen.getByText('Overview destination')).toBeInTheDocument();
   });
 
   it('refreshes the current data and KPI statistics after a successful mutation', async () => {

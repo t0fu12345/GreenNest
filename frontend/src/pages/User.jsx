@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
@@ -7,6 +7,11 @@ import gardenApi from '../services/gardenApi';
 
 const User = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate('/', { replace: true });
+  };
   const [gardenCount, setGardenCount] = React.useState(null);
 
   React.useEffect(() => {
@@ -139,7 +144,7 @@ const User = () => {
               <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto', flexWrap: 'wrap' }}>
                 <button
                   type="button"
-                  onClick={logout}
+                  onClick={handleLogout}
                   style={{
                     background: 'rgba(239, 68, 68, 0.15)',
                     border: '1px solid rgba(239, 68, 68, 0.4)',
