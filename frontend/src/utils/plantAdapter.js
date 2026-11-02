@@ -1,9 +1,12 @@
+import { resolvePublicAssetUrl } from './publicAssetUrl';
+
 export const toPlantViewModel = (plant) => {
   if (!plant) return null;
 
-  const hero = plant.images?.hero || plant.image || '';
+  const hero = resolvePublicAssetUrl(plant.images?.hero || plant.image || '');
   const gallery = Array.isArray(plant.images?.gallery) ? plant.images.gallery : [];
-  const images = [hero, ...gallery.filter(url => url && url !== hero)].filter(Boolean).map((url, index) => ({
+  const imageUrls = [...new Set([hero, ...gallery.map((url) => resolvePublicAssetUrl(url))].filter(Boolean))];
+  const images = imageUrls.map((url, index) => ({
     url,
     alt: plant.name || 'Botanical specimen',
     isPrimary: index === 0,

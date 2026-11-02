@@ -1,6 +1,7 @@
 import AdminResourcePage from '../../components/admin/AdminResourcePage';
 import AdminStatusBadge from '../../components/admin/AdminStatusBadge';
 import plantApi from '../../services/plantApi';
+import { resolvePublicAssetUrl } from '../../utils/publicAssetUrl';
 
 const fields = [
   { name: 'specimenId', label: 'Specimen ID' },
@@ -21,7 +22,7 @@ const fields = [
 ];
 
 const columns = [
-  { key: 'name', label: 'Plant / scientific name', render: (row) => <div className="flex items-center gap-3">{row.images?.hero && <img src={row.images.hero} alt="" className="size-11 rounded-xl object-cover" />}<div><strong className="block text-slate-950">{row.name}</strong><em className="text-xs text-slate-400">{row.scientificName}</em></div></div> },
+  { key: 'name', label: 'Plant / scientific name', render: (row) => <div className="flex items-center gap-3">{row.images?.hero && <img src={resolvePublicAssetUrl(row.images.hero)} alt="" className="size-11 rounded-xl object-cover" />}<div><strong className="block text-slate-950">{row.name}</strong><em className="text-xs text-slate-400">{row.scientificName}</em></div></div> },
   { key: 'category', label: 'Category' },
   { key: 'care', label: 'Light & water', render: (row) => <span>{row.light}<br /><small className="text-slate-400">{row.watering}</small></span> },
   { key: 'toxicity', label: 'Pet safety', render: (row) => row.toxicity?.isToxicToPets ? 'Caution advised' : 'Pet friendly' },
