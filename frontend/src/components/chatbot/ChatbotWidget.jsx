@@ -134,8 +134,10 @@ const ChatbotWidget = () => {
         {lines.map((line, idx) => {
           if (!line.trim()) return <br key={idx} />;
 
-          // Bold parsing **text**
-          const parts = line.split(/(\*\*.*?\*\*)/g);
+          const isBullet = /^\s*[-*]\s+/.test(line);
+          const content = isBullet ? line.replace(/^\s*[-*]\s+/, '') : line;
+          // Bold parsing **text** after removing only the bullet marker.
+          const parts = content.split(/(\*\*.*?\*\*)/g);
           const renderedLine = parts.map((part, pIdx) => {
             if (part.startsWith('**') && part.endsWith('**')) {
               return <strong key={pIdx}>{part.slice(2, -2)}</strong>;
@@ -143,10 +145,10 @@ const ChatbotWidget = () => {
             return part;
           });
 
-          if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
+          if (isBullet) {
             return (
               <p key={idx} style={{ paddingLeft: '8px', margin: '3px 0' }}>
-                • {renderedLine.slice(1)}
+                • {renderedLine}
               </p>
             );
           }

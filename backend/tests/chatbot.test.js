@@ -64,6 +64,62 @@ test('Chatbot Module Unit & Integration Tests', async (t) => {
     assert.ok(matches.some(m => m.toLowerCase().includes('cheese')));
   });
 
+  await t.test('Heart of Jesus resolves to its own catalog entry', () => {
+    assert.deepEqual(chatbotService.matchCatalogKeywords('How do I care for Heart of Jesus?'), ['Heart of Jesus']);
+    assert.deepEqual(chatbotService.matchCatalogKeywords('How do I care for Caladium?'), ['Caladium']);
+  });
+
+  await t.test('ChatbotService sends the user question to a supported Gemini model', async () => {
+    const originalFetch = global.fetch;
+    const originalKey = process.env.GEMINI_API_KEY;
+    let upstreamRequest;
+
+    process.env.GEMINI_API_KEY = 'test-gemini-key';
+    global.fetch = async (url, options) => {
+      upstreamRequest = { url, options };
+      return {
+        ok: true,
+        json: async () => ({
+          candidates: [{ finishReason: 'STOP', content: { parts: [
+            { text: 'Internal reasoning', thought: true },
+            { text: 'Water when ' },
+            { text: 'the topsoil is dry.' }
+          ] } }]
+        })
+      };
+    };
+
+    try {
+      const result = await chatbotService.generateReply({ message: 'When should I water my plant?' });
+      const payload = JSON.parse(upstreamRequest.options.body);
+
+      assert.equal(result.source, 'gemini');
+      assert.equal(result.reply, 'Water when the topsoil is dry.');
+      assert.equal(upstreamRequest.url, 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent');
+      assert.equal(upstreamRequest.options.headers['x-goog-api-key'], 'test-gemini-key');
+      assert.equal(payload.contents.at(-1).parts.at(-1).text, 'When should I water my plant?');
+      assert.equal(Object.hasOwn(payload.generationConfig, 'temperature'), false);
+      assert.ok(payload.generationConfig.maxOutputTokens >= 4096);
+      assert.equal(payload.generationConfig.thinkingConfig.thinkingLevel, 'low');
+    } finally {
+      global.fetch = originalFetch;
+      if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
+      else process.env.GEMINI_API_KEY = originalKey;
+    }
+  });
+
+  await t.test('fallback advice keeps the plant requested by the user instead of the rule default', async () => {
+    const originalFind = chatbotService.findCatalogMatches;
+    chatbotService.findCatalogMatches = async (text) => chatbotService.matchCatalogKeywords(text)
+      .map(name => ({ name, specimenId: 'specimen-heart-of-jesus' }));
+    try {
+      const result = await chatbotService.fallbackReply({ message: 'Heart of Jesus has crispy edges' });
+      assert.deepEqual(result.suggestedPlants.map(p => p.name), ['Heart of Jesus']);
+    } finally {
+      chatbotService.findCatalogMatches = originalFind;
+    }
+  });
+
   await t.test('POST /api/chatbot/message accepts valid message and returns 200 with expected shape', async () => {
     const res = await fetch(`${baseUrl}/message`, {
       method: 'POST',

@@ -8,7 +8,8 @@ const BOTANICAL_PLANT_MAP = [
   { keywords: ['peace lily', 'peace lily plant', 'spathiphyllum', 'white flower'], catalogName: 'Peace Lily Plant' },
   { keywords: ['agave', 'succulent', 'cactus', 'desert plant'], catalogName: 'Agave' },
   { keywords: ['desert rose', 'adenium', 'flowering succulent'], catalogName: 'Desert Rose' },
-  { keywords: ['caladium', 'heart of jesus', 'angel wings'], catalogName: 'Caladium' },
+  { keywords: ['heart of jesus'], catalogName: 'Heart of Jesus' },
+  { keywords: ['caladium', 'angel wings'], catalogName: 'Caladium' },
   { keywords: ['english ivy', 'hedera', 'ivy vine', 'climbing ivy'], catalogName: 'English Ivy' },
   { keywords: ['dwarf umbrella plant', 'dwarf umbrella', 'schefflera', 'umbrella tree'], catalogName: 'Dwarf Umbrella Plant' },
   { keywords: ['frangipani', 'plumeria', 'tropical flower'], catalogName: 'Frangipani' },
@@ -114,10 +115,8 @@ class ChatbotService {
         if (safePlants.length > 0) return safePlants;
       }
 
-      // Default fallback: return 1 popular easy plant if nothing matches
-      return await Plant.find({ status: 'published' })
-        .select('_id specimenId name scientificName category images toxicity careLevel light watering')
-        .limit(1);
+      // An unrelated catalog card would misrepresent the plant being discussed.
+      return [];
     } catch {
       // In standalone unit tests without MongoDB connection, return empty array gracefully
       return [];
@@ -146,7 +145,6 @@ class ChatbotService {
   async fallbackReply({ message = '', image = null }) {
     const text = message.trim();
     let reply = '';
-    let targetPlantName = null;
 
     if (image && !text) {
       reply = `🌿 **GreenNest AI Botanist (Offline Mode)**\n\nI have received your plant image! The system is currently running in offline fallback mode (Gemini Vision API disconnected).\n\nTo give you the most accurate botanical advice, please **describe any visible symptoms** you notice (e.g., *yellow leaves, brown tips, wilting foliage, webbings, or pests*) or provide the plant's name!`;
@@ -157,7 +155,6 @@ class ChatbotService {
       );
 
       if (matchedRule) {
-        targetPlantName = matchedRule.relatedPlant;
         const stepsFormatted = matchedRule.actionSteps.map((s, idx) => `${idx + 1}. ${s}`).join('\n');
         reply = `🌿 **${matchedRule.title}**\n\n${matchedRule.diagnosis}\n\n**Recommended Action Steps:**\n${stepsFormatted}\n\n*If you have specific questions about any specimen, let me know!*`;
       } else {
@@ -165,7 +162,7 @@ class ChatbotService {
       }
     }
 
-    const matchedPlants = await this.findCatalogMatches(targetPlantName || text);
+    const matchedPlants = await this.findCatalogMatches(text);
     return {
       reply,
       suggestedPlants: this.formatSuggestedPlants(matchedPlants),
@@ -174,7 +171,7 @@ class ChatbotService {
   }
 
   /**
-   * Main reply generator using Gemini 2.5 Flash (with fallback)
+   * Main reply generator using Gemini 3.6 Flash (with fallback)
    */
   async generateReply({ message = '', image = null, history = [] }) {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -196,7 +193,8 @@ Your responsibilities:
 2. When analyzing plant images: Examine leaf coloration, stem integrity, and signs of pest infestation or root distress. State the diagnosis clearly and outline step-by-step treatment in numbered points (1, 2, 3).
 3. Connect recommendations to GreenNest catalog botanical specimens where appropriate:
 ${catalogContext}
-4. Maintain a warm, encouraging, and authoritative tone using structured markdown (bold headings, bullet points). Always respond in clear, professional English.`;
+4. Maintain a warm, encouraging, and authoritative tone using structured markdown (bold headings, bullet points). Always respond in clear, professional English.
+5. Keep answers concise (about 250 words unless more detail is requested), and finish every list item and sentence.`;
 
       // Build Gemini request payload
       const parts = [];
@@ -234,14 +232,17 @@ ${catalogContext}
           parts: [{ text: systemInstruction }]
         },
         generationConfig: {
-          temperature: 0.4,
-          maxOutputTokens: 1024
+          maxOutputTokens: 4096,
+          thinkingConfig: { thinkingLevel: 'low' }
         }
       };
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey
+        },
         body: JSON.stringify(requestPayload)
       });
 
@@ -252,10 +253,17 @@ ${catalogContext}
       }
 
       const data = await response.json();
-      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      const candidate = data?.candidates?.[0];
+      let reply = candidate?.content?.parts
+        ?.filter(part => !part.thought && typeof part.text === 'string')
+        .map(part => part.text).join('');
 
       if (!reply) {
         return this.fallbackReply({ message, image });
+      }
+
+      if (candidate.finishReason === 'MAX_TOKENS') {
+        reply += '\n\n*This answer reached its length limit. Ask me to continue for the remaining steps.*';
       }
 
       return {

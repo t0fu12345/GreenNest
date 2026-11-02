@@ -73,4 +73,21 @@ describe('ChatbotWidget Component', () => {
       expect(screen.getByText('Snake Plant')).toBeInTheDocument();
     });
   });
+
+  it('keeps all text in plain and bold markdown bullet points', async () => {
+    vi.spyOn(chatbotApi, 'sendMessage').mockResolvedValueOnce({
+      reply: '- Water when the topsoil is dry.\n* Keep soil lightly moist.\n- Use **filtered sunlight** for this plant.',
+      source: 'gemini',
+      suggestedPlants: []
+    });
+    const user = userEvent.setup();
+    renderWidget();
+    await user.click(screen.getByRole('button', { name: /ask ai botanist/i }));
+    await user.type(screen.getByPlaceholderText(/ask about plant care, diagnosis/i), 'Help my Heart of Jesus');
+    await user.click(screen.getByRole('button', { name: /send message/i }));
+
+    expect(await screen.findByText(/Water when the topsoil is dry\./)).toBeInTheDocument();
+    expect(screen.getByText(/Keep soil lightly moist\./)).toBeInTheDocument();
+    expect(screen.getByText('filtered sunlight').closest('p')).toHaveTextContent('Use filtered sunlight for this plant.');
+  });
 });

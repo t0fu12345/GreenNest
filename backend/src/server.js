@@ -1,10 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const dotenv = require('dotenv');
 
 // Load environment variables
-dotenv.config({ path: require('path').join(__dirname, '../.env') });
+require('./config/env')();
 
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middlewares/errorHandler.middleware');
